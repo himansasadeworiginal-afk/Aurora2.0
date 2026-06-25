@@ -2,6 +2,8 @@
   "name": "aurora-5.0",
   "private": true,
   "version": "5.0.0",
+  "description": "Aurora 5.0 — a local-first personal hub (dashboard, 3D knowledge brain, agenda, calendar, trackers).",
+  "author": "wolf",
   "type": "module",
   "main": "electron/main.cjs",
   "scripts": {
@@ -53,7 +55,16 @@
       "target": [
         "AppImage"
       ],
-      "category": "Utility"
+      "category": "Utility",
+      "icon": "build/icon.png",
+      "synopsis": "Local-first personal hub",
+      "desktop": {
+        "entry": {
+          "Name": "Aurora 5.0",
+          "Comment": "Local-first personal hub",
+          "Categories": "Utility;Office;"
+        }
+      }
     }
   },
   "dependencies": {

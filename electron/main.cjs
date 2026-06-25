@@ -11,6 +11,7 @@
 
 const { app, BrowserWindow, shell } = require('electron')
 const path = require('path')
+const fs = require('fs')
 const { pathToFileURL } = require('url')
 
 const PORT = 8080
@@ -24,10 +25,16 @@ let desmondModule = null
 function resolvePaths() {
   if (app.isPackaged) {
     const base = process.resourcesPath
+    // The bundled Desmond/ is read-only (no venv), so prefer a writable copy in
+    // userData if the user set one up there via scripts/setup-desmond.sh.
+    const userDesmond = path.join(app.getPath('userData'), 'Desmond')
+    const desmondDir = fs.existsSync(path.join(userDesmond, 'main.py'))
+      ? userDesmond
+      : path.join(base, 'Desmond')
     return {
       dist: path.join(base, 'dist'),
       nexoRoot: base, // nexo/ copied to <resources>/nexo
-      desmondDir: path.join(base, 'Desmond'),
+      desmondDir,
     }
   }
   const appRoot = path.resolve(__dirname, '..')

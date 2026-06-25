@@ -1,0 +1,16 @@
+[Desktop Entry]
+Type=Application
+Name=Aurora 5.0
+Comment=Local-first personal hub — dashboard, 3D brain, agenda, calendar, trackers
+# Edit Exec/Icon to the absolute paths where you placed the AppImage and icon.
+# Example install:
+#   mkdir -p ~/Applications ~/.local/share/icons
+#   cp "Aurora 5.0-5.0.0.AppImage" ~/Applications/Aurora-5.0.AppImage
+#   chmod +x ~/Applications/Aurora-5.0.AppImage
+#   cp build/icon.png ~/.local/share/icons/aurora-5.0.png
+#   cp build/aurora.desktop ~/.local/share/applications/
+Exec=Aurora-5.0.AppImage
+Icon=aurora-5.0
+Categories=Utility;Office;
+Terminal=false
+StartupWMClass=aurora-5.0

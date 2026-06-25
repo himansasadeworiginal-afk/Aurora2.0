@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="38%" r="75%">
+      <stop offset="0%" stop-color="#1a0303"/>
+      <stop offset="55%" stop-color="#0c0101"/>
+      <stop offset="100%" stop-color="#050000"/>
+    </radialGradient>
+    <linearGradient id="ring" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff5a5a"/>
+      <stop offset="50%" stop-color="#e60000"/>
+      <stop offset="100%" stop-color="#7a0000"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="9" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <rect x="4" y="4" width="504" height="504" rx="108" fill="none" stroke="#e60000" stroke-opacity="0.18" stroke-width="2"/>
+
+  <!-- orbital ring -->
+  <g filter="url(#glow)">
+    <ellipse cx="256" cy="256" rx="168" ry="64" fill="none" stroke="url(#ring)" stroke-width="6" stroke-opacity="0.55"
+             transform="rotate(-28 256 256)"/>
+  </g>
+
+  <!-- Aurora 'A' -->
+  <g filter="url(#glow)">
+    <path d="M256 118 L350 386 L300 386 L281 326 L231 326 L212 386 L162 386 Z
+             M246 280 L266 280 L256 216 Z"
+          fill="url(#ring)" stroke="#ff8a8a" stroke-width="3" stroke-linejoin="round"/>
+  </g>
+
+  <!-- node accents on the ring -->
+  <g filter="url(#glow)">
+    <circle cx="124" cy="222" r="11" fill="#ff6a6a"/>
+    <circle cx="392" cy="290" r="11" fill="#ff6a6a"/>
+    <circle cx="338" cy="150" r="8" fill="#ffb0b0"/>
+  </g>
+</svg>
