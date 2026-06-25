@@ -1,0 +1,186 @@
+/* Dashboard (command center) — redesigned. Self-contained class namespace
+   (dsh-*) so it doesn't collide with legacy .dashboard rules in App.css. */
+
+.dsh {
+  position: relative;
+  z-index: var(--z-content);
+  max-width: 860px;
+  margin: 0 auto;
+  padding: clamp(var(--sp-12), 9vh, 96px) var(--sp-6) var(--sp-12);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- Header --------------------------------------------------------------- */
+.dsh-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-6);
+  margin-bottom: var(--sp-10);
+  animation: dshRise 0.55s var(--ease-out) both;
+}
+
+.dsh-greeting {
+  font-size: var(--fs-3xl);
+  font-weight: var(--fw-light);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--lh-tight);
+  color: #fff;
+  text-shadow: var(--glow-text);
+}
+
+.dsh-date {
+  margin-top: var(--sp-2);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--text-muted);
+}
+
+.dsh-clock {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-light);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ---- Card grid ------------------------------------------------------------ */
+.dsh-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(196px, 1fr));
+  gap: var(--sp-4);
+}
+
+.dsh-card {
+  --accent-card: var(--accent);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: var(--sp-5);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--panel);
+  cursor: pointer;
+  text-align: left;
+  overflow: hidden;
+  transition: transform var(--dur-base) var(--ease-out),
+              border-color var(--dur-base) var(--ease-out),
+              box-shadow var(--dur-base) var(--ease-out);
+  animation: dshRise 0.5s var(--ease-out) both;
+}
+.dsh-grid > .dsh-card:nth-child(1) { animation-delay: 0.04s; }
+.dsh-grid > .dsh-card:nth-child(2) { animation-delay: 0.09s; }
+.dsh-grid > .dsh-card:nth-child(3) { animation-delay: 0.14s; }
+.dsh-grid > .dsh-card:nth-child(4) { animation-delay: 0.19s; }
+.dsh-grid > .dsh-card:nth-child(5) { animation-delay: 0.24s; }
+.dsh-grid > .dsh-card:nth-child(6) { animation-delay: 0.29s; }
+.dsh-grid > .dsh-card:nth-child(7) { animation-delay: 0.34s; }
+
+/* Soft radial wash in the card's accent, revealed on hover (no side-tab bar) */
+.dsh-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 80% at 20% 0%,
+    color-mix(in srgb, var(--accent-card) 16%, transparent), transparent 60%);
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out);
+  pointer-events: none;
+}
+
+.dsh-card:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--accent-card) 45%, var(--border));
+  box-shadow: var(--shadow-2),
+              0 0 0 1px color-mix(in srgb, var(--accent-card) 20%, transparent),
+              0 10px 40px color-mix(in srgb, var(--accent-card) 18%, transparent);
+}
+.dsh-card:hover::after { opacity: 1; }
+.dsh-card:active { transform: translateY(-1px) scale(0.992); }
+.dsh-card:focus-visible { outline: 2px solid var(--accent-card); outline-offset: 3px; }
+
+.dsh-chip {
+  position: relative;
+  z-index: 1;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-md);
+  color: var(--accent-card);
+  background: color-mix(in srgb, var(--accent-card) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent-card) 28%, transparent);
+  margin-bottom: var(--sp-2);
+  transition: transform var(--dur-base) var(--ease-spring),
+              box-shadow var(--dur-base) var(--ease-out);
+}
+.dsh-card:hover .dsh-chip {
+  transform: translateY(-1px) scale(1.04);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--accent-card) 40%, transparent);
+}
+.dsh-chip svg { width: 26px; height: 26px; }
+
+.dsh-card-title {
+  position: relative;
+  z-index: 1;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  color: var(--text);
+}
+.dsh-card-desc {
+  position: relative;
+  z-index: 1;
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  line-height: var(--lh-base);
+}
+
+/* ---- Stats ---------------------------------------------------------------- */
+.dsh-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  margin-top: var(--sp-10);
+  animation: dshRise 0.6s var(--ease-out) 0.2s both;
+}
+.dsh-stat {
+  flex: 1 1 0;
+  min-width: 140px;
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-3);
+  padding: var(--sp-4) var(--sp-5);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface);
+}
+.dsh-stat-value {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-light);
+  color: var(--red-light);
+  font-variant-numeric: tabular-nums;
+  text-shadow: var(--glow-sm);
+}
+.dsh-stat-label {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--text-muted);
+}
+
+@keyframes dshRise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 560px) {
+  .dsh-head { flex-direction: column; align-items: flex-start; gap: var(--sp-3); }
+  .dsh-clock { display: none; }
+  .dsh-greeting { font-size: var(--fs-2xl); }
+}
