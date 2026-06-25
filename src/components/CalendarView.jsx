@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import db from '../data/db'
+import './CalendarView.css'
 
 const S = { stroke: 'currentColor', fill: 'none', strokeWidth: 1.5, strokeLinecap: 'round', strokeLinejoin: 'round' }
 
@@ -586,7 +587,7 @@ export default function CalendarView({ onClose }) {
   }
 
   return (
-    <div className="calendar-section">
+    <div className="cal-v2 calendar-section">
       {onClose && (
         <button className="cal-close-btn" onClick={onClose} title="Close"><CloseIcon /></button>
       )}
