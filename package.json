@@ -19,6 +19,9 @@
     "appId": "com.wolf.aurora",
     "productName": "Aurora 5.0",
     "asar": false,
+    "directories": {
+      "output": "release"
+    },
     "files": [
       "electron/**",
       "server.js",
