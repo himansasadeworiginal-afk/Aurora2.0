@@ -1,0 +1,65 @@
+/* ============================================================================
+   Aurora — Base layer
+   Reset refinements, global element defaults, accessibility. Loaded after
+   tokens.css. Intentionally additive: it sharpens focus, scrollbars, selection
+   and reduced-motion without overriding existing component classes in App.css.
+   ============================================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font);
+  font-size: var(--fs-base);
+  line-height: var(--lh-base);
+  color: var(--text);
+  background: var(--bg-gradient);
+  background-attachment: fixed;
+}
+
+::selection {
+  background: rgba(230, 0, 0, 0.32);
+  color: var(--text-on-accent);
+}
+
+/* Refined scrollbars (kept thin to match the existing aesthetic) */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--red-dim);
+  border-radius: var(--r-pill);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+* { scrollbar-width: thin; scrollbar-color: var(--red-dim) transparent; }
+
+/* Keyboard focus only — never on mouse click */
+:focus { outline: none; }
+:focus-visible {
+  outline: 2px solid var(--accent2);
+  outline-offset: 2px;
+  border-radius: var(--r-sm);
+}
+
+button { font-family: inherit; }
+
+/* Respect users who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
