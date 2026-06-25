@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import db from '../data/db'
+import './TrackerView.css'
 
 function getToday() {
   return new Date().toISOString().slice(0, 10)
@@ -149,14 +150,14 @@ export default function TrackerView({ onClose }) {
 
   if (loading) {
     return (
-      <div className="trackers-section">
+      <div className="trk-v2 trackers-section">
         <div className="tracker-loading">Loading trackers...</div>
       </div>
     )
   }
 
   return (
-    <div className="trackers-section">
+    <div className="trk-v2 trackers-section">
       <div className="trackers-header">
         <h3 className="trackers-title">Trackers</h3>
         <div className="trackers-header-actions">

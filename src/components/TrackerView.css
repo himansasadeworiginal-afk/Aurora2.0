@@ -1,0 +1,193 @@
+/* Trackers — redesigned. Scoped under .trk-v2 so token-based rules win over the
+   legacy .tracker-* / .trackers-* styles in App.css by specificity, regardless
+   of bundle order. Markup/logic unchanged; only a wrapper class.
+
+   The per-card left accent (inline borderLeftColor) is kept — it encodes the
+   habit category, mirrored by the category pill. */
+
+.trk-v2.trackers-section {
+  position: relative;
+  width: min(100%, 560px);
+  margin: clamp(var(--sp-8), 7vh, 80px) auto var(--sp-10);
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-3), var(--glow-inset);
+  overflow: hidden;
+  animation: trkRise 0.5s var(--ease-out) both;
+}
+
+.trk-v2 .tracker-loading {
+  padding: var(--sp-12);
+  text-align: center;
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+/* ---- Header --------------------------------------------------------------- */
+.trk-v2 .trackers-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-6) var(--sp-6) var(--sp-4);
+  border-bottom: 1px solid var(--border);
+}
+.trk-v2 .trackers-title {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-light);
+  letter-spacing: var(--tracking-tight);
+  color: #fff;
+  text-shadow: var(--glow-text);
+}
+.trk-v2 .trackers-header-actions { display: flex; align-items: center; gap: var(--sp-2); }
+.trk-v2 .trackers-add-btn,
+.trk-v2 .trackers-close-btn {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--r-sm);
+  color: var(--text-dim);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-out);
+}
+.trk-v2 .trackers-add-btn {
+  color: var(--red-light);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 28%, transparent);
+}
+.trk-v2 .trackers-add-btn:hover { background: color-mix(in srgb, var(--accent) 20%, transparent); box-shadow: var(--glow-sm); }
+.trk-v2 .trackers-close-btn:hover { color: var(--text); border-color: var(--border-strong); background: var(--surface-hover); }
+
+/* ---- Add form ------------------------------------------------------------- */
+.trk-v2 .tracker-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: var(--sp-4) var(--sp-6);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+.trk-v2 .tracker-form-row { display: flex; gap: var(--sp-2); }
+.trk-v2 .tracker-input,
+.trk-v2 .tracker-select {
+  flex: 1;
+  min-width: 0;
+  padding: var(--sp-3);
+  border-radius: var(--r-sm);
+  background: var(--bg-raise);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: var(--fs-sm);
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+.trk-v2 .tracker-input::placeholder { color: var(--text-faint); }
+.trk-v2 .tracker-input:focus,
+.trk-v2 .tracker-select:focus { outline: none; border-color: var(--border-strong); }
+.trk-v2 .tracker-form-actions { display: flex; gap: var(--sp-2); margin-top: var(--sp-1); }
+.trk-v2 .tracker-save-btn,
+.trk-v2 .tracker-cancel-btn {
+  flex: 1;
+  padding: var(--sp-3);
+  border-radius: var(--r-sm);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-out);
+}
+.trk-v2 .tracker-save-btn { color: var(--text-on-accent); background: var(--gradient-red); border: 1px solid transparent; }
+.trk-v2 .tracker-save-btn:hover { box-shadow: var(--glow-md); }
+.trk-v2 .tracker-cancel-btn { color: var(--text-dim); background: var(--bg-raise); border: 1px solid var(--border); }
+.trk-v2 .tracker-cancel-btn:hover { color: var(--text); background: var(--surface-hover); }
+
+/* ---- List ----------------------------------------------------------------- */
+.trk-v2 .tracker-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: var(--sp-4);
+  max-height: 460px;
+  overflow-y: auto;
+}
+
+.trk-v2 .tracker-card {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  border-radius: var(--r-md);
+  border: 1px solid var(--border);
+  border-left-width: 2px;
+  background: var(--surface);
+  transition: border-color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+  animation: trkRise 0.4s var(--ease-out) both;
+}
+.trk-v2 .tracker-card:hover { background: var(--surface-hover); border-color: var(--border-strong); }
+.trk-v2 .tracker-card-left { flex: 1; min-width: 0; }
+.trk-v2 .tracker-name { font-size: var(--fs-base); color: var(--text); }
+.trk-v2 .tracker-meta { display: flex; align-items: center; gap: var(--sp-2); margin-top: var(--sp-1); }
+.trk-v2 .tracker-category {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  padding: 1px var(--sp-2);
+  border-radius: var(--r-pill);
+  border: 1px solid transparent;
+}
+.trk-v2 .tracker-frequency { font-size: var(--fs-xs); color: var(--text-muted); text-transform: capitalize; }
+
+.trk-v2 .tracker-card-right { display: flex; align-items: center; gap: var(--sp-3); }
+.trk-v2 .tracker-checkin-group { display: flex; align-items: center; gap: var(--sp-2); }
+.trk-v2 .tracker-checkin {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--r-pill);
+  border: 2px solid var(--text-faint);
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease-spring), background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+.trk-v2 .tracker-checkin:hover { transform: scale(1.08); border-color: var(--text-muted); }
+.trk-v2 .tracker-checkin.done { background: var(--accent); border-color: var(--accent); box-shadow: var(--glow-sm); }
+.trk-v2 .tracker-streak {
+  min-width: 30px;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+.trk-v2 .tracker-streak.active { color: var(--red-light); text-shadow: var(--glow-sm); }
+.trk-v2 .tracker-del {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--r-sm);
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  opacity: 0;
+  transition: all var(--dur-fast) var(--ease-out);
+}
+.trk-v2 .tracker-card:hover .tracker-del { opacity: 1; }
+.trk-v2 .tracker-del:hover { color: var(--red-light); background: var(--surface-hover); }
+
+/* ---- Empty ---------------------------------------------------------------- */
+.trk-v2 .tracker-empty { text-align: center; padding: var(--sp-12) var(--sp-6); }
+.trk-v2 .tracker-empty-icon { display: inline-flex; color: var(--text-faint); margin-bottom: var(--sp-3); }
+.trk-v2 .tracker-empty-title { font-size: var(--fs-md); color: var(--text-dim); }
+.trk-v2 .tracker-empty-sub { font-size: var(--fs-sm); color: var(--text-muted); margin-top: var(--sp-1); }
+
+@keyframes trkRise {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
