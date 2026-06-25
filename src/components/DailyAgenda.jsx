@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import db from '../data/db'
 import TimeWheelPicker from './TimeWheelPicker'
+import './DailyAgenda.css'
 
 function getToday() {
   return new Date().toISOString().slice(0, 10)
@@ -217,14 +218,14 @@ export default function DailyAgenda({ onClose, autoOpen }) {
 
   if (loading) {
     return (
-      <div className="agenda-modal">
+      <div className="agenda-v2 agenda-modal">
         <div className="agenda-loading">Loading agenda...</div>
       </div>
     )
   }
 
   return (
-    <div className={`agenda-modal ${collapsed ? 'agenda-collapsed' : ''}`}>
+    <div className={`agenda-v2 agenda-modal ${collapsed ? 'agenda-collapsed' : ''}`}>
       <div className="agenda-header">
         <div className="agenda-header-left">
           <div className="agenda-greeting">{getGreeting()}</div>
