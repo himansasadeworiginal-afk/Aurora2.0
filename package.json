@@ -55,14 +55,17 @@
       "target": [
         "AppImage"
       ],
+      "executableName": "aurora-5.0",
       "category": "Utility",
       "icon": "build/icon.png",
       "synopsis": "Local-first personal hub",
+      "syncDesktopName": true,
       "desktop": {
         "entry": {
           "Name": "Aurora 5.0",
           "Comment": "Local-first personal hub",
-          "Categories": "Utility;Office;"
+          "Categories": "Utility;Office;",
+          "StartupWMClass": "aurora-5.0"
         }
       }
     }
