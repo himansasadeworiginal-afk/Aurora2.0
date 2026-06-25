@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Money Unlocked - Build Wealth From the Inside Out</title>
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#050a08;--bg2:#0a1210;--bg3:#112218;--card:#0f1f18;
+    --text:#e0f5ec;--muted:#7aaf9a;--accent:#00e5a0;--accent2:#ff6b35;
+    --gold:#ffd700;--border:#1a3a2a;
+    --glow:0 0 30px rgba(0,229,160,.3);
+  }
+  html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:var(--accent) var(--bg)}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
+  ::-webkit-scrollbar{width:8px}
+  ::-webkit-scrollbar-track{background:var(--bg)}
+  ::-webkit-scrollbar-thumb{background:var(--accent);border-radius:4px}
+  #progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--gold),var(--accent2));z-index:9999;transition:width .1s;width:0%}
+  #bgCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.3}
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(20px);background:rgba(5,10,8,.85);border-bottom:1px solid var(--border);transform:translateY(-100%);transition:transform .3s}
+  nav.visible{transform:translateY(0)}
+  nav .logo{font-size:1.2rem;font-weight:700;color:var(--accent)}
+  nav ul{list-style:none;display:flex;gap:1.5rem}
+  nav a{color:var(--muted);text-decoration:none;font-size:.8rem;transition:color .3s;text-transform:uppercase;letter-spacing:1px}
+  nav a:hover{color:var(--accent)}
+  .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;position:relative;z-index:1;padding:2rem}
+  .hero-badge{display:inline-block;padding:.4rem 1.2rem;border:1px solid var(--accent);border-radius:50px;color:var(--accent);font-size:.8rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:2rem;opacity:0;animation:fadeUp .8s .2s forwards}
+  .hero h1{font-size:clamp(2.5rem,7vw,6rem);font-weight:800;line-height:1.1;margin-bottom:.5rem;opacity:0;animation:fadeUp .8s .4s forwards}
+  .hero h1 span{background:linear-gradient(135deg,var(--accent),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .hero .subtitle{font-size:clamp(1rem,2.5vw,1.3rem);color:var(--muted);max-width:650px;margin-bottom:1.5rem;opacity:0;animation:fadeUp .8s .6s forwards}
+  .hero .author{color:var(--gold);font-size:1rem;font-style:italic;opacity:0;animation:fadeUp .8s .8s forwards}
+  .hero .tagline{color:var(--muted);font-size:1.1rem;margin-top:1.5rem;opacity:0;animation:fadeUp .8s 1s forwards;font-style:italic}
+  .scroll-hint{position:absolute;bottom:2rem;opacity:0;animation:fadeUp .8s 1.2s forwards}
+  .scroll-hint span{display:block;width:24px;height:40px;border:2px solid var(--muted);border-radius:12px;position:relative}
+  .scroll-hint span::after{content:'';width:4px;height:8px;background:var(--accent);border-radius:2px;position:absolute;top:6px;left:50%;transform:translateX(-50%);animation:bounce 2s infinite}
+  section{position:relative;z-index:1;padding:6rem 2rem}
+  .container{max-width:1100px;margin:0 auto}
+  .section-label{display:inline-block;color:var(--accent);font-size:.75rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:.5rem}
+  .section-title{font-size:clamp(2rem,4vw,3rem);font-weight:700;margin-bottom:1rem}
+  .section-desc{color:var(--muted);font-size:1.1rem;max-width:700px;margin-bottom:3rem}
+  .reveal{opacity:0;transform:translateY(40px);transition:opacity .7s,transform .7s}
+  .reveal.visible{opacity:1;transform:translateY(0)}
+  .reveal-delay-1{transition-delay:.1s}
+  .reveal-delay-2{transition-delay:.2s}
+  .reveal-delay-3{transition-delay:.3s}
+  .wealth-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:2rem}
+  .wealth-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem;cursor:pointer;transition:all .4s;position:relative;overflow:hidden}
+  .wealth-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--gold));transform:scaleX(0);transition:transform .4s;transform-origin:left}
+  .wealth-card:hover::before{transform:scaleX(1)}
+  .wealth-card:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:var(--glow)}
+  .wealth-card .icon{font-size:2.5rem;margin-bottom:1rem}
+  .wealth-card h3{font-size:1.3rem;margin-bottom:.5rem}
+  .wealth-card p{color:var(--muted);font-size:.95rem}
+  .wealth-card .expanded{max-height:0;overflow:hidden;transition:max-height .5s,margin .5s}
+  .wealth-card.open .expanded{max-height:200px;margin-top:1rem}
+  .wealth-card .toggle{color:var(--accent);font-size:.8rem;margin-top:.5rem;display:inline-block;transition:transform .3s}
+  .wealth-card.open .toggle{transform:rotate(180deg)}
+  .formula-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:3rem;text-align:center;margin:3rem 0;position:relative;overflow:hidden}
+  .formula-box::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(0,229,160,.05) 0%,transparent 70%);animation:pulse 4s infinite}
+  .formula{font-size:clamp(1.1rem,2.5vw,1.8rem);font-weight:600;color:var(--gold);position:relative;z-index:1}
+  .formula-label{color:var(--muted);margin-top:.5rem;font-size:.9rem}
+  .comparison{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin:2rem 0}
+  .comp-side{padding:2rem;border-radius:16px;cursor:pointer;transition:all .4s}
+  .comp-side.smart{background:linear-gradient(135deg,rgba(0,229,160,.1),rgba(0,229,160,.02));border:1px solid var(--accent)}
+  .comp-side.hard{background:linear-gradient(135deg,rgba(255,107,53,.05),rgba(255,107,53,.02));border:1px solid var(--accent2)}
+  .comp-side:hover{transform:scale(1.02)}
+  .comp-side h4{margin-bottom:1rem;font-size:1.2rem}
+  .comp-side.smart h4{color:var(--accent)}
+  .comp-side.hard h4{color:var(--accent2)}
+  .comp-side ul{list-style:none}
+  .comp-side ul li{padding:.3rem 0;color:var(--muted);font-size:.9rem}
+  .comp-side ul li::before{content:'\2192  ';color:inherit}
+  .part-divider{text-align:center;padding:4rem 2rem;position:relative;z-index:1}
+  .part-divider .line{width:1px;height:60px;background:linear-gradient(to bottom,transparent,var(--accent),transparent);margin:0 auto 2rem}
+  .part-divider h2{font-size:clamp(1.5rem,3vw,2.5rem);color:var(--accent)}
+  .part-divider p{color:var(--muted);margin-top:.5rem}
+  .chapter{margin-bottom:3rem}
+  .chapter-num{font-size:5rem;font-weight:900;color:var(--bg3);line-height:1;margin-bottom:-1rem}
+  .chapter h3{font-size:1.6rem;margin-bottom:.8rem;color:var(--accent)}
+  .chapter p{color:var(--muted);margin-bottom:.8rem;max-width:800px}
+  .chapter ul{list-style:none;padding:0}
+  .chapter ul li{padding:.5rem 0 .5rem 1.5rem;position:relative;color:var(--muted)}
+  .chapter ul li::before{content:'';position:absolute;left:0;top:1rem;width:8px;height:8px;background:var(--accent);border-radius:50%}
+  .layers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;margin:2rem 0}
+  .layer-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.8rem;text-align:center;transition:all .4s;cursor:pointer;position:relative}
+  .layer-card:hover{transform:translateY(-6px);border-color:var(--accent);box-shadow:var(--glow)}
+  .layer-card .layer-num{position:absolute;top:10px;right:15px;font-size:3rem;font-weight:900;color:var(--bg3);line-height:1}
+  .layer-card .l-icon{font-size:2.5rem;margin-bottom:1rem}
+  .layer-card h4{font-size:1.05rem;margin-bottom:.5rem}
+  .layer-card p{color:var(--muted);font-size:.85rem}
+  .layer-card .layer-detail{max-height:0;overflow:hidden;transition:max-height .5s,margin .5s,opacity .5s;opacity:0}
+  .layer-card.open .layer-detail{max-height:200px;margin-top:1rem;opacity:1}
+  .layer-card .click-hint{color:var(--accent);font-size:.7rem;margin-top:.5rem}
+  .rule{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2.5rem;margin-bottom:2rem;transition:all .4s}
+  .rule:hover{border-color:var(--accent)}
+  .rule-header{display:flex;align-items:center;gap:1.5rem;margin-bottom:1.2rem;cursor:pointer}
+  .rule-num{font-size:3rem;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;min-width:70px}
+  .rule h3{font-size:1.4rem}
+  .rule-body{max-height:0;overflow:hidden;transition:max-height .6s}
+  .rule.open .rule-body{max-height:3000px}
+  .rule-body p{color:var(--muted);margin-bottom:.8rem}
+  .rule-body ul{list-style:none;padding:0}
+  .rule-body ul li{padding:.6rem 0 .6rem 2rem;position:relative;color:var(--muted);border-bottom:1px solid var(--border)}
+  .rule-body ul li:last-child{border:none}
+  .rule-body ul li::before{content:'';position:absolute;left:0;top:1.1rem;width:10px;height:2px;background:var(--accent)}
+  .expand-btn{color:var(--accent);font-size:.85rem;cursor:pointer;margin-top:.8rem;display:inline-block;transition:transform .3s}
+  .rule.open .expand-btn{transform:rotate(180deg)}
+  .freedom-calc{text-align:center}
+  .calc-box{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:3rem;max-width:600px;margin:0 auto}
+  .calc-box label{display:block;color:var(--muted);margin-bottom:.5rem;font-size:.9rem;text-align:left}
+  .calc-box input{width:100%;padding:1rem;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:1.2rem;margin-bottom:1.5rem;outline:none;transition:border-color .3s}
+  .calc-box input:focus{border-color:var(--accent)}
+  .calc-result{font-size:2.5rem;font-weight:800;color:var(--gold);margin:1rem 0}
+  .calc-result-label{color:var(--muted);font-size:.9rem}
+  .timer-section{text-align:center}
+  .timer-modes{display:flex;justify-content:center;gap:.5rem;margin-bottom:1rem}
+  .timer-mode{padding:.5rem 1rem;border:1px solid var(--border);background:transparent;color:var(--muted);border-radius:8px;cursor:pointer;font-size:.85rem;transition:all .3s}
+  .timer-mode.active{border-color:var(--accent);color:var(--accent);background:rgba(0,229,160,.1)}
+  .timer-ring{width:300px;height:300px;margin:0 auto;position:relative}
+  .timer-ring svg{transform:rotate(-90deg)}
+  .timer-ring circle{fill:none;stroke-width:4}
+  .timer-ring .bg{stroke:var(--border)}
+  .timer-ring .progress{stroke:var(--accent);stroke-linecap:round;transition:stroke-dashoffset 1s linear}
+  .timer-display{font-size:clamp(3.5rem,9vw,7rem);font-weight:800;font-variant-numeric:tabular-nums;margin:2rem 0;color:var(--text)}
+  .timer-controls{display:flex;justify-content:center;gap:1rem;margin-bottom:1rem}
+  .timer-btn{padding:.8rem 2rem;border:2px solid var(--accent);background:transparent;color:var(--accent);border-radius:50px;font-size:1rem;cursor:pointer;transition:all .3s;font-weight:600}
+  .timer-btn:hover{background:var(--accent);color:var(--bg)}
+  .timer-btn.active{background:var(--accent);color:var(--bg)}
+  .timer-btn.reset{border-color:var(--accent2);color:var(--accent2)}
+  .timer-btn.reset:hover{background:var(--accent2);color:var(--bg)}
+  .takeaway-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:2rem}
+  .takeaway{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;transition:all .4s;position:relative;overflow:hidden}
+  .takeaway:hover{transform:translateY(-4px);border-color:var(--accent)}
+  .takeaway .num{position:absolute;top:-10px;right:10px;font-size:4rem;font-weight:900;color:var(--bg3);line-height:1}
+  .takeaway p{color:var(--muted);position:relative;z-index:1}
+  .big-you-section{text-align:center;margin:4rem 0}
+  .two-versions{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2rem}
+  .version{padding:2.5rem;border-radius:16px;transition:all .4s}
+  .version.little{background:linear-gradient(135deg,rgba(255,107,53,.08),rgba(255,107,53,.02));border:1px solid var(--accent2)}
+  .version.big{background:linear-gradient(135deg,rgba(0,229,160,.1),rgba(0,229,160,.03));border:1px solid var(--accent);box-shadow:var(--glow)}
+  .version h4{font-size:1.3rem;margin-bottom:1rem}
+  .version.little h4{color:var(--accent2)}
+  .version.big h4{color:var(--accent)}
+  .version ul{list-style:none;text-align:left}
+  .version ul li{padding:.4rem 0;color:var(--muted);font-size:.9rem}
+  .version ul li::before{content:'\2192  '}
+  .version.little ul li::before{color:var(--accent2)}
+  .version.big ul li::before{color:var(--accent)}
+  footer{text-align:center;padding:4rem 2rem;border-top:1px solid var(--border);color:var(--muted);position:relative;z-index:1}
+  footer .quote{font-size:1.4rem;font-style:italic;color:var(--text);max-width:700px;margin:0 auto 1rem}
+  footer .quote-author{color:var(--gold)}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes bounce{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,12px)}}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  .floating{animation:float 3s ease-in-out infinite}
+  @media(max-width:768px){
+    nav ul{display:none}
+    .comparison,.two-versions{grid-template-columns:1fr}
+    section{padding:4rem 1.5rem}
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<canvas id="bgCanvas"></canvas>
+<nav id="nav">
+  <div class="logo">MONEY UNLOCKED</div>
+  <ul>
+    <li><a href="#thesis">Wealth</a></li>
+    <li><a href="#chapters">Chapters</a></li>
+    <li><a href="#layers">Ecosystem</a></li>
+    <li><a href="#freedom">Freedom #</a></li>
+    <li><a href="#timer">Timer</a></li>
+    <li><a href="#takeaways">Takeaways</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-badge">Book Summary</div>
+  <h1><span>Money</span> Unlocked</h1>
+  <p class="subtitle">Build Wealth From the Inside Out</p>
+  <p class="author">by John Lee</p>
+  <p class="tagline">"When money works for you, that's freedom. That's wealth."</p>
+  <div class="scroll-hint"><span></span></div>
+</section>
+
+<section id="thesis">
+  <div class="container">
+    <div class="reveal"><span class="section-label">Core Philosophy</span>
+    <h2 class="section-title">What Is Real Wealth?</h2>
+    <p class="section-desc">Real wealth isn't measured in dollars. It's measured in joy, contribution, and time. Money is a byproduct, not the goal.</p></div>
+    <div class="wealth-grid">
+      <div class="wealth-card reveal" onclick="toggleCard(this)">
+        <div class="icon">&#x2728;</div>
+        <h3>Joy</h3>
+        <p>Doing what you love, on your own terms, waking up excited every day.</p>
+        <div class="expanded"><p>Most people chase money thinking it'll bring happiness. But wealth starts with alignment between purpose and daily life. When you do what you love, money follows.</p></div>
+        <span class="toggle">Click to expand &#x25BC;</span>
+      </div>
+      <div class="wealth-card reveal reveal-delay-1" onclick="toggleCard(this)">
+        <div class="icon">&#x1F30D;</div>
+        <h3>Contribution</h3>
+        <p>Making a real impact. Creating value for others and leaving a positive legacy.</p>
+        <div class="expanded"><p>The ultra-rich understand that giving back doesn't make you poorer -- it makes you magnetic. Generosity creates trust, and trust builds brands.</p></div>
+        <span class="toggle">Click to expand &#x25BC;</span>
+      </div>
+      <div class="wealth-card reveal reveal-delay-2" onclick="toggleCard(this)">
+        <div class="icon">&#x23F3;</div>
+        <h3>Time</h3>
+        <p>Freedom to do what you want, when you want, with whoever you want.</p>
+        <div class="expanded"><p>When people say "I want more money," they usually mean they want freedom. Time is the ultimate currency -- you can't earn more of it. Spend it wisely.</p></div>
+        <span class="toggle">Click to expand &#x25BC;</span>
+      </div>
+    </div>
+    <div class="formula-box reveal">
+      <div class="formula">Wealth = Fulfillment + Freedom + Impact</div>
+      <div class="formula-label">Money is the tool, not the destination</div>
+    </div>
+    <div class="comparison reveal">
+      <div class="comp-side smart">
+        <h4>&#x1F4C8; Smart Work</h4>
+        <ul><li>Build systems that earn independently</li><li>Make money work for you</li><li>Leverage other people's money</li><li>Passive income streams</li><li>Strategic partnerships</li></ul>
+      </div>
+      <div class="comp-side hard">
+        <h4>&#x1F528; Hard Work Alone</h4>
+        <ul><li>Trade time for money</li><li>Work for someone else's dream</li><li>Linear income only</li><li>No scalability</li><li>Exhaustion with minimal results</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="part-divider"><div class="line"></div><h2>The 13-Chapter Roadmap</h2><p>From mindset shifts to wealth-building strategies</p></div>
+
+<section id="chapters">
+  <div class="container">
+    <div class="reveal"><span class="section-label">Chapters 1-4</span>
+    <h2 class="section-title">Foundation</h2></div>
+    <div class="rule reveal" onclick="toggleRule(this)">
+      <div class="rule-header"><div class="rule-num">01</div><div><h3>Wealth Redefined</h3><p style="color:var(--muted);font-size:.85rem">Exposing the Biggest Lie You've Ever Been Told</p></div></div>
+      <div class="rule-body">
+        <p>Most people are conditioned: go to school, get a job, climb the ladder, retire -- trading their best years building someone else's dream.</p>
+        <ul>
+          <li>Wealth is a feeling of abundance and well-being</li>
+          <li>It's alignment between purpose, joy, and impact</li>
+          <li>The real flex isn't a Ferrari -- it's freedom to choose</li>
+          <li>Build wealth from the inside out, starting with your values</li>
+        </ul>
+      </div>
+      <span class="expand-btn">Click to expand &#x25BC;</span>
+    </div>
+
+    <div class="rule reveal" onclick="toggleRule(this)">
+      <div class="rule-header"><div class="rule-num">02</div><div><h3>Smart Work vs. Hard Work</h3><p style="color:var(--muted);font-size:.85rem">The animator who escaped the Tube</p></div></div>
+      <div class="rule-body">
+        <p>"Give me six hours to chop down a tree and I will spend the first four sharpening the axe." -- Abraham Lincoln</p>
+        <p>John worked three jobs, went to university, became an animator in London -- and had even less freedom. 3-hour commutes, no vacation, a supervisor threatening his job. Rock bottom: smelling like rotten anchovies in a packed Tube.</p>
+        <ul>
+          <li>Hard work alone won't make you rich</li>
+          <li>Shift from trading hours for dollars to building systems</li>
+          <li>Make money work hard for you, not the other way around</li>
+          <li>Education is the axe -- sharpen it before you chop</li>
+        </ul>
+      </div>
+      <span class="expand-btn">Click to expand &#x25BC;</span>
+    </div>
+
+    <div class="rule reveal" onclick="toggleRule(this)">
+      <div class="rule-header"><div class="rule-num">03</div><div><h3>Active to Passive Income</h3><p style="color:var(--muted);font-size:.85rem">How to Make Money While You Sleep</p></div></div>
+      <div class="rule-body">
+        <p>"If you work for money, you give the power to your employer. If money works for you, you keep the power." -- Robert Kiyosaki</p>
+        <p>John started with real estate. Couldn't afford to buy property, so he learned to use Other People's Money (OPM). Found a mentor by investing £10,000 (sold his Honda S2000). Six months later: 35 houses. First million by year's end.</p>
+        <ul>
+          <li>Educate yourself relentlessly -- books, seminars, mentors</li>
+          <li>Find someone with success and model them exactly</li>
+          <li>Put skin in the game -- invest in knowledge</li>
+          <li>Start before you feel ready</li>
+        </ul>
+      </div>
+      <span class="expand-btn">Click to expand &#x25BC;</span>
+    </div>
+
+    <div class="rule reveal" onclick="toggleRule(this)">
+      <div class="rule-header"><div class="rule-num">04</div><div><h3>Turning Ideas into Dollars</h3><p style="color:var(--muted);font-size:.85rem">The Stanley Cup case study</p></div></div>
+      <div class="rule-body">
+        <p>The Stanley cup went from $70M to $750M in revenue because influencers promoted it through affiliate marketing -- without creating the product.</p>
+        <ul>
+          <li>Affiliate marketing: promote existing products, earn commissions</li>
+          <li>No inventory, no shipping, no product creation needed</li>
+          <li>Start with zero money</li>
+          <li>Digital products, licensing, audience monetization</li>
+          <li>The math: $100 product at 4% = $4/sale. Sell 250 = $1,000/month</li>
+        </ul>
+      </div>
+      <span class="expand-btn">Click to expand &#x25BC;</span>
+    </div>
+
+    <div class="reveal" style="margin-top:3rem"><span class="section-label">Chapters 5-8</span>
+    <h2 class="section-title">Strategy</h2></div>
+    <div class="rule reveal" onclick="toggleRule(this)">
+      <div class="rule-header"><div class="rule-num">05</div><div><h3>Becoming Indestructible</h3><p style="color:var(--muted);font-size:.85rem">Economic Resilience</p></div></div>
+      <div class="rule-body">
+        <p>The Chinese word for crisis -- weiji -- combines "danger" and "opportunity." Every crisis is a turning point.</p>
+        <ul>
+          <li>Build multiple revenue streams so one disruption doesn't ruin you</li>
+          <li>Use leverage: other people's money, networks, technology</li>
+          <li>Protect what you've built: insurance, liquidity buffers</li>
+          <li>Automate with technology and systems</li>
+          <li>A one-page financial plan is not enough -- build an ecosystem</li>
+        </ul>
+      </div>
+      <span class="expand-btn">Click to expand &#x25BC;</span>
+    </div>
+
+    <div class="rule reveal" onclick="toggleRule(this)">
+      <div class="rule-header"><div class="rule-num">06</div><div><h3>Financial Freedom Unlocked</h3><p style="color:var(--muted);font-size:.85rem">Building Your Money Ecosystem</p></div></div>
+      <div class="rule-body">
+        <p>"Spending money to show people how much money you have is the fastest way to have less money." -- Morgan Housel</p>
+        <p>The "rich broke" trap: people making $500K+ who are still broke because they spend everything on liabilities. Every dollar is a vote for the life you want.</p>
+        <ul>
+          <li>Financial freedom = RETENTION + GROWTH, not accumulation</li>
+          <li>What matters isn't how much you make -- it's how much you KEEP</li>
+          <li>Understand spending psychology: buying identity, validation</li>
+          <li>Don't fall for the luxury trap -- it's a treadmill</li>
+        </ul>
+      </div>
+      <span class="expand-btn">Click to expand &#x25BC;</span>
+    </div>
+
+    <div class="rule reveal" onclick="toggleRule(this)">
+      <div class="rule-header"><div class="rule-num">07</div><div><h3>The Power of Minimalism</h3><p style="color:var(--muted);font-size:.85rem">Less is More</p></div></div>
+      <div class="rule-body">
+        <p>After making his first million, John bought luxury cars, watches, and clothes. People were impressed -- but he wasn't. He was rich but not yet wealthy.</p>
+        <ul>
+          <li>Hidden costs: purchase price, storage, maintenance, insurance, mental load</li>
+          <li>Humans make 35,000+ decisions/day. More clutter = poorer decisions</li>
+          <li>Luxury items that don't align with values become money suckers</li>
+          <li>Minimalism isn't deprivation -- it's intentionality</li>
+        </ul>
+      </div>
+      <span class="expand-btn">Click to expand &#x25BC;</span>
+    </div>
+
+    <div class="rule reveal" onclick="toggleRule(this)">
+      <div class="rule-header"><div class="rule-num">08</div><div><h3>Wealth Mapping</h3><p style="color:var(--muted);font-size:.85rem">Clear Visions, Strategic Actions</p></div></div>
+      <div class="rule-body">
+        <p>"BMW" can stand for Bitches, Moaners, and Whiners. Instead of complaining, ask: "What can I do about this?"</p>
+        <ul>
+          <li>BLURRY GOALS = BLURRY ACTIONS</li>
+          <li>CLEAR DIRECTION = POWER AND MOMENTUM</li>
+          <li>Set your "Freedom Number" -- a specific, measurable financial goal</li>
+          <li>"I want more money" is not a goal -- it's a chasing loop</li>
+          <li>John's students went from debt to seven figures -- through clarity, not harder work</li>
+        </ul>
+      </div>
+      <span class="expand-btn">Click to expand &#x25BC;</span>
+    </div>
+
+    <div class="reveal" style="margin-top:3rem"><span class="section-label">Chapters 9-13</span>
+    <h2 class="section-title">Amplification</h2></div>
+    <div class="rule reveal" onclick="toggleRule(this)">
+      <div class="rule-header"><div class="rule-num">09</div><div><h3>Investing in Yourself</h3><p style="color:var(--muted);font-size:.85rem">The £10,000 mentor that unlocked millions</p></div></div>
+      <div class="rule-body">
+        <p>"Your relationship with money is a reflection of your inner self." -- Ken Honda</p>
+        <p>John paid £10,000 (sold his car) for two days with a mentor. Six months later: 35 houses, first million. The quality of your questions determines the quality of your answers.</p>
+        <ul>
+          <li>Don't ask "How do I become a millionaire?" Ask "Who do I need to become?"</li>
+          <li>Instead of "I can't afford it," ask "How can I afford it?"</li>
+          <li>Free advice is rarely followed. Paid knowledge = skin in the game</li>
+          <li>The right mentor can deliver 100x ROI</li>
+        </ul>
+      </div>
+      <span class="expand-btn">Click to expand &#x25BC;</span>
+    </div>
+
+    <div class="rule reveal" onclick="toggleRule(this)">
+      <div class="rule-header"><div class="rule-num">10</div><div><h3>Network = Net Worth</h3><p style="color:var(--muted);font-size:.85rem">Building the right connections</p></div></div>
+      <div class="rule-body">
+        <p>John used student loan money to attend a 3D animation festival in Copenhagen. Approached 10-20 speakers. One said yes -- led to internship at Passion Pictures (Gorillaz studio), then headhunted before graduation.</p>
+        <ul>
+          <li>Start where you are. Add value first -- make coffee, run errands</li>
+          <li>Be first in, last out. Learn quietly. Be intentional</li>
+          <li>Focus on relationships, not transactions</li>
+          <li>Follow up and maintain connections</li>
+        </ul>
+      </div>
+      <span class="expand-btn">Click to expand &#x25BC;</span>
+    </div>
+
+    <div class="rule reveal" onclick="toggleRule(this)">
+      <div class="rule-header"><div class="rule-num">11</div><div><h3>Scaling: Think Bigger</h3><p style="color:var(--muted);font-size:.85rem">From rich thinking to wealthy thinking</p></div></div>
+      <div class="rule-body">
+        <p>John watched Lamborghini videos daily for two years. Drove a friend's Gallardo, made a promise, bought one a year later. But that was still limited -- RICH thinking, not WEALTHY thinking.</p>
+        <ul>
+          <li>When you have purpose, action is automatic. No willpower needed</li>
+          <li>Focus attention on what you want, think about it constantly</li>
+          <li>Cars and houses are byproducts of chasing impact, not the goal</li>
+          <li>Scale beyond personal luxury to legacy and impact</li>
+        </ul>
+      </div>
+      <span class="expand-btn">Click to expand &#x25BC;</span>
+    </div>
+
+    <div class="rule reveal" onclick="toggleRule(this)">
+      <div class="rule-header"><div class="rule-num">12</div><div><h3>Secret of the Ultra-Rich</h3><p style="color:var(--muted);font-size:.85rem">The $100 banana story</p></div></div>
+      <div class="rule-body">
+        <p>John met a fruit vendor giving his all at the end of the day. Handed him $100 for a single banana. The vendor's face lit up, drew a crowd. John created a moment of validation.</p>
+        <ul>
+          <li>Giving back doesn't make you poorer -- it makes you MAGNETIC</li>
+          <li>Generosity creates trust. Trust builds brands</li>
+          <li>The ultra-rich understand: giving amplifies wealth</li>
+          <li>Give value to customers, insights to clients, support to community</li>
+        </ul>
+      </div>
+      <span class="expand-btn">Click to expand &#x25BC;</span>
+    </div>
+
+    <div class="rule reveal" onclick="toggleRule(this)">
+      <div class="rule-header"><div class="rule-num">13</div><div><h3>Roadmap to Limitless Wealth</h3><p style="color:var(--muted);font-size:.85rem">Your Roadmap to Limitless Wealth</p></div></div>
+      <div class="rule-body">
+        <p>At 40, you have roughly 245,280 waking hours left. Time isn't just valuable -- it's everything. Every hour shapes your legacy and joy.</p>
+        <ul>
+          <li>Two versions of you: Little You (fear, doubt) vs Big You (vision, courage)</li>
+          <li>Transform by clearing inner roadblocks -- patterns, beliefs, fears</li>
+          <li>It's not really about money -- it's about self-expression</li>
+          <li>Money is a tool. When it works for you, that's freedom</li>
+        </ul>
+      </div>
+      <span class="expand-btn">Click to expand &#x25BC;</span>
+    </div>
+  </div>
+</section>
+
+<div class="part-divider"><div class="line"></div><h2>Build Your Financial Ecosystem</h2><p>Four layers of economic resilience</p></div>
+
+<section id="layers">
+  <div class="container">
+    <div class="reveal"><span class="section-label">The 4 Layers</span>
+    <h2 class="section-title">Your Financial Ecosystem</h2>
+    <p class="section-desc">A one-page financial plan isn't enough. Build like the Burj Khalifa, not a Lego house.</p></div>
+    <div class="layers-grid">
+      <div class="layer-card reveal" onclick="toggleLayer(this)">
+        <div class="layer-num">1</div>
+        <div class="l-icon">&#x1F3D7;</div>
+        <h4>Passive Infrastructure</h4>
+        <p>Multiple revenue streams so one disruption doesn't ruin you</p>
+        <div class="layer-detail"><p>When the pandemic hit, John had income beyond speaking because he'd diversified. Don't put all eggs in one basket.</p></div>
+        <div class="click-hint">tap for details</div>
+      </div>
+      <div class="layer-card reveal reveal-delay-1" onclick="toggleLayer(this)">
+        <div class="layer-num">2</div>
+        <div class="l-icon">&#x26A1;</div>
+        <h4>Leverage</h4>
+        <p>Other people's money, networks, and technology to amplify results</p>
+        <div class="layer-detail"><p>Don't grow linearly -- grow exponentially. Use OPM, partnerships, and systems to multiply your efforts.</p></div>
+        <div class="click-hint">tap for details</div>
+      </div>
+      <div class="layer-card reveal reveal-delay-2" onclick="toggleLayer(this)">
+        <div class="layer-num">3</div>
+        <div class="l-icon">&#x1F6E1;</div>
+        <h4>Insurance</h4>
+        <p>Protect what you've built with buffers and coverage</p>
+        <div class="layer-detail"><p>Liquidity buffers, proper coverage, risk management. The wealthy are prepared because they know crises are inevitable.</p></div>
+        <div class="click-hint">tap for details</div>
+      </div>
+      <div class="layer-card reveal reveal-delay-3" onclick="toggleLayer(this)">
+        <div class="layer-num">4</div>
+        <div class="l-icon">&#x1F916;</div>
+        <h4>Technology & Systems</h4>
+        <p>Automate processes, build systems that run without you</p>
+        <div class="layer-detail"><p>Technology is the ultimate multiplier. Create systems that generate value while you sleep.</p></div>
+        <div class="click-hint">tap for details</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Little You vs Big You -->
+<section>
+  <div class="container">
+    <div class="reveal"><span class="section-label">Mindset</span>
+    <h2 class="section-title">Two Versions of You</h2>
+    <p class="section-desc">Every moment, you choose between them.</p></div>
+    <div class="two-versions reveal">
+      <div class="version little">
+        <h4>&#x1F53B; Little You</h4>
+        <ul><li>Ruled by fear and doubt</li><li>Weight of the past holds you back</li><li>Blurry goals, blurry actions</li><li>Complains without acting</li><li>Chases money without purpose</li><li>Trades time for dollars</li></ul>
+      </div>
+      <div class="version big">
+        <h4>&#x1F51D; Big You</h4>
+        <ul><li>Leads with vision and courage</li><li>Clear direction, powerful momentum</li><li>Asks "What can I do about this?"</li><li>Builds systems, not just income</li><li>Invests in self and relationships</li><li>Gives back, creates impact</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Freedom Number Calculator -->
+<section id="freedom" class="freedom-calc">
+  <div class="container">
+    <div class="reveal"><span class="section-label">Action</span>
+    <h2 class="section-title">Find Your Freedom Number</h2>
+    <p class="section-desc" style="margin:0 auto 2rem">Blurry goals = blurry actions. Get specific. Calculate the monthly passive income you need to live freely.</p></div>
+    <div class="calc-box reveal">
+      <label>Monthly living expenses ($)</label>
+      <input type="number" id="expenses" placeholder="e.g. 3000" oninput="calcFreedom()">
+      <label>Desired savings rate (%)</label>
+      <input type="number" id="savings" placeholder="e.g. 20" oninput="calcFreedom()">
+      <label>Expected annual return (%)</label>
+      <input type="number" id="return" placeholder="e.g. 8" value="8" oninput="calcFreedom()">
+      <div class="calc-result" id="freedomResult">--</div>
+      <div class="calc-result-label">Target portfolio to generate your freedom income</div>
+    </div>
+  </div>
+</section>
+
+<!-- Focus Timer -->
+<section id="timer" class="timer-section">
+  <div class="container">
+    <div class="reveal"><span class="section-label">Practice</span>
+    <h2 class="section-title">Deep Work Timer</h2>
+    <p class="section-desc" style="margin:0 auto 2rem">Smart work requires focused sessions. Lock in and build your systems.</p></div>
+    <div class="reveal">
+      <div class="timer-modes">
+        <button class="timer-mode active" onclick="setTimer(25,this)">25 min</button>
+        <button class="timer-mode" onclick="setTimer(50,this)">50 min</button>
+        <button class="timer-mode" onclick="setTimer(90,this)">90 min</button>
+        <button class="timer-mode" onclick="setTimer(120,this)">2 hrs</button>
+      </div>
+      <div class="timer-ring">
+        <svg width="300" height="300"><circle class="bg" cx="150" cy="150" r="140"/><circle class="progress" id="ringProgress" cx="150" cy="150" r="140" stroke-dasharray="879.6" stroke-dashoffset="0"/></svg>
+        <div class="timer-display" id="timerDisplay" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">25:00</div>
+      </div>
+      <div class="timer-controls">
+        <button class="timer-btn" id="startBtn" onclick="toggleTimer()">Start</button>
+        <button class="timer-btn reset" onclick="resetTimer()">Reset</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Takeaways -->
+<section id="takeaways">
+  <div class="container">
+    <div class="reveal"><span class="section-label">Remember</span>
+    <h2 class="section-title">Key Takeaways</h2></div>
+    <div class="takeaway-grid">
+      <div class="takeaway reveal"><div class="num">1</div><p>Wealth is <strong style="color:var(--text)">not money</strong> -- it's joy, contribution, time, and freedom.</p></div>
+      <div class="takeaway reveal reveal-delay-1"><div class="num">2</div><p><strong style="color:var(--text)">Smart > Hard</strong> work. Build systems that earn while you sleep.</p></div>
+      <div class="takeaway reveal reveal-delay-1"><div class="num">3</div><p><strong style="color:var(--text)">Passive income</strong> is the key: real estate, affiliate marketing, digital products.</p></div>
+      <div class="takeaway reveal reveal-delay-2"><div class="num">4</div><p>Build a <strong style="color:var(--text)">financial ecosystem</strong> -- not a one-page plan. Four layers of protection.</p></div>
+      <div class="takeaway reveal reveal-delay-2"><div class="num">5</div><p><strong style="color:var(--text)">Retain and grow</strong>, don't just spend. Every dollar is a vote for your future.</p></div>
+      <div class="takeaway reveal reveal-delay-3"><div class="num">6</div><p><strong style="color:var(--text)">Minimalism</strong> frees capital. Clutter costs money and mental energy.</p></div>
+      <div class="takeaway reveal reveal-delay-3"><div class="num">7</div><p>Set <strong style="color:var(--text)">specific goals</strong>. Your Freedom Number. Blurry goals = blurry actions.</p></div>
+      <div class="takeaway reveal"><div class="num">8</div><p><strong style="color:var(--text)">Invest in yourself</strong> -- the highest ROI comes from mentors and education.</p></div>
+      <div class="takeaway reveal reveal-delay-1"><div class="num">9</div><p>Your <strong style="color:var(--text)">network = net worth</strong>. Build relationships. Add value first.</p></div>
+      <div class="takeaway reveal reveal-delay-1"><div class="num">10</div><p><strong style="color:var(--text)">Give back</strong> -- generosity makes you magnetic. Trust builds empires.</p></div>
+      <div class="takeaway reveal reveal-delay-2"><div class="num">11</div><p>Choose <strong style="color:var(--text)">Big You</strong> over Little You, every single moment.</p></div>
+      <div class="takeaway reveal reveal-delay-2"><div class="num">12</div><p><strong style="color:var(--text)">Time is everything</strong>. You have limited hours. Spend them with intention.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p class="quote">"When money works for you, that's freedom. That's wealth."</p>
+  <p class="quote-author">&mdash; John Lee</p>
+</footer>
+
+<script>
+const canvas=document.getElementById('bgCanvas'),ctx=canvas.getContext('2d');
+let particles=[];
+function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
+resize();window.addEventListener('resize',resize);
+class Particle{constructor(){this.reset()}reset(){this.x=Math.random()*canvas.width;this.y=Math.random()*canvas.height;this.vx=(Math.random()-.5)*.3;this.vy=(Math.random()-.5)*.3;this.r=Math.random()*2+.5;this.a=Math.random()*.5+.1}update(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>canvas.width)this.vx*=-1;if(this.y<0||this.y>canvas.height)this.vy*=-1}draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,229,160,${this.a})`;ctx.fill()}}
+for(let i=0;i<80;i++)particles.push(new Particle());
+function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw()});for(let i=0;i<particles.length;i++)for(let j=i+1;j<particles.length;j++){const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<120){ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle=`rgba(0,229,160,${.08*(1-d/120)})`;ctx.stroke()}}requestAnimationFrame(animate)}animate();
+
+window.addEventListener('scroll',()=>{const s=window.scrollY/(document.body.scrollHeight-window.innerHeight)*100;document.getElementById('progress').style.width=s+'%';document.getElementById('nav').classList.toggle('visible',window.scrollY>300)});
+
+const observer=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}})},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+function toggleCard(el){el.classList.toggle('open')}
+function toggleRule(el){el.classList.toggle('open')}
+function toggleLayer(el){el.classList.toggle('open')}
+
+function calcFreedom(){
+  const exp=parseFloat(document.getElementById('expenses').value)||0;
+  const sav=parseFloat(document.getElementById('savings').value)||0;
+  const ret=parseFloat(document.getElementById('return').value)||0;
+  if(exp>0&&sav>=0&&ret>0){
+    const monthlyNeeded=exp*(1+sav/100);
+    const annualNeeded=monthlyNeeded*12;
+    const target=annualNeeded/(ret/100);
+    document.getElementById('freedomResult').textContent='$'+target.toLocaleString(undefined,{maximumFractionDigits:0});
+  }else{
+    document.getElementById('freedomResult').textContent='--';
+  }
+}
+
+let timerDuration=25*60,timerRemaining=25*60,timerInterval=null,timerRunning=false;
+const circumference=2*Math.PI*140;
+function setTimer(min,btn){document.querySelectorAll('.timer-mode').forEach(b=>b.classList.remove('active'));btn.classList.add('active');if(timerRunning){clearInterval(timerInterval);timerRunning=false}timerDuration=min*60;timerRemaining=min*60;updateDisplay();document.getElementById('ringProgress').style.strokeDashoffset=0;document.getElementById('startBtn').textContent='Start';document.getElementById('startBtn').classList.remove('active')}
+function toggleTimer(){if(timerRunning){clearInterval(timerInterval);timerRunning=false;document.getElementById('startBtn').textContent='Resume';document.getElementById('startBtn').classList.remove('active')}else{timerRunning=true;document.getElementById('startBtn').textContent='Pause';document.getElementById('startBtn').classList.add('active');timerInterval=setInterval(()=>{timerRemaining--;if(timerRemaining<=0){clearInterval(timerInterval);timerRunning=false;timerRemaining=0;document.getElementById('startBtn').textContent='Done!';document.getElementById('startBtn').classList.remove('active')};updateDisplay()},1000)}}
+function resetTimer(){clearInterval(timerInterval);timerRunning=false;timerRemaining=timerDuration;updateDisplay();document.getElementById('ringProgress').style.strokeDashoffset=0;document.getElementById('startBtn').textContent='Start';document.getElementById('startBtn').classList.remove('active')}
+function updateDisplay(){const m=Math.floor(timerRemaining/60),s=timerRemaining%60;document.getElementById('timerDisplay').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;const progress=(timerDuration-timerRemaining)/timerDuration;document.getElementById('ringProgress').style.strokeDashoffset=circumference*(1-progress)}
+</script>
+</body>
+</html>

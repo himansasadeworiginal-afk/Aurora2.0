@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Studies Lesson 3 - Business-Government Relations & Consumer Protection</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #080c08;
+    --card: #0e160e;
+    --accent: #10b981;
+    --accent2: #34d399;
+    --accent3: #fbbf24;
+    --text: #e0e0e0;
+    --text-muted: #8a9a8a;
+    --gradient: linear-gradient(135deg, #10b981, #34d399, #fbbf24);
+    --border: rgba(16, 185, 129, 0.15);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+
+  #particles {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 2rem;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    animation: fadeInDown 1s ease;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    font-weight: 800;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    animation: fadeInUp 1s ease 0.2s both;
+  }
+
+  .hero p {
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: var(--text-muted);
+    max-width: 650px;
+    animation: fadeInUp 1s ease 0.4s both;
+  }
+
+  .hero-scroll {
+    position: absolute; bottom: 2rem;
+    left: 50%; transform: translateX(-50%);
+    animation: float 3s ease-in-out infinite;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+  }
+
+  .container {
+    position: relative; z-index: 1;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem;
+  }
+
+  .section {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+    opacity: 0; transform: translateY(40px) scale(0.97);
+  }
+
+  .section.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition: opacity 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .section:hover {
+    transform: translateY(-4px) scale(1.005);
+    box-shadow: 0 24px 72px rgba(16, 185, 129, 0.06);
+  }
+
+  .section-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    display: inline-block;
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  .section h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section h2 .underline {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+
+  .section h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1.5rem 0 0.8rem;
+  }
+
+  .section h4 {
+    color: var(--accent2);
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 1rem 0 0.5rem;
+  }
+
+  .section ul, .section ol { padding-left: 1.5rem; }
+  .section li { margin-bottom: 0.4rem; color: var(--text); }
+  .section p { margin-bottom: 0.8rem; color: var(--text); }
+
+  .highlight {
+    display: inline-block;
+    padding: 0.1rem 0.5rem;
+    background: rgba(16, 185, 129, 0.12);
+    border-radius: 4px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .highlight-green { background: rgba(52, 211, 153, 0.12); color: var(--accent2); }
+  .highlight-amber { background: rgba(251, 191, 36, 0.12); color: var(--accent3); }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .info-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 1.2rem;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: default;
+  }
+
+  .info-card:hover {
+    background: rgba(16, 185, 129, 0.06);
+    border-color: rgba(16, 185, 129, 0.18);
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 12px 32px rgba(16, 185, 129, 0.08);
+  }
+
+  .info-card .emoji { font-size: 2rem; margin-bottom: 0.5rem; }
+  .info-card .label { font-weight: 600; color: #fff; margin-bottom: 0.3rem; }
+  .info-card .desc { font-size: 0.85rem; color: var(--text-muted); }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin: 1rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .comparison > div { padding: 1.2rem; }
+  .comparison .left { background: rgba(16, 185, 129, 0.06); border-right: 1px solid var(--border); }
+  .comparison .right { background: rgba(52, 211, 153, 0.06); }
+  .comparison .header {
+    font-weight: 700; font-size: 1.1rem;
+    text-align: center; padding: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .comparison .left .header { color: var(--accent); }
+  .comparison .right .header { color: var(--accent2); }
+  .comparison ul { list-style: none; padding: 0; }
+  .comparison li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.9rem;
+  }
+  .comparison li:last-child { border-bottom: none; }
+
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    margin: 1rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .three-col > div { padding: 1rem; }
+  .three-col .col1 { background: rgba(16, 185, 129, 0.06); }
+  .three-col .col2 { background: rgba(52, 211, 153, 0.06); }
+  .three-col .col3 { background: rgba(251, 191, 36, 0.06); }
+  .three-col .header { font-weight: 700; text-align: center; padding: 0.7rem; border-bottom: 1px solid var(--border); }
+  .three-col .col1 .header { color: var(--accent); }
+  .three-col .col2 .header { color: var(--accent2); }
+  .three-col .col3 .header { color: var(--accent3); }
+  .three-col ul { list-style: none; padding: 0; }
+  .three-col li { padding: 0.4rem 0; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 0.85rem; }
+
+  .four-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 0;
+    margin: 1rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .four-col > div { padding: 0.8rem; }
+  .four-col .col1 { background: rgba(16, 185, 129, 0.06); }
+  .four-col .col2 { background: rgba(52, 211, 153, 0.06); }
+  .four-col .col3 { background: rgba(251, 191, 36, 0.06); }
+  .four-col .col4 { background: rgba(16, 185, 129, 0.03); }
+  .four-col .header { font-weight: 700; text-align: center; padding: 0.5rem; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+  .four-col .col1 .header { color: var(--accent); }
+  .four-col .col2 .header { color: var(--accent2); }
+  .four-col .col3 .header { color: var(--accent3); }
+  .four-col .col4 .header { color: var(--text); }
+  .four-col ul { list-style: none; padding: 0; }
+  .four-col li { padding: 0.3rem 0; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 0.8rem; }
+
+  .flashcard-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .flashcard {
+    perspective: 1000px;
+    height: 170px;
+    cursor: pointer;
+  }
+
+  .flashcard-inner {
+    position: relative;
+    width: 100%; height: 100%;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+  }
+
+  .flashcard.flipped .flashcard-inner {
+    transform: rotateY(180deg);
+  }
+
+  .flashcard-front, .flashcard-back {
+    position: absolute;
+    width: 100%; height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+
+  .flashcard-front {
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.18);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .flashcard-back {
+    background: rgba(52, 211, 153, 0.1);
+    border: 1px solid rgba(52, 211, 153, 0.18);
+    color: var(--accent2);
+    transform: rotateY(180deg);
+    font-size: 0.82rem;
+  }
+
+  .flashcard-hint {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin: 1rem 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2), var(--accent3));
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2.35rem; top: 0.5rem;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+
+  .timeline-item .title { font-weight: 600; color: #fff; }
+  .timeline-item .desc { font-size: 0.9rem; color: var(--text-muted); }
+
+  /* Quiz */
+  .quiz-question {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin: 1rem 0;
+  }
+  .quiz-question .q { font-weight: 600; margin-bottom: 0.8rem; color: #fff; }
+
+  .quiz-option {
+    display: block; width: 100%;
+    padding: 0.7rem 1rem; margin-bottom: 0.5rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    color: var(--text); cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left; font-size: 0.9rem;
+    font-family: inherit;
+  }
+
+  .quiz-option:hover {
+    background: rgba(16, 185, 129, 0.08);
+    border-color: var(--accent);
+  }
+
+  .quiz-option.correct {
+    background: rgba(16, 185, 129, 0.18);
+    border-color: var(--accent); color: var(--accent2);
+  }
+
+  .quiz-option.wrong {
+    background: rgba(239, 68, 68, 0.18);
+    border-color: #ef4444; color: #ef4444;
+  }
+
+  .quiz-feedback {
+    margin-top: 0.8rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    display: none;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct { background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.18); color: var(--accent2); }
+  .quiz-feedback.wrong { background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.18); color: #ef4444; }
+
+  .progress-container {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 3px; z-index: 100;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: var(--gradient);
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes shimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-12px); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.1); }
+  }
+
+  @media (max-width: 600px) {
+    .comparison { grid-template-columns: 1fr; }
+    .comparison .left { border-right: none; border-bottom: 1px solid var(--border); }
+    .three-col { grid-template-columns: 1fr; }
+    .four-col { grid-template-columns: 1fr 1fr; }
+    .section { padding: 1.2rem; }
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin: 0.2rem;
+  }
+  .tag-green { background: rgba(16, 185, 129, 0.12); color: var(--accent); }
+  .tag-light { background: rgba(52, 211, 153, 0.12); color: var(--accent2); }
+  .tag-amber { background: rgba(251, 191, 36, 0.12); color: var(--accent3); }
+
+  .formula-box {
+    background: rgba(16, 185, 129, 0.04);
+    border: 1px solid rgba(16, 185, 129, 0.12);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
+
+<canvas id="particles"></canvas>
+
+<section class="hero">
+  <div class="hero-badge">Lesson 3</div>
+  <h1>Business-Government<br>Relations &amp; Consumer<br>Protection</h1>
+  <p>Government influence on businesses, fiscal &amp; monetary policy, and the framework of consumer protection.</p>
+  <div class="hero-scroll">&#x2193;</div>
+</section>
+
+<div class="container">
+
+  <!-- Government Influence on Businesses -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F3DB;&#xFE0F;</div>
+    <h2>Government Influence on Businesses <span class="underline"></span></h2>
+    <p>The government influences businesses through <span class="highlight">three levels</span> of administration:</p>
+
+    <div class="three-col">
+      <div class="col1">
+        <div class="header">&#x1F3DB;&#xFE0F; Central Government</div>
+        <ul>
+          <li>National-level decision making</li>
+          <li>Legislation &amp; parliament</li>
+          <li>Monetary &amp; fiscal policy</li>
+          <li>National infrastructure</li>
+        </ul>
+      </div>
+      <div class="col2">
+        <div class="header">&#x1F3E2; Provincial Councils</div>
+        <ul>
+          <li>Provincial-level administration</li>
+          <li>Regional development</li>
+          <li>Provincial roads &amp; services</li>
+          <li>Business names charter</li>
+        </ul>
+      </div>
+      <div class="col3">
+        <div class="header">&#x1F3E0; Local Authorities</div>
+        <ul>
+          <li>Urban / Town / Municipal councils</li>
+          <li>Local waste removal</li>
+          <li>Building local markets</li>
+          <li>Environmental policies</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ways Government Interferes -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x2694;&#xFE0F;</div>
+    <h2>Ways Government Interferes in Business <span class="underline"></span></h2>
+
+    <h3>1. &#x1F3D7;&#xFE0F; Providing Infrastructure</h3>
+    <div class="three-col">
+      <div class="col1"><div class="header">Central</div><ul><li>Electricity generation &amp; distribution</li></ul></div>
+      <div class="col2"><div class="header">Provincial</div><ul><li>Road construction &amp; maintenance</li></ul></div>
+      <div class="col3"><div class="header">Local</div><ul><li>Waste removal &amp; sanitation</li></ul></div>
+    </div>
+
+    <h3>2. &#x1F91B; Being a Competitor</h3>
+    <div class="three-col">
+      <div class="col1"><div class="header">Central</div><ul><li>Government TV channels</li></ul></div>
+      <div class="col2"><div class="header">Provincial</div><ul><li>Conducting businesses directly</li></ul></div>
+      <div class="col3"><div class="header">Local</div><ul><li>Building public markets</li></ul></div>
+    </div>
+
+    <h3>3. &#x1F465; Being a Customer</h3>
+    <div class="three-col">
+      <div class="col1"><div class="header">Central</div><ul><li>Buying paddy, Lak Sathosa</li></ul></div>
+      <div class="col2"><div class="header">Provincial</div><ul><li>Defence services procurement</li></ul></div>
+      <div class="col3"><div class="header">Local</div><ul><li>Maintaining cemeteries</li></ul></div>
+    </div>
+
+    <h3>4. &#x1F4C4; Forming Policies</h3>
+    <div class="three-col">
+      <div class="col1"><div class="header">Central</div><ul><li>Monetary &amp; fiscal policy</li></ul></div>
+      <div class="col2"><div class="header">Provincial</div><ul><li>Business names charter</li></ul></div>
+      <div class="col3"><div class="header">Local</div><ul><li>Environmental policies</li></ul></div>
+    </div>
+  </div>
+
+  <!-- Economic Goals of Government -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F3AF;</div>
+    <h2>Economic Goals of Government <span class="underline"></span></h2>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F4C8;</div><div class="label">Economic Growth &amp; Development</div><div class="desc">Continuous production growth + long-term human/social progress</div></div>
+      <div class="info-card"><div class="emoji">&#x1F91D;</div><div class="label">Full Employment</div><div class="desc">All willing labour and resources occupied effectively</div></div>
+      <div class="info-card"><div class="emoji">&#x2696;&#xFE0F;</div><div class="label">Fair Income Distribution</div><div class="desc">Equal distribution of total production among citizens</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4CA;</div><div class="label">Economic Stability</div><div class="desc">Enduring crises nationally &amp; internationally</div></div>
+      <div class="info-card"><div class="emoji">&#x1F310;</div><div class="label">Favourable International Trade</div><div class="desc">Protecting balance of payments</div></div>
+    </div>
+
+    <h3>Two Dimensions of Economic Stability</h3>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F4B5; Internal Price Stability</div>
+        <ul>
+          <li>Inflation control</li>
+          <li>Stable price level</li>
+          <li>Stable interest rate</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F30D; External Price Stability</div>
+        <ul>
+          <li>Foreign exchange rate stability</li>
+          <li>Balance of payments protection</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Businesses Contribution -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4AA;</div>
+    <h2>How Businesses Contribute to Government Economic Goals <span class="underline"></span></h2>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F4B3;</div><div class="label">Payment of Taxes</div><div class="desc">Without evasion — funds government operations</div></div>
+      <div class="info-card"><div class="emoji">&#x1F33F;</div><div class="label">Use of Indigenous Resources</div><div class="desc">Promotes local industry &amp; self-reliance</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4C4;</div><div class="label">Following Govt Policies</div><div class="desc">Adhering to fiscal &amp; monetary policy</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4DC;</div><div class="label">Following Rules &amp; Regulations</div><div class="desc">Compliance with legal frameworks</div></div>
+      <div class="info-card"><div class="emoji">&#x1F465;</div><div class="label">Contribution to Employment</div><div class="desc">Job creation across sectors</div></div>
+      <div class="info-card"><div class="emoji">&#x1F33F;</div><div class="label">Minimizing Environmental Damage</div><div class="desc">Sustainable business practices</div></div>
+    </div>
+  </div>
+
+  <!-- Fiscal Policy -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4B0;</div>
+    <h2>Fiscal Policy <span class="underline"></span></h2>
+    <p>Functions related to <span class="highlight">government revenue and expenditure</span>.</p>
+
+    <h3>Government Revenue</h3>
+    <div class="formula-box">
+      Govt Revenue = Tax Revenue + Non-tax Revenue
+    </div>
+
+    <h3>Types of Taxes</h3>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F4B5;</div><div class="label">Income Tax</div><div class="desc">Corporation tax, PAYE tax on earnings</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4B2;</div><div class="label">Value Added Tax (VAT)</div><div class="desc">On wholesale/retail transactions &amp; exports</div></div>
+      <div class="info-card"><div class="emoji">&#x1F37A;</div><div class="label">Excise Duties</div><div class="desc">On liquor, tobacco, &amp; similar goods</div></div>
+      <div class="info-card"><div class="emoji">&#x1F69A;</div><div class="label">Customs Duties</div><div class="desc">On imported goods</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4CA;</div><div class="label">Other Taxes</div><div class="desc">Development tax, Cess, Telecom tax</div></div>
+    </div>
+
+    <h3>Direct vs Indirect Tax</h3>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F4B0; Direct Tax</div>
+        <ul>
+          <li>Paid by the liable party directly</li>
+          <li>Cannot be transferred to another</li>
+          <li>Ex: Income tax, Corporation tax</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F504; Indirect Tax</div>
+        <ul>
+          <li>Can be transferred to another party</li>
+          <li>Passed on through prices</li>
+          <li>Ex: VAT, Excise duties, Customs duties</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Government Expenditure</h3>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F504; Recurrent Expenditure</div>
+        <ul>
+          <li>Salaries &amp; wages</li>
+          <li>Interest payments</li>
+          <li>Ongoing operational costs</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F3D7;&#xFE0F; Capital Expenditure</div>
+        <ul>
+          <li>Roads &amp; bridges</li>
+          <li>Infrastructure projects</li>
+          <li>Long-term asset creation</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Impact of Fiscal Policy on Businesses</h3>
+    <ul>
+      <li><span class="highlight">Customs duties</span> protect local industries from foreign competition</li>
+      <li><span class="highlight">Taxes on inland products</span> raise prices of goods</li>
+      <li><span class="highlight">Government spending</span> on infrastructure simplifies business operations</li>
+    </ul>
+  </div>
+
+  <!-- Monetary Policy -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F3E6;</div>
+    <h2>Monetary Policy <span class="underline"></span></h2>
+    <p>Policy to control <span class="highlight">money supply</span> in the economy. Executed by the <span class="highlight">Central Bank of Sri Lanka</span>.</p>
+    <p><strong>Main aim:</strong> <span class="tag tag-amber">Price Stability</span> <span class="tag tag-amber">Inflation Control</span></p>
+
+    <h3>Key Instruments of Monetary Policy</h3>
+
+    <h4>1. &#x1F4B5; Interest Rate (Standing Facility Rates)</h4>
+    <div class="three-col">
+      <div class="col1">
+        <div class="header">SDFR</div>
+        <ul><li>Standing Deposit Facility Rate</li><li>Paid when banks invest surplus in govt securities</li></ul>
+      </div>
+      <div class="col2">
+        <div class="header">SLFR</div>
+        <ul><li>Standing Lending Facility Rate</li><li>Charged when banks borrow pledging securities</li></ul>
+      </div>
+      <div class="col3">
+        <div class="header">Bank Interest Rate</div>
+        <ul><li>Final loan provider rate to customers</li></ul>
+      </div>
+    </div>
+
+    <h4>2. &#x1F4CB; Statutory Reserve Requirements (SRR)</h4>
+    <p>Deposits banks must maintain at the central bank.</p>
+    <ul>
+      <li><span class="highlight-green">&darr; SRR</span> &rarr; <span class="tag tag-light">&uarr; Money Supply</span></li>
+      <li><span class="highlight-amber">&uarr; SRR</span> &rarr; <span class="tag tag-amber">&darr; Money Supply</span></li>
+    </ul>
+
+    <h4>3. &#x1F4B1; Open Market Operations (OMO)</h4>
+    <p>Buying and selling government securities.</p>
+    <ul>
+      <li>Central bank <span class="highlight">buys securities</span> &rarr; <span class="tag tag-light">&uarr; Money Supply</span></li>
+      <li>Central bank <span class="highlight-amber">sells securities</span> &rarr; <span class="tag tag-amber">&darr; Money Supply</span></li>
+    </ul>
+
+    <h4>4. &#x1F504; Changing Discount Rate</h4>
+    <p>Controlling money supply through discount rate changes.</p>
+
+    <h4>5. &#x1F3AF; Imposing Credit Limits</h4>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F4CA; Quantitative</div>
+        <ul>
+          <li>Controlling total credit volume</li>
+          <li>Asset/capital ratios</li>
+          <li>Minimum deposits for LCs</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F3AF; Qualitative</div>
+        <ul>
+          <li>Controlling loan direction</li>
+          <li>Motivating priority sectors</li>
+          <li>Limiting consumption loans</li>
+        </ul>
+      </div>
+    </div>
+
+    <h4>6. &#x1F4C5; Managing Inactive Loans</h4>
+    <p>Direct strategy to control existing loan portfolios.</p>
+
+    <h3>Impact of Monetary Policy on Businesses</h3>
+    <div class="formula-box" style="font-size: 0.85rem;">
+      &darr; Interest Rate &rarr; &darr; Commercial Bank Rates &rarr; &uarr; Loans &rarr; &uarr; Investment &rarr; &uarr; Production &rarr; &darr; Prices &rarr; &uarr; Sales &rarr; &uarr; Profit
+    </div>
+  </div>
+
+  <!-- Fiscal vs Monetary Comparison -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x2696;&#xFE0F;</div>
+    <h2>Fiscal Policy vs Monetary Policy <span class="underline"></span></h2>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F4B0; Fiscal Policy</div>
+        <ul>
+          <li>Government revenue &amp; expenditure</li>
+          <li>Managed by the government (Treasury)</li>
+          <li>Uses taxation &amp; spending</li>
+          <li>Impacts budget deficits/surpluses</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F3E6; Monetary Policy</div>
+        <ul>
+          <li>Control of money supply</li>
+          <li>Managed by Central Bank</li>
+          <li>Uses interest rates, SRR, OMO</li>
+          <li>Impacts inflation &amp; credit availability</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Consumer Protection Intro -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F6E1;&#xFE0F;</div>
+    <h2>Consumer Protection <span class="underline"></span></h2>
+    <p>Legal cover ensuring <span class="highlight">customer satisfaction</span> for the money paid.</p>
+
+    <h3>Reasons for Consumer Protection</h3>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F4E6;</div><div class="label">Abundance of Goods</div><div class="desc">Many choices create confusion</div></div>
+      <div class="info-card"><div class="emoji">&#x1F91D;</div><div class="label">Increased Competition</div><div class="desc">Need to ensure fair practices</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3DB;&#xFE0F;</div><div class="label">Complex Market</div><div class="desc">Hard to navigate without protection</div></div>
+      <div class="info-card"><div class="emoji">&#x1F310;</div><div class="label">Globalization</div><div class="desc">Cross-border transactions</div></div>
+      <div class="info-card"><div class="emoji">&#x1F33F;</div><div class="label">Environmental Awareness</div><div class="desc">Demand for sustainable goods</div></div>
+    </div>
+  </div>
+
+  <!-- Benefits of Consumer Protection -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F44D;</div>
+    <h2>Benefits of Consumer Protection <span class="underline"></span></h2>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F9CD; For Consumers</div>
+        <ul>
+          <li>Value for money</li>
+          <li>Protection from malpractices</li>
+          <li>Health &amp; safety assurance</li>
+          <li>Legal cover</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F3ED; For Businesses</div>
+        <ul>
+          <li>Consumer trust &amp; loyalty</li>
+          <li>Increased profit</li>
+          <li>Reduced waste</li>
+          <li>Favourable business environment</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Consumer Rights -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4DC;</div>
+    <h2>Consumer Rights <span class="underline"></span></h2>
+    <p>Established by <span class="highlight">John F. Kennedy</span> and expanded by <span class="highlight">Consumer International</span>:</p>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x2139;&#xFE0F;</div><div class="label">Right to be Informed</div><div class="desc">Know product details before purchase</div></div>
+      <div class="info-card"><div class="emoji">&#x2705;</div><div class="label">Right to Choose</div><div class="desc">Access to variety of goods</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3E2;</div><div class="label">Right to be Heard</div><div class="desc">Voice complaints &amp; concerns</div></div>
+      <div class="info-card"><div class="emoji">&#x1F6E1;&#xFE0F;</div><div class="label">Right to Safety</div><div class="desc">Protection from hazardous goods</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3E0;</div><div class="label">Right to Satisfaction of Basic Needs</div><div class="desc">Access to essentials</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4DA;</div><div class="label">Right to Consumer Education</div><div class="desc">Knowledge about rights</div></div>
+      <div class="info-card"><div class="emoji">&#x1F33F;</div><div class="label">Right to a Healthy Environment</div><div class="desc">Live in a sustainable world</div></div>
+      <div class="info-card"><div class="emoji">&#x1F504;</div><div class="label">Right to Redress</div><div class="desc">Compensation for wrongs</div></div>
+    </div>
+  </div>
+
+  <!-- Consumer Responsibilities -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F9D1;&#x200D;&#x1F4BC;</div>
+    <h2>Consumer Responsibilities <span class="underline"></span></h2>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F4AD;</div><div class="label">Critical Awareness</div><div class="desc">Question product claims &amp; quality</div></div>
+      <div class="info-card"><div class="emoji">&#x1F465;</div><div class="label">Active Participation</div><div class="desc">Engage in consumer groups</div></div>
+      <div class="info-card"><div class="emoji">&#x1F91D;</div><div class="label">Social Concern</div><div class="desc">Consider impact on others</div></div>
+      <div class="info-card"><div class="emoji">&#x1F33F;</div><div class="label">Environmental Awareness</div><div class="desc">Choose eco-friendly products</div></div>
+      <div class="info-card"><div class="emoji">&#x1F91C;&#x1F91B;</div><div class="label">Cooperation</div><div class="desc">Work with enforcement agencies</div></div>
+    </div>
+  </div>
+
+  <!-- Rights vs Responsibilities -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x2696;&#xFE0F;</div>
+    <h2>Consumer Rights vs Responsibilities <span class="underline"></span></h2>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F4DC; Rights</div>
+        <ul>
+          <li>Right to be informed</li>
+          <li>Right to choose</li>
+          <li>Right to be heard</li>
+          <li>Right to safety</li>
+          <li>Right to basic needs</li>
+          <li>Right to consumer education</li>
+          <li>Right to healthy environment</li>
+          <li>Right to redress</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F9D1;&#x200D;&#x1F4BC; Responsibilities</div>
+        <ul>
+          <li>Critical awareness</li>
+          <li>Active participation</li>
+          <li>Social concern</li>
+          <li>Environmental awareness</li>
+          <li>Cooperation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Consumer Affairs Authority -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F3DB;&#xFE0F;</div>
+    <h2>Consumer Affairs Authority <span class="underline"></span></h2>
+
+    <h3>Goals</h3>
+    <ul>
+      <li>Protect consumers from hazardous goods</li>
+      <li>Prevent unfair trade practices</li>
+      <li>Ensure access to goods at competitive prices</li>
+      <li>Enable consumers to seek redress</li>
+    </ul>
+
+    <h3>Functions</h3>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F4DC;</div><div class="label">Control Restrictive Trade</div><div class="desc">Prevent anti-competitive agreements</div></div>
+      <div class="info-card"><div class="emoji">&#x26A0;&#xFE0F;</div><div class="label">Eliminate Abuse of Dominance</div><div class="desc">Stop monopolistic practices</div></div>
+      <div class="info-card"><div class="emoji">&#x1F91D;</div><div class="label">Maintain Competition</div><div class="desc">Ensure level playing field</div></div>
+      <div class="info-card"><div class="emoji">&#x1F50D;</div><div class="label">Investigate Practices</div><div class="desc">Probe anti-competitive behaviour</div></div>
+    </div>
+
+    <h3>Importance</h3>
+    <ul>
+      <li><span class="highlight">Standards compliance</span> — ensures product quality</li>
+      <li><span class="highlight-green">Consumer trust</span> — builds confidence in marketplace</li>
+      <li><span class="highlight-amber">Business image</span> — fair competition improves reputation</li>
+      <li><span class="tag tag-light">Minimized legal issues</span> — resolves disputes</li>
+      <li><span class="tag tag-green">Fair competition</span> — protects all market participants</li>
+    </ul>
+  </div>
+
+  <!-- Sri Lanka Standards Institution -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F3F7;&#xFE0F;</div>
+    <h2>Sri Lanka Standards Institution <span class="underline"></span></h2>
+
+    <h3>Aims</h3>
+    <ul>
+      <li>Prepare national standards</li>
+      <li>Promote standardization &amp; quality control</li>
+      <li>Examine compliance with standards</li>
+      <li>Conduct research</li>
+      <li>Issue certification marks</li>
+      <li>Cooperate internationally</li>
+    </ul>
+
+    <h3>Functions</h3>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F4CB;</div><div class="label">Formulate Standards</div><div class="desc">Develop &amp; implement national standards</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3F7;&#xFE0F;</div><div class="label">SLS Certification</div><div class="desc">Award SLS mark to compliant products</div></div>
+      <div class="info-card"><div class="emoji">&#x1F310;</div><div class="label">ISO Standards</div><div class="desc">Adopt international standards</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4DA;</div><div class="label">Training &amp; Education</div><div class="desc">Consumer education programs</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3E2;</div><div class="label">Library Services</div><div class="desc">Standards documentation access</div></div>
+    </div>
+
+    <h3>Importance for Businesses</h3>
+    <ul>
+      <li><span class="highlight">Face competition</span> with SLS mark advantage</li>
+      <li><span class="highlight-green">Minimize complaints</span> through quality assurance</li>
+      <li><span class="highlight-amber">Expand market share</span> with trusted products</li>
+      <li><span class="tag tag-light">ISO certification</span> enables international trade</li>
+      <li><span class="tag tag-green">Productivity</span> &amp; employee morale improvements</li>
+    </ul>
+  </div>
+
+  <!-- Flashcards -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F9E0;</div>
+    <h2>Key Terms <span class="underline"></span></h2>
+    <div class="flashcard-container">
+      <div class="flashcard" onclick="flipCard(this)">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">Fiscal Policy<div class="flashcard-hint">Tap to reveal</div></div>
+          <div class="flashcard-back">Government revenue &amp; expenditure management — taxation, spending, budgets</div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="flipCard(this)">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">Monetary Policy<div class="flashcard-hint">Tap to reveal</div></div>
+          <div class="flashcard-back">Control of money supply by Central Bank — interest rates, SRR, OMO</div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="flipCard(this)">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">Direct Tax<div class="flashcard-hint">Tap to reveal</div></div>
+          <div class="flashcard-back">Paid by liable party directly; cannot be transferred. Ex: Income tax</div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="flipCard(this)">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">Indirect Tax<div class="flashcard-hint">Tap to reveal</div></div>
+          <div class="flashcard-back">Can be transferred to another. Ex: VAT, Excise duties, Customs duties</div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="flipCard(this)">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">SRR<div class="flashcard-hint">Tap to reveal</div></div>
+          <div class="flashcard-back">Statutory Reserve Requirement — deposits banks must maintain at Central Bank</div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="flipCard(this)">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">OMO<div class="flashcard-hint">Tap to reveal</div></div>
+          <div class="flashcard-back">Open Market Operations — buying/selling govt securities to control money supply</div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="flipCard(this)">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">SDFR<div class="flashcard-hint">Tap to reveal</div></div>
+          <div class="flashcard-back">Standing Deposit Facility Rate — paid when banks invest surplus in govt securities</div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="flipCard(this)">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">SLFR<div class="flashcard-hint">Tap to reveal</div></div>
+          <div class="flashcard-back">Standing Lending Facility Rate — charged when banks borrow pledging securities</div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="flipCard(this)">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">VAT<div class="flashcard-hint">Tap to reveal</div></div>
+          <div class="flashcard-back">Value Added Tax — applied on wholesale/retail transactions and exports</div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="flipCard(this)">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">Consumer Affairs Authority<div class="flashcard-hint">Tap to reveal</div></div>
+          <div class="flashcard-back">Govt body protecting consumers from hazardous goods, unfair trade, promoting competition</div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="flipCard(this)">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">SLS Institution<div class="flashcard-hint">Tap to reveal</div></div>
+          <div class="flashcard-back">Sri Lanka Standards Institution — prepares standards, SLS certification, quality control</div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="flipCard(this)">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">Economic Stability<div class="flashcard-hint">Tap to reveal</div></div>
+          <div class="flashcard-back">Internal (inflation, price level, interest rate) + External (forex rate stability)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quiz -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F9F0;</div>
+    <h2>Test Your Knowledge <span class="underline"></span></h2>
+
+    <div class="quiz-question" data-q="1">
+      <div class="q">1. Which level of government is responsible for monetary and fiscal policy?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Local Authorities</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Provincial Councils</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Central Government</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Municipal Councils</button>
+      <div class="quiz-feedback" data-feedback="1"></div>
+    </div>
+
+    <div class="quiz-question" data-q="2">
+      <div class="q">2. Which of the following is an example of an indirect tax?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Corporation Tax</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Value Added Tax (VAT)</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">PAYE Tax</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Income Tax</button>
+      <div class="quiz-feedback" data-feedback="2"></div>
+    </div>
+
+    <div class="quiz-question" data-q="3">
+      <div class="q">3. What happens when the Central Bank lowers the Statutory Reserve Requirement (SRR)?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Money supply decreases</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Money supply increases</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Interest rates rise</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Inflation is guaranteed</button>
+      <div class="quiz-feedback" data-feedback="3"></div>
+    </div>
+
+    <div class="quiz-question" data-q="4">
+      <div class="q">4. Which consumer right was established by John F. Kennedy?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Right to consumer education</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Right to a healthy environment</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Right to be informed</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Right to redress</button>
+      <div class="quiz-feedback" data-feedback="4"></div>
+    </div>
+
+    <div class="quiz-question" data-q="5">
+      <div class="q">5. Fiscal policy relates to:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Control of money supply</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Government revenue &amp; expenditure</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Interest rate regulation</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Foreign exchange management</button>
+      <div class="quiz-feedback" data-feedback="5"></div>
+    </div>
+
+    <div class="quiz-question" data-q="6">
+      <div class="q">6. Which institution issues the SLS certification mark in Sri Lanka?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Consumer Affairs Authority</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Sri Lanka Standards Institution</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Central Bank of Sri Lanka</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Ministry of Finance</button>
+      <div class="quiz-feedback" data-feedback="6"></div>
+    </div>
+
+    <div class="quiz-question" data-q="7">
+      <div class="q">7. When the Central Bank buys government securities through OMO, what happens to money supply?</div>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">It increases</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">It decreases</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">It stays the same</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">It depends on the discount rate</button>
+      <div class="quiz-feedback" data-feedback="7"></div>
+    </div>
+
+    <div class="quiz-question" data-q="8">
+      <div class="q">8. Which is NOT a goal of the Consumer Affairs Authority?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Protect from hazardous goods</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Eliminate abuse of dominant position</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Issue SLS certification marks</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Maintain competition</button>
+      <div class="quiz-feedback" data-feedback="8"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Particles
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  class Particle {
+    constructor() { this.reset(); }
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 2.5 + 0.5;
+      this.speedX = (Math.random() - 0.5) * 0.4;
+      this.speedY = (Math.random() - 0.5) * 0.4;
+      this.opacity = Math.random() * 0.4 + 0.08;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(16, 185, 129, ${this.opacity})`;
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+  function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
+
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 150) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(16, 185, 129, ${0.05 * (1 - dist / 150)})`;
+          ctx.lineWidth = 0.5;
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(animateParticles);
+  }
+  animateParticles();
+
+  // Scroll reveal
+  const sections = document.querySelectorAll('[data-section]');
+
+  function revealSections() {
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 80) {
+        section.classList.add('visible');
+      }
+    });
+  }
+  window.addEventListener('scroll', revealSections);
+  revealSections();
+
+  // Progress bar
+  const progressBar = document.getElementById('progressBar');
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    progressBar.style.width = (scrollTop / docHeight) * 100 + '%';
+  });
+
+  // Flashcards
+  function flipCard(card) {
+    card.classList.toggle('flipped');
+  }
+
+  // Quiz
+  function checkAnswer(btn, isCorrect) {
+    const question = btn.closest('.quiz-question');
+    const options = question.querySelectorAll('.quiz-option');
+    const feedback = question.querySelector('.quiz-feedback');
+
+    options.forEach(opt => {
+      opt.disabled = true;
+      opt.style.cursor = 'not-allowed';
+      if (opt.dataset.correct === 'true') opt.classList.add('correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.textContent = '✅ Correct!';
+      feedback.className = 'quiz-feedback show correct';
+    } else {
+      btn.classList.add('wrong');
+      const correctBtn = question.querySelector('[data-correct="true"]');
+      feedback.textContent = '❌ Incorrect. The answer was: ' + correctBtn.textContent;
+      feedback.className = 'quiz-feedback show wrong';
+    }
+  }
+</script>
+
+</body>
+</html>

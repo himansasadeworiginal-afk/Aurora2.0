@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Economics Lesson 5 - National Accounting</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --primary: #2d3436;
+    --accent: #0984e3;
+    --accent2: #00b894;
+    --accent3: #fdcb6e;
+    --bg: #0a0a0f;
+    --card: #14141f;
+    --text: #e0e0e0;
+    --text-muted: #888;
+    --gradient: linear-gradient(135deg, #0984e3, #00b894, #fdcb6e);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+
+  #particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background: rgba(9, 132, 227, 0.15);
+    border: 1px solid rgba(9, 132, 227, 0.3);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    animation: fadeInDown 1s ease;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    font-weight: 800;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    animation: fadeInUp 1s ease 0.2s both;
+  }
+
+  .hero p {
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: var(--text-muted);
+    max-width: 600px;
+    animation: fadeInUp 1s ease 0.4s both;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: bounce 2s infinite;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem;
+  }
+
+  .section {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .section.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .section:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 60px rgba(9, 132, 227, 0.08);
+  }
+
+  .section-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .section h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section h2 .underline {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+
+  .section h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1.5rem 0 0.8rem;
+  }
+
+  .section h4 {
+    color: var(--accent2);
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 1rem 0 0.5rem;
+  }
+
+  .section ul, .section ol {
+    padding-left: 1.5rem;
+  }
+
+  .section li {
+    margin-bottom: 0.4rem;
+    color: var(--text);
+  }
+
+  .section p {
+    margin-bottom: 0.8rem;
+    color: var(--text);
+  }
+
+  .highlight {
+    display: inline-block;
+    padding: 0.1rem 0.5rem;
+    background: rgba(9, 132, 227, 0.15);
+    border-radius: 4px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .highlight-green {
+    background: rgba(0, 184, 148, 0.15);
+    color: var(--accent2);
+  }
+
+  .highlight-yellow {
+    background: rgba(253, 203, 110, 0.15);
+    color: var(--accent3);
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .info-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: default;
+  }
+
+  .info-card:hover {
+    background: rgba(9,132,227,0.08);
+    border-color: rgba(9,132,227,0.2);
+    transform: translateY(-5px);
+  }
+
+  .info-card .emoji {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .info-card .label {
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.3rem;
+  }
+
+  .info-card .desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin: 1rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .comparison.three-col {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .comparison > div {
+    padding: 1.2rem;
+  }
+
+  .comparison .left {
+    background: rgba(9,132,227,0.08);
+    border-right: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .comparison .right {
+    background: rgba(0,184,148,0.08);
+  }
+
+  .comparison .mid {
+    background: rgba(253,203,110,0.08);
+  }
+
+  .comparison .header {
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-align: center;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .comparison .left .header { color: var(--accent); }
+  .comparison .right .header { color: var(--accent2); }
+  .comparison .mid .header { color: var(--accent3); }
+
+  .comparison ul { list-style: none; padding: 0; }
+  .comparison li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.9rem;
+  }
+  .comparison li:last-child { border-bottom: none; }
+
+  .flashcard-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .flashcard {
+    perspective: 1000px;
+    height: 180px;
+    cursor: pointer;
+  }
+
+  .flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+  }
+
+  .flashcard.flipped .flashcard-inner {
+    transform: rotateY(180deg);
+  }
+
+  .flashcard-front, .flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+
+  .flashcard-front {
+    background: rgba(9,132,227,0.1);
+    border: 1px solid rgba(9,132,227,0.2);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .flashcard-back {
+    background: rgba(0,184,148,0.15);
+    border: 1px solid rgba(0,184,148,0.2);
+    color: var(--accent2);
+    transform: rotateY(180deg);
+  }
+
+  .flashcard-hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin: 1rem 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2));
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2.35rem;
+    top: 0.5rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+
+  .timeline-item .title {
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .timeline-item .desc {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  .quiz-question {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin: 1rem 0;
+  }
+
+  .quiz-question .q {
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    color: #fff;
+  }
+
+  .quiz-option {
+    display: block;
+    width: 100%;
+    padding: 0.7rem 1rem;
+    margin-bottom: 0.5rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    font-size: 0.9rem;
+    font-family: inherit;
+  }
+
+  .quiz-option:hover {
+    background: rgba(9,132,227,0.1);
+    border-color: var(--accent);
+  }
+
+  .quiz-option.correct {
+    background: rgba(0,184,148,0.2);
+    border-color: var(--accent2);
+    color: var(--accent2);
+  }
+
+  .quiz-option.wrong {
+    background: rgba(214,48,49,0.2);
+    border-color: #d63031;
+    color: #d63031;
+  }
+
+  .quiz-feedback {
+    margin-top: 0.8rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .quiz-feedback.show {
+    display: block;
+  }
+
+  .quiz-feedback.correct {
+    background: rgba(0,184,148,0.1);
+    border: 1px solid rgba(0,184,148,0.2);
+    color: var(--accent2);
+  }
+
+  .quiz-feedback.wrong {
+    background: rgba(214,48,49,0.1);
+    border: 1px solid rgba(214,48,49,0.2);
+    color: #d63031;
+  }
+
+  .progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    z-index: 100;
+    background: transparent;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: var(--gradient);
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+    40% { transform: translateX(-50%) translateY(-10px); }
+    60% { transform: translateX(-50%) translateY(-5px); }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @media (max-width: 600px) {
+    .comparison { grid-template-columns: 1fr; }
+    .comparison.three-col { grid-template-columns: 1fr; }
+    .comparison .left { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .section { padding: 1.2rem; }
+    .flashcard-container { grid-template-columns: 1fr; }
+    .calc-grid { grid-template-columns: 1fr; }
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 0.3rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .tag-blue { background: rgba(9,132,227,0.15); color: var(--accent); }
+  .tag-green { background: rgba(0,184,148,0.15); color: var(--accent2); }
+  .tag-yellow { background: rgba(253,203,110,0.15); color: var(--accent3); }
+  .tag-red { background: rgba(214,48,49,0.15); color: #d63031; }
+
+  .formula-box {
+    background: rgba(9,132,227,0.06);
+    border: 1px solid rgba(9,132,227,0.15);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+  }
+
+  .formula-box .label {
+    font-size: 0.75rem;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-muted);
+    font-weight: 400;
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+
+  /* GDP Calculator */
+  .calc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .calc-panel {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.2rem;
+  }
+
+  .calc-panel h4 {
+    color: var(--accent);
+    margin: 0 0 0.8rem;
+    font-size: 1rem;
+  }
+
+  .calc-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    gap: 0.5rem;
+  }
+
+  .calc-row label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    flex: 1;
+  }
+
+  .calc-row input {
+    width: 100px;
+    padding: 0.4rem 0.6rem;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    color: var(--text);
+    font-size: 0.85rem;
+    font-family: inherit;
+    text-align: right;
+  }
+
+  .calc-row input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .calc-row .val {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--accent2);
+    min-width: 80px;
+    text-align: right;
+  }
+
+  .calc-total {
+    margin-top: 0.8rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 700;
+    color: #fff;
+    font-size: 1.1rem;
+  }
+
+  .calc-total .val {
+    color: var(--accent3);
+  }
+
+  .calc-btn {
+    display: inline-block;
+    padding: 0.5rem 1.2rem;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    margin-top: 0.5rem;
+  }
+
+  .calc-btn:hover {
+    background: #0773c5;
+  }
+
+  .calc-btn.secondary {
+    background: rgba(255,255,255,0.08);
+    margin-left: 0.5rem;
+  }
+
+  .calc-btn.secondary:hover {
+    background: rgba(255,255,255,0.12);
+  }
+
+  .diagram-box {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    text-align: center;
+    overflow-x: auto;
+  }
+
+  .diagram-box pre {
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: var(--accent2);
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-container">
+  <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<canvas id="particles"></canvas>
+
+<section class="hero">
+  <div class="hero-badge">Lesson 5</div>
+  <h1>National<br>Accounting</h1>
+  <p>Measuring the economic performance of a nation through GDP, GNP, and national income aggregates.</p>
+  <div class="hero-scroll">&#x2193;</div>
+</section>
+
+<div class="container">
+
+  <!-- 1. Production Boundary -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F3F4;</div>
+    <h2>Production Boundary <span class="underline"></span></h2>
+    <p>The production boundary defines which economic activities are included in national income measurement.</p>
+
+    <h3>&#x2705; Included in National Income</h3>
+    <ul>
+      <li>Market goods and services</li>
+      <li>Goods produced for own final consumption</li>
+      <li>Owner-occupied housing (imputed rent)</li>
+      <li>Paid domestic staff services</li>
+      <li>Agricultural crops grown for own consumption</li>
+    </ul>
+
+    <h3>&#x274C; Excluded from National Income</h3>
+    <ul>
+      <li>Unpaid household work (e.g. cooking, cleaning by family members)</li>
+      <li>Child care (unpaid)</li>
+      <li>Natural resources without human intervention (e.g. wild forests, mineral deposits not yet extracted)</li>
+      <li>Leisure activities</li>
+    </ul>
+
+    <div class="info-card" style="margin-top: 1rem;">
+      <div class="emoji">&#x1F4DD;</div>
+      <div class="label">Key Principle</div>
+      <div class="desc">Only economic activities that involve a <strong>monetary transaction</strong> or <strong>imputed value</strong> are included within the production boundary.</div>
+    </div>
+  </div>
+
+  <!-- 2. Non-Observed Economic Activities -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F50D;</div>
+    <h2>Non-Observed Economic Activities <span class="underline"></span></h2>
+    <p>Activities that are not captured in official statistics but still involve production of goods and services.</p>
+
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F575;&#xFE0F; Hidden Economy</div>
+        <ul>
+          <li>Legal economic activities</li>
+          <li>Concealed from authorities to avoid:</li>
+          <li style="padding-left: 1rem;">&bull; Tax payments</li>
+          <li style="padding-left: 1rem;">&bull; Regulatory compliance</li>
+          <li style="padding-left: 1rem;">&bull; Social security contributions</li>
+          <li>Also called the <strong>underground</strong> or <strong>shadow</strong> economy</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F6AB; Illegal Activities</div>
+        <ul>
+          <li>Activities forbidden by law</li>
+          <li>Or unauthorized production</li>
+          <li style="padding-left: 1rem;">&bull; Drug trafficking</li>
+          <li style="padding-left: 1rem;">&bull; Human trafficking</li>
+          <li style="padding-left: 1rem;">&bull; Illegal gambling</li>
+          <li style="padding-left: 1rem;">&bull; Production without license</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Three Approaches to GDP -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4CA;</div>
+    <h2>Three Approaches to GDP <span class="underline"></span></h2>
+    <p>GDP can be measured in three different ways, all of which yield the same result in equilibrium.</p>
+
+    <div class="comparison three-col">
+      <div class="left">
+        <div class="header">&#x1F3ED; Product Approach</div>
+        <ul>
+          <li>Value added in Agriculture</li>
+          <li>+ Value added in Industry</li>
+          <li>+ Value added in Services</li>
+          <li>+ Net taxes on products</li>
+          <li><strong>= GDP at market prices</strong></li>
+        </ul>
+      </div>
+      <div class="mid">
+        <div class="header">&#x1F4B5; Income Approach</div>
+        <ul>
+          <li>Compensation of employees</li>
+          <li>+ Gross operational surplus</li>
+          <li>+ Mixed income</li>
+          <li>+ Other net taxes on production</li>
+          <li><strong>= GDP at market prices</strong></li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F4B2; Expenditure Approach</div>
+        <ul>
+          <li>Consumption (C)</li>
+          <li>+ Investment (I)</li>
+          <li>+ Government spending (G)</li>
+          <li>+ Net Exports (X &minus; M)</li>
+          <li><strong>= GDP at market prices</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="formula-box">
+      <span class="label">Expenditure Approach</span>
+      GDP = C + I + G + (X &minus; M)
+    </div>
+
+    <div class="formula-box">
+      <span class="label">Product Approach</span>
+      GDP = &Sigma; Value Added + Net Taxes
+    </div>
+
+    <div class="formula-box">
+      <span class="label">Income Approach</span>
+      GDP = Employee Compensation + Operating Surplus + Mixed Income + Net Taxes
+    </div>
+  </div>
+
+  <!-- 4. Interactive GDP Calculator -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4B1;</div>
+    <h2>GDP Calculator <span class="underline"></span></h2>
+    <p>Enter values to compute GDP using all three approaches. Try it out!</p>
+
+    <div class="calc-grid">
+      <div class="calc-panel">
+        <h4>&#x1F4B2; Expenditure Approach</h4>
+        <div class="calc-row">
+          <label>Consumption (C)</label>
+          <input type="number" id="calcC" value="500" step="10" oninput="computeGDP()">
+        </div>
+        <div class="calc-row">
+          <label>Investment (I)</label>
+          <input type="number" id="calcI" value="200" step="10" oninput="computeGDP()">
+        </div>
+        <div class="calc-row">
+          <label>Government (G)</label>
+          <input type="number" id="calcG" value="150" step="10" oninput="computeGDP()">
+        </div>
+        <div class="calc-row">
+          <label>Exports (X)</label>
+          <input type="number" id="calcX" value="120" step="10" oninput="computeGDP()">
+        </div>
+        <div class="calc-row">
+          <label>Imports (M)</label>
+          <input type="number" id="calcM" value="80" step="10" oninput="computeGDP()">
+        </div>
+        <div class="calc-total">
+          <span>GDP (Expenditure)</span>
+          <span class="val" id="gdpExp">890</span>
+        </div>
+      </div>
+
+      <div class="calc-panel">
+        <h4>&#x1F3ED; Product Approach</h4>
+        <div class="calc-row">
+          <label>Agriculture VA</label>
+          <input type="number" id="calcAgri" value="150" step="10" oninput="computeGDP()">
+        </div>
+        <div class="calc-row">
+          <label>Industry VA</label>
+          <input type="number" id="calcInd" value="300" step="10" oninput="computeGDP()">
+        </div>
+        <div class="calc-row">
+          <label>Services VA</label>
+          <input type="number" id="calcServ" value="400" step="10" oninput="computeGDP()">
+        </div>
+        <div class="calc-row">
+          <label>Net Taxes</label>
+          <input type="number" id="calcTax" value="40" step="10" oninput="computeGDP()">
+        </div>
+        <div class="calc-total">
+          <span>GDP (Product)</span>
+          <span class="val" id="gdpProd">890</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="calc-panel" style="margin-top: 1rem;">
+      <h4>&#x1F4B5; Income Approach</h4>
+      <div class="calc-row">
+        <label>Compensation of Employees</label>
+        <input type="number" id="calcComp" value="400" step="10" oninput="computeGDP()">
+      </div>
+      <div class="calc-row">
+        <label>Gross Operating Surplus</label>
+        <input type="number" id="calcSurplus" value="300" step="10" oninput="computeGDP()">
+      </div>
+      <div class="calc-row">
+        <label>Mixed Income</label>
+        <input type="number" id="calcMixed" value="100" step="10" oninput="computeGDP()">
+      </div>
+      <div class="calc-row">
+        <label>Other Net Taxes</label>
+        <input type="number" id="calcNetTax" value="90" step="10" oninput="computeGDP()">
+      </div>
+      <div class="calc-total">
+        <span>GDP (Income)</span>
+        <span class="val" id="gdpInc">890</span>
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap;">
+      <button class="calc-btn" onclick="setExample1()">Load Example 1</button>
+      <button class="calc-btn" onclick="setExample2()">Load Example 2</button>
+      <button class="calc-btn secondary" onclick="resetCalculator()">Reset</button>
+    </div>
+
+    <div class="info-card" style="margin-top: 1rem;">
+      <div class="emoji">&#x2705;</div>
+      <div class="label" id="calcStatus">All three approaches match!</div>
+      <div class="desc" id="calcMatch">GDP = 890 across all three approaches</div>
+    </div>
+  </div>
+
+  <!-- 5. GDP vs GNP -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F310;</div>
+    <h2>GDP vs GNP <span class="underline"></span></h2>
+
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F3F4; GDP</div>
+        <ul>
+          <li><strong>Gross Domestic Product</strong></li>
+          <li>Total value of goods &amp; services produced <strong>within</strong> a country's borders</li>
+          <li>Includes output by foreign-owned firms operating domestically</li>
+          <li>Excludes output by domestic firms operating abroad</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F30D; GNP</div>
+        <ul>
+          <li><strong>Gross National Product</strong></li>
+          <li>Total value of goods &amp; services produced by <strong>citizens/residents</strong> of a country</li>
+          <li>Includes output by domestic firms operating abroad</li>
+          <li>Excludes output by foreign-owned firms domestically</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="formula-box">
+      <span class="label">Relationship</span>
+      GNP = GDP + Net primary income from rest of the world
+    </div>
+
+    <div class="formula-box">
+      <span class="label">Net Primary Income</span>
+      Net Primary Income = Income earned by residents abroad &minus; Income earned by non-residents domestically
+    </div>
+  </div>
+
+  <!-- 6. Gross vs Net -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x2796;</div>
+    <h2>Gross vs Net <span class="underline"></span></h2>
+
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x2795; Gross</div>
+        <ul>
+          <li>Includes depreciation (fixed capital consumption)</li>
+          <li>GDP = Gross Domestic Product</li>
+          <li>Gross Investment includes replacement capital</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x2796; Net</div>
+        <ul>
+          <li>Excludes depreciation</li>
+          <li>NDP = Net Domestic Product</li>
+          <li>NDP = GDP &minus; Fixed Capital Consumption</li>
+          <li>Net Investment = Gross Investment &minus; Depreciation</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="formula-box">
+      <span class="label">Net Domestic Product</span>
+      NDP = GDP &minus; Fixed Capital Consumption (Depreciation)
+    </div>
+  </div>
+
+  <!-- 7. Prices and National Income -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4C8;</div>
+    <h2>Price Concepts &amp; National Income <span class="underline"></span></h2>
+
+    <h3>Three Price Levels</h3>
+    <div class="card-grid">
+      <div class="info-card">
+        <div class="emoji">&#x1F522;</div>
+        <div class="label">Basic Price</div>
+        <div class="desc">Amount received by producer &minus; net taxes on products</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F4B0;</div>
+        <div class="label">Producers' Price</div>
+        <div class="desc">Basic price + net taxes on products (excluding trade/transport margins)</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F6D2;</div>
+        <div class="label">Purchasers' Price</div>
+        <div class="desc">Producers' price + trade &amp; transport margins (the final price paid)</div>
+      </div>
+    </div>
+
+    <h3>National Income Aggregates</h3>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="title">GDP = Gross Domestic Product</div>
+        <div class="desc">Total output within borders</div>
+      </div>
+      <div class="timeline-item">
+        <div class="title">GNI = GDP + Net Primary Income from ROW</div>
+        <div class="desc">Gross National Income</div>
+      </div>
+      <div class="timeline-item">
+        <div class="title">NNI = GNI &minus; Fixed Capital Consumption</div>
+        <div class="desc">Net National Income</div>
+      </div>
+    </div>
+
+    <div class="formula-box">
+      <span class="label">Gross National Income</span>
+      GNI = GDP + Net Primary Income from Rest of World
+    </div>
+
+    <div class="formula-box">
+      <span class="label">Net National Income</span>
+      NNI = GNI &minus; Fixed Capital Consumption
+    </div>
+  </div>
+
+  <!-- 8. Factor Incomes -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F9D1;&#x200D;&#x1F4BC;</div>
+    <h2>Factor Incomes <span class="underline"></span></h2>
+    <p>Factor incomes represent the earnings by factors of production in the economy.</p>
+
+    <div class="card-grid">
+      <div class="info-card">
+        <div class="emoji">&#x1F9D1;&#x200D;&#x1F3EB;</div>
+        <div class="label">Compensation of Employees</div>
+        <div class="desc">Wages, salaries, bonuses, and employer social contributions</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F3E0;</div>
+        <div class="label">Rental Income</div>
+        <div class="desc">Income from land and property (actual &amp; imputed)</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F4B5;</div>
+        <div class="label">Net Interest Income</div>
+        <div class="desc">Interest earned &minus; interest paid on capital</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F3E6;</div>
+        <div class="label">Corporate Profits</div>
+        <div class="desc">Profits after tax, dividends, retained earnings</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F9E9;</div>
+        <div class="label">Self-Employment / Mixed Income</div>
+        <div class="desc">Income of unincorporated enterprises (cannot separate labour from capital)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. Value Added Approach -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4CA;</div>
+    <h2>Final Product vs Value Added <span class="underline"></span></h2>
+    <p>The value added approach avoids double counting by summing only the additional value created at each stage of production.</p>
+
+    <div class="diagram-box">
+      <pre>
+Stage 1: Farmer grows wheat       Value Added = $100
+                     |
+Stage 2: Miller grinds flour      Value Added = $50
+                     |
+Stage 3: Baker bakes bread        Value Added = $50
+                     |
+Stage 4: Retailer sells bread     Value Added = $30
+                     |
+            Total Value Added = $230  (GDP contribution)
+      (vs. Final Price = $230 &mdash; same result!)
+      </pre>
+    </div>
+
+    <div class="info-card">
+      <div class="emoji">&#x26A0;&#xFE0F;</div>
+      <div class="label">Why Value Added?</div>
+      <div class="desc">If we summed all sales (100+150+200+230 = $680), we would overcount &mdash; double counting the value of intermediate goods. Value added avoids this.</div>
+    </div>
+  </div>
+
+  <!-- 10. Flashcards -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4A1;</div>
+    <h2>Key Terms Flashcards <span class="underline"></span></h2>
+    <p>Click each card to reveal the definition.</p>
+
+    <div class="flashcard-container">
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            GDP
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Gross Domestic Product<br>
+            <small>Total value of final goods and services produced within a country's borders in a given period</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            GNP
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Gross National Product<br>
+            <small>Total value of final goods and services produced by citizens/residents of a country</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            GNI
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Gross National Income<br>
+            <small>GDP + Net primary income from rest of the world</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            Value Added
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            The additional value created at each stage of production<br>
+            <small>Value of output &minus; value of intermediate inputs</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            Depreciation
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Fixed Capital Consumption<br>
+            <small>The wearing out / loss of value of fixed assets over time</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            Production Boundary
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            The line between economic activities included in GDP and those excluded<br>
+            <small>Includes market production, excludes unpaid household work</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            Net Exports
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Exports &minus; Imports (X &minus; M)<br>
+            <small>A component of the expenditure approach to GDP</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            Mixed Income
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Income of self-employed / unincorporated enterprises<br>
+            <small>Cannot be separated into labour and capital components</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11. Importance & Limitations -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x2696;&#xFE0F;</div>
+    <h2>Importance &amp; Limitations of National Accounting <span class="underline"></span></h2>
+
+    <h3>&#x2B50; Importance / Uses</h3>
+    <ul>
+      <li>Assess the overall performance of the economy</li>
+      <li>Measure economic growth over time (real GDP)</li>
+      <li>Compute per capita GDP for standard of living comparisons</li>
+      <li>International comparisons of economic output</li>
+      <li>Basis for government policy formulation (fiscal &amp; monetary)</li>
+      <li>Input for business investment decisions</li>
+    </ul>
+
+    <h3>&#x26A0;&#xFE0F; Limitations / Criticisms</h3>
+    <div class="card-grid">
+      <div class="info-card">
+        <div class="emoji">&#x1F9D1;&#x200D;&#x1F3ED;</div>
+        <div class="label">Unpaid Household Work</div>
+        <div class="desc">Excluded from GDP despite having economic value</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F575;&#xFE0F;</div>
+        <div class="label">Informal / Shadow Economy</div>
+        <div class="desc">Hidden and illegal activities not captured</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F3DE;&#xFE0F;</div>
+        <div class="label">Environmental Effects</div>
+        <div class="desc">GDP ignores resource depletion and pollution</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F3B6;</div>
+        <div class="label">Leisure</div>
+        <div class="desc">Reduction in leisure time is not accounted for</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 12. Interactive Quiz -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F9F0;</div>
+    <h2>Test Your Knowledge <span class="underline"></span></h2>
+
+    <div class="quiz-question" data-q="1">
+      <div class="q">1. Which of the following is included in GDP calculation?</div>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Owner-occupied housing services</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Unpaid household work</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Leisure activities</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Natural resources without human intervention</button>
+      <div class="quiz-feedback" data-feedback="1"></div>
+    </div>
+
+    <div class="quiz-question" data-q="2">
+      <div class="q">2. What does the expenditure approach to GDP measure?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Sum of all factor incomes</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Sum of value added across all sectors</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">C + I + G + (X &minus; M)</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Total exports only</button>
+      <div class="quiz-feedback" data-feedback="2"></div>
+    </div>
+
+    <div class="quiz-question" data-q="3">
+      <div class="q">3. GNP is equal to:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">GDP &minus; Depreciation</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">GDP + Net primary income from rest of the world</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">GDP &minus; Net primary income from rest of the world</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">GDP + Depreciation</button>
+      <div class="quiz-feedback" data-feedback="3"></div>
+    </div>
+
+    <div class="quiz-question" data-q="4">
+      <div class="q">4. Net National Income (NNI) equals:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">GDP &minus; Depreciation</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">GNP + Depreciation</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">GNI &minus; Fixed Capital Consumption</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">GDP + Net primary income</button>
+      <div class="quiz-feedback" data-feedback="4"></div>
+    </div>
+
+    <div class="quiz-question" data-q="5">
+      <div class="q">5. Which approach to GDP avoids double counting?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Expenditure approach</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Income approach</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Value added approach</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Final product approach alone</button>
+      <div class="quiz-feedback" data-feedback="5"></div>
+    </div>
+
+    <div class="quiz-question" data-q="6">
+      <div class="q">6. Which of the following is NOT a factor income?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Compensation of employees</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Rental income</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Corporate profits</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Net exports</button>
+      <div class="quiz-feedback" data-feedback="6"></div>
+    </div>
+
+    <div class="quiz-question" data-q="7">
+      <div class="q">7. The hidden economy refers to:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Illegal drug trafficking</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Legal activities concealed to avoid tax/regulation</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Unpaid household work</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Government services</button>
+      <div class="quiz-feedback" data-feedback="7"></div>
+    </div>
+
+    <div class="quiz-question" data-q="8">
+      <div class="q">8. Which price includes trade and transport margins?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Basic price</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Producers' price</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Purchasers' price</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Factor cost</button>
+      <div class="quiz-feedback" data-feedback="8"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  class Particle {
+    constructor() { this.reset(); }
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 2 + 0.5;
+      this.speedX = (Math.random() - 0.5) * 0.5;
+      this.speedY = (Math.random() - 0.5) * 0.5;
+      this.opacity = Math.random() * 0.5 + 0.1;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(9, 132, 227, ${this.opacity})`;
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+  function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 150) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(9, 132, 227, ${0.06 * (1 - dist / 150)})`;
+          ctx.lineWidth = 0.5;
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(animateParticles);
+  }
+  animateParticles();
+
+  const sections = document.querySelectorAll('[data-section]');
+
+  function revealSections() {
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 80) {
+        section.classList.add('visible');
+      }
+    });
+  }
+  window.addEventListener('scroll', revealSections);
+  revealSections();
+
+  const progressBar = document.getElementById('progressBar');
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    progressBar.style.width = (scrollTop / docHeight) * 100 + '%';
+  });
+
+  function checkAnswer(btn, isCorrect) {
+    const question = btn.closest('.quiz-question');
+    const options = question.querySelectorAll('.quiz-option');
+    const feedback = question.querySelector('.quiz-feedback');
+    options.forEach(opt => {
+      opt.disabled = true;
+      opt.style.cursor = 'not-allowed';
+      if (opt.dataset.correct === 'true') opt.classList.add('correct');
+    });
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.textContent = '\u2705 Correct!';
+      feedback.className = 'quiz-feedback show correct';
+    } else {
+      btn.classList.add('wrong');
+      const correctBtn = question.querySelector('[data-correct="true"]');
+      feedback.textContent = '\u274C Incorrect. The answer was: ' + correctBtn.textContent;
+      feedback.className = 'quiz-feedback show wrong';
+    }
+  }
+
+  function readVal(id) {
+    return parseFloat(document.getElementById(id).value) || 0;
+  }
+
+  function computeGDP() {
+    const C = readVal('calcC');
+    const I = readVal('calcI');
+    const G = readVal('calcG');
+    const X = readVal('calcX');
+    const M = readVal('calcM');
+    const gdpExp = C + I + G + (X - M);
+    document.getElementById('gdpExp').textContent = gdpExp.toFixed(0);
+
+    const agri = readVal('calcAgri');
+    const ind = readVal('calcInd');
+    const serv = readVal('calcServ');
+    const tax = readVal('calcTax');
+    const gdpProd = agri + ind + serv + tax;
+    document.getElementById('gdpProd').textContent = gdpProd.toFixed(0);
+
+    const comp = readVal('calcComp');
+    const surplus = readVal('calcSurplus');
+    const mixed = readVal('calcMixed');
+    const netTax = readVal('calcNetTax');
+    const gdpInc = comp + surplus + mixed + netTax;
+    document.getElementById('gdpInc').textContent = gdpInc.toFixed(0);
+
+    const status = document.getElementById('calcStatus');
+    const match = document.getElementById('calcMatch');
+    if (Math.abs(gdpExp - gdpProd) < 0.01 && Math.abs(gdpExp - gdpInc) < 0.01) {
+      status.textContent = '\u2705 All three approaches match!';
+      status.style.color = 'var(--accent2)';
+      match.textContent = 'GDP = ' + gdpExp.toFixed(0) + ' across all three approaches';
+    } else {
+      status.textContent = '\u26A0\uFE0F Values differ between approaches';
+      status.style.color = 'var(--accent3)';
+      match.textContent = 'Expenditure: ' + gdpExp.toFixed(0) + ' | Product: ' + gdpProd.toFixed(0) + ' | Income: ' + gdpInc.toFixed(0);
+    }
+  }
+
+  function setExample1() {
+    document.getElementById('calcC').value = 500;
+    document.getElementById('calcI').value = 200;
+    document.getElementById('calcG').value = 150;
+    document.getElementById('calcX').value = 120;
+    document.getElementById('calcM').value = 80;
+    document.getElementById('calcAgri').value = 150;
+    document.getElementById('calcInd').value = 300;
+    document.getElementById('calcServ').value = 400;
+    document.getElementById('calcTax').value = 40;
+    document.getElementById('calcComp').value = 400;
+    document.getElementById('calcSurplus').value = 300;
+    document.getElementById('calcMixed').value = 100;
+    document.getElementById('calcNetTax').value = 90;
+    computeGDP();
+  }
+
+  function setExample2() {
+    document.getElementById('calcC').value = 800;
+    document.getElementById('calcI').value = 350;
+    document.getElementById('calcG').value = 250;
+    document.getElementById('calcX').value = 200;
+    document.getElementById('calcM').value = 150;
+    document.getElementById('calcAgri').value = 180;
+    document.getElementById('calcInd').value = 500;
+    document.getElementById('calcServ').value = 620;
+    document.getElementById('calcTax').value = 50;
+    document.getElementById('calcComp').value = 650;
+    document.getElementById('calcSurplus').value = 450;
+    document.getElementById('calcMixed').value = 170;
+    document.getElementById('calcNetTax').value = 80;
+    computeGDP();
+  }
+
+  function resetCalculator() {
+    const inputs = document.querySelectorAll('.calc-panel input');
+    inputs.forEach(inp => inp.value = 0);
+    computeGDP();
+  }
+
+  computeGDP();
+</script>
+
+</body>
+</html>

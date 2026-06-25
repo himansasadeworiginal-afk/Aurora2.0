@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 7 - Price, Inflation, Money & Financial System</title>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+:root {
+  --bg: #0a0a0f;
+  --card: #15101a;
+  --accent: #a855f7;
+  --accent2: #ec4899;
+  --accent3: #f59e0b;
+  --gradient: linear-gradient(135deg, #a855f7, #ec4899, #f59e0b);
+  --text: #e2dff0;
+  --text-dim: #9a94b0;
+  --border: rgba(168,85,247,0.3);
+  --shadow: 0 8px 32px rgba(0,0,0,0.5);
+  --radius: 16px;
+}
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+#particles-canvas {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 0;
+}
+#progress-bar {
+  position: fixed; top: 0; left: 0; height: 4px;
+  background: var(--gradient); z-index: 1000;
+  transition: width 0.2s ease; width: 0%;
+  border-radius: 0 2px 2px 0; box-shadow: 0 0 12px rgba(168,85,247,0.5);
+}
+#top-nav {
+  position: fixed; top: 12px; right: 20px; z-index: 999;
+  display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end;
+  max-width: 60vw;
+}
+.nav-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: rgba(168,85,247,0.2); border: 1px solid rgba(168,85,247,0.3);
+  cursor: pointer; transition: all 0.3s ease;
+}
+.nav-dot.active { background: var(--accent); box-shadow: 0 0 8px rgba(168,85,247,0.6); transform: scale(1.3); }
+.nav-dot:hover { background: var(--accent); }
+.content {
+  position: relative; z-index: 1;
+  max-width: 960px; margin: 0 auto; padding: 40px 20px 100px;
+}
+.hero {
+  min-height: 100vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center;
+  padding: 60px 20px;
+}
+.hero-badge {
+  display: inline-block; background: rgba(168,85,247,0.15);
+  border: 1px solid rgba(168,85,247,0.4); color: var(--accent);
+  padding: 6px 20px; border-radius: 999px; font-size: 0.85rem;
+  font-weight: 600; letter-spacing: 1px; margin-bottom: 24px;
+  backdrop-filter: blur(4px);
+}
+.hero h1 {
+  font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 800;
+  background: var(--gradient); -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; background-clip: text;
+  line-height: 1.2; margin-bottom: 16px;
+}
+.hero p {
+  color: var(--text-dim); font-size: 1.1rem; max-width: 600px;
+}
+.hero-scroll {
+  margin-top: 48px; animation: bounce 2s infinite;
+  color: var(--accent); font-size: 1.6rem;
+}
+@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(10px)} }
+
+.section {
+  background: var(--card); border-radius: var(--radius);
+  padding: 36px 32px; margin-bottom: 28px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.section:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,0,0,0.6); }
+.section-title {
+  font-size: 1.6rem; font-weight: 700; margin-bottom: 20px;
+  padding-bottom: 12px; border-bottom: 2px solid var(--accent);
+  display: flex; align-items: center; gap: 10px;
+}
+.section-title .num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--gradient); color: #fff;
+  font-size: 0.95rem; font-weight: 700; flex-shrink: 0;
+}
+.section h3 {
+  font-size: 1.15rem; color: var(--accent2); margin: 18px 0 8px;
+}
+.section h4 {
+  font-size: 1rem; color: var(--accent3); margin: 14px 0 6px;
+}
+.section p { margin-bottom: 12px; color: var(--text-dim); }
+.section ul, .section ol { padding-left: 24px; margin-bottom: 12px; color: var(--text-dim); }
+.section li { margin-bottom: 6px; }
+.section li strong { color: var(--text); }
+.section strong { color: var(--text); }
+
+.reveal { opacity: 0; transform: translateY(40px); transition: all 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+.formula-box {
+  background: rgba(168,85,247,0.08); border: 1px solid rgba(168,85,247,0.3);
+  border-left: 4px solid var(--accent); border-radius: 8px;
+  padding: 16px 20px; margin: 14px 0; font-size: 1.05rem;
+  font-family: 'Courier New', monospace; text-align: center;
+  color: var(--accent3); position: relative;
+}
+.formula-box::before {
+  content: '📐'; position: absolute; left: -14px; top: -12px;
+  font-size: 1rem;
+}
+
+.flashcard-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px; margin: 16px 0;
+}
+.flashcard {
+  perspective: 800px; height: 140px; cursor: pointer;
+}
+.flashcard-inner {
+  position: relative; width: 100%; height: 100%;
+  transition: transform 0.6s ease; transform-style: preserve-3d;
+}
+.flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+.flashcard-front, .flashcard-back {
+  position: absolute; width: 100%; height: 100%;
+  backface-visibility: hidden; border-radius: 12px;
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; padding: 12px; text-align: center;
+  border: 1px solid var(--border); font-size: 0.85rem;
+}
+.flashcard-front {
+  background: rgba(168,85,247,0.1); color: var(--accent);
+  font-weight: 700;
+}
+.flashcard-back {
+  background: var(--gradient); color: #fff; transform: rotateY(180deg);
+  font-weight: 500; line-height: 1.4;
+}
+
+.comparison-table {
+  width: 100%; border-collapse: collapse; margin: 16px 0;
+  font-size: 0.9rem;
+}
+.comparison-table th, .comparison-table td {
+  border: 1px solid var(--border); padding: 10px 14px; text-align: left;
+}
+.comparison-table th {
+  background: linear-gradient(135deg, rgba(168,85,247,0.2), rgba(236,72,153,0.2));
+  color: var(--text); font-weight: 600;
+}
+.comparison-table td { color: var(--text-dim); }
+.comparison-table tr:nth-child(even) td { background: rgba(168,85,247,0.05); }
+.comparison-table tr:hover td { background: rgba(168,85,247,0.1); }
+
+.calculator {
+  background: rgba(168,85,247,0.05); border: 1px solid var(--border);
+  border-radius: 12px; padding: 20px; margin: 16px 0;
+}
+.calc-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px; margin-bottom: 14px;
+}
+.calc-field label { display: block; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 4px; }
+.calc-field input, .calc-field select {
+  width: 100%; padding: 8px 12px; border-radius: 8px;
+  border: 1px solid var(--border); background: rgba(0,0,0,0.3);
+  color: var(--text); font-size: 0.9rem; outline: none;
+  transition: border-color 0.3s;
+}
+.calc-field input:focus, .calc-field select:focus { border-color: var(--accent); }
+.calc-result {
+  text-align: center; font-size: 1.4rem; font-weight: 700;
+  color: var(--accent3); margin-top: 10px;
+}
+.calc-btn {
+  background: var(--gradient); border: none; color: #fff;
+  padding: 10px 28px; border-radius: 8px; font-weight: 600;
+  cursor: pointer; transition: opacity 0.3s; font-size: 0.9rem;
+}
+.calc-btn:hover { opacity: 0.85; }
+
+.srr-visual { text-align: center; margin: 16px 0; }
+.srr-bar {
+  display: flex; height: 60px; border-radius: 8px; overflow: hidden;
+  margin: 0 auto; max-width: 500px; border: 1px solid var(--border);
+}
+.srr-fraction { display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; transition: width 0.5s ease; }
+.srr-rr { background: var(--accent); color: #fff; }
+.srr-excess { background: rgba(168,85,247,0.15); color: var(--accent3); }
+.srr-label { display: flex; justify-content: space-between; max-width: 500px; margin: 6px auto 0; font-size: 0.78rem; color: var(--text-dim); }
+.srr-controls { display: flex; align-items: center; gap: 12px; justify-content: center; margin: 12px 0; flex-wrap: wrap; }
+
+.quiz-question { margin: 16px 0; padding: 16px; border-radius: 12px; background: rgba(168,85,247,0.04); border: 1px solid rgba(168,85,247,0.15); }
+.quiz-question h4 { color: var(--text); margin-bottom: 10px; }
+.quiz-option {
+  display: block; padding: 10px 14px; margin: 6px 0;
+  border-radius: 8px; border: 1px solid var(--border);
+  cursor: pointer; transition: all 0.2s; color: var(--text-dim);
+  background: transparent;
+}
+.quiz-option:hover { border-color: var(--accent); background: rgba(168,85,247,0.08); }
+.quiz-option.selected { border-color: var(--accent); background: rgba(168,85,247,0.15); color: var(--text); }
+.quiz-option.correct { border-color: #22c55e; background: rgba(34,197,94,0.12); color: #22c55e; }
+.quiz-option.wrong { border-color: #ef4444; background: rgba(239,68,68,0.12); color: #ef4444; }
+.quiz-feedback { margin-top: 8px; font-size: 0.85rem; display: none; }
+.quiz-feedback.show { display: block; }
+.quiz-score { text-align: center; padding: 20px; font-size: 1.2rem; }
+.quiz-score strong { color: var(--accent3); }
+
+.highlight { color: var(--accent2); font-weight: 600; }
+.accent-text { color: var(--accent); }
+.amber-text { color: var(--accent3); }
+
+.divider {
+  height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  margin: 24px 0;
+}
+
+.key-term {
+  display: inline-block; background: rgba(168,85,247,0.1); color: var(--accent);
+  padding: 1px 8px; border-radius: 4px; font-weight: 600; font-size: 0.9rem;
+}
+
+@media (max-width:640px) {
+  .content { padding: 20px 12px 80px; }
+  .section { padding: 24px 16px; }
+  .flashcard-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .flashcard { height: 120px; }
+  #top-nav { max-width: 90vw; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="particles-canvas"></canvas>
+<div id="progress-bar"></div>
+<div id="top-nav"></div>
+
+<div class="content">
+
+<!-- HERO -->
+<section class="hero reveal">
+  <div class="hero-badge">📘 LESSON 7</div>
+  <h1>Price, Inflation, Money &amp;<br>Financial System</h1>
+  <p>Understanding price theory, inflation dynamics, the nature of money, and Sri Lanka's financial architecture</p>
+  <div class="hero-scroll">⌄</div>
+</section>
+
+<!-- 1. PRICE CONCEPTS -->
+<section class="section reveal" id="price-concepts">
+  <div class="section-title"><span class="num">1</span> Price Concepts</div>
+  <h3>🔹 Absolute Price</h3>
+  <p>The nominal price of a good expressed in monetary units — what you actually pay at the store. Also called <strong>money price</strong>.</p>
+  <h3>🔹 Relative Price</h3>
+  <p>The price of one good compared to another; represents the <strong>opportunity cost</strong> of consuming one good in terms of the other.</p>
+  <div class="formula-box">Relative Price = Price of Good A ÷ Price of Good B</div>
+  <h3>🔹 General Price Level</h3>
+  <p>The <strong>average</strong> of all prices in an economy, measured via a price index. A rise in the general price level = inflation.</p>
+
+  <h3>📊 Absolute vs Relative Price</h3>
+  <table class="comparison-table">
+    <thead><tr><th>Aspect</th><th>Absolute Price</th><th>Relative Price</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Definition</strong></td><td>Price in monetary terms</td><td>Price ratio between goods</td></tr>
+      <tr><td><strong>Unit</strong></td><td>Currency (e.g. Rs.)</td><td>Ratio (unitless)</td></tr>
+      <tr><td><strong>Reflects</strong></td><td>Nominal value</td><td>Opportunity cost</td></tr>
+      <tr><td><strong>Changes with</strong></td><td>Inflation</td><td>Supply/demand shifts</td></tr>
+      <tr><td><strong>Example</strong></td><td>A pen costs Rs. 100</td><td>1 pen = 2 notebooks</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 2. PRICE INDEX & INFLATION -->
+<section class="section reveal" id="price-index">
+  <div class="section-title"><span class="num">2</span> Price Index &amp; Inflation</div>
+  <h3>🔹 Price Index</h3>
+  <p>A <strong>measure of the average price level</strong> of a basket of goods and services relative to a base year. Examples: CPI, GDP deflator.</p>
+  <div class="formula-box">Price Index = (Cost of Basket in Current Year ÷ Cost of Basket in Base Year) × 100</div>
+
+  <h3>🔹 Inflation, Deflation &amp; Disinflation</h3>
+  <table class="comparison-table">
+    <thead><tr><th>Concept</th><th>Definition</th><th>Effect on Prices</th><th>Rate Direction</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Inflation</strong></td><td>Continuous ↑ in general price level</td><td>Prices rise</td><td>Positive &amp; ↑</td></tr>
+      <tr><td><strong>Deflation</strong></td><td>Continuous ↓ in general price level</td><td>Prices fall</td><td>Negative</td></tr>
+      <tr><td><strong>Disinflation</strong></td><td>↓ rate of increase of price level</td><td>Prices still rise, but slower</td><td>Positive but ↓</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 3. TYPES OF INFLATION -->
+<section class="section reveal" id="types-inflation">
+  <div class="section-title"><span class="num">3</span> Types of Inflation</div>
+  <h3>By Rate of Increase</h3>
+  <table class="comparison-table">
+    <thead><tr><th>Type</th><th>Rate</th><th>Characteristic</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Creeping</strong></td><td>≤ 2%</td><td>Beneficial — mild, encourages spending &amp; investment</td></tr>
+      <tr><td><strong>Walking</strong></td><td>3–9%</td><td>Moderate — begins to distort decisions, harmful</td></tr>
+      <tr><td><strong>Galloping</strong></td><td>10%+</td><td>Damaging — people flee from money, severe distortions</td></tr>
+      <tr><td><strong>Hyperinflation</strong></td><td>≥ 50% / month</td><td>Catastrophic — monetary system collapses</td></tr>
+    </tbody>
+  </table>
+  <p><strong>🌍 Historical Example:</strong> <span class="highlight">Hungary 1945–46</span> — prices doubled every 15 hours. The highest inflation ever recorded.</p>
+</section>
+
+<!-- 4. CAUSES OF INFLATION -->
+<section class="section reveal" id="causes-inflation">
+  <div class="section-title"><span class="num">4</span> Causes of Inflation</div>
+
+  <h3>📈 Demand-Pull Inflation</h3>
+  <p><span class="highlight">"Too much money chasing too few goods."</span> Aggregate demand exceeds aggregate supply at full employment.</p>
+
+  <h4>Quantity Theory of Money (QTM)</h4>
+  <div class="formula-box">MV = PT<br><span style="font-size:0.75rem;font-family:inherit;">M = Money Supply | V = Velocity | P = Price Level | T = Transactions</span></div>
+  <p>If V and T are constant, an <strong>increase in M</strong> causes a proportionate <strong>increase in P</strong> (inflation).</p>
+
+  <h4>Keynesian Theory</h4>
+  <p>When <strong>aggregate demand</strong> exceeds full-employment output, the excess demand pulls prices upward. Output cannot rise further, so the entire increase in AD translates into higher prices.</p>
+
+  <!-- QTM CALCULATOR -->
+  <div class="calculator" id="qtm-calc">
+    <h4 style="color:var(--accent);margin-bottom:12px;">🧮 Interactive QTM Calculator</h4>
+    <div class="calc-grid">
+      <div class="calc-field"><label>Money Supply (M) — Rs.</label><input type="number" id="qtm-m" value="1000" step="100"></div>
+      <div class="calc-field"><label>Velocity (V)</label><input type="number" id="qtm-v" value="5" step="0.5"></div>
+      <div class="calc-field"><label>Transactions (T)</label><input type="number" id="qtm-t" value="500" step="10"></div>
+    </div>
+    <button class="calc-btn" onclick="calcQTM()">Calculate Price (P)</button>
+    <div class="calc-result" id="qtm-result">P = 10.00</div>
+    <p style="font-size:0.8rem;color:var(--text-dim);text-align:center;margin-top:6px;">MV = PT → P = (M × V) ÷ T</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>📉 Cost-Push Inflation</h3>
+  <p>An increase in the cost of inputs (wages, raw materials, energy) shifts the <strong>Aggregate Supply</strong> curve leftward, raising the price level.</p>
+  <ul>
+    <li><strong>Organised labour (wage push)</strong> — unions negotiate higher wages → firms raise prices to maintain margins.</li>
+    <li><strong>Oligopoly firms (profit push)</strong> — firms with market power raise prices to increase profit margins.</li>
+  </ul>
+
+  <h3>⚖️ Demand-Pull vs Cost-Push</h3>
+  <table class="comparison-table">
+    <thead><tr><th>Aspect</th><th>Demand-Pull</th><th>Cost-Push</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Origin</strong></td><td>Aggregate Demand side</td><td>Aggregate Supply side</td></tr>
+      <tr><td><strong>Motto</strong></td><td>"Too much money"</td><td>"Too costly to produce"</td></tr>
+      <tr><td><strong>Output</strong></td><td>At or above full employment</td><td>Below full employment (stagflation)</td></tr>
+      <tr><td><strong>Key trigger</strong></td><td>Money supply ↑, fiscal expansion</td><td>Wage ↑, oil shock, raw material ↑</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 5. EFFECTS OF INFLATION -->
+<section class="section reveal" id="effects">
+  <div class="section-title"><span class="num">5</span> Effects of Inflation</div>
+  <table class="comparison-table">
+    <thead><tr><th>Favourable</th><th>Unfavourable</th></tr></thead>
+    <tbody>
+      <tr><td>Encourages spending &amp; investment (mild inflation)</td><td>Erodes real incomes &amp; purchasing power</td></tr>
+      <tr><td>Reduces real burden of debt</td><td>Hurts fixed-income earners &amp; savers</td></tr>
+      <tr><td>Prevents deflation (worse than inflation)</td><td>Creates uncertainty &amp; discourages long-term planning</td></tr>
+      <tr><td>Can boost profits if wages lag</td><td>Distorts price signals &amp; resource allocation</td></tr>
+      <tr><td>—</td><td>Shoe-leather &amp; menu costs</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 6. MONEY -->
+<section class="section reveal" id="money">
+  <div class="section-title"><span class="num">6</span> Money</div>
+  <h3>📌 Definition</h3>
+  <p>Money is any asset that is <strong>generally accepted</strong> as payment for goods and services and for settling debts.</p>
+
+  <h3>❌ Drawbacks of the Barter System</h3>
+  <ul>
+    <li><strong>Lack of double coincidence of wants</strong> — both parties must want what the other offers.</li>
+    <li><strong>No common measure of value</strong> — no standard unit to express prices.</li>
+    <li><strong>Indivisibility</strong> — some goods cannot be split into smaller units.</li>
+    <li><strong>Deferred payments</strong> — difficult to make credit/loan contracts.</li>
+    <li><strong>Storing value</strong> — most goods perish or depreciate.</li>
+  </ul>
+
+  <h3>✅ Characteristics of Good Money</h3>
+  <ul>
+    <li><strong>General acceptance</strong> — everyone trusts and accepts it.</li>
+    <li><strong>Durability</strong> — lasts through repeated use.</li>
+    <li><strong>Uniformity</strong> — identical units have identical value.</li>
+    <li><strong>Divisibility</strong> — can be split into smaller denominations.</li>
+    <li><strong>Portability</strong> — easy to carry and transport.</li>
+    <li><strong>Stability of value</strong> — does not fluctuate wildly.</li>
+    <li><strong>Legal validity</strong> — recognised by law as legal tender.</li>
+    <li><strong>Difficulty to counterfeit</strong> — secure against forgery.</li>
+    <li><strong>Easy identification</strong> — recognisable by the public.</li>
+  </ul>
+
+  <h3>📦 Four Functions of Money</h3>
+  <table class="comparison-table">
+    <thead><tr><th>Function</th><th>Meaning</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Medium of Exchange</strong></td><td>Used to buy/sell goods &amp; services</td><td>Paying Rs. 50 for tea</td></tr>
+      <tr><td><strong>Unit of Account</strong></td><td>Standard unit for quoting prices</td><td>Goods priced in Rupees</td></tr>
+      <tr><td><strong>Standard of Deferred Payment</strong></td><td>Used for credit/loan contracts</td><td>Loan repayment in Rupees</td></tr>
+      <tr><td><strong>Store of Wealth</strong></td><td>Preserves value over time</td><td>Saving in a bank account</td></tr>
+    </tbody>
+  </table>
+
+  <h3>💧 Liquidity</h3>
+  <p><strong>Liquidity</strong> is the ease with which an asset can be converted into cash without loss of value. <span class="highlight">Money is the most liquid asset.</span></p>
+</section>
+
+<!-- 7. TYPES OF MONEY -->
+<section class="section reveal" id="types-money">
+  <div class="section-title"><span class="num">7</span> Types of Money</div>
+  <table class="comparison-table">
+    <thead><tr><th>Type</th><th>Description</th><th>Examples</th><th>Medium of Exchange?</th><th>Store of Value?</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Currency</strong></td><td>Physical notes &amp; coins</td><td>Banknotes, coins</td><td>✅</td><td>✅</td></tr>
+      <tr><td><strong>Bank Money</strong></td><td>Demand deposits at banks</td><td>Checking accounts</td><td>✅</td><td>✅</td></tr>
+      <tr><td><strong>Near Money</strong></td><td>Highly liquid but not directly spendable</td><td>Fixed deposits, T-bills</td><td>❌</td><td>✅</td></tr>
+      <tr><td><strong>Money Substitutes</strong></td><td>Facilitate payment but not money themselves</td><td>Credit/debit cards</td><td>✅</td><td>❌</td></tr>
+      <tr><td><strong>Electronic/Digital Money</strong></td><td>Digital representation of value</td><td>E-wallets, crypto</td><td>✅</td><td>Varies</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 8. DEMAND FOR MONEY -->
+<section class="section reveal" id="demand-money">
+  <div class="section-title"><span class="num">8</span> Demand for Money</div>
+  <h3>🔹 Liquidity Preference Theory (Keynes)</h3>
+  <p>People hold money for three motives:</p>
+  <table class="comparison-table">
+    <thead><tr><th>Motive</th><th>Purpose</th><th>Relationship with Income</th><th>Relationship with Interest Rate</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Transaction</strong></td><td>Everyday purchases</td><td>Positive (↑ income → ↑ demand)</td><td>Inelastic</td></tr>
+      <tr><td><strong>Precautionary</strong></td><td>Unexpected expenses</td><td>Positive</td><td>Inelastic</td></tr>
+      <tr><td><strong>Speculative</strong></td><td>To exploit future interest rate changes</td><td>—</td><td><strong>Inverse</strong> (↓ interest → ↑ demand)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>📊 Factors Affecting Money Demand</h3>
+  <ul>
+    <li><strong>Real income</strong> — higher income → more transactions → higher money demand.</li>
+    <li><strong>Interest rate</strong> — higher rate → higher opportunity cost of holding money → lower demand.</li>
+    <li><strong>Price level</strong> — higher prices → more money needed for same transactions.</li>
+    <li><strong>Institutional factors</strong> — payment frequency, banking habits.</li>
+    <li><strong>Financial innovations</strong> — ATMs, mobile banking reduce money demand.</li>
+  </ul>
+</section>
+
+<!-- 9. MONEY SUPPLY -->
+<section class="section reveal" id="money-supply">
+  <div class="section-title"><span class="num">9</span> Money Supply</div>
+  <h3>📐 Definitions</h3>
+  <div class="formula-box">M1 = Cp + DDP<br><span style="font-size:0.75rem;font-family:inherit;">Cp = Currency with Public | DDP = Demand Deposits of Public</span></div>
+  <div class="formula-box">M2 = M1 + TSDP<br><span style="font-size:0.75rem;font-family:inherit;">TSDP = Time &amp; Savings Deposits of Public</span></div>
+  <div class="formula-box">M2b = M2 + TsDNRFC + RDFCBU<br><span style="font-size:0.75rem;font-family:inherit;">TsDNRFC = Time &amp; Savings Deposits of Non-bank Financial Institutions with Commercial Banks<br>RDFCBU = Residents' Foreign Currency Deposits with Commercial Banks (Utilised)</span></div>
+  <div class="formula-box">M4 = M2b + LSB + RFC<br><span style="font-size:0.75rem;font-family:inherit;">LSB = Liabilities of Specialised Banks | RFC = Residents' Foreign Currency Deposits with Commercial Banks (Unutilised)</span></div>
+
+  <!-- MONEY SUPPLY CALCULATOR -->
+  <div class="calculator" id="ms-calc">
+    <h4 style="color:var(--accent);margin-bottom:12px;">🧮 Money Supply Calculator</h4>
+    <div class="calc-grid">
+      <div class="calc-field"><label>Currency with Public (Cp) — Rs.</label><input type="number" id="ms-cp" value="800000" step="1000"></div>
+      <div class="calc-field"><label>Demand Deposits (DDP) — Rs.</label><input type="number" id="ms-ddp" value="1200000" step="1000"></div>
+      <div class="calc-field"><label>Time &amp; Savings Deposits (TSDP) — Rs.</label><input type="number" id="ms-tsdp" value="2500000" step="1000"></div>
+      <div class="calc-field"><label>TsD of NBFIs (TsDNRFC) — Rs.</label><input type="number" id="ms-tsdnrfc" value="400000" step="1000"></div>
+      <div class="calc-field"><label>Residents' FC Deposits Utilised — Rs.</label><input type="number" id="ms-rdfcb" value="200000" step="1000"></div>
+      <div class="calc-field"><label>Liabilities of Specialised Banks (LSB) — Rs.</label><input type="number" id="ms-lsb" value="300000" step="1000"></div>
+      <div class="calc-field"><label>Residents' FC Deposits Unutilised — Rs.</label><input type="number" id="ms-rfc" value="100000" step="1000"></div>
+    </div>
+    <button class="calc-btn" onclick="calcMoneySupply()">Calculate Money Supply</button>
+    <div style="margin-top:12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;text-align:center;">
+      <div><span style="font-size:0.75rem;color:var(--text-dim);">M1</span><br><span class="calc-result" style="font-size:1.2rem;" id="ms-m1">2,000,000</span></div>
+      <div><span style="font-size:0.75rem;color:var(--text-dim);">M2</span><br><span class="calc-result" style="font-size:1.2rem;" id="ms-m2">4,500,000</span></div>
+      <div><span style="font-size:0.75rem;color:var(--text-dim);">M2b</span><br><span class="calc-result" style="font-size:1.2rem;" id="ms-m2b">5,100,000</span></div>
+      <div><span style="font-size:0.75rem;color:var(--text-dim);">M4</span><br><span class="calc-result" style="font-size:1.2rem;" id="ms-m4">5,500,000</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 10. FINANCIAL SYSTEM OF SRI LANKA -->
+<section class="section reveal" id="sri-lanka">
+  <div class="section-title"><span class="num">10</span> Financial System of Sri Lanka</div>
+
+  <h3>🏛 Components</h3>
+  <ul>
+    <li><strong>Financial institutions</strong> — banks, insurance, finance companies, pension funds.</li>
+    <li><strong>Financial markets</strong> — money market, capital market, foreign exchange market.</li>
+    <li><strong>Financial instruments</strong> — shares, bonds, T-bills, insurance policies.</li>
+    <li><strong>Financial infrastructure</strong> — payments, clearing, settlement systems.</li>
+    <li><strong>Regulatory bodies</strong> — CBSL, SEC, IRCSL.</li>
+  </ul>
+
+  <h3>🏦 Central Bank of Sri Lanka (CBSL)</h3>
+  <ul>
+    <li><strong>Established:</strong> 1950 (as the Central Bank of Ceylon).</li>
+    <li><strong>First Governor:</strong> John Exter.</li>
+  </ul>
+
+  <h4>Objectives</h4>
+  <ul>
+    <li><span class="highlight">Economic &amp; price stability</span> — stable inflation, sustainable growth.</li>
+    <li><span class="highlight">Financial system stability</span> — sound banking &amp; financial infrastructure.</li>
+  </ul>
+
+  <h4>Main Functions</h4>
+  <ul>
+    <li>Formulating &amp; implementing <strong>monetary policy</strong>.</li>
+    <li>Formulating &amp; implementing <strong>exchange rate policy</strong>.</li>
+    <li>Issuing <strong>currency</strong> (sole authority).</li>
+    <li>Managing <strong>foreign reserves</strong>.</li>
+    <li>Acting as <strong>banker to the government</strong>.</li>
+  </ul>
+
+  <h4>Agency Functions</h4>
+  <ul>
+    <li><strong>Public debt management</strong> — issuing &amp; servicing government securities.</li>
+    <li><strong>Foreign exchange control</strong> — administering exchange controls.</li>
+    <li><strong>EPF management</strong> — Employees' Provident Fund administration.</li>
+  </ul>
+</section>
+
+<!-- 11. MONETARY POLICY -->
+<section class="section reveal" id="monetary-policy">
+  <div class="section-title"><span class="num">11</span> Monetary Policy</div>
+
+  <h3>🔹 Frameworks</h3>
+  <ul>
+    <li><strong>Monetary targeting</strong> — targeting growth rate of a money aggregate (e.g., M2b).</li>
+    <li><strong>Flexible inflation targeting</strong> — targeting a specific inflation range while considering output stability.</li>
+  </ul>
+
+  <h3>🔧 Instruments</h3>
+  <table class="comparison-table">
+    <thead><tr><th>Type</th><th>Instrument</th><th>How it Works</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="3"><strong>Quantitative</strong></td><td><strong>Bank Interest Rate (Policy Rate)</strong></td><td>CBSL's rate to commercial banks — higher rate = tighter money</td></tr>
+      <tr><td><strong>Statutory Reserve Ratio (SRR)</strong></td><td>Portion of deposits banks must hold as reserves</td></tr>
+      <tr><td><strong>Open Market Operations (OMO)</strong></td><td>Buying/selling govt securities to influence reserves &amp; money supply</td></tr>
+      <tr><td><strong>Qualitative</strong></td><td>Moral suasion, margin requirements, credit guidelines</td><td>Persuasion &amp; selective controls</td></tr>
+    </tbody>
+  </table>
+
+  <!-- SRR VISUAL -->
+  <h3>📊 How SRR Works</h3>
+  <p>The <strong>Statutory Reserve Ratio (SRR)</strong> is the percentage of deposits banks must keep with the central bank. Changing SRR directly impacts lending capacity.</p>
+
+  <div class="srr-visual">
+    <div style="margin-bottom:6px;color:var(--text-dim);font-size:0.85rem;">
+      Bank Deposits: <strong style="color:var(--text);">Rs. 1,000,000</strong>
+      &nbsp;|&nbsp; SRR: <strong style="color:var(--accent);" id="srr-rate-display">10%</strong>
+    </div>
+    <div class="srr-bar">
+      <div class="srr-fraction srr-rr" id="srr-rr-bar" style="width:10%;">Reserves</div>
+      <div class="srr-fraction srr-excess" id="srr-excess-bar" style="width:90%;">Excess (Lendable)</div>
+    </div>
+    <div class="srr-label">
+      <span>Required Reserves: <strong id="srr-required">100,000</strong></span>
+      <span>Excess Reserves: <strong id="srr-excess-val">900,000</strong></span>
+    </div>
+    <div class="srr-controls">
+      <span style="color:var(--text-dim);font-size:0.85rem;">Adjust SRR:</span>
+      <input type="range" id="srr-slider" min="0" max="30" value="10" step="0.5"
+        style="width:200px;accent-color:var(--accent);"
+        oninput="updateSRR(this.value)">
+      <span style="color:var(--accent);font-weight:700;" id="srr-slider-val">10%</span>
+    </div>
+    <p style="font-size:0.82rem;color:var(--text-dim);">
+      <span class="highlight" style="font-size:0.82rem;">↑ SRR</span> → less excess reserves → less lending → <span class="highlight" style="font-size:0.82rem;">↓ money supply</span> &amp; <span class="highlight" style="font-size:0.82rem;">↑ interest rates</span>
+    </p>
+  </div>
+</section>
+
+<!-- FLASHCARDS -->
+<section class="section reveal" id="flashcards">
+  <div class="section-title"><span class="num">★</span> Key Term Flashcards</div>
+  <p style="margin-bottom:14px;">Tap a card to reveal the definition.</p>
+  <div class="flashcard-grid" id="flashcard-grid"></div>
+</section>
+
+<!-- QUIZ -->
+<section class="section reveal" id="quiz">
+  <div class="section-title"><span class="num">✓</span> Knowledge Check</div>
+  <div id="quiz-container"></div>
+  <div style="text-align:center;margin-top:16px;">
+    <button class="calc-btn" onclick="checkQuiz()">Submit Answers</button>
+    <button class="calc-btn" style="margin-left:10px;background:rgba(168,85,247,0.3);" onclick="resetQuiz()">Reset</button>
+  </div>
+  <div class="quiz-score" id="quiz-score"></div>
+</section>
+
+</div><!-- /content -->
+
+<script>
+// ===== PARTICLES =====
+const canvas = document.getElementById('particles-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+let animId;
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+class Particle {
+  constructor() {
+    this.reset();
+  }
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 2 + 0.5;
+    this.speedX = (Math.random() - 0.5) * 0.5;
+    this.speedY = (Math.random() - 0.5) * 0.5;
+    this.opacity = Math.random() * 0.5 + 0.1;
+    this.color = ['#a855f7','#ec4899','#f59e0b'][Math.floor(Math.random()*3)];
+  }
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = this.color;
+    ctx.globalAlpha = this.opacity;
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+function drawLines() {
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 140) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = '#a855f7';
+        ctx.globalAlpha = (1 - dist / 140) * 0.12;
+        ctx.lineWidth = 0.6;
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+  drawLines();
+  animId = requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// ===== PROGRESS BAR & NAV =====
+const sections = document.querySelectorAll('.section, .hero');
+const navContainer = document.getElementById('top-nav');
+
+sections.forEach((sec, i) => {
+  const dot = document.createElement('div');
+  dot.className = 'nav-dot';
+  dot.addEventListener('click', () => {
+    sec.scrollIntoView({ behavior: 'smooth' });
+  });
+  navContainer.appendChild(dot);
+});
+
+function updateProgress() {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+  document.getElementById('progress-bar').style.width = progress + '%';
+
+  const navDots = document.querySelectorAll('.nav-dot');
+  let activeIdx = 0;
+  sections.forEach((sec, i) => {
+    const rect = sec.getBoundingClientRect();
+    if (rect.top <= window.innerHeight / 2) activeIdx = i;
+  });
+  navDots.forEach((d, i) => d.classList.toggle('active', i === activeIdx));
+}
+window.addEventListener('scroll', updateProgress);
+updateProgress();
+
+// ===== SCROLL REVEALS =====
+const revealEls = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+revealEls.forEach(el => observer.observe(el));
+
+// ===== FLASHCARDS =====
+const flashcardData = [
+  { term: 'Absolute Price', def: 'The nominal price in monetary units (money price).' },
+  { term: 'Relative Price', def: 'Price of one good in terms of another; opportunity cost.' },
+  { term: 'Inflation', def: 'Continuous increase in the general price level.' },
+  { term: 'Deflation', def: 'Continuous decrease in the general price level.' },
+  { term: 'Disinflation', def: 'A decrease in the rate of inflation.' },
+  { term: 'Creeping Inflation', def: '≤2% — mild and beneficial.' },
+  { term: 'Galloping Inflation', def: '10%+ — severe and damaging.' },
+  { term: 'Hyperinflation', def: '≥50% per month — catastrophic.' },
+  { term: 'Demand-Pull Inflation', def: 'Too much money chasing too few goods.' },
+  { term: 'Cost-Push Inflation', def: 'Rising input costs shift AS left → higher prices.' },
+  { term: 'M1 (Narrow Money)', def: 'Currency with public + Demand deposits (Cp + DDP).' },
+  { term: 'M2', def: 'M1 + Time & Savings deposits (M1 + TSDP).' },
+  { term: 'Liquidity', def: 'Ease of converting an asset into cash without loss.' },
+  { term: 'Near Money', def: 'Fixed deposits, T-bills — store of value, not medium of exchange.' },
+  { term: 'Money Substitutes', def: 'Credit/debit cards — medium of exchange, not store of value.' },
+  { term: 'SRR', def: 'Statutory Reserve Ratio — portion of deposits banks must hold as reserves.' },
+  { term: 'QTM Equation', def: 'MV = PT (Money × Velocity = Price × Transactions).' },
+  { term: 'Speculative Motive', def: 'Holding money to exploit future interest rate changes.' },
+];
+
+const grid = document.getElementById('flashcard-grid');
+flashcardData.forEach(c => {
+  const card = document.createElement('div');
+  card.className = 'flashcard';
+  card.innerHTML = `
+    <div class="flashcard-inner">
+      <div class="flashcard-front">${c.term}</div>
+      <div class="flashcard-back">${c.def}</div>
+    </div>
+  `;
+  card.addEventListener('click', () => card.classList.toggle('flipped'));
+  grid.appendChild(card);
+});
+
+// ===== QTM CALCULATOR =====
+function calcQTM() {
+  const M = parseFloat(document.getElementById('qtm-m').value) || 0;
+  const V = parseFloat(document.getElementById('qtm-v').value) || 0;
+  const T = parseFloat(document.getElementById('qtm-t').value) || 1;
+  const P = (M * V) / T;
+  document.getElementById('qtm-result').textContent = 'P = ' + P.toFixed(2);
+}
+calcQTM();
+['qtm-m','qtm-v','qtm-t'].forEach(id => {
+  document.getElementById(id).addEventListener('input', calcQTM);
+});
+
+// ===== MONEY SUPPLY CALCULATOR =====
+function calcMoneySupply() {
+  const cp = parseFloat(document.getElementById('ms-cp').value) || 0;
+  const ddp = parseFloat(document.getElementById('ms-ddp').value) || 0;
+  const tsdp = parseFloat(document.getElementById('ms-tsdp').value) || 0;
+  const tsdnrfc = parseFloat(document.getElementById('ms-tsdnrfc').value) || 0;
+  const rdfcb = parseFloat(document.getElementById('ms-rdfcb').value) || 0;
+  const lsb = parseFloat(document.getElementById('ms-lsb').value) || 0;
+  const rfc = parseFloat(document.getElementById('ms-rfc').value) || 0;
+
+  const m1 = cp + ddp;
+  const m2 = m1 + tsdp;
+  const m2b = m2 + tsdnrfc + rdfcb;
+  const m4 = m2b + lsb + rfc;
+
+  document.getElementById('ms-m1').textContent = m1.toLocaleString();
+  document.getElementById('ms-m2').textContent = m2.toLocaleString();
+  document.getElementById('ms-m2b').textContent = m2b.toLocaleString();
+  document.getElementById('ms-m4').textContent = m4.toLocaleString();
+}
+calcMoneySupply();
+['ms-cp','ms-ddp','ms-tsdp','ms-tsdnrfc','ms-rdfcb','ms-lsb','ms-rfc'].forEach(id => {
+  document.getElementById(id).addEventListener('input', calcMoneySupply);
+});
+
+// ===== SRR VISUAL =====
+function updateSRR(val) {
+  const srr = parseFloat(val);
+  document.getElementById('srr-rate-display').textContent = srr + '%';
+  document.getElementById('srr-slider-val').textContent = srr + '%';
+  const deposits = 1000000;
+  const required = deposits * (srr / 100);
+  const excess = deposits - required;
+  document.getElementById('srr-rr-bar').style.width = srr + '%';
+  document.getElementById('srr-excess-bar').style.width = (100 - srr) + '%';
+  document.getElementById('srr-required').textContent = required.toLocaleString();
+  document.getElementById('srr-excess-val').textContent = excess.toLocaleString();
+}
+
+// ===== QUIZ =====
+const quizData = [
+  {
+    q: 'Which type of inflation is considered beneficial?',
+    options: ['Galloping inflation', 'Creeping inflation', 'Walking inflation', 'Hyperinflation'],
+    correct: 1
+  },
+  {
+    q: 'What does the QTM equation MV = PT stand for?',
+    options: [
+      'Money × Value = Price × Tax',
+      'Money × Velocity = Price × Transactions',
+      'Market × Volume = Product × Trade',
+      'Monetary × Value = Purchasing × Total'
+    ],
+    correct: 1
+  },
+  {
+    q: 'M2 is calculated as:',
+    options: ['Cp + DDP', 'M1 + TSDP', 'M1 + T-bills', 'Cp + TSDP + RFC'],
+    correct: 1
+  },
+  {
+    q: 'Which motive for holding money has an inverse relationship with the interest rate?',
+    options: ['Transaction motive', 'Precautionary motive', 'Speculative motive', 'Income motive'],
+    correct: 2
+  },
+  {
+    q: 'What was unique about Hungary\'s 1945–46 hyperinflation?',
+    options: ['Prices doubled every 15 hours', 'Prices tripled every day', 'Inflation reached 1000% per year', 'The currency became worthless in one week'],
+    correct: 0
+  },
+  {
+    q: 'Which is NOT a function of money?',
+    options: ['Medium of exchange', 'Unit of account', 'Store of wealth', 'Source of income'],
+    correct: 3
+  },
+  {
+    q: 'Credit and debit cards are classified as:',
+    options: ['Currency', 'Bank money', 'Money substitutes', 'Near money'],
+    correct: 2
+  },
+  {
+    q: 'Demand-pull inflation is caused by:',
+    options: ['Rising input costs', 'Excessive aggregate demand', 'High unemployment', 'Trade deficits'],
+    correct: 1
+  },
+];
+
+const quizContainer = document.getElementById('quiz-container');
+let userAnswers = new Array(quizData.length).fill(-1);
+
+function renderQuiz() {
+  quizContainer.innerHTML = '';
+  quizData.forEach((item, idx) => {
+    const div = document.createElement('div');
+    div.className = 'quiz-question';
+    div.innerHTML = `<h4>${idx + 1}. ${item.q}</h4>`;
+    item.options.forEach((opt, oi) => {
+      const btn = document.createElement('button');
+      btn.className = 'quiz-option';
+      btn.textContent = opt;
+      btn.dataset.qIdx = idx;
+      btn.dataset.optIdx = oi;
+      btn.addEventListener('click', () => selectOption(idx, oi));
+      div.appendChild(btn);
+    });
+    const fb = document.createElement('div');
+    fb.className = 'quiz-feedback';
+    fb.id = 'quiz-fb-' + idx;
+    div.appendChild(fb);
+    quizContainer.appendChild(div);
+  });
+}
+
+function selectOption(qIdx, optIdx) {
+  userAnswers[qIdx] = optIdx;
+  const qDiv = quizContainer.children[qIdx];
+  qDiv.querySelectorAll('.quiz-option').forEach((btn, i) => {
+    btn.classList.toggle('selected', i === optIdx);
+    btn.classList.remove('correct', 'wrong');
+  });
+}
+
+function checkQuiz() {
+  let score = 0;
+  quizData.forEach((item, idx) => {
+    const fb = document.getElementById('quiz-fb-' + idx);
+    const qDiv = quizContainer.children[idx];
+    const opts = qDiv.querySelectorAll('.quiz-option');
+    opts.forEach((btn, i) => {
+      btn.classList.remove('correct', 'wrong');
+      if (i === item.correct) btn.classList.add('correct');
+      else if (i === userAnswers[idx] && i !== item.correct) btn.classList.add('wrong');
+    });
+    const isCorrect = userAnswers[idx] === item.correct;
+    if (isCorrect) score++;
+    fb.textContent = isCorrect ? '✅ Correct!' : `❌ Incorrect. The answer was: ${item.options[item.correct]}`;
+    fb.className = 'quiz-feedback show';
+  });
+  document.getElementById('quiz-score').innerHTML =
+    `<strong>${score}</strong> / ${quizData.length} correct (${Math.round(score/quizData.length*100)}%)`;
+}
+
+function resetQuiz() {
+  userAnswers = new Array(quizData.length).fill(-1);
+  renderQuiz();
+  document.getElementById('quiz-score').innerHTML = '';
+}
+
+renderQuiz();
+</script>
+</body>
+</html>

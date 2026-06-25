@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Economics Lesson 10 - Foreign Exchange & Balance of Payments</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --accent: #a855f7;
+    --accent2: #ec4899;
+    --accent3: #f59e0b;
+    --bg: #0a0a0f;
+    --card: #15101a;
+    --text: #e0e0e0;
+    --text-muted: #999;
+    --gradient: linear-gradient(135deg, #a855f7, #ec4899, #f59e0b);
+    --gradient-reverse: linear-gradient(135deg, #f59e0b, #ec4899, #a855f7);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+
+  #particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background: rgba(168, 85, 247, 0.15);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    animation: fadeInDown 1s ease;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 8vw, 5.5rem);
+    font-weight: 800;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    animation: fadeInUp 1s ease 0.2s both;
+  }
+
+  .hero p {
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: var(--text-muted);
+    max-width: 600px;
+    animation: fadeInUp 1s ease 0.4s both;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: bounce 2s infinite;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem;
+  }
+
+  .section {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .section.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .section:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 60px rgba(168, 85, 247, 0.08);
+  }
+
+  .section-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .section h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section h2 .underline {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+
+  .section h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1.5rem 0 0.8rem;
+  }
+
+  .section h4 {
+    color: var(--accent2);
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 1rem 0 0.5rem;
+  }
+
+  .section ul, .section ol {
+    padding-left: 1.5rem;
+  }
+
+  .section li {
+    margin-bottom: 0.4rem;
+    color: var(--text);
+  }
+
+  .section p {
+    margin-bottom: 0.8rem;
+    color: var(--text);
+  }
+
+  .highlight {
+    display: inline-block;
+    padding: 0.1rem 0.5rem;
+    background: rgba(168, 85, 247, 0.15);
+    border-radius: 4px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .highlight-pink {
+    background: rgba(236, 72, 153, 0.15);
+    color: var(--accent2);
+  }
+
+  .highlight-amber {
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--accent3);
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .info-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: default;
+  }
+
+  .info-card:hover {
+    background: rgba(168,85,247,0.08);
+    border-color: rgba(168,85,247,0.2);
+    transform: translateY(-5px);
+  }
+
+  .info-card .emoji {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .info-card .label {
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.3rem;
+  }
+
+  .info-card .desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin: 1rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .comparison > div {
+    padding: 1.2rem;
+  }
+
+  .comparison .left {
+    background: rgba(168,85,247,0.08);
+    border-right: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .comparison .right {
+    background: rgba(236,72,153,0.08);
+  }
+
+  .comparison .third-col {
+    background: rgba(245,158,11,0.08);
+    border-left: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .comparison .header {
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-align: center;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .comparison .left .header { color: var(--accent); }
+  .comparison .right .header { color: var(--accent2); }
+  .comparison .third-col .header { color: var(--accent3); }
+
+  .comparison ul { list-style: none; padding: 0; }
+  .comparison li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.9rem;
+  }
+  .comparison li:last-child { border-bottom: none; }
+
+  .flashcard-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .flashcard {
+    perspective: 1000px;
+    height: 180px;
+    cursor: pointer;
+  }
+
+  .flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+  }
+
+  .flashcard.flipped .flashcard-inner {
+    transform: rotateY(180deg);
+  }
+
+  .flashcard-front, .flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+
+  .flashcard-front {
+    background: rgba(168,85,247,0.1);
+    border: 1px solid rgba(168,85,247,0.2);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .flashcard-back {
+    background: rgba(236,72,153,0.15);
+    border: 1px solid rgba(236,72,153,0.2);
+    color: var(--accent2);
+    transform: rotateY(180deg);
+  }
+
+  .flashcard-hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+  }
+
+  .quiz-question {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin: 1rem 0;
+  }
+
+  .quiz-question .q {
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    color: #fff;
+  }
+
+  .quiz-option {
+    display: block;
+    width: 100%;
+    padding: 0.7rem 1rem;
+    margin-bottom: 0.5rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    font-size: 0.9rem;
+    font-family: inherit;
+  }
+
+  .quiz-option:hover {
+    background: rgba(168,85,247,0.1);
+    border-color: var(--accent);
+  }
+
+  .quiz-option.correct {
+    background: rgba(236,72,153,0.2);
+    border-color: var(--accent2);
+    color: var(--accent2);
+  }
+
+  .quiz-option.wrong {
+    background: rgba(214,48,49,0.2);
+    border-color: #d63031;
+    color: #d63031;
+  }
+
+  .quiz-feedback {
+    margin-top: 0.8rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .quiz-feedback.show {
+    display: block;
+  }
+
+  .quiz-feedback.correct {
+    background: rgba(236,72,153,0.1);
+    border: 1px solid rgba(236,72,153,0.2);
+    color: var(--accent2);
+  }
+
+  .quiz-feedback.wrong {
+    background: rgba(214,48,49,0.1);
+    border: 1px solid rgba(214,48,49,0.2);
+    color: #d63031;
+  }
+
+  .quiz-option:disabled {
+    opacity: 0.7;
+  }
+
+  .progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    z-index: 100;
+    background: transparent;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: var(--gradient);
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+    40% { transform: translateX(-50%) translateY(-10px); }
+    60% { transform: translateX(-50%) translateY(-5px); }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  @media (max-width: 600px) {
+    .comparison { grid-template-columns: 1fr; }
+    .comparison .left { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .comparison.three-col { grid-template-columns: 1fr; }
+    .comparison.three-col .third-col { border-left: none; border-top: 1px solid rgba(255,255,255,0.06); }
+    .section { padding: 1.2rem; }
+    .flashcard-container { grid-template-columns: 1fr; }
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 0.3rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .tag-purple { background: rgba(168,85,247,0.15); color: var(--accent); }
+  .tag-pink { background: rgba(236,72,153,0.15); color: var(--accent2); }
+  .tag-amber { background: rgba(245,158,11,0.15); color: var(--accent3); }
+  .tag-red { background: rgba(214,48,49,0.15); color: #d63031; }
+
+  .formula-box {
+    background: rgba(168,85,247,0.06);
+    border: 1px solid rgba(168,85,247,0.15);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+  }
+
+  .formula-box.gradient-text {
+    background: rgba(0,0,0,0.2);
+    border-color: rgba(168,85,247,0.2);
+  }
+
+  .formula-box.gradient-text span {
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .diagram-box {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    text-align: center;
+    overflow-x: auto;
+  }
+
+  .diagram-box pre {
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: var(--accent2);
+  }
+
+  .bop-calc {
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(168,85,247,0.15);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+  }
+
+  .bop-calc .calc-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    gap: 1rem;
+  }
+
+  .bop-calc .calc-row:last-child { border-bottom: none; }
+
+  .bop-calc .calc-row label {
+    flex: 1;
+    font-size: 0.9rem;
+    color: var(--text);
+    min-width: 120px;
+  }
+
+  .bop-calc .calc-row input {
+    width: 120px;
+    padding: 0.4rem 0.6rem;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 0.9rem;
+    text-align: right;
+  }
+
+  .bop-calc .calc-row input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .bop-calc .calc-result {
+    text-align: right;
+    font-size: 0.9rem;
+    font-weight: 600;
+    min-width: 80px;
+  }
+
+  .bop-calc .calc-result.positive { color: var(--accent2); }
+  .bop-calc .calc-result.negative { color: #d63031; }
+  .bop-calc .calc-result.zero { color: var(--accent3); }
+
+  .bop-calc .section-label {
+    font-weight: 700;
+    color: var(--accent);
+    padding: 0.8rem 0 0.3rem;
+    font-size: 0.95rem;
+    border-bottom: 1px solid rgba(168,85,247,0.15);
+    margin-top: 0.5rem;
+  }
+
+  .diagram-flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 1rem 0;
+  }
+
+  .diagram-flow .box {
+    background: rgba(168,85,247,0.1);
+    border: 1px solid rgba(168,85,247,0.2);
+    border-radius: 8px;
+    padding: 0.5rem 1.2rem;
+    font-size: 0.85rem;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .diagram-flow .arrow { color: var(--text-muted); font-size: 1.2rem; }
+  .diagram-flow .result {
+    background: rgba(236,72,153,0.15);
+    border: 1px solid rgba(236,72,153,0.2);
+    border-radius: 8px;
+    padding: 0.6rem 1.5rem;
+    font-size: 0.95rem;
+    color: var(--accent2);
+    font-weight: 700;
+  }
+
+  .toggle-section {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    background: rgba(168,85,247,0.1);
+    border: 1px solid rgba(168,85,247,0.2);
+    border-radius: 8px;
+    color: var(--accent);
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-family: inherit;
+    transition: all 0.2s;
+    margin: 0.3rem;
+  }
+
+  .toggle-section:hover {
+    background: rgba(168,85,247,0.2);
+  }
+
+  .toggle-section.active {
+    background: rgba(168,85,247,0.25);
+    border-color: var(--accent);
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-container">
+  <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<canvas id="particles"></canvas>
+
+<section class="hero">
+  <div class="hero-badge">Lesson 10</div>
+  <h1>Foreign Exchange &amp;<br>Balance of Payments</h1>
+  <p>Understanding currency markets, exchange rate systems, and international transaction accounting.</p>
+  <div class="hero-scroll">&#x2193;</div>
+</section>
+
+<div class="container">
+
+  <!-- 1. Foreign Exchange -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4B1;</div>
+    <h2>Foreign Exchange <span class="underline"></span></h2>
+    <p><strong>Foreign exchange</strong> is the conversion of one country's currency into another country's currency. It is the backbone of international trade and finance.</p>
+
+    <h3>Foreign Exchange Market</h3>
+    <p>The institutional structure and arrangements through which foreign exchange is bought, sold, and transferred between countries.</p>
+
+    <h4>Participants</h4>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F3E6;</div><div class="label">Commercial Banks</div><div class="desc">Primary intermediaries in forex transactions</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4B1;</div><div class="label">Forex Brokers</div><div class="desc">Match buyers and sellers, earn commission</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3ED;</div><div class="label">Business Firms</div><div class="desc">Importers &amp; exporters needing currency</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3E6;</div><div class="label">Central Bank</div><div class="desc">Monitors and intervenes in forex market</div></div>
+      <div class="info-card"><div class="emoji">&#x1F465;</div><div class="label">General Public</div><div class="desc">Travelers, students, remittance receivers</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3F0;</div><div class="label">Government</div><div class="desc">Debt repayment, diplomatic payments</div></div>
+    </div>
+
+    <h4>Profiteers (Arbitrageurs)</h4>
+    <p>Participants who buy foreign exchange at a low price in one market and sell it at a higher price in another market, profiting from price differences across markets.</p>
+    <div class="formula-box">Arbitrage: Buy Low &#x2192; Sell High (across different markets)</div>
+  </div>
+
+  <!-- 2. Nominal Exchange Rate -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4B3;</div>
+    <h2>Nominal Exchange Rate <span class="underline"></span></h2>
+    <p>The <strong>nominal exchange rate</strong> is the price of one country's currency expressed in terms of another country's currency. It is the rate at which two currencies can be exchanged.</p>
+
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F4C7; Direct Quotation</div>
+        <ul>
+          <li><strong>Price quotation</strong></li>
+          <li>Foreign currency expressed in terms of domestic currency</li>
+          <li>Ex: <span class="highlight">US$1 = SLKR 152</span></li>
+          <li>"How many rupees per dollar?"</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F4C8; Indirect Quotation</div>
+        <ul>
+          <li><strong>Volume quotation</strong></li>
+          <li>Domestic currency expressed in terms of foreign currency</li>
+          <li>Ex: <span class="highlight-pink">SLKR 1 = US$0.0065</span></li>
+          <li>"How many dollars per rupee?"</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Demand & Supply -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x2696;&#xFE0F;</div>
+    <h2>Demand &amp; Supply of Foreign Exchange <span class="underline"></span></h2>
+
+    <h3>Demand for Foreign Exchange (Dollar)</h3>
+    <p>Dollar is demanded when payments need to be made to foreign entities:</p>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F4E6;</div><div class="label">Imports</div><div class="desc">Paying for foreign goods &amp; services</div></div>
+      <div class="info-card"><div class="emoji">&#x2708;&#xFE0F;</div><div class="label">Travel</div><div class="desc">Foreign travel expenses</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4B5;</div><div class="label">Debt Repayment</div><div class="desc">Paying foreign loans &amp; interest</div></div>
+      <div class="info-card"><div class="emoji">&#x1F91D;</div><div class="label">Transfers</div><div class="desc">Grants, gifts, aid to abroad</div></div>
+    </div>
+    <p class="highlight-amber" style="display:inline-block;padding:0.3rem 0.6rem;border-radius:6px;">Inverse relationship: As rupee value of dollar &#x2191;, quantity demanded &#x2193;</p>
+
+    <h3>Supply of Foreign Exchange (Dollar)</h3>
+    <p>Dollar is supplied when receipts come from foreign entities:</p>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F4E6;</div><div class="label">Exports</div><div class="desc">Selling goods &amp; services abroad</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4B0;</div><div class="label">Primary Income</div><div class="desc">Interest, dividends, wages from abroad</div></div>
+      <div class="info-card"><div class="emoji">&#x1F9D1;&#x200D;&#x1F4B0;</div><div class="label">Secondary Income</div><div class="desc">Remittances, gifts, grants from abroad</div></div>
+    </div>
+    <p class="highlight-amber" style="display:inline-block;padding:0.3rem 0.6rem;border-radius:6px;">Positive relationship: As rupee value of dollar &#x2191;, quantity supplied &#x2191;</p>
+
+    <h3>Shift Factors</h3>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">Demand Curve Shifts</div>
+        <ul>
+          <li>&#x2191; Imports &#x2192; Demand &#x2191; (right)</li>
+          <li>&#x2191; Foreign travel &#x2192; Demand &#x2191;</li>
+          <li>&#x2191; Debt repayment &#x2192; Demand &#x2191;</li>
+          <li>&#x2191; Transfers abroad &#x2192; Demand &#x2191;</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">Supply Curve Shifts</div>
+        <ul>
+          <li>&#x2191; Exports &#x2192; Supply &#x2191; (right)</li>
+          <li>&#x2191; Primary income receipts &#x2192; Supply &#x2191;</li>
+          <li>&#x2191; Remittances &#x2192; Supply &#x2191;</li>
+          <li>&#x2191; Foreign investment &#x2192; Supply &#x2191;</li>
+        </ul>
+      </div>
+    </div>
+
+    <h4>Exchange Rate Market Equilibrium</h4>
+    <div class="diagram-box">
+      <pre>
+Exchange Rate
+(Rs/$)    |
+         |   S (Supply of $)
+         |    \
+         |     \
+    E ---|------\-----
+         |       \   D (Demand for $)
+         |        \
+         +----------------- Quantity of $
+         0        Q
+      Equilibrium where D = S
+      </pre>
+    </div>
+    <p>The market exchange rate is determined by the intersection of demand for and supply of foreign currency. At equilibrium, the quantity demanded equals the quantity supplied.</p>
+  </div>
+
+  <!-- 4. Exchange Rate Systems -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F3F0;</div>
+    <h2>Exchange Rate Systems <span class="underline"></span></h2>
+
+    <div class="comparison three-col" style="grid-template-columns:1fr 1fr 1fr;">
+      <div class="left">
+        <div class="header">&#x1F512; Fixed</div>
+        <ul>
+          <li>Determined by monetary authority</li>
+          <li>Based on gold standard (1890&ndash;1920)</li>
+          <li>Stable &amp; predictable</li>
+          <li>Requires large reserves</li>
+          <li>Vulnerable to speculative attacks</li>
+        </ul>
+      </div>
+      <div class="right" style="background:rgba(236,72,153,0.08);">
+        <div class="header" style="color:var(--accent2);">&#x1F4C8; Floating</div>
+        <ul>
+          <li>Determined by market D &amp; S</li>
+          <li>Automatically balances BOP</li>
+          <li>No reserve requirement</li>
+          <li>Volatile &amp; uncertain</li>
+          <li>Self-correcting mechanism</li>
+        </ul>
+      </div>
+      <div class="third-col">
+        <div class="header">&#x2696;&#xFE0F; Managed Floating</div>
+        <ul>
+          <li>Combination of both systems</li>
+          <li>Central bank intervenes within a range</li>
+          <li>Crawling peg / Dirty float</li>
+          <li>Limited flexibility</li>
+          <li>Most countries use this today</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Effective Exchange Rates -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4CA;</div>
+    <h2>Effective Exchange Rates <span class="underline"></span></h2>
+
+    <div class="card-grid">
+      <div class="info-card">
+        <div class="emoji">&#x1F4CA;</div>
+        <div class="label">NEER</div>
+        <div class="desc">Nominal Effective Exchange Rate</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F4C8;</div>
+        <div class="label">REER</div>
+        <div class="desc">Real Effective Exchange Rate</div>
+      </div>
+    </div>
+
+    <div class="comparison">
+      <div class="left">
+        <div class="header">NEER</div>
+        <ul>
+          <li>Weighted average of bilateral nominal exchange rates</li>
+          <li>Weights based on trade share with each partner</li>
+          <li>Measured in nominal terms (not adjusted for inflation)</li>
+          <li>NEER = &Sigma; (w<sub>i</sub> &times; E<sub>i</sub>)</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">REER</div>
+        <ul>
+          <li>NEER adjusted for inflation differences</li>
+          <li>Measures real competitiveness</li>
+          <li>REER = NEER &times; (P<sub>domestic</sub> / P<sub>foreign</sub>)</li>
+          <li>REER &#x2191; = loss of competitiveness</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="formula-box">
+      NEER = &Sigma; (Trade Weight<sub>i</sub> &times; Exchange Rate<sub>i</sub>)
+    </div>
+    <div class="formula-box">
+      REER = NEER &times; (Domestic Price Level / Foreign Price Level)
+    </div>
+  </div>
+
+  <!-- 6. Changes in Exchange Rate -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4C9;&#x1F4C8;</div>
+    <h2>Changes in Exchange Rate <span class="underline"></span></h2>
+
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F4C9; Under Fixed System</div>
+        <ul>
+          <li><strong>Devaluation:</strong> Official lowering of currency value by monetary authority</li>
+          <li><strong>Revaluation:</strong> Official increase in currency value by monetary authority</li>
+          <li>Government/monetary authority makes the decision</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F4C8; Under Floating System</div>
+        <ul>
+          <li><strong>Depreciation:</strong> Market-driven decrease in currency value</li>
+          <li><strong>Appreciation:</strong> Market-driven increase in currency value</li>
+          <li>Determined automatically by demand and supply forces</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="comparison" style="margin-top:1rem;">
+      <div class="left">
+        <div class="header">Devaluation vs Depreciation</div>
+        <ul>
+          <li>Devaluation is <strong>official/policy-driven</strong></li>
+          <li>Occurs under <strong>fixed</strong> exchange rate system</li>
+          <li>Announced by central bank/government</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">Similarity</div>
+        <ul>
+          <li><strong>Both</strong> result in a currency becoming cheaper relative to foreign currencies</li>
+          <li>Both increase the domestic price of foreign currency</li>
+          <li>Both make exports cheaper and imports more expensive</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Effects of Devaluation/Depreciation -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4B5;</div>
+    <h2>Effects of Devaluation / Depreciation <span class="underline"></span></h2>
+
+    <div class="card-grid">
+      <div class="info-card">
+        <div class="emoji">&#x1F4C8;</div>
+        <div class="label">Import Prices &#x2191;</div>
+        <div class="desc">Increases domestic price of imports, increases import expenditure</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F4B0;</div>
+        <div class="label">Inflation &#x2191;</div>
+        <div class="desc">Can increase domestic inflation (imported inflation)</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F4B5;</div>
+        <div class="label">Debt Service &#x2191;</div>
+        <div class="desc">Increases foreign debt service payments in local currency</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F30D;</div>
+        <div class="label">Tourism &#x2191;</div>
+        <div class="desc">Improves tourism earnings (cheaper for foreigners)</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F9D1;&#x200D;&#x1F4B0;</div>
+        <div class="label">Remittances &#x2191;</div>
+        <div class="desc">Improves worker remittances value in local currency</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F4E6;</div>
+        <div class="label">Trade Balance</div>
+        <div class="desc">Discourages imports, encourages exports</div>
+      </div>
+    </div>
+
+    <h3>Marshall-Lerner Condition</h3>
+    <p>For a devaluation/depreciation to improve the trade balance:</p>
+    <div class="formula-box">
+      |E<sub>X</sub>| + |E<sub>M</sub>| &gt; 1
+    </div>
+    <p style="font-size:0.9rem;color:var(--text-muted);">Where E<sub>X</sub> = price elasticity of demand for exports, E<sub>M</sub> = price elasticity of demand for imports. If the sum of elasticities exceeds 1, devaluation improves the trade balance.</p>
+  </div>
+
+  <!-- 8. Effects of Appreciation/Revaluation -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4C9;</div>
+    <h2>Effects of Appreciation / Revaluation <span class="underline"></span></h2>
+
+    <div class="card-grid">
+      <div class="info-card">
+        <div class="emoji">&#x1F4E6;</div>
+        <div class="label">Import Prices &#x2193;</div>
+        <div class="desc">Decreases domestic price of imported goods</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F4C9;</div>
+        <div class="label">Inflation &#x2193;</div>
+        <div class="desc">Decreases inflation rate (if import-dependent economy)</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F4B5;</div>
+        <div class="label">Foreign Debt &#x2193;</div>
+        <div class="desc">Decreases cost of repaying foreign debt in local currency</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F4B0;</div>
+        <div class="label">Debt Value &#x2193;</div>
+        <div class="desc">Decreases foreign debt value expressed in domestic currency</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. Objectives of Devaluation -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F3AF;</div>
+    <h2>Objectives of Devaluation <span class="underline"></span></h2>
+    <p>Why do countries intentionally devalue their currency?</p>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F4C9;</div><div class="label">Minimize BOP Deficit</div><div class="desc">Reduce long-term balance of payments deficit</div></div>
+      <div class="info-card"><div class="emoji">&#x1F6AB;</div><div class="label">Discourage Imports</div><div class="desc">Make imports more expensive, reduce demand</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4E6;</div><div class="label">Encourage Exports</div><div class="desc">Make exports cheaper, boost foreign demand</div></div>
+      <div class="info-card"><div class="emoji">&#x1F9D1;&#x200D;&#x1F4B0;</div><div class="label">Encourage Remittances</div><div class="desc">Increase value of foreign worker remittances</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4B5;</div><div class="label">Improve FDI</div><div class="desc">Attract foreign direct investment (cheaper assets)</div></div>
+    </div>
+  </div>
+
+  <!-- 10. Balance of Payments -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4CB;</div>
+    <h2>Balance of Payments (BOP) <span class="underline"></span></h2>
+    <p>The <strong>Balance of Payments</strong> is a systematic statement of all economic transactions between residents of a country and non-residents over a specific period (usually a year).</p>
+
+    <h4>Key Features</h4>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F4C4;</div><div class="label">Statement</div><div class="desc">Records all international transactions</div></div>
+      <div class="info-card"><div class="emoji">&#x1F504;</div><div class="label">Double Entry</div><div class="desc">Every transaction recorded twice (credit &amp; debit)</div></div>
+      <div class="info-card"><div class="emoji">&#x2696;&#xFE0F;</div><div class="label">Balances</div><div class="desc">BOP always balances: net = 0</div></div>
+    </div>
+
+    <h4>Recording Conventions</h4>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F4E4; Debit (+)</div>
+        <ul>
+          <li>When asset/good/service flows <strong>FROM</strong> the country</li>
+          <li>Payments to non-residents</li>
+          <li>Examples: imports, foreign travel, debt repayment</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F4E5; Credit (&minus;)</div>
+        <ul>
+          <li>When asset/good/service flows <strong>TO</strong> the country</li>
+          <li>Receipts from non-residents</li>
+          <li>Examples: exports, remittances, foreign investment</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="formula-box gradient-text"><span>Total Debits = Total Credits &rArr; BOP always balances to zero</span></div>
+  </div>
+
+  <!-- 11. Structure of BOP -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F3E2;</div>
+    <h2>Structure of BOP <span class="underline"></span></h2>
+
+    <p>The Balance of Payments has three main accounts:</p>
+
+    <div class="comparison three-col" style="grid-template-columns:1fr 1fr 1fr;">
+      <div class="left">
+        <div class="header">&#x1F4B3; Current Account</div>
+        <ul>
+          <li>Goods (Trade balance)</li>
+          <li>Services</li>
+          <li>Goods &amp; Services</li>
+          <li>Primary Income</li>
+          <li>Secondary Income</li>
+        </ul>
+      </div>
+      <div class="right" style="background:rgba(236,72,153,0.08);">
+        <div class="header" style="color:var(--accent2);">&#x1F3DB;&#xFE0F; Capital Account</div>
+        <ul>
+          <li>Non-produced, non-monetary assets</li>
+          <li>Licenses, leases</li>
+          <li>Brand names, patents</li>
+          <li>Royalties</li>
+        </ul>
+      </div>
+      <div class="third-col">
+        <div class="header">&#x1F4B0; Financial Account</div>
+        <ul>
+          <li>Direct investments</li>
+          <li>Portfolio investments</li>
+          <li>Financial derivatives</li>
+          <li>Other investments</li>
+          <li>Foreign reserve assets</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Current Account in Detail</h3>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F4E6;</div><div class="label">Goods Account</div><div class="desc">Trade balance = Exports &minus; Imports</div></div>
+      <div class="info-card"><div class="emoji">&#x2708;&#xFE0F;</div><div class="label">Services Account</div><div class="desc">Transport, travel, financial, telecom, insurance</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4CA;</div><div class="label">Goods &amp; Services</div><div class="desc">Goods balance + Services balance</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4B0;</div><div class="label">Primary Income</div><div class="desc">Interest, wages, dividends from abroad</div></div>
+      <div class="info-card"><div class="emoji">&#x1F91D;</div><div class="label">Secondary Income</div><div class="desc">Transfers, remittances, gifts, grants</div></div>
+    </div>
+
+    <h3>Worked Examples</h3>
+
+    <div class="diagram-box" style="text-align:left;">
+      <strong style="color:var(--accent);">Example 1: Trade Balance</strong>
+      <div class="diagram-flow">
+        <div class="box">Exports = $500M</div>
+        <div class="arrow">&#x2212;</div>
+        <div class="box">Imports = $700M</div>
+        <div class="arrow">=</div>
+        <div class="result" style="color:#d63031;border-color:#d63031;">Trade Balance = &minus;$200M (Deficit)</div>
+      </div>
+
+      <strong style="color:var(--accent);margin-top:1rem;display:block;">Example 2: Services Balance</strong>
+      <div class="diagram-flow">
+        <div class="box">Services Exports = $300M</div>
+        <div class="arrow">&#x2212;</div>
+        <div class="box">Services Imports = $200M</div>
+        <div class="arrow">=</div>
+        <div class="result">Services Balance = +$100M (Surplus)</div>
+      </div>
+
+      <strong style="color:var(--accent);margin-top:1rem;display:block;">Example 3: Goods &amp; Services Balance</strong>
+      <div class="diagram-flow">
+        <div class="box">Goods Balance = &minus;$200M</div>
+        <div class="arrow">+</div>
+        <div class="box">Services Balance = +$100M</div>
+        <div class="arrow">=</div>
+        <div class="result" style="color:#d63031;border-color:#d63031;">G &amp; S Balance = &minus;$100M (Deficit)</div>
+      </div>
+
+      <strong style="color:var(--accent);margin-top:1rem;display:block;">Example 4: Current Account Balance</strong>
+      <div class="diagram-flow">
+        <div class="box">G &amp; S Balance = &minus;$100M</div>
+        <div class="arrow">+</div>
+        <div class="box">Primary Income = +$50M</div>
+        <div class="arrow">+</div>
+        <div class="box">Secondary Income = +$80M</div>
+        <div class="arrow">=</div>
+        <div class="result">Current Account = +$30M (Surplus)</div>
+      </div>
+
+      <strong style="color:var(--accent);margin-top:1rem;display:block;">Example 5: Capital Account</strong>
+      <div class="diagram-flow">
+        <div class="box">Patent sales, licenses, royalties</div>
+        <div class="arrow">=</div>
+        <div class="result">Capital Account = +$10M</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive BOP Calculator -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4C8;</div>
+    <h2>Interactive BOP Calculator <span class="underline"></span></h2>
+    <p>Enter values (in millions USD) to calculate the Balance of Payments:</p>
+
+    <div class="bop-calc" id="bopCalc">
+      <div class="section-label">&#x1F4E6; Goods Account</div>
+      <div class="calc-row">
+        <label>Exports (X)</label>
+        <input type="number" id="exports" value="500" oninput="calcBOP()">
+      </div>
+      <div class="calc-row">
+        <label>Imports (M)</label>
+        <input type="number" id="imports" value="700" oninput="calcBOP()">
+      </div>
+      <div class="calc-row">
+        <label style="font-weight:600;color:var(--accent);">Trade Balance</label>
+        <span class="calc-result" id="tradeBalance">-$200M</span>
+      </div>
+
+      <div class="section-label">&#x1F3ED; Services Account</div>
+      <div class="calc-row">
+        <label>Services Exports</label>
+        <input type="number" id="servExports" value="300" oninput="calcBOP()">
+      </div>
+      <div class="calc-row">
+        <label>Services Imports</label>
+        <input type="number" id="servImports" value="200" oninput="calcBOP()">
+      </div>
+      <div class="calc-row">
+        <label style="font-weight:600;color:var(--accent);">Services Balance</label>
+        <span class="calc-result" id="servicesBalance">+$100M</span>
+      </div>
+
+      <div class="section-label">&#x1F4CA; Combined</div>
+      <div class="calc-row">
+        <label style="font-weight:600;color:var(--accent);">Goods &amp; Services Balance</label>
+        <span class="calc-result" id="gsBalance">-$100M</span>
+      </div>
+
+      <div class="section-label">&#x1F4B0; Income</div>
+      <div class="calc-row">
+        <label>Primary Income (net)</label>
+        <input type="number" id="primaryIncome" value="50" oninput="calcBOP()">
+      </div>
+      <div class="calc-row">
+        <label>Secondary Income (net)</label>
+        <input type="number" id="secondaryIncome" value="80" oninput="calcBOP()">
+      </div>
+
+      <div class="section-label" style="border-color:rgba(236,72,153,0.3);">&#x1F3C6; Current Account Balance</div>
+      <div class="calc-row">
+        <label style="font-weight:700;color:var(--accent2);font-size:1.05rem;">Current Account</label>
+        <span class="calc-result" id="currentAccountBalance" style="font-size:1.1rem;">+$30M</span>
+      </div>
+
+      <div class="section-label">&#x1F3DB;&#xFE0F; Capital &amp; Financial Account</div>
+      <div class="calc-row">
+        <label>Capital Account (net)</label>
+        <input type="number" id="capitalAccount" value="10" oninput="calcBOP()">
+      </div>
+      <div class="calc-row">
+        <label>Financial Account (net)</label>
+        <input type="number" id="financialAccount" value="-40" oninput="calcBOP()">
+      </div>
+
+      <div class="section-label" style="border-color:var(--accent3);">&#x1F4CB; Overall BOP</div>
+      <div class="calc-row">
+        <label style="font-weight:700;color:var(--accent3);font-size:1.05rem;">BOP Balance</label>
+        <span class="calc-result" id="bopBalance" style="font-size:1.1rem;">$0M</span>
+      </div>
+    </div>
+
+    <p style="font-size:0.85rem;color:var(--text-muted);margin-top:0.5rem;">The BOP always balances to zero because every debit has a corresponding credit (double-entry accounting).</p>
+  </div>
+
+  <!-- Flashcards -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4A1;</div>
+    <h2>Key Term Flashcards <span class="underline"></span></h2>
+    <p>Click each card to reveal the definition.</p>
+    <div class="flashcard-container">
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F4B1; Foreign Exchange
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Conversion of one country's currency into another country's currency for international transactions
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F4B3; Nominal Exchange Rate
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            The price of one currency expressed in terms of another currency
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F512; Fixed Exchange Rate
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Exchange rate determined by monetary authority; historically based on gold standard (1890&ndash;1920)
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F4C8; Floating Exchange Rate
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Exchange rate determined by market demand and supply; automatically balances BOP
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x2696;&#xFE0F; Managed Floating
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Mixed system: central bank intervenes within a range while market largely determines rate
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F4C9; Devaluation
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Official lowering of currency value by monetary authority under a fixed exchange rate system
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F4C8; Depreciation
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Market-driven decrease in currency value under a floating exchange rate system
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F4CB; Balance of Payments
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Statement of all transactions between residents and non-residents over a period; always balances to zero
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x2696;&#xFE0F; Marshall-Lerner Cond.
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            For devaluation to improve trade balance: |E<sub>X</sub>| + |E<sub>M</sub>| &gt; 1
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F4CA; NEER
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Nominal Effective Exchange Rate: weighted average of bilateral exchange rates with trading partners
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comparison Tables -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4CB;</div>
+    <h2>Comparison Tables <span class="underline"></span></h2>
+
+    <h3>Fixed vs Floating vs Managed Floating</h3>
+    <div class="comparison three-col" style="grid-template-columns:1fr 1fr 1fr;">
+      <div class="left">
+        <div class="header">&#x1F512; Fixed</div>
+        <ul>
+          <li>Set by monetary authority</li>
+          <li>Stable &amp; predictable</li>
+          <li>Needs large reserves</li>
+          <li>Prone to speculation</li>
+          <li>Gold standard basis</li>
+        </ul>
+      </div>
+      <div class="right" style="background:rgba(236,72,153,0.08);">
+        <div class="header" style="color:var(--accent2);">&#x1F4C8; Floating</div>
+        <ul>
+          <li>Set by market D &amp; S</li>
+          <li>Volatile &amp; uncertain</li>
+          <li>No reserves needed</li>
+          <li>Auto-corrects BOP</li>
+          <li>Self-regulating</li>
+        </ul>
+      </div>
+      <div class="third-col">
+        <div class="header">&#x2696;&#xFE0F; Managed</div>
+        <ul>
+          <li>Hybrid approach</li>
+          <li>Partial flexibility</li>
+          <li>Central bank intervenes</li>
+          <li>Limited volatility</li>
+          <li>Most common today</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Devaluation vs Depreciation</h3>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F4C9; Devaluation</div>
+        <ul>
+          <li>Official/policy-driven</li>
+          <li>Under <strong>fixed</strong> exchange rate</li>
+          <li>Announced by government</li>
+          <li>Sudden &amp; discrete</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F4C8; Depreciation</div>
+        <ul>
+          <li>Market-driven</li>
+          <li>Under <strong>floating</strong> exchange rate</li>
+          <li>Automatic &amp; continuous</li>
+          <li>Gradual &amp; ongoing</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Direct vs Indirect Quotation</h3>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F4C7; Direct (Price)</div>
+        <ul>
+          <li>Foreign currency per domestic unit</li>
+          <li>US$1 = SLKR 152</li>
+          <li>"Price of foreign currency"</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F4C8; Indirect (Volume)</div>
+        <ul>
+          <li>Domestic currency per foreign unit</li>
+          <li>SLKR 1 = US$0.0065</li>
+          <li>"Volume of domestic currency"</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Current vs Capital vs Financial Account</h3>
+    <div class="comparison three-col" style="grid-template-columns:1fr 1fr 1fr;">
+      <div class="left">
+        <div class="header">&#x1F4B3; Current</div>
+        <ul>
+          <li>Goods &amp; services trade</li>
+          <li>Primary &amp; secondary income</li>
+          <li>Short-term flows</li>
+          <li>Day-to-day transactions</li>
+        </ul>
+      </div>
+      <div class="right" style="background:rgba(236,72,153,0.08);">
+        <div class="header" style="color:var(--accent2);">&#x1F3DB;&#xFE0F; Capital</div>
+        <ul>
+          <li>Non-produced assets</li>
+          <li>Patents, licenses, brands</li>
+          <li>Intangible assets</li>
+          <li>Royalties &amp; leases</li>
+        </ul>
+      </div>
+      <div class="third-col">
+        <div class="header">&#x1F4B0; Financial</div>
+        <ul>
+          <li>Direct &amp; portfolio investment</li>
+          <li>Derivatives</li>
+          <li>Reserve assets</li>
+          <li>Capital flows</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Quiz -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F9F0;</div>
+    <h2>Test Your Knowledge <span class="underline"></span></h2>
+
+    <div class="quiz-question" data-q="1">
+      <div class="q">1. Under a fixed exchange rate system, the official lowering of currency value is called:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Depreciation</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Devaluation</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Appreciation</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Revaluation</button>
+      <div class="quiz-feedback" data-feedback="1"></div>
+    </div>
+
+    <div class="quiz-question" data-q="2">
+      <div class="q">2. Which exchange rate system is determined purely by market demand and supply?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Fixed exchange rate</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Managed floating</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Floating exchange rate</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Gold standard</button>
+      <div class="quiz-feedback" data-feedback="2"></div>
+    </div>
+
+    <div class="quiz-question" data-q="3">
+      <div class="q">3. In the Balance of Payments, a debit (+) is recorded when:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">An asset flows TO the country</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">An asset flows FROM the country</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Exports are made</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Remittances are received</button>
+      <div class="quiz-feedback" data-feedback="3"></div>
+    </div>
+
+    <div class="quiz-question" data-q="4">
+      <div class="q">4. The Marshall-Lerner condition states that devaluation improves trade balance when:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">|E<sub>X</sub>| + |E<sub>M</sub>| &lt; 1</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">|E<sub>X</sub>| + |E<sub>M</sub>| &gt; 1</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">|E<sub>X</sub>| + |E<sub>M</sub>| = 1</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">|E<sub>X</sub>| &times; |E<sub>M</sub>| &gt; 1</button>
+      <div class="quiz-feedback" data-feedback="4"></div>
+    </div>
+
+    <div class="quiz-question" data-q="5">
+      <div class="q">5. Direct quotation expresses:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Domestic currency in terms of foreign currency</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Foreign currency in terms of domestic currency</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">The real exchange rate adjusted for inflation</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">The weighted average of bilateral rates</button>
+      <div class="quiz-feedback" data-feedback="5"></div>
+    </div>
+
+    <div class="quiz-question" data-q="6">
+      <div class="q">6. Which of the following is NOT a participant in the foreign exchange market?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Commercial banks</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Central bank</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Stock exchanges</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Forex brokers</button>
+      <div class="quiz-feedback" data-feedback="6"></div>
+    </div>
+
+    <div class="quiz-question" data-q="7">
+      <div class="q">7. An appreciation of the domestic currency typically leads to:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Higher import prices</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Lower import prices and lower inflation</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Increased exports</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Higher foreign debt service payments</button>
+      <div class="quiz-feedback" data-feedback="7"></div>
+    </div>
+
+    <div class="quiz-question" data-q="8">
+      <div class="q">8. The Balance of Payments always balances to zero because:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Government policy ensures it</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Central bank intervention</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Double-entry bookkeeping: every debit has a corresponding credit</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Trade is always balanced</button>
+      <div class="quiz-feedback" data-feedback="8"></div>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4D1;</div>
+    <h2>Summary <span class="underline"></span></h2>
+    <ul>
+      <li><strong>Foreign exchange</strong> converts one currency into another; the forex market has various participants including banks, brokers, central banks, and the public.</li>
+      <li>The <strong>nominal exchange rate</strong> can be quoted directly (foreign in domestic terms) or indirectly (domestic in foreign terms).</li>
+      <li>Foreign exchange is <strong>demanded</strong> for imports, travel, debt repayment, and transfers; it is <strong>supplied</strong> by exports, primary income, and secondary income.</li>
+      <li>Three main <strong>exchange rate systems</strong>: fixed (monetary authority), floating (market D &amp; S), and managed floating (hybrid).</li>
+      <li><strong>Devaluation/depreciation</strong> makes imports expensive and exports cheap; <strong>appreciation/revaluation</strong> has the opposite effect.</li>
+      <li>The <strong>Marshall-Lerner condition</strong> requires |E<sub>X</sub>| + |E<sub>M</sub>| &gt; 1 for devaluation to improve the trade balance.</li>
+      <li><strong>BOP</strong> records all international transactions via double-entry system, always balancing to zero across current, capital, and financial accounts.</li>
+    </ul>
+  </div>
+
+</div>
+
+<script>
+  // Particles
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  class Particle {
+    constructor() {
+      this.reset();
+    }
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 2 + 0.5;
+      this.speedX = (Math.random() - 0.5) * 0.5;
+      this.speedY = (Math.random() - 0.5) * 0.5;
+      this.opacity = Math.random() * 0.5 + 0.1;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(168, 85, 247, ${this.opacity})`;
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+  function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 150) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(168, 85, 247, ${0.06 * (1 - dist / 150)})`;
+          ctx.lineWidth = 0.5;
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(animateParticles);
+  }
+  animateParticles();
+
+  // Scroll reveal
+  const sections = document.querySelectorAll('[data-section]');
+
+  function revealSections() {
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 80) {
+        section.classList.add('visible');
+      }
+    });
+  }
+  window.addEventListener('scroll', revealSections);
+  revealSections();
+
+  // Progress bar
+  const progressBar = document.getElementById('progressBar');
+
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / docHeight) * 100;
+    progressBar.style.width = progress + '%';
+  });
+
+  // Quiz
+  function checkAnswer(btn, isCorrect) {
+    const question = btn.closest('.quiz-question');
+    const options = question.querySelectorAll('.quiz-option');
+    const feedback = question.querySelector('.quiz-feedback');
+
+    options.forEach(opt => {
+      opt.disabled = true;
+      if (opt.dataset.correct === 'true') opt.classList.add('correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.textContent = '\u2705 Correct!';
+      feedback.className = 'quiz-feedback show correct';
+    } else {
+      btn.classList.add('wrong');
+      const correctBtn = question.querySelector('[data-correct="true"]');
+      feedback.textContent = '\u274C Incorrect. The answer was: ' + correctBtn.textContent;
+      feedback.className = 'quiz-feedback show wrong';
+    }
+  }
+
+  // BOP Calculator
+  function calcBOP() {
+    const exports = parseFloat(document.getElementById('exports').value) || 0;
+    const imports = parseFloat(document.getElementById('imports').value) || 0;
+    const servExports = parseFloat(document.getElementById('servExports').value) || 0;
+    const servImports = parseFloat(document.getElementById('servImports').value) || 0;
+    const primaryIncome = parseFloat(document.getElementById('primaryIncome').value) || 0;
+    const secondaryIncome = parseFloat(document.getElementById('secondaryIncome').value) || 0;
+    const capitalAccount = parseFloat(document.getElementById('capitalAccount').value) || 0;
+    const financialAccount = parseFloat(document.getElementById('financialAccount').value) || 0;
+
+    const tradeBal = exports - imports;
+    const servBal = servExports - servImports;
+    const gsBal = tradeBal + servBal;
+    const currentAccount = gsBal + primaryIncome + secondaryIncome;
+    const bopBal = currentAccount + capitalAccount + financialAccount;
+
+    setResult('tradeBalance', tradeBal);
+    setResult('servicesBalance', servBal);
+    setResult('gsBalance', gsBal);
+    setResult('currentAccountBalance', currentAccount);
+    setResult('bopBalance', bopBal);
+  }
+
+  function setResult(id, value) {
+    const el = document.getElementById(id);
+    const sign = value >= 0 ? '+' : '';
+    el.textContent = sign + value + 'M';
+    el.className = 'calc-result';
+    if (value > 0) el.classList.add('positive');
+    else if (value < 0) el.classList.add('negative');
+    else el.classList.add('zero');
+  }
+
+  calcBOP();
+</script>
+
+</body>
+</html>

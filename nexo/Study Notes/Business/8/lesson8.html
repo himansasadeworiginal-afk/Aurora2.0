@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 8 – Communication</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0e0514;
+    --surface: rgba(255,255,255,0.04);
+    --surface-hover: rgba(255,255,255,0.08);
+    --border: rgba(255,255,255,0.06);
+    --text: #f3e8ff;
+    --text-dim: #c4b5fd;
+    --accent: #a855f7;
+    --accent2: #ec4899;
+    --accent3: #06b6d4;
+    --radius: 16px;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+  #particles-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  .ambient-glow {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 0;
+    animation: floatGlow 20s ease-in-out infinite alternate;
+  }
+  .ambient-glow:nth-child(1) {
+    width: 600px; height: 600px;
+    background: rgba(168,85,247,0.08);
+    top: -10%; left: -10%;
+  }
+  .ambient-glow:nth-child(2) {
+    width: 500px; height: 500px;
+    background: rgba(236,72,153,0.06);
+    bottom: -10%; right: -10%;
+    animation-delay: -7s;
+  }
+  .ambient-glow:nth-child(3) {
+    width: 400px; height: 400px;
+    background: rgba(6,182,212,0.04);
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    animation-delay: -14s;
+  }
+  @keyframes floatGlow {
+    0% { transform: translate(0,0) scale(1); }
+    33% { transform: translate(60px,-40px) scale(1.1); }
+    66% { transform: translate(-30px,50px) scale(0.9); }
+    100% { transform: translate(40px,20px) scale(1.05); }
+  }
+  .content { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 40px 24px 120px; }
+  header {
+    text-align: center;
+    padding: 100px 0 60px;
+    opacity: 0;
+    transform: translateY(40px);
+    animation: fadeUp 1s ease forwards;
+  }
+  header .badge {
+    display: inline-block;
+    padding: 6px 18px;
+    border-radius: 100px;
+    background: linear-gradient(135deg, rgba(168,85,247,0.15), rgba(236,72,153,0.15));
+    border: 1px solid rgba(168,85,247,0.2);
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    margin-bottom: 24px;
+  }
+  header h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.2;
+    background: linear-gradient(135deg, #f3e8ff 0%, var(--accent) 40%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  header p {
+    color: var(--text-dim);
+    font-size: 1.1rem;
+    margin-top: 16px;
+    max-width: 600px;
+    margin-inline: auto;
+  }
+  .toc {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin: 0 0 60px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.3s forwards;
+  }
+  .toc a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px;
+    border-radius: var(--radius);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  .toc a:hover {
+    background: var(--surface-hover);
+    border-color: rgba(168,85,247,0.3);
+    color: var(--text);
+    transform: translateY(-2px);
+  }
+  .toc a .num {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(168,85,247,0.2), rgba(236,72,153,0.2));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .section { margin: 40px 0; opacity: 0; transform: translateY(30px); transition: all 0.6s ease; }
+  .section.visible { opacity: 1; transform: translateY(0); }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 36px 32px;
+    backdrop-filter: blur(20px);
+    transition: all 0.4s ease;
+  }
+  .card:hover { border-color: rgba(168,85,247,0.15); box-shadow: 0 8px 40px rgba(0,0,0,0.3); }
+  .card h2 {
+    font-size: 1.5rem; font-weight: 700; margin-bottom: 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .card h2 .icon {
+    width: 40px; height: 40px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; flex-shrink: 0;
+  }
+  .card .subtitle { color: var(--text-dim); font-size: 14px; margin-bottom: 20px; }
+  .def-box {
+    background: linear-gradient(135deg, rgba(168,85,247,0.06), rgba(236,72,153,0.06));
+    border-left: 3px solid var(--accent);
+    padding: 20px 24px; border-radius: 0 12px 12px 0;
+    margin: 16px 0; font-style: italic; color: var(--text-dim);
+  }
+  ul.features, ul.list {
+    list-style: none; display: flex; flex-direction: column; gap: 8px; margin: 16px 0;
+  }
+  ul.features li, ul.list li {
+    padding: 10px 16px 10px 36px; border-radius: 10px;
+    background: var(--surface); border: 1px solid var(--border);
+    position: relative; transition: all 0.3s ease; font-size: 15px;
+  }
+  ul.features li:hover, ul.list li:hover { background: var(--surface-hover); transform: translateX(4px); }
+  ul.features li::before { content: "\2713"; position: absolute; left: 12px; color: var(--accent2); font-weight: 700; }
+  ul.list li::before { content: "\2022"; position: absolute; left: 14px; color: var(--accent); font-weight: 700; }
+  .comparison-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+  .comparison-table th, .comparison-table td { padding: 14px 18px; text-align: left; border-bottom: 1px solid var(--border); }
+  .comparison-table th { background: linear-gradient(135deg, rgba(168,85,247,0.1), rgba(236,72,153,0.1)); font-weight: 600; color: var(--accent); }
+  .comparison-table th:first-child { border-radius: 12px 0 0 0; }
+  .comparison-table th:last-child { border-radius: 0 12px 0 0; }
+  .comparison-table tr:hover td { background: var(--surface-hover); }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+  @media (max-width: 640px) { .grid-2 { grid-template-columns: 1fr; } }
+  .grid-item { padding: 20px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+  .grid-item h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--accent); }
+  .grid-item ul { list-style: none; }
+  .grid-item ul li { padding: 4px 0 4px 16px; position: relative; font-size: 14px; color: var(--text-dim); }
+  .grid-item ul li::before { content: "\2192"; position: absolute; left: 0; color: var(--accent2); }
+  .progress-bar { position: fixed; top: 0; left: 0; width: 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3)); z-index: 100; transition: width 0.1s ease; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .toggle-btn { background: none; border: 1px solid var(--border); color: var(--text-dim); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 13px; font-family: inherit; transition: all 0.3s ease; margin: 8px 0; }
+  .toggle-btn:hover { border-color: var(--accent); color: var(--accent); }
+  footer { text-align: center; padding: 40px 0; color: var(--text-dim); font-size: 13px; border-top: 1px solid var(--border); margin-top: 60px; }
+  ::selection { background: rgba(168,85,247,0.3); color: #fff; }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+</style>
+</head>
+<body>
+<div class="ambient-glow"></div>
+<div class="ambient-glow"></div>
+<div class="ambient-glow"></div>
+<canvas id="particles-canvas"></canvas>
+<div class="progress-bar" id="progress-bar"></div>
+<div class="content">
+  <header>
+    <div class="badge">Business Studies &mdash; Lesson 8</div>
+    <h1>Communication</h1>
+    <p>Definition, importance, communication process, media, electronic communication, barriers, and strategies.</p>
+  </header>
+  <nav class="toc">
+    <a href="#sec-definition"><span class="num">1</span> Definition</a>
+    <a href="#sec-importance"><span class="num">2</span> Importance</a>
+    <a href="#sec-process"><span class="num">3</span> Process</a>
+    <a href="#sec-effective"><span class="num">4</span> Effective Comm.</a>
+    <a href="#sec-media"><span class="num">5</span> Media Types</a>
+    <a href="#sec-electronic"><span class="num">6</span> Electronic</a>
+    <a href="#sec-barriers"><span class="num">7</span> Barriers</a>
+    <a href="#sec-proscons"><span class="num">8</span> Pros &amp; Cons</a>
+  </nav>
+
+  <div class="section" id="sec-definition">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(236,72,153,0.2));">&#9993;</span> What is Communication?</h2>
+      <div class="def-box">Communication can be defined as sending and receiving information, understanding and sharing information from one party to another or many parties.</div>
+      <p style="color:var(--text-dim);font-size:15px;">Communication is important for <strong>business activities</strong> as well as <strong>social activities</strong>.</p>
+    </div>
+  </div>
+
+  <div class="section" id="sec-importance">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(236,72,153,0.2),rgba(168,85,247,0.2));">&#9881;</span> Importance of Communication</h2>
+      <button class="toggle-btn" onclick="toggleSection('imp-biz')">&#9660; For Business Activities</button>
+      <div id="imp-biz" style="display:none;">
+        <ul class="features">
+          <li>To exchange ideas between parties at businesses</li>
+          <li>To maintain employer-employee relationship</li>
+          <li>To manage human and physical resources well</li>
+          <li>For marketing promotional activities</li>
+        </ul>
+      </div>
+      <button class="toggle-btn" onclick="toggleSection('imp-social')">&#9660; For Social Activities</button>
+      <div id="imp-social" style="display:none;">
+        <ul class="features">
+          <li>To exchange ideas and messages socially</li>
+          <li>To know instantly about international incidents</li>
+          <li>To get information for educational activities</li>
+          <li>To know about new inventions with technological improvement</li>
+          <li>To build social relationships nationally and internationally</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-process">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(6,182,212,0.2),rgba(168,85,247,0.2));">&#9851;</span> Communication Process</h2>
+      <div class="grid-2">
+        <div class="grid-item">
+          <h4>Sender</h4>
+          <ul><li>The party sending the message</li><li>Speaker/lecturer (verbal) or signer/institution (written)</li></ul>
+        </div>
+        <div class="grid-item">
+          <h4>Message</h4>
+          <ul><li>The information the sender provides to the receiver</li></ul>
+        </div>
+        <div class="grid-item">
+          <h4>Media</h4>
+          <ul><li>How information is provided</li><li>Verbal medium, written medium, signs &amp; symbols</li></ul>
+        </div>
+        <div class="grid-item">
+          <h4>Receiver</h4>
+          <ul><li>The person who grasps the message</li><li>Can be a reader, listener, or viewer</li></ul>
+        </div>
+        <div class="grid-item">
+          <h4>Response</h4>
+          <ul><li>The way the receiver acts on what they heard or read</li></ul>
+        </div>
+        <div class="grid-item">
+          <h4>Feedback</h4>
+          <ul><li>Response from receiver to sender confirming receipt and understanding</li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-effective">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(168,85,247,0.2));">&#10003;</span> Effective Communication</h2>
+      <button class="toggle-btn" onclick="toggleSection('eff-chars')">&#9660; Characteristics</button>
+      <div id="eff-chars" style="display:none;">
+        <ul class="features">
+          <li>Correctness</li>
+          <li>Brevity</li>
+          <li>Completeness</li>
+          <li>Clarity</li>
+          <li>Politeness</li>
+          <li>Certainty</li>
+          <li>Consideration</li>
+          <li>Cost</li>
+          <li>Speed</li>
+        </ul>
+      </div>
+      <button class="toggle-btn" onclick="toggleSection('msg-considerations')">&#9660; Key Considerations for Preparing a Message</button>
+      <div id="msg-considerations" style="display:none;">
+        <ul class="list">
+          <li>The nature of the message</li>
+          <li>Completeness</li>
+          <li>Correctness</li>
+          <li>Politeness</li>
+          <li>The ability of being understood by the receiver</li>
+          <li>Brevity</li>
+          <li>Certainty</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-media">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(236,72,153,0.2));">&#9855;</span> Communication Media</h2>
+      <div class="def-box">Communication media are categorized as: <strong>Oral media</strong>, <strong>Written media</strong>, and <strong>Signs &amp; Symbols media</strong>.</div>
+      <button class="toggle-btn" onclick="toggleSection('internal-external')">&#9660; Internal &amp; External Communication</button>
+      <div id="internal-external" style="display:none;">
+        <div class="grid-2">
+          <div class="grid-item">
+            <h4>Internal Communication</h4>
+            <ul><li>Among managers &amp; owners</li><li>Among employees</li><li>Among departments</li></ul>
+          </div>
+          <div class="grid-item">
+            <h4>External Communication</h4>
+            <ul><li>With customers</li><li>With other businesses &amp; suppliers</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-electronic">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(6,182,212,0.2),rgba(168,85,247,0.2));">&#9889;</span> Electronic Communication</h2>
+      <div class="def-box">Communication generated with the development of information and communication technology.</div>
+      <button class="toggle-btn" onclick="toggleSection('electronic-types')">&#9660; Modern Methods</button>
+      <div id="electronic-types" style="display:none;">
+        <table class="comparison-table">
+          <tr><th>Method</th><th>Description</th></tr>
+          <tr><td><strong>Internet</strong></td><td>Computer network covering a wide range; network of networks; information obtained through a PC</td></tr>
+          <tr><td><strong>E-mail</strong></td><td>Exchange of messages through internet from computer to computer; both need internet and email addresses</td></tr>
+          <tr><td><strong>Intranet</strong></td><td>Institutional network based on internet; data within the institute; authorized persons only</td></tr>
+          <tr><td><strong>Voice Mail</strong></td><td>Verbal message over phone stored/recorded on a disk to retrieve later</td></tr>
+          <tr><td><strong>Fax</strong></td><td>Transmits letters and documents with pictures instantly through ordinary telephone system</td></tr>
+          <tr><td><strong>Mobile Phones</strong></td><td>Used for various business activities through satellite technology</td></tr>
+          <tr><td><strong>Intercom</strong></td><td>Private telephone network within the organization</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-barriers">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(239,68,68,0.2),rgba(168,85,247,0.2));">&#9940;</span> Barriers &amp; Strategies</h2>
+      <button class="toggle-btn" onclick="toggleSection('barriers-list')">&#9660; Barriers to Effective Communication</button>
+      <div id="barriers-list" style="display:none;">
+        <ul class="list">
+          <li>Poor knowledge about modern technical methods</li>
+          <li>External barriers in communication equipment</li>
+          <li>Outdated communication systems</li>
+          <li>Barriers in the communication process</li>
+          <li>Weaknesses in communication plans</li>
+          <li>Language problems, knowledge and attitudes</li>
+          <li>Barriers in the external environment</li>
+        </ul>
+      </div>
+      <button class="toggle-btn" onclick="toggleSection('strategies-list')">&#9660; Strategies to Overcome</button>
+      <div id="strategies-list" style="display:none;">
+        <ul class="features">
+          <li>Use of modern communication equipment</li>
+          <li>Imposing rules and regulations regarding communication</li>
+          <li>Setting up communication towers</li>
+          <li>Use of digital technology</li>
+          <li>Compilation of new rules on misuse of communication methods</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-proscons">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(239,68,68,0.2));">&#9776;</span> Advantages &amp; Disadvantages</h2>
+      <button class="toggle-btn" onclick="toggleSection('oral-proscons')">&#9660; Verbal Communication</button>
+      <div id="oral-proscons" style="display:none;">
+        <div class="grid-2">
+          <div class="grid-item"><h4>Advantages</h4><ul><li>Present problems in greater detail</li><li>Provider and receiver become much closer</li><li>Fast and confidential information</li></ul></div>
+          <div class="grid-item"><h4>Disadvantages</h4><ul><li>Language problems</li><li>Problems with verbally weak parties</li><li>No proof of communication</li></ul></div>
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSection('written-proscons')">&#9660; Written Communication</button>
+      <div id="written-proscons" style="display:none;">
+        <div class="grid-2">
+          <div class="grid-item"><h4>Advantages</h4><ul><li>Information in greater detail</li><li>Can be used as proof</li><li>Transmit data, notes, tables, graphs easily</li></ul></div>
+          <div class="grid-item"><h4>Disadvantages</h4><ul><li>Difficulties in understanding</li><li>Reading difficulties hinder transmission</li><li>Information may distort in transmission</li></ul></div>
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSection('signs-proscons')">&#9660; Signs &amp; Symbols Communication</button>
+      <div id="signs-proscons" style="display:none;">
+        <div class="grid-2">
+          <div class="grid-item"><h4>Advantages</h4><ul><li>Brief and clear information</li><li>Higher accuracy</li><li>Easy to understand</li></ul></div>
+          <div class="grid-item"><h4>Disadvantages</h4><ul><li>Sight impairment problems</li><li>Distortion over time causes miscommunication</li><li>Some signs/symbols hard to understand</li><li>Prior knowledge required</li></ul></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Business Studies &mdash; Lesson 8 &bull; Communication &bull; Based on original lesson notes</p>
+  </footer>
+</div>
+<script>
+  const canvas = document.getElementById('particles-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles=[];let mouseX=-1000,mouseY=-1000;
+  function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+  resize();window.addEventListener('resize',resize);
+  class Particle{constructor(){this.reset();}reset(){this.x=Math.random()*canvas.width;this.y=Math.random()*canvas.height;this.size=Math.random()*2+0.5;this.speedX=(Math.random()-0.5)*0.3;this.speedY=(Math.random()-0.5)*0.3;this.opacity=Math.random()*0.5+0.1;}update(){this.x+=this.speedX;this.y+=this.speedY;if(this.x<0||this.x>canvas.width)this.speedX*=-1;if(this.y<0||this.y>canvas.height)this.speedY*=-1;const dx=this.x-mouseX,dy=this.y-mouseY,dist=Math.sqrt(dx*dx+dy*dy);if(dist<120){const force=(120-dist)/120;this.x+=dx*force*0.008;this.y+=dy*force*0.008;}}draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);ctx.fillStyle=`rgba(196,181,253,${this.opacity})`;ctx.fill();}}
+  for(let i=0;i<120;i++)particles.push(new Particle());
+  function animateParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw();});for(let i=0;i<particles.length;i++){for(let j=i+1;j<particles.length;j++){const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y,dist=Math.sqrt(dx*dx+dy*dy);if(dist<140){ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle=`rgba(196,181,253,${0.06*(1-dist/140)})`;ctx.lineWidth=0.5;ctx.stroke();}}}requestAnimationFrame(animateParticles);}
+  animateParticles();
+  document.addEventListener('mousemove',e=>{mouseX=e.clientX;mouseY=e.clientY;});
+  window.addEventListener('scroll',()=>{const s=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-document.documentElement.clientHeight;document.getElementById('progress-bar').style.width=(s/h*100)+'%';});
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1});
+  document.querySelectorAll('.section').forEach(s=>observer.observe(s));
+  function toggleSection(id){const el=document.getElementById(id);if(el.style.display==='none'){el.style.display='block';el.style.animation='fadeUp 0.4s ease forwards';}else{el.style.display='none';}}
+</script>
+</body>
+</html>

@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atomic Habits — Interactive Summary</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f8f7f4;
+    --bg-alt: #efede8;
+    --surface: #ffffff;
+    --surface-hover: #f5f3ee;
+    --text: #1c1b18;
+    --text-dim: #7a7670;
+    --accent: #2d7d46;
+    --accent-light: #4aad66;
+    --accent-dim: #1a5230;
+    --amber: #d4a047;
+    --orange: #d4753a;
+    --red: #c0392b;
+    --border: #e2dfd8;
+    --shadow: 0 8px 32px rgba(0,0,0,0.05);
+    --radius: 14px;
+    --radius-sm: 8px;
+    --transition: 0.35s cubic-bezier(.22,1,.36,1);
+  }
+
+  .dark {
+    --bg: #11120f;
+    --bg-alt: #1a1c17;
+    --surface: #1f211c;
+    --surface-hover: #2a2d26;
+    --text: #e8e6df;
+    --text-dim: #8a877e;
+    --accent: #3dbf5a;
+    --accent-light: #5de080;
+    --accent-dim: #2a8a40;
+    --border: #2f322b;
+    --shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    transition: background var(--transition), color var(--transition);
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+  .theme-toggle {
+    position: fixed; top: 20px; right: 20px; z-index: 1000;
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); width: 44px; height: 44px; border-radius: 50%;
+    cursor: pointer; font-size: 1.2rem;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--shadow); transition: all var(--transition);
+  }
+  .theme-toggle:hover { transform: scale(1.1); border-color: var(--accent); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    padding: 2rem; position: relative; overflow: hidden;
+  }
+  .hero::after {
+    content: ''; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(45,125,70,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 30%, rgba(212,160,71,0.04) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-block; padding: 6px 20px; border-radius: 50px;
+    background: var(--accent); color: #fff; font-size: 0.75rem;
+    font-weight: 600; letter-spacing: 0.5px; margin-bottom: 1.5rem;
+    position: relative; z-index: 1;
+    opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero h1 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(2.8rem, 9vw, 6rem); font-weight: 800;
+    letter-spacing: -3px; line-height: 1; position: relative; z-index: 1;
+    opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+  }
+  .hero h1 .hl { color: var(--accent); }
+  .hero h1 .sm { font-size: 0.35em; display: block; font-weight: 400; letter-spacing: 4px; color: var(--text-dim); margin-top: 0.6rem; }
+  .hero p {
+    font-size: 1.1rem; color: var(--text-dim); max-width: 520px;
+    margin-top: 1rem; position: relative; z-index: 1;
+    opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
+  }
+  .hero .math {
+    margin-top: 2rem; padding: 1rem 2rem;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); display: inline-block;
+    position: relative; z-index: 1;
+    opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
+  }
+  .hero .math .eq { font-size: 1.5rem; font-weight: 700; }
+  .hero .math .eq .hl { color: var(--accent); }
+  .hero .math .note { font-size: 0.8rem; color: var(--text-dim); margin-top: 0.2rem; }
+  .hero-arrow {
+    margin-top: 2.5rem; font-size: 1.8rem; color: var(--accent);
+    position: relative; z-index: 1;
+    opacity: 0; animation: fadeUp 0.8s 1s forwards, bounce 2s 1s infinite;
+  }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  /* ─── SECTION ─── */
+  section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+
+  .section-label {
+    display: inline-block; padding: 4px 14px; border-radius: 50px;
+    background: rgba(45,125,70,0.1); color: var(--accent);
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; margin-bottom: 0.8rem;
+  }
+  section h2 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800; letter-spacing: -1px; margin-bottom: 0.5rem;
+  }
+  section h2 .hl { color: var(--accent); }
+  .section-desc {
+    color: var(--text-dim); font-size: 1rem; max-width: 560px;
+    margin-bottom: 2.5rem;
+  }
+
+  /* ─── STATS ─── */
+  .stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem; margin: 2rem 0;
+  }
+  .stat {
+    text-align: center; padding: 1.5rem 1rem;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); transition: all var(--transition);
+  }
+  .stat:hover { border-color: var(--accent); }
+  .stat-value {
+    font-size: 2.2rem; font-weight: 800; color: var(--accent);
+  }
+  .stat-label { font-size: 0.75rem; color: var(--text-dim); margin-top: 0.3rem; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* ─── GRID ─── */
+  .grid { display: grid; gap: 1.2rem; }
+  .grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .grid-3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .grid-4 { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
+
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.5rem;
+    transition: all var(--transition); cursor: default;
+    opacity: 0; transform: translateY(16px);
+    transition: opacity 0.6s ease, transform 0.6s ease, border-color var(--transition), box-shadow var(--transition);
+  }
+  .card.visible { opacity: 1; transform: translateY(0); }
+  .card:hover { border-color: var(--accent); box-shadow: 0 8px 24px rgba(45,125,70,0.08); }
+  .card .num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--accent); color: #fff; font-weight: 700; font-size: 0.9rem;
+    margin-bottom: 0.8rem;
+  }
+  .card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .card p { font-size: 0.85rem; color: var(--text-dim); line-height: 1.5; }
+
+  .law-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.5rem; text-align: center;
+    transition: all var(--transition); cursor: pointer;
+    opacity: 0; transform: translateY(12px);
+    transition: opacity 0.5s ease, transform 0.5s ease, border-color var(--transition);
+  }
+  .law-card.visible { opacity: 1; transform: translateY(0); }
+  .law-card:hover { border-color: var(--accent); }
+  .law-card .l-num {
+    font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--accent); margin-bottom: 0.3rem;
+  }
+  .law-card h3 { font-size: 1.15rem; font-weight: 700; }
+  .law-card p { font-size: 0.82rem; color: var(--text-dim); margin-top: 0.4rem; }
+  .law-card .invert {
+    font-size: 0.78rem; color: var(--text-dim); margin-top: 0.6rem;
+    padding-top: 0.6rem; border-top: 1px solid var(--border);
+  }
+  .law-card .invert strong { color: var(--red); }
+
+  /* ─── STAGE FLOW ─── */
+  .stage-flow {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    justify-content: center; margin: 2rem 0;
+  }
+  .stage {
+    flex: 1; min-width: 150px; max-width: 200px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 1.2rem 1rem;
+    text-align: center; transition: all var(--transition);
+    opacity: 0; transform: translateY(16px);
+    transition: opacity 0.6s ease, transform 0.6s ease, border-color var(--transition);
+  }
+  .stage.visible { opacity: 1; transform: translateY(0); }
+  .stage:hover { border-color: var(--accent); }
+  .stage .s-icon { font-size: 1.6rem; margin-bottom: 0.4rem; display: block; }
+  .stage h4 { font-size: 0.9rem; font-weight: 700; }
+  .stage p { font-size: 0.78rem; color: var(--text-dim); margin-top: 0.2rem; }
+
+  /* ─── TIP LIST ─── */
+  .tip-list { list-style: none; }
+  .tip-list li {
+    display: flex; gap: 0.8rem; align-items: flex-start;
+    padding: 1rem 0; border-bottom: 1px solid var(--border);
+    opacity: 0; transform: translateX(-10px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .tip-list li.visible { opacity: 1; transform: translateX(0); }
+  .tip-list li:last-child { border-bottom: none; }
+  .tip-list .check {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-size: 0.8rem; font-weight: 700; margin-top: 1px;
+  }
+  .tip-list strong { display: block; font-weight: 700; font-size: 0.9rem; }
+  .tip-list span { font-size: 0.85rem; color: var(--text-dim); }
+
+  /* ─── IDENTITY ─── */
+  .identity-flow {
+    display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center;
+    align-items: center; margin: 2rem 0;
+  }
+  .identity-flow .arrow { font-size: 2rem; color: var(--accent); }
+  .id-step {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.2rem 1.5rem; text-align: center;
+    flex: 1; min-width: 140px; max-width: 200px;
+  }
+  .id-step .lbl { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); margin-bottom: 0.3rem; }
+  .id-step .val { font-size: 1rem; font-weight: 700; }
+
+  /* ─── HABIT TRACKER ─── */
+  .tracker {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 2rem; text-align: center;
+    margin: 2rem 0;
+  }
+  .tracker-grid {
+    display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;
+    max-width: 350px; margin: 1.5rem auto;
+  }
+  .tracker-day {
+    aspect-ratio: 1; border-radius: 6px; background: var(--bg-alt);
+    border: 1px solid var(--border); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem; font-weight: 600; color: var(--text-dim);
+    transition: all var(--transition);
+  }
+  .tracker-day.done {
+    background: var(--accent); color: #fff; border-color: var(--accent);
+  }
+  .tracker-day.today {
+    border-color: var(--accent); border-width: 2px;
+  }
+  .tracker-streak {
+    font-size: 1.1rem; color: var(--text-dim);
+  }
+  .tracker-streak strong { color: var(--accent); font-size: 1.5rem; }
+
+  /* ─── QUOTE ─── */
+  .quote-block {
+    text-align: center; max-width: 600px; margin: 2.5rem auto;
+    padding: 2rem 0;
+  }
+  .quote-block blockquote {
+    font-size: 1.15rem; font-style: italic; line-height: 1.6;
+    color: var(--text);
+  }
+  .quote-block cite {
+    display: block; margin-top: 0.8rem; color: var(--accent);
+    font-style: normal; font-size: 0.85rem;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    text-align: center; padding: 3rem 2rem; color: var(--text-dim);
+    font-size: 0.8rem; border-top: 1px solid var(--border);
+    margin-top: 2rem;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 600px) {
+    section { padding: 3rem 1.2rem; }
+    .stage-flow { flex-direction: column; align-items: center; }
+    .stage { max-width: 100%; }
+    .identity-flow .arrow { transform: rotate(90deg); }
+    .hero .math { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-badge">📖 #1 Bestseller</div>
+  <h1>
+    Atomic<br><span class="hl">Habits</span>
+    <span class="sm">James Clear</span>
+  </h1>
+  <p>An Easy & Proven Way to Build Good Habits & Break Bad Ones</p>
+  <div class="math">
+    <div class="eq">1.01<sup>365</sup> = <span class="hl">37.78</span></div>
+    <div class="note">1% better every day compounds</div>
+  </div>
+  <div class="hero-arrow">↓</div>
+</header>
+
+<!-- STATS -->
+<section>
+  <div class="stats">
+    <div class="stat"><div class="stat-value">1%</div><div class="stat-label">Daily Improvement</div></div>
+    <div class="stat"><div class="stat-value">37<small>x</small></div><div class="stat-label">Better in One Year</div></div>
+    <div class="stat"><div class="stat-value">4</div><div class="stat-label">Laws of Change</div></div>
+    <div class="stat"><div class="stat-value">∞</div><div class="stat-label">Compound Potential</div></div>
+  </div>
+</section>
+
+<!-- THE FOUR LAWS -->
+<section>
+  <div class="section-label">The Framework</div>
+  <h2>The Four Laws of <span class="hl">Behavior Change</span></h2>
+  <p class="section-desc">Every habit follows a four-step feedback loop. Master these levers and you can reshape any behavior.</p>
+
+  <div class="stage-flow">
+    <div class="stage"><span class="s-icon">👁️</span><h4>Make It Obvious</h4><p>The 1st Law: Cue — Design your environment, use implementation intentions.</p></div>
+    <div class="stage"><span class="s-icon">🔥</span><h4>Make It Attractive</h4><p>The 2nd Law: Craving — Temptation bundle, join the right culture.</p></div>
+    <div class="stage"><span class="s-icon">⚡</span><h4>Make It Easy</h4><p>The 3rd Law: Response — Two-minute rule, reduce friction, commit.</p></div>
+    <div class="stage"><span class="s-icon">🎉</span><h4>Make It Satisfying</h4><p>The 4th Law: Reward — Track habits, use immediate reinforcement.</p></div>
+  </div>
+
+  <div class="grid grid-4" style="margin-top:1.5rem;">
+    <div class="law-card">
+      <div class="l-num">Law 1</div>
+      <h3>Make It Obvious</h3>
+      <p>Implementation intentions, habit stacking, environment design.</p>
+      <div class="invert">To break: <strong>Make It Invisible</strong> — reduce exposure to cues.</div>
+    </div>
+    <div class="law-card">
+      <div class="l-num">Law 2</div>
+      <h3>Make It Attractive</h3>
+      <p>Temptation bundling, join a culture, create rituals.</p>
+      <div class="invert">To break: <strong>Make It Unattractive</strong> — reframe your mindset.</div>
+    </div>
+    <div class="law-card">
+      <div class="l-num">Law 3</div>
+      <h3>Make It Easy</h3>
+      <p>Two-minute rule, reduce friction, automate decisions.</p>
+      <div class="invert">To break: <strong>Make It Difficult</strong> — increase friction, use commitment devices.</div>
+    </div>
+    <div class="law-card">
+      <div class="l-num">Law 4</div>
+      <h3>Make It Satisfying</h3>
+      <p>Habit tracking, immediate rewards, never miss twice.</p>
+      <div class="invert">To break: <strong>Make It Unsatisfying</strong> — add immediate cost or accountability.</div>
+    </div>
+  </div>
+</section>
+
+<!-- INTERACTIVE HABIT TRACKER -->
+<section>
+  <div class="section-label">Try It</div>
+  <h2>Habit <span class="hl">Tracker</span></h2>
+  <p class="section-desc">Click the days you've stuck to a habit. Watch your streak grow — visual progress is satisfying.</p>
+
+  <div class="tracker" id="tracker">
+    <div style="font-weight:700; margin-bottom:0.5rem;" id="trackerTitle">Track a Habit</div>
+    <div class="tracker-grid" id="trackerGrid"></div>
+    <div class="tracker-streak">Streak: <strong id="streakCount">0</strong> days</div>
+    <button class="btn btn-outline" id="resetTracker" style="margin-top:1rem;">↺ Reset</button>
+  </div>
+</section>
+
+<!-- KEY CONCEPTS -->
+<section>
+  <div class="section-label">Key Concepts</div>
+  <h2>The <span class="hl">Big Ideas</span></h2>
+  <p class="section-desc">The most powerful concepts from the book, each with practical application.</p>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <div class="num">1</div>
+      <h3>Identity-Based Habits</h3>
+      <p>Outcome-based: "I want to lose weight." Identity-based: "I am the kind of person who moves every day." Every action is a vote for the person you wish to become. True change is identity change.</p>
+    </div>
+    <div class="card">
+      <div class="num">2</div>
+      <h3>The Habit Loop</h3>
+      <p>Cue → Craving → Response → Reward. Every habit follows this cycle. Master each stage and you can design any behavior. The Four Laws are your levers on this loop.</p>
+    </div>
+    <div class="card">
+      <div class="num">3</div>
+      <h3>Motion vs. Action</h3>
+      <p>Motion = planning, strategizing, learning. Action = producing results. We use motion to delay failure. The best approach? Stop preparing and start doing. Repetition, not perfection.</p>
+    </div>
+    <div class="card">
+      <div class="num">4</div>
+      <h3>The Two-Minute Rule</h3>
+      <p>A new habit should take less than two minutes. "Read before bed" becomes "Read one page." "Run 5K" becomes "Tie your shoes." Standardize before you optimize. Master the first two minutes.</p>
+    </div>
+    <div class="card">
+      <div class="num">5</div>
+      <h3>Never Miss Twice</h3>
+      <p>Missing once is an accident. Missing twice is the start of a new bad habit. The rule: get back on track immediately. Perfection is impossible; consistency is everything.</p>
+    </div>
+    <div class="card">
+      <div class="num">6</div>
+      <h3>Environment Design</h3>
+      <p>Willpower is a short-term strategy. Design your environment so good habits are obvious and bad habits are impossible. Put the fruit on the counter, the guitar by the couch, the phone in another room.</p>
+    </div>
+    <div class="card">
+      <div class="num">7</div>
+      <h3>Goldilocks Rule</h3>
+      <p>Peak motivation occurs at the edge of your ability — not too hard, not too easy. Boredom is the greatest threat to success. Professionals stick to the schedule even when it's not exciting.</p>
+    </div>
+    <div class="card">
+      <div class="num">8</div>
+      <h3>Habit Stacking</h3>
+      <p>"After [CURRENT HABIT], I will [NEW HABIT]." Stack new behaviors onto existing routines. Your morning coffee becomes the cue for 2 minutes of meditation. Your commute becomes your audiobook time.</p>
+    </div>
+  </div>
+</section>
+
+<!-- IDENTITY FLOW -->
+<section>
+  <div class="section-label">Identity</div>
+  <h2>How Habits Shape <span class="hl">Who You Are</span></h2>
+  <p class="section-desc">The most powerful shift: from achieving outcomes to becoming the person who deserves them.</p>
+
+  <div class="identity-flow">
+    <div class="id-step"><div class="lbl">Start with</div><div class="val">Who you want to be</div></div>
+    <div class="arrow">→</div>
+    <div class="id-step"><div class="lbl">Take</div><div class="val">Small actions that confirm it</div></div>
+    <div class="arrow">→</div>
+    <div class="id-step"><div class="lbl">Vote for</div><div class="val">Your new identity</div></div>
+    <div class="arrow">→</div>
+    <div class="id-step"><div class="lbl">It becomes</div><div class="val">Who you actually are</div></div>
+  </div>
+
+  <div class="quote-block">
+    <blockquote>"Every action you take is a vote for the type of person you wish to become. No single instance will transform your beliefs, but as the votes build up, so does the evidence of your new identity."</blockquote>
+    <cite>— James Clear, Atomic Habits</cite>
+  </div>
+</section>
+
+<!-- PRACTICAL TACTICS -->
+<section>
+  <div class="section-label">Tactics</div>
+  <h2>Put It Into <span class="hl">Practice</span></h2>
+  <p class="section-desc">Actionable strategies you can start using today.</p>
+
+  <ul class="tip-list" id="tipList">
+    <li><span class="check">✓</span><div><strong>Implementation Intentions</strong><span>State exactly when and where you'll act: "I will exercise at 7 AM in my living room." Specificity makes the cue obvious.</span></div></li>
+    <li><span class="check">✓</span><div><strong>Temptation Bundling</strong><span>Pair something you want to do with something you need to do: listen to your favorite podcast only while at the gym.</span></div></li>
+    <li><span class="check">✓</span><div><strong>Reduce Friction</strong><span>Make good habits effortless. Lay out workout clothes the night before. Pre-pack your lunch. The less friction, the more likely you'll act.</span></div></li>
+    <li><span class="check">✓</span><div><strong>Commitment Devices</strong><span>Lock in good behavior ahead of time. Buy a timed outlet for your router. Leave your wallet at home. Pre-pay for gym sessions.</span></div></li>
+    <li><span class="check">✓</span><div><strong>Habit Tracking</strong><span>Use a calendar. Mark an X each day you follow through. Don't break the chain. Visual progress is inherently satisfying and motivating.</span></div></li>
+    <li><span class="check">✓</span><div><strong>Reflection & Review</strong><span>Schedule annual, monthly, and daily reviews. Measure what matters. Without reflection, habits stagnate. Make small adjustments to keep improving.</span></div></li>
+  </ul>
+</section>
+
+<!-- MASTERY -->
+<section>
+  <div class="section-label">Mastery</div>
+  <h2>Beyond Habits: <span class="hl">Deliberate Practice</span></h2>
+  <p class="section-desc">Habits are necessary but not sufficient. Mastery requires combining automatic habits with deliberate practice.</p>
+
+  <div class="grid grid-3">
+    <div class="card">
+      <h3>Habit + Deliberate Practice</h3>
+      <p>Habits provide the foundation. Deliberate practice pushes the boundary. Each habit unlocks the next level of performance. It's an endless cycle.</p>
+    </div>
+    <div class="card">
+      <h3>Fall in Love with Boredom</h3>
+      <p>The greatest threat to success is not failure — it's boredom. Professionals show up even when it's not exciting. Amateurs wait for motivation.</p>
+    </div>
+    <div class="card">
+      <h3>Plateau of Latent Potential</h3>
+      <p>Results lag behind effort. You work for weeks with no visible progress, then breakthrough. The ice doesn't melt at 31° — it melts at 32°. Keep going.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Based on <em>Atomic Habits</em> by James Clear &mdash; Interactive Summary</p>
+</footer>
+
+<script>
+  // ─── THEME ───
+  const themeToggle = document.getElementById('themeToggle');
+  themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    themeToggle.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+  });
+
+  // ─── SCROLL REVEAL ───
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.card, .law-card, .stage, .tip-list li').forEach(el => observer.observe(el));
+
+  // ─── HABIT TRACKER ───
+  const grid = document.getElementById('trackerGrid');
+  const streakEl = document.getElementById('streakCount');
+  const resetBtn = document.getElementById('resetTracker');
+
+  let days = JSON.parse(localStorage.getItem('atomicTracker') || '{}');
+  let startDate = new Date();
+  startDate.setDate(startDate.getDate() - 27);
+
+  function renderTracker() {
+    grid.innerHTML = '';
+    let streak = 0;
+    let currentStreak = 0;
+    const today = new Date().toDateString();
+
+    for (let i = 0; i < 28; i++) {
+      const d = new Date(startDate);
+      d.setDate(d.getDate() + i);
+      const key = d.toDateString();
+      const isToday = key === today;
+      const done = days[key] || false;
+
+      const el = document.createElement('div');
+      el.className = 'tracker-day' + (done ? ' done' : '') + (isToday ? ' today' : '');
+      el.textContent = d.getDate();
+
+      if (isToday || d < new Date()) {
+        el.addEventListener('click', () => {
+          days[key] = !days[key];
+          localStorage.setItem('atomicTracker', JSON.stringify(days));
+          renderTracker();
+        });
+      }
+
+      grid.appendChild(el);
+
+      if (done) {
+        currentStreak++;
+        if (currentStreak > streak) streak = currentStreak;
+      } else {
+        if (!isToday) currentStreak = 0;
+      }
+    }
+
+    // calculate actual streak from today backwards
+    let realStreak = 0;
+    for (let i = 27; i >= 0; i--) {
+      const d = new Date(startDate);
+      d.setDate(d.getDate() + i);
+      const key = d.toDateString();
+      if (days[key]) realStreak++;
+      else if (d.toDateString() !== today) break;
+    }
+    streakEl.textContent = realStreak;
+  }
+
+  resetBtn.addEventListener('click', () => {
+    if (confirm('Reset your habit tracker?')) {
+      days = {};
+      localStorage.removeItem('atomicTracker');
+      renderTracker();
+    }
+  });
+
+  renderTracker();
+</script>
+</body>
+</html>

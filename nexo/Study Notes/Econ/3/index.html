@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Economics Lesson 3 - Government Intervention in Markets</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --primary: #2d3436;
+    --accent: #0984e3;
+    --accent2: #00b894;
+    --accent3: #fdcb6e;
+    --bg: #0a0a0f;
+    --card: #14141f;
+    --text: #e0e0e0;
+    --text-muted: #888;
+    --gradient: linear-gradient(135deg, #0984e3, #00b894, #fdcb6e);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+
+  #particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background: rgba(9, 132, 227, 0.15);
+    border: 1px solid rgba(9, 132, 227, 0.3);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    animation: fadeInDown 1s ease;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    font-weight: 800;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    animation: fadeInUp 1s ease 0.2s both;
+  }
+
+  .hero p {
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: var(--text-muted);
+    max-width: 600px;
+    animation: fadeInUp 1s ease 0.4s both;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: bounce 2s infinite;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem;
+  }
+
+  .section {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .section.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .section:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 60px rgba(9, 132, 227, 0.08);
+  }
+
+  .section-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .section h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section h2 .underline {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+
+  .section h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1.5rem 0 0.8rem;
+  }
+
+  .section h4 {
+    color: var(--accent2);
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 1rem 0 0.5rem;
+  }
+
+  .section ul, .section ol {
+    padding-left: 1.5rem;
+  }
+
+  .section li {
+    margin-bottom: 0.4rem;
+    color: var(--text);
+  }
+
+  .section p {
+    margin-bottom: 0.8rem;
+    color: var(--text);
+  }
+
+  .highlight {
+    display: inline-block;
+    padding: 0.1rem 0.5rem;
+    background: rgba(9, 132, 227, 0.15);
+    border-radius: 4px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .highlight-green {
+    background: rgba(0, 184, 148, 0.15);
+    color: var(--accent2);
+  }
+
+  .highlight-yellow {
+    background: rgba(253, 203, 110, 0.15);
+    color: var(--accent3);
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .info-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: default;
+  }
+
+  .info-card:hover {
+    background: rgba(9,132,227,0.08);
+    border-color: rgba(9,132,227,0.2);
+    transform: translateY(-5px);
+  }
+
+  .info-card .emoji {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .info-card .label {
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.3rem;
+  }
+
+  .info-card .desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin: 1rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .comparison > div {
+    padding: 1.2rem;
+  }
+
+  .comparison .left {
+    background: rgba(9,132,227,0.08);
+    border-right: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .comparison .right {
+    background: rgba(0,184,148,0.08);
+  }
+
+  .comparison .header {
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-align: center;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .comparison .left .header { color: var(--accent); }
+  .comparison .right .header { color: var(--accent2); }
+
+  .comparison ul { list-style: none; padding: 0; }
+  .comparison li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.9rem;
+  }
+  .comparison li:last-child { border-bottom: none; }
+
+  .flashcard-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .flashcard {
+    perspective: 1000px;
+    height: 180px;
+    cursor: pointer;
+  }
+
+  .flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+  }
+
+  .flashcard.flipped .flashcard-inner {
+    transform: rotateY(180deg);
+  }
+
+  .flashcard-front, .flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+
+  .flashcard-front {
+    background: rgba(9,132,227,0.1);
+    border: 1px solid rgba(9,132,227,0.2);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .flashcard-back {
+    background: rgba(0,184,148,0.15);
+    border: 1px solid rgba(0,184,148,0.2);
+    color: var(--accent2);
+    transform: rotateY(180deg);
+  }
+
+  .flashcard-hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin: 1rem 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2));
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2.35rem;
+    top: 0.5rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+
+  .timeline-item .title {
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .timeline-item .desc {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  .quiz-question {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin: 1rem 0;
+  }
+
+  .quiz-question .q {
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    color: #fff;
+  }
+
+  .quiz-option {
+    display: block;
+    width: 100%;
+    padding: 0.7rem 1rem;
+    margin-bottom: 0.5rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    font-size: 0.9rem;
+    font-family: inherit;
+  }
+
+  .quiz-option:hover {
+    background: rgba(9,132,227,0.1);
+    border-color: var(--accent);
+  }
+
+  .quiz-option.correct {
+    background: rgba(0,184,148,0.2);
+    border-color: var(--accent2);
+    color: var(--accent2);
+  }
+
+  .quiz-option.wrong {
+    background: rgba(214,48,49,0.2);
+    border-color: #d63031;
+    color: #d63031;
+  }
+
+  .quiz-feedback {
+    margin-top: 0.8rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .quiz-feedback.show {
+    display: block;
+  }
+
+  .quiz-feedback.correct {
+    background: rgba(0,184,148,0.1);
+    border: 1px solid rgba(0,184,148,0.2);
+    color: var(--accent2);
+  }
+
+  .quiz-feedback.wrong {
+    background: rgba(214,48,49,0.1);
+    border: 1px solid rgba(214,48,49,0.2);
+    color: #d63031;
+  }
+
+  .progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    z-index: 100;
+    background: transparent;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: var(--gradient);
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+    40% { transform: translateX(-50%) translateY(-10px); }
+    60% { transform: translateX(-50%) translateY(-5px); }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @media (max-width: 600px) {
+    .comparison { grid-template-columns: 1fr; }
+    .comparison .left { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .section { padding: 1.2rem; }
+    .flashcard-container { grid-template-columns: 1fr; }
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 0.3rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .tag-blue { background: rgba(9,132,227,0.15); color: var(--accent); }
+  .tag-green { background: rgba(0,184,148,0.15); color: var(--accent2); }
+  .tag-yellow { background: rgba(253,203,110,0.15); color: var(--accent3); }
+  .tag-red { background: rgba(214,48,49,0.15); color: #d63031; }
+
+  .formula-box {
+    background: rgba(9,132,227,0.06);
+    border: 1px solid rgba(9,132,227,0.15);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+  }
+
+  .diagram-box {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    text-align: center;
+    overflow-x: auto;
+  }
+
+  .diagram-box pre {
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: var(--accent2);
+  }
+
+  .elasticity-meter {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+  }
+
+  .elasticity-meter .bar {
+    flex: 1;
+    height: 10px;
+    border-radius: 5px;
+    background: rgba(255,255,255,0.06);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .elasticity-meter .bar .fill {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 0.5s ease;
+  }
+
+  .elasticity-meter .bar .fill.consumer { background: var(--accent); }
+  .elasticity-meter .bar .fill.producer { background: var(--accent2); }
+
+  .elasticity-meter .label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    min-width: 70px;
+    text-align: right;
+  }
+
+  .walkthrough {
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.04);
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin: 1rem 0;
+  }
+
+  .walkthrough .step {
+    display: flex;
+    gap: 0.8rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.9rem;
+  }
+
+  .walkthrough .step:last-child { border-bottom: none; }
+
+  .walkthrough .step-num {
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
+    border-radius: 50%;
+    background: rgba(9,132,227,0.15);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .walkthrough .step-content { color: var(--text); }
+  .walkthrough .step-content strong { color: #fff; }
+
+  .three-col {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin: 1rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .three-col > div { padding: 1rem; text-align: center; }
+  .three-col .col1 { background: rgba(9,132,227,0.06); }
+  .three-col .col2 { background: rgba(0,184,148,0.06); }
+  .three-col .col3 { background: rgba(253,203,110,0.06); }
+  .three-col .header { font-weight: 700; border-bottom: 1px solid rgba(255,255,255,0.06); padding: 1rem; }
+  .three-col .col1 .header { color: var(--accent); }
+  .three-col .col2 .header { color: var(--accent2); }
+  .three-col .col3 .header { color: var(--accent3); }
+  .three-col ul { list-style: none; padding: 0; }
+  .three-col li { padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 0.9rem; }
+
+  .surplus-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+
+  .surplus-table th {
+    padding: 0.7rem;
+    text-align: center;
+    font-weight: 600;
+    border-bottom: 2px solid rgba(255,255,255,0.06);
+    color: var(--text-muted);
+  }
+
+  .surplus-table td {
+    padding: 0.6rem 0.7rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .surplus-table .accent { color: var(--accent); }
+  .surplus-table .accent2 { color: var(--accent2); }
+  .surplus-table .red { color: #d63031; }
+
+  .btn-reset {
+    margin-top: 1rem;
+    padding: 0.6rem 1.5rem;
+    background: rgba(9,132,227,0.1);
+    border: 1px solid rgba(9,132,227,0.2);
+    border-radius: 8px;
+    color: var(--accent);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+  }
+
+  .btn-reset:hover {
+    background: rgba(9,132,227,0.2);
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-container">
+  <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<canvas id="particles"></canvas>
+
+<section class="hero">
+  <div class="hero-badge">Lesson 3</div>
+  <h1>Government Intervention<br>in Markets</h1>
+  <p>Understanding how governments intervene through price controls, taxes, subsidies, and supporting policies to correct market outcomes.</p>
+  <div class="hero-scroll">&#x2193;</div>
+</section>
+
+<div class="container">
+
+  <!-- 1. Price Control Overview -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x2696;&#xFE0F;</div>
+    <h2>Price Control <span class="underline"></span></h2>
+    <p>Governments intervene in markets when they perceive the market equilibrium price as <strong>unfair</strong> or socially undesirable. The two main types of price control are:</p>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F7E2; Maximum Price (Ceiling)</div>
+        <ul>
+          <li>Legal price set <strong>below</strong> equilibrium</li>
+          <li>Also called a <strong>price ceiling</strong></li>
+          <li>Only effective when set below market equilibrium</li>
+          <li>Aims to protect consumers from high prices</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F534; Minimum Price (Floor)</div>
+        <ul>
+          <li>Legal price set <strong>above</strong> equilibrium</li>
+          <li>Also called a <strong>price floor</strong></li>
+          <li>Only effective when set above market equilibrium</li>
+          <li>Aims to protect producers from low prices</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Maximum Price -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4ED;</div>
+    <h2>Maximum Price (Ceiling Price) <span class="underline"></span></h2>
+    <p>A legal maximum price set <strong>below</strong> the equilibrium price. At this price, the quantity demanded exceeds the quantity supplied, creating a <strong>shortage</strong>.</p>
+
+    <h3>Effects of Maximum Price</h3>
+    <div class="card-grid">
+      <div class="info-card">
+        <div class="emoji">&#x26A0;&#xFE0F;</div>
+        <div class="label">Shortage</div>
+        <div class="desc">Excess demand: Qd &gt; Qs at the ceiling price</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F3B5;</div>
+        <div class="label">Black Market</div>
+        <div class="desc">Illegal trading at prices above the ceiling</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F4B0;</div>
+        <div class="label">Hidden Supply</div>
+        <div class="desc">Suppliers may hide goods to sell at higher prices</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F4C9;</div>
+        <div class="label">Welfare Loss</div>
+        <div class="desc">Reduction in total economic surplus</div>
+      </div>
+    </div>
+
+    <h3>Surplus Analysis: Before vs After</h3>
+    <div class="surplus-table" style="overflow-x: auto;">
+      <table class="surplus-table">
+        <tr>
+          <th>Component</th>
+          <th>Before Ceiling</th>
+          <th>After Ceiling</th>
+          <th>Change</th>
+        </tr>
+        <tr>
+          <td>Consumer Surplus</td>
+          <td>A + B</td>
+          <td>A + C</td>
+          <td class="accent2">+C &minus; B</td>
+        </tr>
+        <tr>
+          <td>Producer Surplus</td>
+          <td>C + D + E</td>
+          <td>E</td>
+          <td class="red">&minus;(C + D)</td>
+        </tr>
+        <tr>
+          <td>Economic Surplus</td>
+          <td>A + B + C + D + E</td>
+          <td>A + C + E</td>
+          <td class="red">&minus;(B + D)</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3>Black Market Price Calculation</h3>
+    <p>In a black market, goods are sold illegally at prices above the ceiling. The black market price is determined by the quantity supplied at the ceiling price and the demand curve.</p>
+    <div class="formula-box">
+      Black Market Price = Price at which Q<sub>supplied</sub> = Q<sub>demanded</sub> on the original demand curve
+    </div>
+
+    <h3>Remedies for Shortage</h3>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F30D;</div><div class="label">Import</div><div class="desc">Import goods from abroad to increase supply</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4C8;</div><div class="label">Producer Incentives</div><div class="desc">Subsidies or tax breaks to encourage domestic production</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3AF;</div><div class="label">Rationing</div><div class="desc">Ration cards, queueing, bribes, or connecting goods to allocate scarce supply</div></div>
+    </div>
+
+    <div class="walkthrough">
+      <div style="font-weight: 600; color: #fff; margin-bottom: 0.8rem;">&#x1F4CD; Step-by-Step: Maximum Price Effects</div>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">Government sets a ceiling price <strong>P<sub>c</sub></strong> below equilibrium <strong>P<sub>e</sub></strong></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">At P<sub>c</sub>, Q<sub>d</sub> &gt; Q<sub>s</sub> &rarr; <strong>shortage</strong> of size (Q<sub>d</sub> &minus; Q<sub>s</sub>)</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">Transaction quantity falls from Q<sub>e</sub> to Q<sub>s</sub> (supply constrained)</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">Consumer surplus: some consumers gain (lower price), others lose (cannot buy) &rarr; net ambiguous change</div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">Producer surplus <strong>decreases</strong> &rarr; producers sell less at a lower price</div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-content">Deadweight loss = area <strong>B + D</strong> &rarr; economic surplus <strong>decreases</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Minimum Price -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4D1;</div>
+    <h2>Minimum Price (Floor Price) <span class="underline"></span></h2>
+    <p>A legal minimum price set <strong>above</strong> the equilibrium price. At this price, the quantity supplied exceeds the quantity demanded, creating <strong>excess supply</strong> (surplus).</p>
+
+    <h3>Effects of Minimum Price</h3>
+    <div class="card-grid">
+      <div class="info-card">
+        <div class="emoji">&#x1F4E6;</div>
+        <div class="label">Excess Supply</div>
+        <div class="desc">Qs &gt; Qd at the floor price</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F645;&#x200D;&#x2642;&#xFE0F;</div>
+        <div class="label">Unemployment</div>
+        <div class="desc">In labour markets: minimum wage &rarr; job losses</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F4B5;</div>
+        <div class="label">Excess Investment</div>
+        <div class="desc">Firms over-invest due to guaranteed higher price</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F4C9;</div>
+        <div class="label">Welfare Loss</div>
+        <div class="desc">Deadweight loss from reduced transactions</div>
+      </div>
+    </div>
+
+    <h3>Surplus Analysis: Before vs After</h3>
+    <div class="surplus-table" style="overflow-x: auto;">
+      <table class="surplus-table">
+        <tr>
+          <th>Component</th>
+          <th>Before Floor</th>
+          <th>After Floor</th>
+          <th>Change</th>
+        </tr>
+        <tr>
+          <td>Consumer Surplus</td>
+          <td>A + B + C</td>
+          <td>A</td>
+          <td class="red">&minus;(B + C)</td>
+        </tr>
+        <tr>
+          <td>Producer Surplus</td>
+          <td>D + E</td>
+          <td>B + D</td>
+          <td class="accent2">+B &minus; E</td>
+        </tr>
+        <tr>
+          <td>Economic Surplus</td>
+          <td>A + B + C + D + E</td>
+          <td>A + B + D</td>
+          <td class="red">&minus;(C + E)</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3>Remedies for Excess Supply</h3>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F4E6;</div><div class="label">Storage</div><div class="desc">Government stores the surplus for future use</div></div>
+      <div class="info-card"><div class="emoji">&#x1F504;</div><div class="label">By-Products</div><div class="desc">Convert surplus into other usable products</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4C8;</div><div class="label">Demand Promotion</div><div class="desc">Advertising campaigns to boost consumption</div></div>
+      <div class="info-card"><div class="emoji">&#x1F30D;</div><div class="label">Exports</div><div class="desc">Sell surplus in international markets</div></div>
+    </div>
+
+    <h3>Maximum vs Minimum Price</h3>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F7E2; Maximum Price</div>
+        <ul>
+          <li>Set <strong>below</strong> equilibrium</li>
+          <li>Creates <strong>shortage</strong> (excess demand)</li>
+          <li>Benefits <strong>consumers</strong></li>
+          <li>Leads to black markets</li>
+          <li>Remedies: import, rationing, incentives</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F534; Minimum Price</div>
+        <ul>
+          <li>Set <strong>above</strong> equilibrium</li>
+          <li>Creates <strong>surplus</strong> (excess supply)</li>
+          <li>Benefits <strong>producers</strong></li>
+          <li>Leads to over-investment</li>
+          <li>Remedies: storage, exports, promotion</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="walkthrough">
+      <div style="font-weight: 600; color: #fff; margin-bottom: 0.8rem;">&#x1F4CD; Step-by-Step: Minimum Price Effects</div>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">Government sets a floor price <strong>P<sub>f</sub></strong> above equilibrium <strong>P<sub>e</sub></strong></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">At P<sub>f</sub>, Q<sub>s</sub> &gt; Q<sub>d</sub> &rarr; <strong>excess supply</strong> of size (Q<sub>s</sub> &minus; Q<sub>d</sub>)</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">Transaction quantity falls from Q<sub>e</sub> to Q<sub>d</sub> (demand constrained)</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">Consumers buy less at a higher price &rarr; consumer surplus <strong>decreases</strong></div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">Producers sell less but at higher price &rarr; net change ambiguous depending on elasticities</div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-content">Deadweight loss = area <strong>C + E</strong> &rarr; economic surplus <strong>decreases</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Price Supporting Policies -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4B6;</div>
+    <h2>Price Supporting Policies <span class="underline"></span></h2>
+    <p>Two main methods governments use to support prices (especially in agriculture):</p>
+
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F4B5; Government Purchases</div>
+        <ul>
+          <li>Government buys excess supply at the minimum price</li>
+          <li>Effectively removes surplus from the market</li>
+          <li>Requires government storage or disposal</li>
+          <li>Cost to government = (P<sub>min</sub> &times; surplus quantity)</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F4B3; Deficiency Payment System</div>
+        <ul>
+          <li>Government pays producers the <strong>difference</strong> between the minimum price and what consumers actually pay</li>
+          <li>Consumers pay the market-clearing price</li>
+          <li>Producers receive the target (minimum) price</li>
+          <li>Cost to government = (P<sub>min</sub> &minus; P<sub>market</sub>) &times; Q</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="walkthrough">
+      <div style="font-weight: 600; color: #fff; margin-bottom: 0.8rem;">&#x1F4CD; Deficiency Payment Walkthrough</div>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">Target price (P<sub>min</sub>) is set above equilibrium</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">Consumers pay market-clearing price P<sub>m</sub> (where demand meets supply at Q produced)</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">Government pays producers the deficiency: <strong>(P<sub>min</sub> &minus; P<sub>m</sub>) &times; Q</strong></div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">Producers receive total revenue = (P<sub>m</sub> &times; Q) + deficiency payment = P<sub>min</sub> &times; Q</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Unit Tax -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4B0;</div>
+    <h2>Unit Tax <span class="underline"></span></h2>
+    <p>A <strong>unit tax</strong> is a fixed tax per unit of a good imposed on producers. It shifts the supply curve upward (leftward) by the amount of the tax.</p>
+
+    <h3>The New Supply Equation</h3>
+    <div class="formula-box">
+      Q<sub>s</sub> = a + b(P &minus; t)
+    </div>
+    <p>Where <strong>t</strong> = tax per unit. For any given market price P, producers only receive (P &minus; t), so they supply less.</p>
+
+    <h3>Tax Burden: Who Pays More?</h3>
+    <p>The distribution of the tax burden depends on <strong>elasticity</strong>:</p>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F4C9; Inelastic Demand</div>
+        <ul>
+          <li>Consumers bear <strong>more</strong> of the tax</li>
+          <li>Price rises significantly &rarr; consumer price &uarr;</li>
+          <li>Example: necessities, petrol, cigarettes</li>
+          <li>Consumer share = &Delta;P / t (larger)</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F4C8; Elastic Demand</div>
+        <ul>
+          <li>Producers bear <strong>more</strong> of the tax</li>
+          <li>Price rises little &rarr; producer price &darr;</li>
+          <li>Example: luxury goods, non-essentials</li>
+          <li>Producer share = 1 &minus; (&Delta;P / t) (larger)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="elasticity-meter">
+      <span class="label">Consumer burden</span>
+      <div class="bar"><div class="fill consumer" style="width: 70%" data-width="inelastic"></div></div>
+      <span style="font-size: 0.8rem; color: var(--text-muted);">Inelastic &rarr;</span>
+    </div>
+    <div class="elasticity-meter">
+      <span class="label">Producer burden</span>
+      <div class="bar"><div class="fill producer" style="width: 30%" data-width="inelastic"></div></div>
+      <span style="font-size: 0.8rem; color: var(--text-muted);">&larr; Elastic</span>
+    </div>
+
+    <h3>Surplus Analysis with Tax</h3>
+    <div class="surplus-table" style="overflow-x: auto;">
+      <table class="surplus-table">
+        <tr>
+          <th>Component</th>
+          <th>Before Tax</th>
+          <th>After Tax</th>
+          <th>Change</th>
+        </tr>
+        <tr>
+          <td>Consumer Surplus</td>
+          <td>A + B + C</td>
+          <td>A</td>
+          <td class="red">&minus;(B + C)</td>
+        </tr>
+        <tr>
+          <td>Producer Surplus</td>
+          <td>D + E + F</td>
+          <td>F</td>
+          <td class="red">&minus;(D + E)</td>
+        </tr>
+        <tr>
+          <td>Government Revenue</td>
+          <td>&mdash;</td>
+          <td>B + D</td>
+          <td class="accent2">+(B + D)</td>
+        </tr>
+        <tr>
+          <td>Economic Surplus</td>
+          <td>A + B + C + D + E + F</td>
+          <td>A + B + D + F</td>
+          <td class="red">&minus;(C + E)</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="walkthrough">
+      <div style="font-weight: 600; color: #fff; margin-bottom: 0.8rem;">&#x1F4CD; Step-by-Step: Unit Tax Effects</div>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">Tax of <strong>t</strong> per unit imposed on producers &rarr; supply shifts up by <strong>t</strong></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">New equilibrium: quantity falls, consumer price <strong>rises</strong>, producer price <strong>falls</strong></div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">Consumer pays: P<sub>c</sub> = original P<sub>e</sub> + &Delta;P<sub>c</sub></div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">Producer receives: P<sub>p</sub> = P<sub>c</sub> &minus; t = original P<sub>e</sub> &minus; &Delta;P<sub>p</sub></div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">Government revenue = <strong>t &times; Q<sub>new</sub></strong> (area <strong>B + D</strong>)</div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-content">Deadweight loss = area <strong>C + E</strong> (transactions that no longer occur)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Unit Subsidy -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4B8;</div>
+    <h2>Unit Subsidy <span class="underline"></span></h2>
+    <p>A <strong>unit subsidy</strong> is a payment per unit of a good from the government to producers (a "negative tax"). It shifts the supply curve downward (rightward) by the amount of the subsidy.</p>
+
+    <h3>The New Supply Equation</h3>
+    <div class="formula-box">
+      Q<sub>s</sub> = a + b(P + s)
+    </div>
+    <p>Where <strong>s</strong> = subsidy per unit. For any given market price P, producers receive (P + s), so they supply more.</p>
+
+    <h3>Subsidy Benefit: Who Gains More?</h3>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F4C9; Inelastic Demand</div>
+        <ul>
+          <li>Producers capture <strong>more</strong> of the subsidy</li>
+          <li>Price falls little &rarr; producers keep most of it</li>
+          <li>Consumer share = &Delta;P / s (smaller)</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F4C8; Elastic Demand</div>
+        <ul>
+          <li>Consumers capture <strong>more</strong> of the subsidy</li>
+          <li>Price falls significantly &rarr; consumers benefit</li>
+          <li>Consumer share = &Delta;P / s (larger)</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Surplus Analysis with Subsidy</h3>
+    <div class="surplus-table" style="overflow-x: auto;">
+      <table class="surplus-table">
+        <tr>
+          <th>Component</th>
+          <th>Before Subsidy</th>
+          <th>After Subsidy</th>
+          <th>Change</th>
+        </tr>
+        <tr>
+          <td>Consumer Surplus</td>
+          <td>A</td>
+          <td>A + B + C</td>
+          <td class="accent2">+(B + C)</td>
+        </tr>
+        <tr>
+          <td>Producer Surplus</td>
+          <td>F</td>
+          <td>D + E + F</td>
+          <td class="accent2">+(D + E)</td>
+        </tr>
+        <tr>
+          <td>Government Cost</td>
+          <td>&mdash;</td>
+          <td>B + C + D + E + G</td>
+          <td class="red">&minus;(B + C + D + E + G)</td>
+        </tr>
+        <tr>
+          <td>Economic Surplus</td>
+          <td>A + F</td>
+          <td>A + B + C + D + E + F</td>
+          <td class="red">&minus;G</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="walkthrough">
+      <div style="font-weight: 600; color: #fff; margin-bottom: 0.8rem;">&#x1F4CD; Step-by-Step: Unit Subsidy Effects</div>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">Subsidy of <strong>s</strong> per unit given to producers &rarr; supply shifts down by <strong>s</strong></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">New equilibrium: quantity <strong>rises</strong>, consumer price <strong>falls</strong></div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">Consumer price falls by less than s (unless demand is perfectly elastic)</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">Producer receives: P<sub>p</sub> = P<sub>c</sub> + s (more than before)</div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">Cost to government = <strong>s &times; Q<sub>new</sub></strong> (large area)</div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-content">Deadweight loss = area <strong>G</strong> (overproduction beyond efficient output)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Tax vs Subsidy Comparison -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x2696;&#xFE0F;</div>
+    <h2>Tax vs Subsidy Comparison <span class="underline"></span></h2>
+    <div class="three-col">
+      <div class="col1">
+        <div class="header">&#x1F4B0; Unit Tax</div>
+        <ul>
+          <li>Supply shifts <strong>up</strong></li>
+          <li>Quantity <strong>falls</strong></li>
+          <li>Consumer price <strong>&uarr;</strong></li>
+          <li>Producer price <strong>&darr;</strong></li>
+          <li>Gov revenue <strong>+</strong></li>
+          <li>Surplus <strong>&minus;</strong></li>
+          <li>DWL: underproduction</li>
+        </ul>
+      </div>
+      <div class="col2">
+        <div class="header">&#x1F4B8; Unit Subsidy</div>
+        <ul>
+          <li>Supply shifts <strong>down</strong></li>
+          <li>Quantity <strong>rises</strong></li>
+          <li>Consumer price <strong>&darr;</strong></li>
+          <li>Producer price <strong>&uarr;</strong></li>
+          <li>Gov cost <strong>&minus;</strong></li>
+          <li>Surplus <strong>&minus;</strong></li>
+          <li>DWL: overproduction</li>
+        </ul>
+      </div>
+      <div class="col3">
+        <div class="header">&#x1F4CA; Key Insight</div>
+        <ul>
+          <li>Both create DWL</li>
+          <li>Burden/benefit split depends on <strong>elasticity</strong></li>
+          <li>Inelastic side bears more tax / captures more subsidy</li>
+          <li>Both reduce economic efficiency</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. Flashcards -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4DA;</div>
+    <h2>Key Terms <span class="underline"></span></h2>
+    <div class="flashcard-container">
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F7E2; Maximum Price (Ceiling)
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Legal price set <strong>below</strong> equilibrium<br>
+            <small>Creates shortage, black markets<br>Protects consumers</small>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F534; Minimum Price (Floor)
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Legal price set <strong>above</strong> equilibrium<br>
+            <small>Creates excess supply<br>Protects producers</small>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F3B5; Black Market
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Illegal trading above ceiling price<br>
+            <small>Price determined by demand at Q<sub>s</sub></small>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F4B0; Unit Tax
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Fixed tax per unit on producers<br>
+            <small>Qs = a + b(P &minus; t)<br>Creates DWL (C + E)</small>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F4B8; Unit Subsidy
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Government payment per unit to producers<br>
+            <small>Qs = a + b(P + s)<br>"Negative tax"</small>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F4B3; Deficiency Payment
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Gov pays difference between min price &amp; market price<br>
+            <small>Producers get P<sub>min</sub>, consumers pay P<sub>mkt</sub></small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. Interactive Quiz -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F9F0;</div>
+    <h2>Test Your Knowledge <span class="underline"></span></h2>
+
+    <div class="quiz-question" data-q="1">
+      <div class="q">1. A maximum price (ceiling) is effective only when it is set:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Above the equilibrium price</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Below the equilibrium price</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">At the equilibrium price</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">On the supply curve</button>
+      <div class="quiz-feedback" data-feedback="1"></div>
+    </div>
+
+    <div class="quiz-question" data-q="2">
+      <div class="q">2. What is the immediate result of an effective minimum price (floor)?</div>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Excess supply (surplus)</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Shortage</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Black market activity</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Lower prices for consumers</button>
+      <div class="quiz-feedback" data-feedback="2"></div>
+    </div>
+
+    <div class="quiz-question" data-q="3">
+      <div class="q">3. When demand is inelastic, who bears more of a unit tax?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Producers</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Consumers</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">The government</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Both equally</button>
+      <div class="quiz-feedback" data-feedback="3"></div>
+    </div>
+
+    <div class="quiz-question" data-q="4">
+      <div class="q">4. Under the deficiency payment system, the government:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Buys the entire surplus at market price</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Sets a ceiling price below equilibrium</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Pays producers the difference between the minimum price and what consumers pay</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Imposes a tax on producers</button>
+      <div class="quiz-feedback" data-feedback="4"></div>
+    </div>
+
+    <div class="quiz-question" data-q="5">
+      <div class="q">5. Which of the following is NOT a remedy for a shortage caused by a maximum price?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Importing goods</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Rationing</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Storing the excess supply</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Producer incentives</button>
+      <div class="quiz-feedback" data-feedback="5"></div>
+    </div>
+
+    <div class="quiz-question" data-q="6">
+      <div class="q">6. A unit subsidy shifts the supply curve:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Upward by the amount of the subsidy</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Downward by the amount of the subsidy</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Leftward by the amount of the subsidy</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">It does not shift the supply curve</button>
+      <div class="quiz-feedback" data-feedback="6"></div>
+    </div>
+
+    <button class="btn-reset" onclick="resetQuiz()">&#x1F504; Reset Quiz</button>
+  </div>
+
+  <!-- 10. All Formulas Summary -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4DD;</div>
+    <h2>Formula Summary <span class="underline"></span></h2>
+    <div class="formula-box" style="font-size: 0.9rem;">
+      Unit Tax Supply: Q<sub>s</sub> = a + b(P &minus; t)
+    </div>
+    <div class="formula-box" style="font-size: 0.9rem;">
+      Unit Subsidy Supply: Q<sub>s</sub> = a + b(P + s)
+    </div>
+    <div class="formula-box" style="font-size: 0.9rem;">
+      Government Revenue from Tax = t &times; Q<sub>new</sub>
+    </div>
+    <div class="formula-box" style="font-size: 0.9rem;">
+      Cost of Subsidy to Government = s &times; Q<sub>new</sub>
+    </div>
+    <div class="formula-box" style="font-size: 0.9rem;">
+      Deficiency Payment = (P<sub>min</sub> &minus; P<sub>mkt</sub>) &times; Q
+    </div>
+    <div class="formula-box" style="font-size: 0.9rem;">
+      Black Market Price = Price where Q<sub>demanded</sub> = Q<sub>supplied (at ceiling)</sub>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  class Particle {
+    constructor() {
+      this.reset();
+    }
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 2 + 0.5;
+      this.speedX = (Math.random() - 0.5) * 0.5;
+      this.speedY = (Math.random() - 0.5) * 0.5;
+      this.opacity = Math.random() * 0.5 + 0.1;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(9, 132, 227, ${this.opacity})`;
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+  function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
+
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 150) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(9, 132, 227, ${0.06 * (1 - dist / 150)})`;
+          ctx.lineWidth = 0.5;
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(animateParticles);
+  }
+  animateParticles();
+
+  const sections = document.querySelectorAll('[data-section]');
+
+  function revealSections() {
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 80) {
+        section.classList.add('visible');
+      }
+    });
+  }
+  window.addEventListener('scroll', revealSections);
+  revealSections();
+
+  const progressBar = document.getElementById('progressBar');
+
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / docHeight) * 100;
+    progressBar.style.width = progress + '%';
+  });
+
+  function checkAnswer(btn, isCorrect) {
+    const question = btn.closest('.quiz-question');
+    const options = question.querySelectorAll('.quiz-option');
+    const feedback = question.querySelector('.quiz-feedback');
+
+    options.forEach(opt => {
+      opt.disabled = true;
+      opt.style.cursor = 'not-allowed';
+      if (opt.dataset.correct === 'true') opt.classList.add('correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.textContent = '\u2705 Correct!';
+      feedback.className = 'quiz-feedback show correct';
+    } else {
+      btn.classList.add('wrong');
+      const correctBtn = question.querySelector('[data-correct="true"]');
+      feedback.textContent = '\u274C Incorrect. The answer was: ' + correctBtn.textContent;
+      feedback.className = 'quiz-feedback show wrong';
+    }
+  }
+
+  function resetQuiz() {
+    document.querySelectorAll('.quiz-question').forEach(q => {
+      const options = q.querySelectorAll('.quiz-option');
+      const feedback = q.querySelector('.quiz-feedback');
+      options.forEach(opt => {
+        opt.disabled = false;
+        opt.style.cursor = 'pointer';
+        opt.classList.remove('correct', 'wrong');
+      });
+      feedback.className = 'quiz-feedback';
+      feedback.textContent = '';
+    });
+  }
+</script>
+
+</body>
+</html>

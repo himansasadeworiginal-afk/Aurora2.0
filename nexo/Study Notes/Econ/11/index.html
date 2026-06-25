@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Economics Lesson 11 - Economic Growth, Development & Labour</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --accent: #a855f7;
+    --accent2: #ec4899;
+    --accent3: #f59e0b;
+    --bg: #0a0a0f;
+    --card: #15101a;
+    --text: #e0e0e0;
+    --text-muted: #888;
+    --gradient: linear-gradient(135deg, #a855f7, #ec4899, #f59e0b);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+
+  #particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background: rgba(168, 85, 247, 0.15);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    animation: fadeInDown 1s ease;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    font-weight: 800;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    animation: fadeInUp 1s ease 0.2s both;
+  }
+
+  .hero p {
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: var(--text-muted);
+    max-width: 600px;
+    animation: fadeInUp 1s ease 0.4s both;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: bounce 2s infinite;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem;
+  }
+
+  .section {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .section.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .section:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 60px rgba(168, 85, 247, 0.08);
+  }
+
+  .section-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .section h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section h2 .underline {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+
+  .section h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1.5rem 0 0.8rem;
+  }
+
+  .section h4 {
+    color: var(--accent2);
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 1rem 0 0.5rem;
+  }
+
+  .section ul, .section ol {
+    padding-left: 1.5rem;
+  }
+
+  .section li {
+    margin-bottom: 0.4rem;
+    color: var(--text);
+  }
+
+  .section p {
+    margin-bottom: 0.8rem;
+    color: var(--text);
+  }
+
+  .highlight {
+    display: inline-block;
+    padding: 0.1rem 0.5rem;
+    background: rgba(168, 85, 247, 0.15);
+    border-radius: 4px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .highlight-pink {
+    background: rgba(236, 72, 153, 0.15);
+    color: var(--accent2);
+  }
+
+  .highlight-amber {
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--accent3);
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .card-grid-3 {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
+
+  .card-grid-4 {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+
+  .info-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: default;
+  }
+
+  .info-card:hover {
+    background: rgba(168,85,247,0.08);
+    border-color: rgba(168,85,247,0.2);
+    transform: translateY(-5px);
+  }
+
+  .info-card .emoji {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .info-card .label {
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.3rem;
+  }
+
+  .info-card .desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin: 1rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .comparison > div {
+    padding: 1.2rem;
+  }
+
+  .comparison .left {
+    background: rgba(168,85,247,0.08);
+    border-right: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .comparison .right {
+    background: rgba(236,72,153,0.08);
+  }
+
+  .comparison .header {
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-align: center;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .comparison .left .header { color: var(--accent); }
+  .comparison .right .header { color: var(--accent2); }
+
+  .comparison ul { list-style: none; padding: 0; }
+  .comparison li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.9rem;
+  }
+  .comparison li:last-child { border-bottom: none; }
+
+  .flashcard-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .flashcard {
+    perspective: 1000px;
+    height: 180px;
+    cursor: pointer;
+  }
+
+  .flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+  }
+
+  .flashcard.flipped .flashcard-inner {
+    transform: rotateY(180deg);
+  }
+
+  .flashcard-front, .flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+
+  .flashcard-front {
+    background: rgba(168,85,247,0.1);
+    border: 1px solid rgba(168,85,247,0.2);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .flashcard-back {
+    background: rgba(236,72,153,0.15);
+    border: 1px solid rgba(236,72,153,0.2);
+    color: var(--accent2);
+    transform: rotateY(180deg);
+  }
+
+  .flashcard-hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin: 1rem 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2));
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2.35rem;
+    top: 0.5rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+
+  .timeline-item .title {
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .timeline-item .desc {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  .quiz-question {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin: 1rem 0;
+  }
+
+  .quiz-question .q {
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    color: #fff;
+  }
+
+  .quiz-option {
+    display: block;
+    width: 100%;
+    padding: 0.7rem 1rem;
+    margin-bottom: 0.5rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    font-size: 0.9rem;
+    font-family: inherit;
+  }
+
+  .quiz-option:hover {
+    background: rgba(168,85,247,0.1);
+    border-color: var(--accent);
+  }
+
+  .quiz-option.correct {
+    background: rgba(236,72,153,0.2);
+    border-color: var(--accent2);
+    color: var(--accent2);
+  }
+
+  .quiz-option.wrong {
+    background: rgba(214,48,49,0.2);
+    border-color: #d63031;
+    color: #d63031;
+  }
+
+  .quiz-feedback {
+    margin-top: 0.8rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .quiz-feedback.show {
+    display: block;
+  }
+
+  .quiz-feedback.correct {
+    background: rgba(236,72,153,0.1);
+    border: 1px solid rgba(236,72,153,0.2);
+    color: var(--accent2);
+  }
+
+  .quiz-feedback.wrong {
+    background: rgba(214,48,49,0.1);
+    border: 1px solid rgba(214,48,49,0.2);
+    color: #d63031;
+  }
+
+  .progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    z-index: 100;
+    background: transparent;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: var(--gradient);
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+    40% { transform: translateX(-50%) translateY(-10px); }
+    60% { transform: translateX(-50%) translateY(-5px); }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @media (max-width: 600px) {
+    .comparison { grid-template-columns: 1fr; }
+    .comparison .left { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .section { padding: 1.2rem; }
+    .flashcard-container { grid-template-columns: 1fr; }
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 0.3rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .tag-purple { background: rgba(168,85,247,0.15); color: var(--accent); }
+  .tag-pink { background: rgba(236,72,153,0.15); color: var(--accent2); }
+  .tag-amber { background: rgba(245,158,11,0.15); color: var(--accent3); }
+  .tag-red { background: rgba(214,48,49,0.15); color: #d63031; }
+
+  .formula-box {
+    background: rgba(168,85,247,0.06);
+    border: 1px solid rgba(168,85,247,0.15);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+  }
+
+  .formula-box-pink {
+    background: rgba(236,72,153,0.06);
+    border-color: rgba(236,72,153,0.15);
+    color: var(--accent2);
+  }
+
+  .formula-box-amber {
+    background: rgba(245,158,11,0.06);
+    border-color: rgba(245,158,11,0.15);
+    color: var(--accent3);
+  }
+
+  .calc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .calc-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .calc-group label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .calc-group input {
+    padding: 0.7rem 1rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .calc-group input:focus {
+    border-color: var(--accent);
+  }
+
+  .calc-result {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgba(168,85,247,0.08);
+    border: 1px solid rgba(168,85,247,0.15);
+    border-radius: 10px;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .calc-btn {
+    padding: 0.7rem 1.5rem;
+    background: var(--gradient);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+    font-family: inherit;
+    margin-top: 0.5rem;
+  }
+
+  .calc-btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+  }
+
+  @media (max-width: 600px) {
+    .calc-grid { grid-template-columns: 1fr; }
+  }
+
+  .three-col {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.8rem;
+    margin: 1rem 0;
+  }
+
+  .factor-chip {
+    background: rgba(168,85,247,0.08);
+    border: 1px solid rgba(168,85,247,0.12);
+    border-radius: 8px;
+    padding: 0.6rem 0.8rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text);
+    transition: all 0.2s;
+  }
+
+  .factor-chip:hover {
+    background: rgba(168,85,247,0.15);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .factor-chip .chip-emoji {
+    display: block;
+    font-size: 1.3rem;
+    margin-bottom: 0.2rem;
+  }
+
+  @media (max-width: 600px) {
+    .three-col { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-container">
+  <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<canvas id="particles"></canvas>
+
+<section class="hero">
+  <div class="hero-badge">Lesson 11</div>
+  <h1>Economic Growth,<br>Development &amp; Labour</h1>
+  <p>Understanding how economies expand, transform, and engage their workforce to improve human well-being.</p>
+  <div class="hero-scroll">&#x2193;</div>
+</section>
+
+<div class="container">
+
+  <!-- Economic Growth -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4C8;</div>
+    <h2>Economic Growth <span class="underline"></span></h2>
+    <p><strong>Economic growth</strong> refers to the continuous increase in the real Gross Domestic Product (GDP) of a country over time. It represents the expansion of an economy's production capacity.</p>
+
+    <h3>How Economic Growth is Shown</h3>
+    <div class="card-grid">
+      <div class="info-card">
+        <div class="emoji">&#x1F4C8;</div>
+        <div class="label">PPF Outward Shift</div>
+        <div class="desc">Production Possibility Frontier shifts outward, showing increased capacity to produce goods and services</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x2192;</div>
+        <div class="label">LRAS Rightward Shift</div>
+        <div class="desc">Long-Run Aggregate Supply curve shifts right, indicating sustainable growth in productive capacity</div>
+      </div>
+    </div>
+
+    <h3>Measuring Economic Growth</h3>
+    <div class="formula-box">
+      Economic Growth Rate = (Current GDP - Previous GDP) / Previous GDP &times; 100
+    </div>
+
+    <h4>Worked Example 1</h4>
+    <p>If a country's GDP was $500 billion in 2023 and $525 billion in 2024:</p>
+    <div class="formula-box formula-box-pink">
+      Growth Rate = (525 - 500) / 500 &times; 100 = 25 / 500 &times; 100 = <strong>5%</strong>
+    </div>
+
+    <h4>Worked Example 2</h4>
+    <p>If GDP was $1.2 trillion in 2023 and $1.35 trillion in 2024:</p>
+    <div class="formula-box formula-box-pink">
+      Growth Rate = (1.35 - 1.2) / 1.2 &times; 100 = 0.15 / 1.2 &times; 100 = <strong>12.5%</strong>
+    </div>
+
+    <h3>Interactive Growth Rate Calculator</h3>
+    <div class="calc-grid">
+      <div class="calc-group">
+        <label>Previous GDP ($)</label>
+        <input type="number" id="prevGdp" value="500" step="any">
+      </div>
+      <div class="calc-group">
+        <label>Current GDP ($)</label>
+        <input type="number" id="currGdp" value="525" step="any">
+      </div>
+    </div>
+    <button class="calc-btn" onclick="calcGrowthRate()">Calculate Growth Rate</button>
+    <div class="calc-result" id="growthResult">Growth Rate: 5.00%</div>
+  </div>
+
+  <!-- Factors Affecting Economic Growth -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F3AF;</div>
+    <h2>Factors Affecting Economic Growth <span class="underline"></span></h2>
+    <p>Multiple interrelated factors determine an economy's ability to grow sustainably:</p>
+    <div class="three-col">
+      <div class="factor-chip"><span class="chip-emoji">&#x1F3D4;&#xFE0F;</span>Resource Endowment</div>
+      <div class="factor-chip"><span class="chip-emoji">&#x1F4A1;</span>Innovations</div>
+      <div class="factor-chip"><span class="chip-emoji">&#x1F3ED;</span>Physical Capital</div>
+      <div class="factor-chip"><span class="chip-emoji">&#x1F52C;</span>R&amp;D Investment</div>
+      <div class="factor-chip"><span class="chip-emoji">&#x1F9D1;&#x200D;&#x1F393;</span>Human Capital</div>
+      <div class="factor-chip"><span class="chip-emoji">&#x1F4B0;</span>Economic Stability</div>
+      <div class="factor-chip"><span class="chip-emoji">&#x1F331;</span>Natural Capital</div>
+      <div class="factor-chip"><span class="chip-emoji">&#x1F3DB;&#xFE0F;</span>Political Stability</div>
+      <div class="factor-chip"><span class="chip-emoji">&#x1F91D;</span>Social Capital</div>
+      <div class="factor-chip"><span class="chip-emoji">&#x2696;&#xFE0F;</span>Good Governance</div>
+      <div class="factor-chip"><span class="chip-emoji">&#x26A1;</span>Productivity</div>
+      <div class="factor-chip"><span class="chip-emoji">&#x1F3C6;</span>Incentives</div>
+      <div class="factor-chip"><span class="chip-emoji">&#x1F4BB;</span>Technology</div>
+    </div>
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">These factors interact and reinforce each other. For example, good governance fosters political stability, which encourages investment in physical and human capital.</p>
+  </div>
+
+  <!-- Importance vs Costs of Growth -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x2696;&#xFE0F;</div>
+    <h2>Importance &amp; Costs of Economic Growth <span class="underline"></span></h2>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x2705; Importance</div>
+        <ul>
+          <li>Improved living standards &amp; quality of life</li>
+          <li>Increased employment opportunities</li>
+          <li>Successful fiscal management (higher tax revenue)</li>
+          <li>Stronger investments in infrastructure &amp; public goods</li>
+          <li>Increased profits &amp; business trustworthiness</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x26A0;&#xFE0F; Costs</div>
+        <ul>
+          <li>Environmental problems, degradation, pollution</li>
+          <li>Depletion of non-renewable resources</li>
+          <li>Negative externalities (health costs, congestion)</li>
+          <li>Inflationary pressures</li>
+          <li>Income &amp; regional disparities widen</li>
+          <li>Decrease in present consumption (savings for investment)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Characteristics of Successful Growing Countries -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F30D;</div>
+    <h2>Common Characteristics of Successful Growing Countries <span class="underline"></span></h2>
+    <div class="card-grid">
+      <div class="info-card">
+        <div class="emoji">&#x1F310;</div>
+        <div class="label">Global Economy Integration</div>
+        <div class="desc">Benefiting from trade, investment flows, and global value chains</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F4CA;</div>
+        <div class="label">Macroeconomic Stability</div>
+        <div class="desc">Low inflation, sustainable debt, stable currency</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F4B5;</div>
+        <div class="label">High Savings &amp; Investment</div>
+        <div class="desc">Domestic savings fund capital formation and infrastructure</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F4CB;</div>
+        <div class="label">Market-Based Resource Allocation</div>
+        <div class="desc">Price signals guide efficient distribution of resources</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F3DB;&#xFE0F;</div>
+        <div class="label">Efficient &amp; Trustworthy Government</div>
+        <div class="desc">Rule of law, property rights, low corruption</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Economic Development -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4C9;</div>
+    <h2>Economic Development <span class="underline"></span></h2>
+    <p><strong>Economic development</strong> is a transformation process involving structural changes that improve the quality of life. It includes qualitative features that go beyond quantitative growth.</p>
+
+    <h3>Structural Changes in Development</h3>
+    <div class="card-grid card-grid-4">
+      <div class="info-card"><div class="emoji">&#x1F3ED;</div><div class="label">Industrialization</div><div class="desc">Shift from agriculture to industry &amp; services</div></div>
+      <div class="info-card"><div class="emoji">&#x26A1;</div><div class="label">Productivity Increase</div><div class="desc">More output per unit of input</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4BB;</div><div class="label">Technology Advancement</div><div class="desc">Adoption of modern techniques</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3DB;&#xFE0F;</div><div class="label">Modernization</div><div class="desc">Social &amp; institutional transformation</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4C8;</div><div class="label">Structural Change</div><div class="desc">Sectoral composition shifts</div></div>
+      <div class="info-card"><div class="emoji">&#x2193;</div><div class="label">Reduced Inequality</div><div class="desc">Lower unemployment, poverty &amp; disparity</div></div>
+    </div>
+
+    <h3>Growth vs Development</h3>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F4C8; Economic Growth</div>
+        <ul>
+          <li>Quantitative increase in output</li>
+          <li>Measured by GDP/GNP growth rate</li>
+          <li>Narrower concept</li>
+          <li>Can occur without development</li>
+          <li>Short to medium-term focus</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F4C9; Economic Development</div>
+        <ul>
+          <li>Qualitative transformation + quantitative growth</li>
+          <li>Measured by HDI, poverty reduction, inequality</li>
+          <li>Broader, multidimensional concept</li>
+          <li>Requires growth but goes beyond it</li>
+          <li>Long-term sustainable focus</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Multidimensional Nature</h3>
+    <p>Development encompasses <strong>economic, social, political, and cultural</strong> dimensions. It is not merely about income but about expanding people's freedoms and capabilities.</p>
+
+    <h4>Five Determinants of Unfavorable Human States</h4>
+    <div class="three-col">
+      <div class="factor-chip"><span class="chip-emoji">&#x1F4A2;</span>Limitedness</div>
+      <div class="factor-chip"><span class="chip-emoji">&#x1F9B5;</span>Bodily Weakness</div>
+      <div class="factor-chip"><span class="chip-emoji">&#x1F91D;</span>Unfavorable Social Relations</div>
+      <div class="factor-chip"><span class="chip-emoji">&#x1F6E1;&#xFE0F;</span>Insecurity</div>
+      <div class="factor-chip"><span class="chip-emoji">&#x26A0;&#xFE0F;</span>Powerlessness</div>
+    </div>
+  </div>
+
+  <!-- Human Development -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F9CD;</div>
+    <h2>Human Development <span class="underline"></span></h2>
+    <div class="info-card">
+      <div class="emoji">&#x1F30D;</div>
+      <div class="label">"Process of Enlarging People's Choices"</div>
+      <div class="desc">&mdash; Mahbub ul Haq, UNDP Human Development Reports</div>
+    </div>
+
+    <h3>The Capability Approach</h3>
+    <p>Pioneered by <strong>Amartya Sen</strong>, the capability approach focuses on what people are able to <strong>do</strong> and <strong>be</strong> (their functionings and capabilities), rather than just what they have.</p>
+
+    <h3>HDI &mdash; Human Development Index</h3>
+    <p>A composite index measuring average achievement in three key dimensions:</p>
+    <div class="card-grid">
+      <div class="info-card">
+        <div class="emoji">&#x1F4B0;</div>
+        <div class="label">Income</div>
+        <div class="desc">GNI per capita (PPP adjusted)</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F393;</div>
+        <div class="label">Education</div>
+        <div class="desc">Mean years of schooling &amp; expected years</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x2764;&#xFE0F;</div>
+        <div class="label">Health</div>
+        <div class="desc">Life expectancy at birth</div>
+      </div>
+    </div>
+
+    <h3>Dimensions of Human Development</h3>
+    <div class="three-col">
+      <div class="factor-chip"><span class="chip-emoji">&#x1F4B5;</span>Income</div>
+      <div class="factor-chip"><span class="chip-emoji">&#x1F393;</span>Education</div>
+      <div class="factor-chip"><span class="chip-emoji">&#x1F3E5;</span>Health</div>
+      <div class="factor-chip"><span class="chip-emoji">&#x1F4A1;</span>Empowerment</div>
+      <div class="factor-chip"><span class="chip-emoji">&#x1F3DB;&#xFE0F;</span>Political Freedom</div>
+      <div class="factor-chip"><span class="chip-emoji">&#x1F91D;</span>Social Relationships</div>
+      <div class="factor-chip"><span class="chip-emoji">&#x2696;&#xFE0F;</span>Equity</div>
+      <div class="factor-chip"><span class="chip-emoji">&#x1F3E2;</span>Working Environment</div>
+      <div class="factor-chip"><span class="chip-emoji">&#x1F3AC;</span>Leisure</div>
+      <div class="factor-chip"><span class="chip-emoji">&#x1F4B0;</span>Economic Freedom</div>
+      <div class="factor-chip"><span class="chip-emoji">&#x1F331;</span>Environmental Quality</div>
+    </div>
+  </div>
+
+  <!-- Labour Force -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F91D;</div>
+    <h2>Labour Force <span class="underline"></span></h2>
+    <p>The <strong>labour force</strong> is defined as the sum of employed and unemployed persons within the working-age population.</p>
+
+    <div class="formula-box formula-box-amber">
+      Labour Force = Employment + Unemployment
+    </div>
+
+    <h3>Sri Lanka Labour Force Calculation</h3>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="title">Step 1: Total Population</div>
+        <div class="desc">The entire population of the country</div>
+      </div>
+      <div class="timeline-item">
+        <div class="title">Step 2: Subtract Child Dependents (&lt;10) &amp; Adult Dependents (&gt;60)</div>
+        <div class="desc">= <strong>Active Population</strong> (working-age population)</div>
+      </div>
+      <div class="timeline-item">
+        <div class="title">Step 3: Subtract Non-Labour Groups</div>
+        <div class="desc">Housewives + Full-time students + Retired + Disabled + Self-unemployed</div>
+      </div>
+      <div class="timeline-item">
+        <div class="title">Step 4: Labour Force</div>
+        <div class="desc">Active Population &minus; Non-labour groups = Labour Force</div>
+      </div>
+    </div>
+
+    <h3>Key Ratios</h3>
+    <div class="card-grid">
+      <div class="info-card">
+        <div class="emoji">&#x1F4CA;</div>
+        <div class="label">Employment Ratio</div>
+        <div class="desc">Employed &divide; Labour Force &times; 100</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F4C9;</div>
+        <div class="label">Unemployment Ratio</div>
+        <div class="desc">Unemployed &divide; Labour Force &times; 100</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F4C8;</div>
+        <div class="label">Labour Force Participation Ratio</div>
+        <div class="desc">Labour Force &divide; Active Population &times; 100</div>
+      </div>
+    </div>
+
+    <h3>Worked Example</h3>
+    <p>Suppose a country has:<br>
+    Total Population = 22,000,000<br>
+    Child dependents (&lt;10) = 3,500,000<br>
+    Adult dependents (&gt;60) = 2,500,000<br>
+    Housewives = 1,200,000<br>
+    Full-time students = 1,800,000<br>
+    Retired = 800,000<br>
+    Disabled = 200,000<br>
+    Self-unemployed = 0</p>
+
+    <div class="formula-box formula-box-amber" style="font-size: 0.9rem; text-align: left;">
+      Active Population = 22,000,000 &minus; 3,500,000 &minus; 2,500,000 = <strong>16,000,000</strong><br>
+      Labour Force = 16,000,000 &minus; 1,200,000 &minus; 1,800,000 &minus; 800,000 &minus; 200,000 = <strong>12,000,000</strong><br>
+      If Employed = 10,800,000<br>
+      &emsp;Unemployed = 12,000,000 &minus; 10,800,000 = <strong>1,200,000</strong><br>
+      &emsp;Unemployment Ratio = 1,200,000 / 12,000,000 &times; 100 = <strong>10%</strong>
+    </div>
+
+    <h3>Interactive Labour Force Calculator</h3>
+    <div class="calc-grid">
+      <div class="calc-group">
+        <label>Total Population</label>
+        <input type="number" id="totalPop" value="22000000" step="1">
+      </div>
+      <div class="calc-group">
+        <label>Child Dependents (&lt;10)</label>
+        <input type="number" id="childDep" value="3500000" step="1">
+      </div>
+      <div class="calc-group">
+        <label>Adult Dependents (&gt;60)</label>
+        <input type="number" id="adultDep" value="2500000" step="1">
+      </div>
+      <div class="calc-group">
+        <label>Housewives</label>
+        <input type="number" id="housewives" value="1200000" step="1">
+      </div>
+      <div class="calc-group">
+        <label>Full-time Students</label>
+        <input type="number" id="students" value="1800000" step="1">
+      </div>
+      <div class="calc-group">
+        <label>Retired</label>
+        <input type="number" id="retired" value="800000" step="1">
+      </div>
+      <div class="calc-group">
+        <label>Disabled</label>
+        <input type="number" id="disabled" value="200000" step="1">
+      </div>
+      <div class="calc-group">
+        <label>Employed</label>
+        <input type="number" id="employed" value="10800000" step="1">
+      </div>
+    </div>
+    <button class="calc-btn" onclick="calcLabourForce()">Calculate Labour Force</button>
+    <div class="calc-result" id="labourResult">
+      Active Pop: 16,000,000 &nbsp;|&nbsp; Labour Force: 12,000,000 &nbsp;|&nbsp; Unemployment: 10.00%
+    </div>
+  </div>
+
+  <!-- Flashcards -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4DD;</div>
+    <h2>Key Terms <span class="underline"></span></h2>
+    <div class="flashcard-container">
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F4C8; Economic Growth
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Continuous increase in real GDP<br>
+            <small>PPF shifts outward<br>LRAS shifts rightward</small>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F4C9; Economic Development
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Transformation with structural change<br>
+            <small>Qualitative + quantitative<br>Multidimensional concept</small>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F4CA; HDI
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Human Development Index<br>
+            <small>Income + Education + Health<br>Composite measure of well-being</small>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F91D; Labour Force
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Employed + Unemployed<br>
+            <small>Working-age population minus non-labour groups</small>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F4A1; Capability Approach
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Amartya Sen's approach<br>
+            <small>Focus on what people can do &amp; be, not just what they have</small>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F3D4;&#xFE0F; Active Population
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Working-age population<br>
+            <small>Total &minus; child dependents (&lt;10) &minus; adult dependents (&gt;60)</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Poverty -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4B0;</div>
+    <h2>Poverty <span class="underline"></span></h2>
+    <p><strong>Poverty</strong> is a state of deprivation where individuals lack the resources to meet basic needs for a minimally acceptable quality of life.</p>
+
+    <h3>Types of Poverty</h3>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F4B5; Absolute Poverty</div>
+        <ul>
+          <li>Below a fixed minimum subsistence level</li>
+          <li>Cannot afford basic necessities (food, water, shelter)</li>
+          <li>Measured by poverty line (e.g., $2.15/day World Bank)</li>
+          <li>Focuses on survival</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F4C9; Relative Poverty</div>
+        <ul>
+          <li>Below the average standard of living in society</li>
+          <li>Cannot participate fully in normal social life</li>
+          <li>Measured as % of median income (e.g., below 60%)</li>
+          <li>Focuses on inequality</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Poverty and Economic Growth</h3>
+    <p>Economic growth can reduce poverty through the <strong>trickle-down effect</strong>, but inclusive growth requires deliberate policies for equitable distribution. Development goes beyond growth to directly address poverty through capability enhancement, social protection, and access to education, healthcare, and productive assets.</p>
+  </div>
+
+  <!-- Quiz -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F9F0;</div>
+    <h2>Test Your Knowledge <span class="underline"></span></h2>
+
+    <div class="quiz-question" data-q="1">
+      <div class="q">1. What is the formula for Economic Growth Rate?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">(Previous GDP - Current GDP) / Previous GDP &times; 100</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">(Current GDP - Previous GDP) / Previous GDP &times; 100</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">(Current GDP - Previous GDP) / Current GDP &times; 100</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Current GDP / Previous GDP &times; 100</button>
+      <div class="quiz-feedback" data-feedback="1"></div>
+    </div>
+
+    <div class="quiz-question" data-q="2">
+      <div class="q">2. Which economist pioneered the Capability Approach?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Adam Smith</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">John Maynard Keynes</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Amartya Sen</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">David Ricardo</button>
+      <div class="quiz-feedback" data-feedback="2"></div>
+    </div>
+
+    <div class="quiz-question" data-q="3">
+      <div class="q">3. What does HDI stand for?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Human Development Indicator</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Human Development Index</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Human Domestic Index</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Higher Development Index</button>
+      <div class="quiz-feedback" data-feedback="3"></div>
+    </div>
+
+    <div class="quiz-question" data-q="4">
+      <div class="q">4. Which is NOT a dimension of the HDI?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Income</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Education</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Health</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Political Freedom</button>
+      <div class="quiz-feedback" data-feedback="4"></div>
+    </div>
+
+    <div class="quiz-question" data-q="5">
+      <div class="q">5. Labour Force is equal to:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Total Population - Dependents</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Employment + Unemployment</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Active Population - Housewives</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Employed &times; 2</button>
+      <div class="quiz-feedback" data-feedback="5"></div>
+    </div>
+
+    <div class="quiz-question" data-q="6">
+      <div class="q">6. Which is a cost of economic growth?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Improved living standards</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Increased employment</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Environmental degradation</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Stronger investments</button>
+      <div class="quiz-feedback" data-feedback="6"></div>
+    </div>
+
+    <div class="quiz-question" data-q="7">
+      <div class="q">7. If GDP was $800B and rose to $880B, the growth rate is:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">8%</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">10%</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">12%</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">15%</button>
+      <div class="quiz-feedback" data-feedback="7"></div>
+    </div>
+  </div>
+
+  <!-- Formulas Reference -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4D6;</div>
+    <h2>Formula Reference <span class="underline"></span></h2>
+    <div class="formula-box">
+      Growth Rate = (GDP&#x1d62;&#x2099; &minus; GDP&#x1d62;&#x2099;&#x208b;&#x2081;) / GDP&#x1d62;&#x2099;&#x208b;&#x2081; &times; 100
+    </div>
+    <div class="formula-box formula-box-pink">
+      Labour Force = Employment + Unemployment
+    </div>
+    <div class="formula-box formula-box-pink">
+      Active Population = Total Pop &minus; Child Dep (&lt;10) &minus; Adult Dep (&gt;60)
+    </div>
+    <div class="formula-box formula-box-amber">
+      Unemployment Ratio = Unemployed / Labour Force &times; 100
+    </div>
+    <div class="formula-box formula-box-amber">
+      Labour Force Participation = Labour Force / Active Population &times; 100
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  class Particle {
+    constructor() {
+      this.reset();
+    }
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 2 + 0.5;
+      this.speedX = (Math.random() - 0.5) * 0.5;
+      this.speedY = (Math.random() - 0.5) * 0.5;
+      this.opacity = Math.random() * 0.5 + 0.1;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(168, 85, 247, ${this.opacity})`;
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+  function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
+
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 150) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(168, 85, 247, ${0.06 * (1 - dist / 150)})`;
+          ctx.lineWidth = 0.5;
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(animateParticles);
+  }
+  animateParticles();
+
+  const sections = document.querySelectorAll('[data-section]');
+
+  function revealSections() {
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 80) {
+        section.classList.add('visible');
+      }
+    });
+  }
+  window.addEventListener('scroll', revealSections);
+  revealSections();
+
+  const progressBar = document.getElementById('progressBar');
+
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / docHeight) * 100;
+    progressBar.style.width = progress + '%';
+  });
+
+  function checkAnswer(btn, isCorrect) {
+    const question = btn.closest('.quiz-question');
+    const options = question.querySelectorAll('.quiz-option');
+    const feedback = question.querySelector('.quiz-feedback');
+
+    options.forEach(opt => {
+      opt.disabled = true;
+      opt.style.cursor = 'not-allowed';
+      if (opt.dataset.correct === 'true') opt.classList.add('correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.textContent = '\u2705 Correct!';
+      feedback.className = 'quiz-feedback show correct';
+    } else {
+      btn.classList.add('wrong');
+      const correctBtn = question.querySelector('[data-correct="true"]');
+      feedback.textContent = '\u274C Incorrect. The answer was: ' + correctBtn.textContent;
+      feedback.className = 'quiz-feedback show wrong';
+    }
+  }
+
+  function calcGrowthRate() {
+    const prev = parseFloat(document.getElementById('prevGdp').value);
+    const curr = parseFloat(document.getElementById('currGdp').value);
+    if (!prev || !curr) {
+      document.getElementById('growthResult').textContent = 'Please enter valid numbers';
+      return;
+    }
+    const rate = ((curr - prev) / prev) * 100;
+    document.getElementById('growthResult').textContent = `Growth Rate: ${rate.toFixed(2)}%`;
+  }
+
+  function calcLabourForce() {
+    const totalPop = parseInt(document.getElementById('totalPop').value) || 0;
+    const childDep = parseInt(document.getElementById('childDep').value) || 0;
+    const adultDep = parseInt(document.getElementById('adultDep').value) || 0;
+    const housewives = parseInt(document.getElementById('housewives').value) || 0;
+    const students = parseInt(document.getElementById('students').value) || 0;
+    const retired = parseInt(document.getElementById('retired').value) || 0;
+    const disabled = parseInt(document.getElementById('disabled').value) || 0;
+    const employed = parseInt(document.getElementById('employed').value) || 0;
+
+    const activePop = totalPop - childDep - adultDep;
+    const nonLabour = housewives + students + retired + disabled;
+    const labourForce = activePop - nonLabour;
+    const unemployed = labourForce - employed;
+    const unempRatio = labourForce > 0 ? (unemployed / labourForce) * 100 : 0;
+
+    document.getElementById('labourResult').textContent =
+      `Active Pop: ${activePop.toLocaleString()}  |  Labour Force: ${labourForce.toLocaleString()}  |  Unemployment: ${unempRatio.toFixed(2)}%`;
+  }
+
+  calcGrowthRate();
+  calcLabourForce();
+</script>
+
+</body>
+</html>

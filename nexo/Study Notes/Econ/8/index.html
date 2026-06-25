@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 8 - Market Failure, Government & Public Finance</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0a0a0f;
+  --card: #15101a;
+  --accent: #a855f7;
+  --accent2: #ec4899;
+  --accent3: #f59e0b;
+  --gradient: linear-gradient(135deg, #a855f7, #ec4899, #f59e0b);
+  --text: #e2dff0;
+  --text-muted: #8b85a6;
+  --border: rgba(168,85,247,0.15);
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+#particles-canvas {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+}
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+/* progress bar */
+#progress-bar {
+  position: fixed; top: 0; left: 0; height: 3px; z-index: 1000;
+  background: var(--gradient);
+  width: 0%; transition: width 0.15s ease;
+}
+
+/* hero */
+.hero {
+  position: relative; z-index: 1; text-align: center;
+  padding: 100px 20px 60px; min-height: 60vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.badge {
+  display: inline-block; padding: 6px 18px; border-radius: 20px;
+  background: rgba(168,85,247,0.15); border: 1px solid var(--accent);
+  color: var(--accent); font-size: 0.85rem; letter-spacing: 1px;
+  margin-bottom: 20px; text-transform: uppercase;
+}
+.hero h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  background: var(--gradient); -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; background-clip: text;
+  max-width: 800px; margin-bottom: 16px;
+}
+.hero p {
+  color: var(--text-muted); font-size: 1.1rem; max-width: 600px;
+}
+
+/* container */
+.container { max-width: 1000px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
+section { padding: 50px 0; }
+
+/* cards */
+.card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 16px; padding: 30px; margin-bottom: 24px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(168,85,247,0.08); }
+
+/* section headings */
+.section-title {
+  font-size: 1.6rem; font-weight: 700; margin-bottom: 24px;
+  display: inline-block; position: relative;
+}
+.section-title::after {
+  content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+  height: 3px; background: var(--gradient); border-radius: 2px;
+}
+h3 { font-size: 1.15rem; color: var(--accent); margin: 20px 0 10px; }
+h4 { font-size: 1rem; color: var(--accent2); margin: 16px 0 8px; }
+ul, ol { padding-left: 24px; margin: 8px 0; }
+li { margin-bottom: 4px; }
+p { margin-bottom: 10px; color: var(--text-muted); }
+strong { color: var(--text); }
+
+/* grids */
+.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+
+/* scroll reveal */
+.reveal {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* tables */
+.table-wrapper { overflow-x: auto; margin: 16px 0; }
+table {
+  width: 100%; border-collapse: collapse; font-size: 0.9rem;
+}
+th {
+  background: rgba(168,85,247,0.12);
+  color: var(--accent); padding: 12px 14px; text-align: left;
+  border-bottom: 2px solid var(--accent);
+}
+td {
+  padding: 10px 14px; border-bottom: 1px solid var(--border);
+  color: var(--text-muted);
+}
+tr:hover td { background: rgba(168,85,247,0.04); }
+
+/* flashcards */
+.flashcard-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+.flashcard {
+  perspective: 800px; height: 160px; cursor: pointer;
+}
+.flashcard-inner {
+  position: relative; width: 100%; height: 100%; transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+.flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+.flashcard-front, .flashcard-back {
+  position: absolute; inset: 0; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px; text-align: center; backface-visibility: hidden;
+  border: 1px solid var(--border);
+}
+.flashcard-front {
+  background: var(--card);
+  color: var(--accent); font-weight: 600;
+}
+.flashcard-back {
+  background: linear-gradient(135deg, rgba(168,85,247,0.15), rgba(236,72,153,0.1));
+  transform: rotateY(180deg); color: var(--text); font-size: 0.85rem;
+}
+
+/* comparison tables */
+.comparison-table th:first-child { min-width: 160px; }
+
+/* formula box */
+.formula-box {
+  background: rgba(245,158,11,0.06);
+  border: 1px solid rgba(245,158,11,0.2);
+  border-radius: 12px; padding: 20px; margin: 16px 0;
+  font-family: 'Courier New', monospace;
+}
+.formula-box .label { color: var(--accent3); font-weight: 600; margin-bottom: 6px; font-family: 'Segoe UI', sans-serif; }
+.formula-box .formula { color: var(--text); font-size: 1rem; }
+
+/* tax calculator */
+.tax-calc {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+}
+@media(max-width:600px){.tax-calc{grid-template-columns:1fr;}}
+.tax-calc label { display: block; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 6px; }
+.tax-calc input, .tax-calc select {
+  width: 100%; padding: 10px 14px; border-radius: 8px;
+  background: var(--bg); border: 1px solid var(--border);
+  color: var(--text); font-size: 1rem; outline: none;
+}
+.tax-calc input:focus, .tax-calc select:focus { border-color: var(--accent); }
+.result-box {
+  background: rgba(168,85,247,0.08); border-radius: 12px;
+  padding: 20px; text-align: center;
+}
+.result-box .amount { font-size: 2rem; font-weight: 700; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.result-box .sub { font-size: 0.85rem; color: var(--text-muted); }
+
+/* quiz */
+.quiz-question { margin: 20px 0; }
+.quiz-question .q-text { font-weight: 600; margin-bottom: 10px; }
+.quiz-options { display: flex; flex-direction: column; gap: 8px; }
+.quiz-option {
+  padding: 10px 16px; border-radius: 8px; border: 1px solid var(--border);
+  background: transparent; color: var(--text); cursor: pointer;
+  text-align: left; font-size: 0.9rem; transition: 0.2s;
+}
+.quiz-option:hover { border-color: var(--accent); background: rgba(168,85,247,0.05); }
+.quiz-option.selected { border-color: var(--accent); background: rgba(168,85,247,0.12); }
+.quiz-option.correct { border-color: #22c55e; background: rgba(34,197,94,0.1); }
+.quiz-option.wrong { border-color: #ef4444; background: rgba(239,68,68,0.1); }
+.quiz-option:disabled { cursor: default; opacity: 0.7; }
+.quiz-result { margin-top: 16px; text-align: center; padding: 16px; border-radius: 12px; display: none; }
+.quiz-result.show { display: block; }
+.quiz-result.pass { background: rgba(34,197,94,0.1); border: 1px solid #22c55e; }
+.quiz-result.fail { background: rgba(239,68,68,0.1); border: 1px solid #ef4444; }
+.btn {
+  display: inline-block; padding: 10px 28px; border-radius: 8px;
+  background: var(--gradient); color: #fff; border: none;
+  font-size: 0.95rem; cursor: pointer; font-weight: 600;
+  transition: opacity 0.2s;
+}
+.btn:hover { opacity: 0.9; }
+.btn-outline {
+  background: transparent; border: 1px solid var(--accent);
+  color: var(--accent);
+}
+.btn-outline:hover { background: rgba(168,85,247,0.1); }
+
+/* tag */
+.tag {
+  display: inline-block; padding: 2px 10px; border-radius: 12px;
+  font-size: 0.75rem; font-weight: 600; margin: 2px;
+}
+.tag-purple { background: rgba(168,85,247,0.15); color: var(--accent); }
+.tag-pink { background: rgba(236,72,153,0.15); color: var(--accent2); }
+.tag-amber { background: rgba(245,158,11,0.15); color: var(--accent3); }
+
+/* back to top */
+#back-to-top {
+  position: fixed; bottom: 30px; right: 30px; z-index: 999;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--gradient); border: none; color: #fff;
+  font-size: 1.2rem; cursor: pointer; opacity: 0; pointer-events: none;
+  transition: opacity 0.3s;
+}
+#back-to-top.show { opacity: 1; pointer-events: auto; }
+</style>
+</head>
+<body>
+
+<canvas id="particles-canvas"></canvas>
+<div id="progress-bar"></div>
+<button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">&uarr;</button>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="badge">Lesson 8</div>
+  <h1>Market Failure, Government &amp; Public Finance</h1>
+  <p>Understanding why markets fail and how government intervention shapes economic outcomes</p>
+</section>
+
+<div class="container">
+
+<!-- FLASHCARDS -->
+<section>
+  <h2 class="section-title reveal">Key Terms</h2>
+  <div class="flashcard-grid reveal">
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">Market Failure</div>
+        <div class="flashcard-back">Inability of the market mechanism to distribute scarce resources toward society's wellbeing</div>
+      </div>
+    </div>
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">Externality</div>
+        <div class="flashcard-back">Non-compensated benefit or cost to third parties from production or consumption</div>
+      </div>
+    </div>
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">Fiscal Policy</div>
+        <div class="flashcard-back">Changes in government expenditure, revenue, and borrowing to achieve macroeconomic objectives</div>
+      </div>
+    </div>
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">Public Goods</div>
+        <div class="flashcard-back">Non-excludable and non-rival goods (national defense, street lights, lighthouses)</div>
+      </div>
+    </div>
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">Quasi-Public Goods</div>
+        <div class="flashcard-back">Non-rival until capacity is reached, but excludable (highways, museums)</div>
+      </div>
+    </div>
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">Direct Tax</div>
+        <div class="flashcard-back">Tax where the burden cannot be shifted (income tax, property tax)</div>
+      </div>
+    </div>
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">Indirect Tax</div>
+        <div class="flashcard-back">Tax where the burden can be shifted (sales tax, VAT, customs duty)</div>
+      </div>
+    </div>
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">Government Failure</div>
+        <div class="flashcard-back">When government intervention leads to worse outcomes due to rigidities, political self-interest, or imperfect information</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARKET FAILURE -->
+<section>
+  <h2 class="section-title reveal">Market Failure</h2>
+  <div class="card reveal">
+    <p><strong>Definition:</strong> The inability of the market mechanism to distribute scarce resources toward society's wellbeing.</p>
+    <h3>Reasons for Market Failure</h3>
+    <ul>
+      <li><strong>Inefficiency of resource allocation</strong> &mdash; markets fail to produce the socially optimal quantity of goods</li>
+      <li><strong>Macroeconomic instability</strong> &mdash; fluctuations in aggregate demand cause inflation and unemployment</li>
+      <li><strong>Unequal income distribution</strong> &mdash; markets produce inequitable outcomes based on labour, education, property, and luck</li>
+    </ul>
+  </div>
+</section>
+
+<!-- INEFFICIENCY OF RESOURCE ALLOCATION -->
+<section>
+  <h2 class="section-title reveal">Inefficiency of Resource Allocation</h2>
+  <div class="card reveal">
+    <ul>
+      <li>Non-provision of public goods</li>
+      <li>Non-optimal consumption of quasi-public goods</li>
+      <li>Non-provision of welfare goods optimally</li>
+      <li>Provision of demerit goods</li>
+      <li>Over-utilization of common resources</li>
+      <li>Externalities</li>
+      <li>Imperfect competition / monopoly</li>
+      <li>Imperfect information</li>
+    </ul>
+  </div>
+
+  <h3 class="reveal">Classification of Goods</h3>
+  <div class="table-wrapper reveal">
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Excludable</th>
+          <th>Rival</th>
+          <th>Examples</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Public goods</strong></td><td>No</td><td>No</td><td>National defense, street lights, lighthouses</td></tr>
+        <tr><td><strong>Global public goods</strong></td><td>No</td><td>No</td><td>Knowledge, financial stability, world peace</td></tr>
+        <tr><td><strong>Quasi-public goods</strong></td><td>Yes</td><td>No (until capacity)</td><td>Highways, museums</td></tr>
+        <tr><td><strong>Common goods</strong></td><td>No</td><td>Yes</td><td>Fisheries, grasslands, atmosphere</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="reveal">Comparison: Public vs Quasi-Public vs Common Goods</h3>
+  <div class="table-wrapper reveal">
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Public Goods</th>
+          <th>Quasi-Public Goods</th>
+          <th>Common Goods</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Excludability</td><td>Non-excludable</td><td>Excludable</td><td>Non-excludable</td></tr>
+        <tr><td>Rivalry</td><td>Non-rival</td><td>Non-rival until capacity</td><td>Rival</td></tr>
+        <tr><td>Free-rider problem</td><td>Yes</td><td>Possible</td><td>Yes</td></tr>
+        <tr><td>Tragedy of commons</td><td>No</td><td>No</td><td>Yes</td></tr>
+        <tr><td>Examples</td><td>Defense, street lights</td><td>Highways, museums</td><td>Fisheries, grasslands</td></tr>
+        <tr><td>Provider</td><td>Government</td><td>Government or private</td><td>Common pool</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- MACROECONOMIC INSTABILITY -->
+<section>
+  <h2 class="section-title reveal">Macroeconomic Instability</h2>
+  <div class="card reveal">
+    <ul>
+      <li><strong>Fluctuations in aggregate demand</strong>, especially private investment</li>
+      <li><strong>Inflation</strong> &mdash; rising general price level reduces purchasing power</li>
+      <li><strong>Unemployment</strong> &mdash; resources, especially labour, remain idle</li>
+    </ul>
+    <p>Markets alone cannot self-correct quickly; government intervention through fiscal and monetary policy is often required to stabilize the economy.</p>
+  </div>
+</section>
+
+<!-- UNEQUAL DISTRIBUTION -->
+<section>
+  <h2 class="section-title reveal">Unequal Distribution of Income</h2>
+  <div class="card reveal">
+    <p>Income inequality depends on:</p>
+    <div class="grid-3">
+      <div><span class="tag tag-purple">Labour</span></div>
+      <div><span class="tag tag-purple">Education</span></div>
+      <div><span class="tag tag-purple">Property</span></div>
+      <div><span class="tag tag-purple">Factor prices</span></div>
+      <div><span class="tag tag-purple">Entrepreneurial skills</span></div>
+      <div><span class="tag tag-purple">Luck</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ROLE OF GOVERNMENT -->
+<section>
+  <h2 class="section-title reveal">Role of Government</h2>
+  <div class="grid-2">
+    <div class="card reveal">
+      <h3>1. Efficient Allocation</h3>
+      <p>Providing public goods, quasi-public goods, welfare goods, and limiting demerit goods.</p>
+    </div>
+    <div class="card reveal">
+      <h3>2. Fair Distribution</h3>
+      <p>Redistribution of income and wealth, limits on wealth accumulation, land reform.</p>
+    </div>
+    <div class="card reveal">
+      <h3>3. Macroeconomic Stability</h3>
+      <p>Managing aggregate demand to control inflation and unemployment.</p>
+    </div>
+    <div class="card reveal">
+      <h3>4. Growth &amp; Development</h3>
+      <p>Promoting economic growth and sustainable development through policy.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GOVERNMENT FAILURE -->
+<section>
+  <h2 class="section-title reveal">Government Failure</h2>
+  <div class="card reveal">
+    <p>Government intervention can sometimes lead to worse outcomes than market failure itself.</p>
+    <div class="grid-2" style="margin-top:12px;">
+      <div><span class="tag tag-amber">Rigidities</span></div>
+      <div><span class="tag tag-amber">Political self-interest</span></div>
+      <div><span class="tag tag-amber">Short-term vision</span></div>
+      <div><span class="tag tag-amber">Imperfect information</span></div>
+      <div><span class="tag tag-amber">Unfavorable incentive effects</span></div>
+      <div><span class="tag tag-amber">Hidden economics</span></div>
+      <div><span class="tag tag-amber">Increased administration cost</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXTERNALITIES -->
+<section>
+  <h2 class="section-title reveal">Externalities</h2>
+  <div class="card reveal">
+    <p><strong>Externalities:</strong> Non-compensated benefits or costs to third parties arising from production or consumption.</p>
+    <h3>4 Types of Externalities</h3>
+  </div>
+  <div class="grid-2">
+    <div class="card reveal">
+      <h3>Negative Production</h3>
+      <p>Pollution from coal plants, pesticide runoff</p>
+      <span class="tag tag-pink">Remedy:</span> Environmental taxes, licenses, fines
+    </div>
+    <div class="card reveal">
+      <h3>Positive Production</h3>
+      <p>Train station shelter, new technology spillovers</p>
+      <span class="tag tag-pink">Remedy:</span> Subsidies, internalization
+    </div>
+    <div class="card reveal">
+      <h3>Negative Consumption</h3>
+      <p>Smoking, loud music, noise pollution</p>
+      <span class="tag tag-pink">Remedy:</span> Taxes, fines, regulation
+    </div>
+    <div class="card reveal">
+      <h3>Positive Consumption</h3>
+      <p>Good architecture, education, healthy diet</p>
+      <span class="tag tag-pink">Remedy:</span> Subsidies, public provision
+    </div>
+  </div>
+  <div class="card reveal">
+    <h3>Remedies for Externalities</h3>
+    <div class="grid-3">
+      <span class="tag tag-purple">Environmental taxes</span>
+      <span class="tag tag-purple">Licenses</span>
+      <span class="tag tag-purple">Subsidies</span>
+      <span class="tag tag-purple">Internalization</span>
+      <span class="tag tag-purple">Bargaining (Coase)</span>
+      <span class="tag tag-purple">Fines</span>
+    </div>
+  </div>
+</section>
+
+<!-- FISCAL POLICY -->
+<section>
+  <h2 class="section-title reveal">Fiscal Policy</h2>
+  <div class="card reveal">
+    <p><strong>Definition:</strong> Changes in government expenditure, revenue, and borrowing to achieve macroeconomic objectives.</p>
+  </div>
+
+  <h3 class="reveal">Fiscal vs Monetary Policy</h3>
+  <div class="table-wrapper reveal">
+    <table class="comparison-table">
+      <thead>
+        <tr><th>Feature</th><th>Fiscal Policy</th><th>Monetary Policy</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Who controls?</td><td>Government (treasury)</td><td>Central bank</td></tr>
+        <tr><td>Tools</td><td>Taxes, spending, borrowing</td><td>Interest rates, money supply</td></tr>
+        <tr><td>Focus</td><td>Budget balance, aggregate demand</td><td>Price stability, credit conditions</td></tr>
+        <tr><td>Implementation speed</td><td>Slower (legislative)</td><td>Faster (monetary authority)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="reveal">Types of Fiscal Policy</h3>
+  <div class="table-wrapper reveal">
+    <table>
+      <thead>
+        <tr><th>Type</th><th>Condition</th><th>Effect</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Expansionary</strong></td><td>G &gt; R</td><td>Stimulates aggregate demand, reduces unemployment</td></tr>
+        <tr><td><strong>Contractionary</strong></td><td>G &lt; R</td><td>Cools down economy, reduces inflation</td></tr>
+        <tr><td><strong>Neutral</strong></td><td>G = R</td><td>Balanced budget, no net stimulus</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="reveal">Fiscal Instruments</h3>
+  <div class="grid-3 reveal">
+    <div class="card" style="margin:0;"><span class="tag tag-purple">Taxes</span><p style="margin-top:8px;">Direct &amp; indirect taxes to influence spending</p></div>
+    <div class="card" style="margin:0;"><span class="tag tag-purple">Expenditure</span><p style="margin-top:8px;">Government spending on goods, services, transfers</p></div>
+    <div class="card" style="margin:0;"><span class="tag tag-purple">Public Debt</span><p style="margin-top:8px;">Borrowing to finance deficits</p></div>
+  </div>
+</section>
+
+<!-- GOVERNMENT REVENUE -->
+<section>
+  <h2 class="section-title reveal">Government Revenue</h2>
+  <div class="card reveal">
+    <p><strong>Two main sources:</strong> Tax revenue (direct &amp; indirect) and Non-tax revenue (fees, fines, dividends).</p>
+  </div>
+
+  <h3 class="reveal">Objectives of Taxation</h3>
+  <div class="card reveal">
+    <div class="grid-3">
+      <span class="tag tag-purple">Raise revenue</span>
+      <span class="tag tag-purple">Redistribute income</span>
+      <span class="tag tag-purple">Stabilize economy</span>
+      <span class="tag tag-purple">Discourage demerit goods</span>
+      <span class="tag tag-purple">Protect domestic industries</span>
+      <span class="tag tag-purple">Correct externalities</span>
+    </div>
+  </div>
+
+  <h3 class="reveal">Principles of Taxation</h3>
+  <div class="grid-2 reveal">
+    <div class="card" style="margin:0;">
+      <span class="tag tag-amber">Equity</span>
+      <p style="margin-top:6px;"><strong>Horizontal:</strong> Equal treatment of equals<br><strong>Vertical:</strong> Unequal treatment of unequals</p>
+    </div>
+    <div class="card" style="margin:0;">
+      <span class="tag tag-amber">Certainty</span>
+      <p style="margin-top:6px;">Taxpayers should know when, how, and how much</p>
+    </div>
+    <div class="card" style="margin:0;">
+      <span class="tag tag-amber">Economical</span>
+      <p style="margin-top:6px;">Cost of collection should be low relative to revenue</p>
+    </div>
+    <div class="card" style="margin:0;">
+      <span class="tag tag-amber">Efficiency</span>
+      <p style="margin-top:6px;">Minimize distortion to economic decisions</p>
+    </div>
+    <div class="card" style="margin:0;">
+      <span class="tag tag-amber">Convenience</span>
+      <p style="margin-top:6px;">Ease of payment for taxpayers</p>
+    </div>
+    <div class="card" style="margin:0;">
+      <span class="tag tag-amber">Flexibility</span>
+      <p style="margin-top:6px;">Ability to adjust to changing conditions</p>
+    </div>
+  </div>
+
+  <h3 class="reveal">Benefit vs Ability-to-Pay Principle</h3>
+  <div class="grid-2 reveal">
+    <div class="card" style="margin:0;">
+      <h3>Benefit Principle</h3>
+      <p>Taxes paid should reflect benefits received from public services.</p>
+    </div>
+    <div class="card" style="margin:0;">
+      <h3>Ability-to-Pay Principle</h3>
+      <p>Taxes should be based on the taxpayer's capacity to pay, regardless of benefits received.</p>
+    </div>
+  </div>
+
+  <h3 class="reveal">Direct vs Indirect Taxes</h3>
+  <div class="table-wrapper reveal">
+    <table class="comparison-table">
+      <thead>
+        <tr><th>Feature</th><th>Direct Tax</th><th>Indirect Tax</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Burden</td><td>Cannot be shifted</td><td>Can be shifted to consumers</td></tr>
+        <tr><td>Examples</td><td>Income tax, property tax</td><td>Sales tax, VAT, customs duty</td></tr>
+        <tr><td>Collection</td><td>Directly from individual/entity</td><td>Collected via intermediaries</td></tr>
+        <tr><td>Progressivity</td><td>Often progressive</td><td>Often regressive</td></tr>
+        <tr><td>Visibility</td><td>Highly visible</td><td>Less visible to consumer</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="reveal">Tax Sources</h3>
+  <div class="grid-2 reveal">
+    <div class="card" style="margin:0;">
+      <ul>
+        <li><strong>Income</strong> &mdash; personal &amp; corporate</li>
+        <li><strong>Consumption</strong> &mdash; sales tax, VAT, excise</li>
+      </ul>
+    </div>
+    <div class="card" style="margin:0;">
+      <ul>
+        <li><strong>Wealth</strong> &mdash; property, inheritance, wealth tax</li>
+        <li><strong>Import / Export</strong> &mdash; tariffs, customs duties</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 class="reveal">Tax Rates</h3>
+  <div class="table-wrapper reveal">
+    <table class="comparison-table">
+      <thead>
+        <tr><th>Type</th><th>Definition</th><th>Example</th><th>Graph</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong class="tag tag-purple">Progressive</strong></td>
+          <td>Tax rate increases as tax base increases</td>
+          <td>Income tax brackets (10%, 20%, 30%)</td>
+          <td>Upward-sloping curve</td>
+        </tr>
+        <tr>
+          <td><strong class="tag tag-amber">Proportional</strong></td>
+          <td>Fixed tax rate regardless of tax base</td>
+          <td>Flat tax (e.g. 15% on all income)</td>
+          <td>Horizontal line</td>
+        </tr>
+        <tr>
+          <td><strong class="tag tag-pink">Regressive</strong></td>
+          <td>Tax rate decreases as tax base increases</td>
+          <td>Sales tax (poor spend higher % of income)</td>
+          <td>Downward-sloping curve</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="reveal">Economic Effects of Taxation</h3>
+  <div class="grid-3 reveal">
+    <span class="tag tag-purple">Investment</span>
+    <span class="tag tag-purple">Production</span>
+    <span class="tag tag-purple">Consumption</span>
+    <span class="tag tag-purple">Price level</span>
+    <span class="tag tag-purple">International trade</span>
+    <span class="tag tag-purple">Income distribution</span>
+    <span class="tag tag-purple">Savings</span>
+  </div>
+
+  <!-- TAX CALCULATOR -->
+  <div class="card reveal" style="margin-top:20px;">
+    <h3>Tax Rate Calculator</h3>
+    <div class="tax-calc">
+      <div>
+        <label>Income / Base Amount ($)</label>
+        <input type="number" id="taxBase" value="50000" min="0">
+      </div>
+      <div>
+        <label>Tax System</label>
+        <select id="taxSystem">
+          <option value="progressive">Progressive</option>
+          <option value="proportional" selected>Proportional (15%)</option>
+          <option value="regressive">Regressive</option>
+        </select>
+      </div>
+      <div>
+        <div class="result-box">
+          <div class="sub">Tax Payable</div>
+          <div class="amount" id="taxAmount">$7,500</div>
+        </div>
+      </div>
+      <div>
+        <div class="result-box">
+          <div class="sub">Effective Tax Rate</div>
+          <div class="amount" id="taxRate">15.00%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GOVERNMENT EXPENDITURE -->
+<section>
+  <h2 class="section-title reveal">Government Expenditure</h2>
+  <div class="card reveal">
+    <h3>Types of Expenditure</h3>
+    <div class="grid-2">
+      <div>
+        <h4>Recurrent</h4>
+        <ul>
+          <li>Wages &amp; salaries</li>
+          <li>Subsidies</li>
+          <li>Pensions</li>
+          <li>Transportation costs</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Capital Investment</h4>
+        <ul>
+          <li>Machinery &amp; equipment</li>
+          <li>Buildings &amp; infrastructure</li>
+          <li>Highways &amp; bridges</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Net Lending</h4>
+        <p>Loans given minus repayments received by the government.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="reveal">Classification Schemes</h3>
+  <div class="grid-2 reveal">
+    <div class="card" style="margin:0;">
+      <h3>Economic Classification</h3>
+      <ul>
+        <li>Interest payments</li>
+        <li>Current transfers (Samurdhi, pension, food subsidy, fertilizer subsidy, school materials)</li>
+        <li>Acquisition of real capital</li>
+        <li>Capital transfers</li>
+      </ul>
+    </div>
+    <div class="card" style="margin:0;">
+      <h3>Functional Classification</h3>
+      <ul>
+        <li>General public services</li>
+        <li>Defense</li>
+        <li>Education</li>
+        <li>Health</li>
+        <li>Social protection</li>
+        <li>Economic affairs</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card reveal">
+    <h3>Factors Affecting Government Expenditure</h3>
+    <div class="grid-3">
+      <span class="tag tag-amber">Population growth</span>
+      <span class="tag tag-amber">Inflation</span>
+      <span class="tag tag-amber">Welfare demands</span>
+      <span class="tag tag-amber">Defense needs</span>
+      <span class="tag tag-amber">Debt servicing</span>
+      <span class="tag tag-amber">Political priorities</span>
+    </div>
+  </div>
+</section>
+
+<!-- GOVERNMENT BUDGET -->
+<section>
+  <h2 class="section-title reveal">Government Budget</h2>
+  <div class="card reveal">
+    <p><strong>Key documents:</strong> Appropriation Act, Supplementary Estimate, Vote on Account.</p>
+  </div>
+
+  <h3 class="reveal">Budget Types</h3>
+  <div class="table-wrapper reveal">
+    <table>
+      <thead>
+        <tr><th>Type</th><th>Condition</th><th>Outcome</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Deficit Budget</strong></td><td>G &gt; R</td><td>Government borrows to cover shortfall</td></tr>
+        <tr><td><strong>Surplus Budget</strong></td><td>G &lt; R</td><td>Government saves or pays down debt</td></tr>
+        <tr><td><strong>Balanced Budget</strong></td><td>G = R</td><td>Revenue equals expenditure</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="reveal">Budget Balance Formulas</h3>
+  <div class="grid-2 reveal">
+    <div class="formula-box">
+      <div class="label">Balance of Current Account</div>
+      <div class="formula">= Total Revenue &minus; Recurrent Expenditure</div>
+    </div>
+    <div class="formula-box">
+      <div class="label">Overall Balance</div>
+      <div class="formula">= Total Revenue &minus; Total Expenditure</div>
+    </div>
+    <div class="formula-box">
+      <div class="label">Balance of Primary Account</div>
+      <div class="formula">= Overall Balance &minus; Interest Payments</div>
+    </div>
+    <div class="formula-box">
+      <div class="label">Net Cash Deficit</div>
+      <div class="formula">= Overall Balance &minus; Amortization Payments</div>
+    </div>
+  </div>
+
+  <div class="card reveal">
+    <h3>Expansionary vs Contractionary Budgetary Policy</h3>
+    <div class="grid-2">
+      <div>
+        <h4>Expansionary</h4>
+        <p>Increase spending / cut taxes to stimulate the economy during a recession.</p>
+      </div>
+      <div>
+        <h4>Contractionary</h4>
+        <p>Decrease spending / raise taxes to cool an overheating economy and control inflation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GOVERNMENT DEBT -->
+<section>
+  <h2 class="section-title reveal">Government Debt</h2>
+  <div class="card reveal">
+    <h3>Sources of Government Debt</h3>
+    <div class="grid-2">
+      <div>
+        <h4>Domestic</h4>
+        <p><strong>Banking sector:</strong> Central bank, commercial banks</p>
+        <p><strong>Non-bank sector:</strong> NSB, EPF, Insurance companies</p>
+      </div>
+      <div>
+        <h4>Foreign</h4>
+        <p><strong>Project loans:</strong> Tied to specific projects</p>
+        <p><strong>Non-project loans:</strong> General budget support</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section>
+  <h2 class="section-title reveal">Check Your Understanding</h2>
+  <div class="card reveal" id="quiz">
+    <div id="quizContent"></div>
+    <div class="quiz-result" id="quizResult"></div>
+    <div style="text-align:center;margin-top:16px;">
+      <button class="btn" onclick="submitQuiz()">Submit Answers</button>
+      <button class="btn btn-outline" onclick="resetQuiz()" style="margin-left:8px;">Reset</button>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<script>
+// PARTICLES
+const canvas = document.getElementById('particles-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = document.documentElement.scrollHeight; }
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+class Particle {
+  constructor() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 2 + 0.5;
+    this.speedX = (Math.random() - 0.5) * 0.5;
+    this.speedY = (Math.random() - 0.5) * 0.5;
+    this.opacity = Math.random() * 0.5 + 0.1;
+  }
+  update() {
+    this.x += this.speedX; this.y += this.speedY;
+    if (this.x < 0) this.x = canvas.width;
+    if (this.x > canvas.width) this.x = 0;
+    if (this.y < 0) this.y = canvas.height;
+    if (this.y > canvas.height) this.y = 0;
+  }
+  draw() {
+    ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(168,85,247,${this.opacity})`;
+    ctx.fill();
+  }
+}
+for (let i = 0; i < 80; i++) particles.push(new Particle());
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+  // draw connections
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 120) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(168,85,247,${0.08 * (1 - dist/120)})`;
+        ctx.lineWidth = 0.5; ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// SCROLL REVEAL
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// PROGRESS BAR
+window.addEventListener('scroll', () => {
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  document.getElementById('progress-bar').style.width = (window.scrollY / h * 100) + '%';
+  document.getElementById('back-to-top').classList.toggle('show', window.scrollY > 400);
+});
+
+// repaint particles on scroll
+let scrollTimer;
+window.addEventListener('scroll', () => {
+  clearTimeout(scrollTimer);
+  scrollTimer = setTimeout(() => { canvas.height = document.documentElement.scrollHeight; }, 300);
+});
+
+// TAX CALCULATOR
+function calcTax() {
+  const base = parseFloat(document.getElementById('taxBase').value) || 0;
+  const system = document.getElementById('taxSystem').value;
+  let tax = 0;
+  if (system === 'proportional') {
+    tax = base * 0.15;
+  } else if (system === 'progressive') {
+    if (base <= 10000) tax = base * 0.05;
+    else if (base <= 30000) tax = 10000 * 0.05 + (base - 10000) * 0.10;
+    else if (base <= 60000) tax = 10000 * 0.05 + 20000 * 0.10 + (base - 30000) * 0.20;
+    else tax = 10000 * 0.05 + 20000 * 0.10 + 30000 * 0.20 + (base - 60000) * 0.30;
+  } else if (system === 'regressive') {
+    if (base <= 20000) tax = base * 0.20;
+    else if (base <= 50000) tax = 20000 * 0.20 + (base - 20000) * 0.15;
+    else if (base <= 100000) tax = 20000 * 0.20 + 30000 * 0.15 + (base - 50000) * 0.10;
+    else tax = 20000 * 0.20 + 30000 * 0.15 + 50000 * 0.10 + (base - 100000) * 0.05;
+  }
+  document.getElementById('taxAmount').textContent = '$' + tax.toLocaleString('en-US', {maximumFractionDigits:0});
+  document.getElementById('taxRate').textContent = base > 0 ? (tax/base * 100).toFixed(2) + '%' : '0%';
+}
+document.getElementById('taxBase').addEventListener('input', calcTax);
+document.getElementById('taxSystem').addEventListener('change', calcTax);
+calcTax();
+
+// QUIZ
+const questions = [
+  {
+    q: 'What is the defining characteristic of a public good?',
+    options: ['Excludable and rival', 'Non-excludable and non-rival', 'Excludable and non-rival', 'Non-excludable and rival'],
+    answer: 1
+  },
+  {
+    q: 'Which of the following is an example of a negative production externality?',
+    options: ['Smoking in public', 'Pollution from a coal plant', 'Getting a good education', 'Listening to loud music'],
+    answer: 1
+  },
+  {
+    q: 'A tax where the rate increases as the tax base increases is called:',
+    options: ['Proportional tax', 'Regressive tax', 'Progressive tax', 'Indirect tax'],
+    answer: 2
+  },
+  {
+    q: 'What does "Overall Balance" equal?',
+    options: [
+      'Total Revenue \u2212 Recurrent Expenditure',
+      'Total Revenue \u2212 Total Expenditure',
+      'Overall Balance \u2212 Interest Payments',
+      'Total Revenue \u2212 Capital Expenditure'
+    ],
+    answer: 1
+  },
+  {
+    q: 'Which policy involves changes in government expenditure and taxation?',
+    options: ['Monetary policy', 'Trade policy', 'Fiscal policy', 'Exchange rate policy'],
+    answer: 2
+  },
+  {
+    q: 'Which is a direct tax?',
+    options: ['Sales tax', 'Value Added Tax', 'Income tax', 'Customs duty'],
+    answer: 2
+  },
+  {
+    q: 'The free-rider problem is most associated with:',
+    options: ['Private goods', 'Public goods', 'Common goods', 'Luxury goods'],
+    answer: 1
+  }
+];
+
+function renderQuiz() {
+  const container = document.getElementById('quizContent');
+  container.innerHTML = questions.map((q, i) => `
+    <div class="quiz-question">
+      <div class="q-text">${i+1}. ${q.q}</div>
+      <div class="quiz-options" data-q="${i}">
+        ${q.options.map((opt, j) => `
+          <button class="quiz-option" data-q="${i}" data-opt="${j}" onclick="selectOption(${i},${j})">${opt}</button>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+let selected = {};
+
+function selectOption(qIdx, optIdx) {
+  const btns = document.querySelectorAll(`.quiz-option[data-q="${qIdx}"]`);
+  btns.forEach(b => b.classList.remove('selected'));
+  btns[optIdx].classList.add('selected');
+  selected[qIdx] = optIdx;
+}
+
+function submitQuiz() {
+  let correct = 0;
+  const btns = document.querySelectorAll('.quiz-option');
+  btns.forEach(b => { b.disabled = true; b.classList.remove('correct','wrong'); });
+  questions.forEach((q, i) => {
+    const opts = document.querySelectorAll(`.quiz-option[data-q="${i}"]`);
+    if (selected[i] !== undefined) {
+      if (selected[i] === q.answer) { opts[selected[i]].classList.add('correct'); correct++; }
+      else { opts[selected[i]].classList.add('wrong'); opts[q.answer].classList.add('correct'); }
+    } else {
+      opts[q.answer].classList.add('correct');
+    }
+  });
+  const result = document.getElementById('quizResult');
+  const pct = Math.round(correct / questions.length * 100);
+  result.className = 'quiz-result show ' + (pct >= 60 ? 'pass' : 'fail');
+  result.innerHTML = pct >= 60
+    ? `<strong>Passed!</strong> You got ${correct}/${questions.length} correct (${pct}%).`
+    : `<strong>Needs Improvement.</strong> You got ${correct}/${questions.length} correct (${pct}%). Review the material and try again.`;
+}
+
+function resetQuiz() {
+  selected = {};
+  const result = document.getElementById('quizResult');
+  result.className = 'quiz-result';
+  result.innerHTML = '';
+  renderQuiz();
+}
+
+renderQuiz();
+</script>
+</body>
+</html>

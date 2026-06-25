@@ -1,0 +1,108 @@
+Summary of "Atomic Habits" by James Clear
+===========================================
+
+Overview:
+"Atomic Habits" is a practical, science-based guide to building good
+habits, breaking bad ones, and mastering the tiny behaviors that lead
+to remarkable results. The central idea: small changes (atomic habits)
+compound into extraordinary outcomes over time. It's not about setting
+goals — it's about designing systems.
+
+Core Philosophy:
+- Habits are the compound interest of self-improvement.
+- 1% better every day = 37x better after one year.
+- 1% worse every day = nearly zero after one year.
+- Focus on your current trajectory, not your current results.
+- Outcomes are lagging measures of habits.
+
+The Four Stages of Habits:
+Every habit follows a four-step feedback loop:
+1. CUE → 2. CRAVING → 3. RESPONSE → 4. REWARD
+
+From this, Clear derived the Four Laws of Behavior Change:
+
+THE 1ST LAW: MAKE IT OBVIOUS (Cue)
+- Fill out a Habits Scorecard to become aware of your habits.
+- Use implementation intentions: "I will [BEHAVIOR] at [TIME] in [LOCATION]."
+- Use habit stacking: "After [CURRENT HABIT], I will [NEW HABIT]."
+- Design your environment: make cues of good habits visible.
+- To break a bad habit: make it INVISIBLE. Reduce exposure to the cue.
+
+Key concepts:
+  - Pointing-and-Calling: Verbalizing actions raises awareness (used by
+    Japanese train operators, reduces errors by 85%).
+  - Visual cues are powerful — put your gym bag by the door, guitar in
+    the living room.
+
+THE 2ND LAW: MAKE IT ATTRACTIVE (Craving)
+- Use temptation bundling: pair something you WANT with something you NEED.
+- Join a culture where your desired behavior is the normal behavior.
+- Create a motivation ritual: do something you enjoy before a hard habit.
+- To break a bad habit: make it UNATTRACTIVE. Reframe your mindset.
+
+Key concepts:
+  - Dopamine is released during ANTICIPATION, not just reward.
+  - Supernormal stimuli: exaggerated versions of reality (junk food, social
+    media) hijack our reward systems.
+  - We imitate the habits of three groups: the close, the many, the powerful.
+
+THE 3RD LAW: MAKE IT EASY (Response)
+- Focus on repetition, not perfection. Quantity leads to quality.
+- Reduce friction for good habits; increase friction for bad ones.
+- Use the Two-Minute Rule: new habits should take less than 2 minutes.
+- Use commitment devices to lock in future behavior.
+- Automate your habits with onetime choices (e.g., unsubscribing from
+  emails, buying a water filter).
+- To break a bad habit: make it DIFFICULT. Increase the steps required.
+
+Key concepts:
+  - Motion vs. Action: Motion is planning/strategizing; action produces
+    results. Stop preparing, start doing.
+  - Law of Least Effort: humans naturally gravitate toward the path of
+    least resistance.
+  - Habit shaping: master the first 2 minutes, then gradually scale up.
+  - Decisive moments: small choices that set the tone for your day.
+
+THE 4TH LAW: MAKE IT SATISFYING (Reward)
+- Use immediate reinforcement — what is immediately rewarded is repeated.
+- Use habit tracking (calendars, streaks) to visualize progress.
+- Never miss twice. If you break a streak, get back on track immediately.
+- Use an accountability partner or habit contract.
+- To break a bad habit: make it UNSATISFYING. Add immediate cost.
+
+Key concepts:
+  - Cardinal Rule of Behavior Change: what is immediately rewarded is
+    repeated. What is immediately punished is avoided.
+  - Paper Clip Strategy: move a paper clip for each repetition to create
+    visual proof of progress.
+  - Don't break the chain: maintaining streaks is powerfully motivating.
+  - The best form of motivation is progress.
+
+Advanced Tactics:
+- The Goldilocks Rule: peak motivation occurs when working on tasks at
+  the edge of your current abilities (not too hard, not too easy).
+- Habit + Deliberate Practice = Mastery
+- Fall in love with boredom — professionals stick to the schedule even
+  when it's not exciting.
+- Mastery is an endless cycle of habits unlocking the next level.
+- The downside of habits: they can make you complacent. Use reflection
+  and review (annual, monthly, and daily reviews) to stay on track.
+
+Identity-Based Habits:
+- The most powerful shift is from outcome-based habits to identity-based
+  habits. Instead of "I want to lose weight," think "I am the kind of
+  person who doesn't miss workouts."
+- Every action is a vote for the type of person you wish to become.
+- True behavior change is identity change.
+
+Core Takeaways:
+1. Small habits compound into remarkable results over time.
+2. Focus on systems, not goals. Goals set direction; systems make progress.
+3. Make good habits obvious, attractive, easy, and satisfying.
+4. Make bad habits invisible, unattractive, difficult, and unsatisfying.
+5. Your habits shape your identity; your identity shapes your habits.
+6. Environment design beats willpower every time.
+7. Never miss twice — consistency is more important than perfection.
+8. Automation and commitment devices lock in good behavior.
+9. Mastery comes from falling in love with boredom and showing up daily.
+10. Progress is the best form of motivation — track it visibly.

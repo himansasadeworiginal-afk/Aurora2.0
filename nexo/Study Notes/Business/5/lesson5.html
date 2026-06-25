@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 5 – Entrepreneurship</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0f0a04;
+    --surface: rgba(255,255,255,0.04);
+    --surface-hover: rgba(255,255,255,0.08);
+    --border: rgba(255,255,255,0.06);
+    --text: #fef3c7;
+    --text-dim: #d4a574;
+    --accent: #f59e0b;
+    --accent2: #ef4444;
+    --accent3: #10b981;
+    --radius: 16px;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+  #particles-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  .ambient-glow {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 0;
+    animation: floatGlow 20s ease-in-out infinite alternate;
+  }
+  .ambient-glow:nth-child(1) {
+    width: 600px; height: 600px;
+    background: rgba(245,158,11,0.08);
+    top: -10%; left: -10%;
+  }
+  .ambient-glow:nth-child(2) {
+    width: 500px; height: 500px;
+    background: rgba(239,68,68,0.06);
+    bottom: -10%; right: -10%;
+    animation-delay: -7s;
+  }
+  .ambient-glow:nth-child(3) {
+    width: 400px; height: 400px;
+    background: rgba(16,185,129,0.04);
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    animation-delay: -14s;
+  }
+  @keyframes floatGlow {
+    0% { transform: translate(0,0) scale(1); }
+    33% { transform: translate(60px,-40px) scale(1.1); }
+    66% { transform: translate(-30px,50px) scale(0.9); }
+    100% { transform: translate(40px,20px) scale(1.05); }
+  }
+  .content { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 40px 24px 120px; }
+  header {
+    text-align: center;
+    padding: 100px 0 60px;
+    opacity: 0;
+    transform: translateY(40px);
+    animation: fadeUp 1s ease forwards;
+  }
+  header .badge {
+    display: inline-block;
+    padding: 6px 18px;
+    border-radius: 100px;
+    background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(239,68,68,0.15));
+    border: 1px solid rgba(245,158,11,0.2);
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    margin-bottom: 24px;
+  }
+  header h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.2;
+    background: linear-gradient(135deg, #fef3c7 0%, var(--accent) 40%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  header p {
+    color: var(--text-dim);
+    font-size: 1.1rem;
+    margin-top: 16px;
+    max-width: 600px;
+    margin-inline: auto;
+  }
+  .toc {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin: 0 0 60px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.3s forwards;
+  }
+  .toc a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px;
+    border-radius: var(--radius);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  .toc a:hover {
+    background: var(--surface-hover);
+    border-color: rgba(245,158,11,0.3);
+    color: var(--text);
+    transform: translateY(-2px);
+  }
+  .toc a .num {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(239,68,68,0.2));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .section {
+    margin: 40px 0;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+  }
+  .section.visible { opacity: 1; transform: translateY(0); }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 36px 32px;
+    backdrop-filter: blur(20px);
+    transition: all 0.4s ease;
+  }
+  .card:hover {
+    border-color: rgba(245,158,11,0.15);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+  }
+  .card h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .card h2 .icon {
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+  .card .subtitle {
+    color: var(--text-dim);
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  .def-box {
+    background: linear-gradient(135deg, rgba(245,158,11,0.06), rgba(239,68,68,0.06));
+    border-left: 3px solid var(--accent);
+    padding: 20px 24px;
+    border-radius: 0 12px 12px 0;
+    margin: 16px 0;
+    font-style: italic;
+    color: var(--text-dim);
+  }
+  ul.features, ul.list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 16px 0;
+  }
+  ul.features li, ul.list li {
+    padding: 10px 16px 10px 36px;
+    border-radius: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    position: relative;
+    transition: all 0.3s ease;
+    font-size: 15px;
+  }
+  ul.features li:hover, ul.list li:hover {
+    background: var(--surface-hover);
+    transform: translateX(4px);
+  }
+  ul.features li::before {
+    content: "\2713";
+    position: absolute;
+    left: 12px;
+    color: var(--accent3);
+    font-weight: 700;
+  }
+  ul.list li::before {
+    content: "\2022";
+    position: absolute;
+    left: 14px;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .examples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0;
+  }
+  .examples span {
+    padding: 5px 14px;
+    border-radius: 100px;
+    background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(239,68,68,0.1));
+    border: 1px solid rgba(245,158,11,0.15);
+    font-size: 13px;
+    color: var(--accent);
+  }
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 14px;
+  }
+  .comparison-table th, .comparison-table td {
+    padding: 14px 18px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .comparison-table th {
+    background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(239,68,68,0.1));
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .comparison-table th:first-child { border-radius: 12px 0 0 0; }
+  .comparison-table th:last-child { border-radius: 0 12px 0 0; }
+  .comparison-table tr:hover td { background: var(--surface-hover); }
+  .step-list {
+    counter-reset: step;
+    list-style: none;
+    margin: 16px 0;
+  }
+  .step-list li {
+    counter-increment: step;
+    padding: 12px 16px 12px 48px;
+    position: relative;
+    border-left: 2px solid var(--border);
+    margin-left: 12px;
+    transition: all 0.3s ease;
+  }
+  .step-list li:hover { border-left-color: var(--accent); }
+  .step-list li::before {
+    content: counter(step);
+    position: absolute;
+    left: -14px;
+    top: 10px;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+    color: #fff;
+  }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 16px 0;
+  }
+  @media (max-width: 640px) { .grid-2 { grid-template-columns: 1fr; } }
+  .grid-item {
+    padding: 20px;
+    border-radius: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+  .grid-item h4 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--accent);
+  }
+  .grid-item ul { list-style: none; }
+  .grid-item ul li {
+    padding: 4px 0 4px 16px;
+    position: relative;
+    font-size: 14px;
+    color: var(--text-dim);
+  }
+  .grid-item ul li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+    z-index: 100;
+    transition: width 0.1s ease;
+  }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .toggle-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    margin: 8px 0;
+  }
+  .toggle-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  footer {
+    text-align: center;
+    padding: 40px 0;
+    color: var(--text-dim);
+    font-size: 13px;
+    border-top: 1px solid var(--border);
+    margin-top: 60px;
+  }
+  ::selection { background: rgba(245,158,11,0.3); color: #fff; }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+</style>
+</head>
+<body>
+<div class="ambient-glow"></div>
+<div class="ambient-glow"></div>
+<div class="ambient-glow"></div>
+<canvas id="particles-canvas"></canvas>
+<div class="progress-bar" id="progress-bar"></div>
+<div class="content">
+  <header>
+    <div class="badge">Business Studies &mdash; Lesson 5</div>
+    <h1>Entrepreneurship</h1>
+    <p>Definitions, importance, trends, entrepreneurial process, characteristics, skills, and small &amp; medium scale businesses.</p>
+  </header>
+  <nav class="toc">
+    <a href="#sec-def"><span class="num">1</span> Definitions</a>
+    <a href="#sec-importance"><span class="num">2</span> Importance</a>
+    <a href="#sec-benefits"><span class="num">3</span> Benefits</a>
+    <a href="#sec-trends"><span class="num">4</span> Trends</a>
+    <a href="#sec-process"><span class="num">5</span> Process</a>
+    <a href="#sec-entrepreneur"><span class="num">6</span> Entrepreneur</a>
+    <a href="#sec-sme"><span class="num">7</span> SME</a>
+    <a href="#sec-incentives"><span class="num">8</span> Incentives</a>
+  </nav>
+
+  <div class="section" id="sec-def">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(239,68,68,0.2));">&#9733;</span> What is Entrepreneurship?</h2>
+      <div class="def-box">&ldquo;Entrepreneurship is the process of extracting environmental opportunities creatively and generating innovation while bearing risks.&rdquo;</div>
+      <button class="toggle-btn" onclick="toggleSection('def-quotes')">&#9660; Key Definitions</button>
+      <div id="def-quotes" style="display:none;">
+        <ul class="list">
+          <li><strong>William D. Bygrave:</strong> &ldquo;An entrepreneur is someone who perceives an opportunity and creates an organization to pursue it.&rdquo;</li>
+          <li><strong>Joseph Schumpeter:</strong> &ldquo;An entrepreneur is the person who destroys the existing economic order by introducing new products and services.&rdquo;</li>
+          <li><strong>Oxford Dictionary:</strong> &ldquo;Entrepreneurship is the bridge between capital and labor.&rdquo;</li>
+          <li><strong>Richard Nantinut:</strong> &ldquo;Entrepreneurship is facing up to uncertainties.&rdquo;</li>
+          <li><strong>ILO:</strong> &ldquo;Entrepreneurship is the ability to launch a new company and carry it on successfully.&rdquo;</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-importance">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(239,68,68,0.2),rgba(245,158,11,0.2));">&#9888;</span> Importance of Entrepreneurship</h2>
+      <ul class="features">
+        <li>Enormous need for entrepreneurs who can find innovations and react to rapid changes</li>
+        <li>Need for generating innovations to survive in the competitive business world</li>
+        <li>Entrepreneurs give leadership to the changing world</li>
+        <li>Innovations uplift living standards through satisfying human needs</li>
+        <li>Developing business functions in line with changing technology</li>
+        <li>Creating employment through starting new businesses</li>
+      </ul>
+      <button class="toggle-btn" onclick="toggleSection('ent-biz-rel')">&#9660; Relationship: Entrepreneurship &amp; Business</button>
+      <div id="ent-biz-rel" style="display:none;">
+        <p style="margin:12px 0;color:var(--text-dim);font-size:14px;">All enterprises are businesses, whereas all businesses are not enterprises. The result of entrepreneurship is known as business.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-benefits">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(245,158,11,0.2));">&#9776;</span> Benefits of Entrepreneurship</h2>
+      <button class="toggle-btn" onclick="toggleSection('benefits-detail')">&#9660; Individual, Institutional &amp; Socio-Economic Benefits</button>
+      <div id="benefits-detail" style="display:none;">
+        <div class="grid-2">
+          <div class="grid-item">
+            <h4>Individual Benefits</h4>
+            <ul><li>Make use of individual abilities</li><li>Higher benefits through higher commitments</li><li>Social status and acceptance</li><li>Self-satisfaction</li><li>Personal and financial gains</li></ul>
+          </div>
+          <div class="grid-item">
+            <h4>Institutional Benefits</h4>
+            <ul><li>Easy to face competition</li><li>Expansion of business activities</li><li>Continuous development</li><li>Expansion of market shares</li><li>Becoming industry expert</li></ul>
+          </div>
+        </div>
+        <div class="grid-item" style="margin-top:12px;">
+          <h4>Social &amp; Economic Benefits</h4>
+          <ul><li>Creation of new employment</li><li>New goods and services for consumers</li><li>Developing standard of living</li><li>Using regional resources</li><li>Development of new markets</li><li>Creation of income opportunities</li></ul>
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSection('econ-dev')">&#9660; Entrepreneurship &amp; Economic Development</button>
+      <div id="econ-dev" style="display:none;">
+        <ul class="features">
+          <li>Increase in national production through innovations</li>
+          <li>Increase in employment level</li>
+          <li>Faster economic development</li>
+          <li>Increase in production &rarr; employment &rarr; income &rarr; purchasing power &rarr; demand &rarr; business expansion &rarr; economic development</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-trends">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(139,92,246,0.2),rgba(245,158,11,0.2));">&#9878;</span> Trends in Entrepreneurship</h2>
+      <div class="grid-2">
+        <div class="grid-item">
+          <h4>Global Entrepreneurship</h4>
+          <ul><li>Engaging in trade globally using technology</li><li>Working beyond borders</li><li>Understanding other cultures</li></ul>
+        </div>
+        <div class="grid-item">
+          <h4>Social Entrepreneurship</h4>
+          <ul><li>Innovations to solve social problems</li><li>Intention of social service</li><li>Mental satisfaction, acceptance, praise</li></ul>
+        </div>
+        <div class="grid-item">
+          <h4>Green Entrepreneurship</h4>
+          <ul><li>Activities with positive environmental impact</li><li>Protecting environment as core concept</li><li>Sensitive to environmental issues</li></ul>
+        </div>
+        <div class="grid-item">
+          <h4>Intra Entrepreneurship</h4>
+          <ul><li>Creative people within organizations</li><li>Changes in products and production methods</li><li>Introduced and implemented within the institute</li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-process">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(59,130,246,0.2),rgba(16,185,129,0.2));">&#9879;</span> Entrepreneurial Process</h2>
+      <ol class="step-list">
+        <li><strong>Discovery</strong> &mdash; Generate ideas, identify opportunities through environmental study, study the marketplace</li>
+        <li><strong>Concept Development &amp; Business Plan</strong> &mdash; Prepare a detailed program clarifying the business idea</li>
+        <li><strong>Resourcing</strong> &mdash; Identify and acquire financial, human and physical resources</li>
+        <li><strong>Actualization</strong> &mdash; Carry out operational activities, use resources to fulfil aims</li>
+        <li><strong>Harvesting</strong> &mdash; Take decisions regarding future growth and development</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="section" id="sec-entrepreneur">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(236,72,153,0.2));">&#9782;</span> The Entrepreneur</h2>
+      <div class="def-box">&ldquo;The person who sees changes in the marketplace as opportunities for businesses is an entrepreneur. His armory is product innovation.&rdquo; <br><span style="font-size:13px;color:var(--text-dim);">&mdash; Peter F. Drucker</span></div>
+      <button class="toggle-btn" onclick="toggleSection('ent-vs-biz')">&#9660; Entrepreneur vs Businessman</button>
+      <div id="ent-vs-biz" style="display:none;">
+        <table class="comparison-table">
+          <tr><th>Aspect</th><th>Entrepreneur</th><th>Businessman</th></tr>
+          <tr><td>Orientation</td><td>Innovation &amp; opportunity</td><td>Profit &amp; operations</td></tr>
+          <tr><td>Risk</td><td>High risk taker</td><td>Calculated risk</td></tr>
+          <tr><td>Approach</td><td>Creative, disruptive</td><td>Systematic, established</td></tr>
+          <tr><td>Focus</td><td>Change &amp; growth</td><td>Stability &amp; efficiency</td></tr>
+        </table>
+      </div>
+      <button class="toggle-btn" onclick="toggleSection('ent-chars')">&#9660; Entrepreneurial Characteristics</button>
+      <div id="ent-chars" style="display:none;">
+        <ul class="features">
+          <li><strong>Willingness to take risks</strong> &mdash; Faces risks rather than avoids them</li>
+          <li><strong>Creativity</strong> &mdash; Ability to see, think and take actions differently</li>
+          <li><strong>Commitment</strong> &mdash; Works with great enthusiasm until objectives achieved</li>
+          <li><strong>Self-confidence</strong> &mdash; Believes he can successfully overcome problems</li>
+          <li><strong>Self-reliant</strong> &mdash; Puts own ideas into effect rather than depending on others</li>
+        </ul>
+      </div>
+      <button class="toggle-btn" onclick="toggleSection('ent-skills')">&#9660; Entrepreneurial Skills</button>
+      <div id="ent-skills" style="display:none;">
+        <ul class="features">
+          <li><strong>Leadership skills</strong> &mdash; Leads followers by encouraging them</li>
+          <li><strong>Interpersonal skills</strong> &mdash; Maintains favorable relationships</li>
+          <li><strong>Communication skills</strong> &mdash; Maintains proper coordination</li>
+          <li><strong>Basic management skills</strong> &mdash; Planning, organizing, leading, controlling</li>
+        </ul>
+        <p style="margin:12px 0;color:var(--text-dim);font-size:14px;">Ways to develop: Self-evaluation, Training, Education, Profiting from experiences</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-sme">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(59,130,246,0.2));">&#9881;</span> Small &amp; Medium Scale Businesses</h2>
+      <button class="toggle-btn" onclick="toggleSection('sme-chars')">&#9660; Characteristics</button>
+      <div id="sme-chars" style="display:none;">
+        <ul class="features">
+          <li>Having a small market</li>
+          <li>Invested capital being low</li>
+          <li>Fewer staff employed</li>
+          <li>Family labor used most probably</li>
+          <li>Decision making based on personal information</li>
+          <li>Owner is the chief manager</li>
+          <li>Targeted at local markets</li>
+          <li>Fewer financial bonds</li>
+          <li>Modern technology being used</li>
+        </ul>
+      </div>
+      <button class="toggle-btn" onclick="toggleSection('sme-contribution')">&#9660; Contribution to Economic Development</button>
+      <div id="sme-contribution" style="display:none;">
+        <ul class="features">
+          <li>Labor intensive &rarr; more employment</li>
+          <li>Contribution to national product growth</li>
+          <li>Utilizing inland resources</li>
+          <li>Minimizing urbanization problems through regional development</li>
+          <li>Minimizing income inequality</li>
+          <li>Supplementing raw materials and finished goods for large-scale businesses</li>
+          <li>Engaging in affairs not performed by large businesses</li>
+        </ul>
+      </div>
+      <button class="toggle-btn" onclick="toggleSection('sme-success')">&#9660; Success &amp; Failure Factors</button>
+      <div id="sme-success" style="display:none;">
+        <div class="grid-2">
+          <div class="grid-item">
+            <h4>Reasons for Success</h4>
+            <ul><li>Sufficient infrastructure</li><li>Financial and tax incentives</li><li>Expanded market</li><li>Institutional and marketing facilities</li><li>Sound management</li><li>Enthusiasm and commitment</li></ul>
+          </div>
+          <div class="grid-item">
+            <h4>Reasons for Failure</h4>
+            <ul><li>Financial problems</li><li>Inability to face competition</li><li>Weak management</li><li>Less entrepreneurial skills</li><li>Insufficient infrastructure</li><li>Low technology awareness</li></ul>
+          </div>
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSection('sme-consider')">&#9660; Factors to Consider When Starting</button>
+      <div id="sme-consider" style="display:none;">
+        <ul class="list">
+          <li>Studying and evaluating one&rsquo;s own abilities and skills</li>
+          <li>Market availability and entry possibilities</li>
+          <li>Opening capital and working capital requirements</li>
+          <li>Type of business organization</li>
+          <li>Existing rules and regulations</li>
+          <li>Existing competition</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-incentives">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(251,191,36,0.2),rgba(16,185,129,0.2));">&#9733;</span> Incentives for SMEs</h2>
+      <button class="toggle-btn" onclick="toggleSection('inc-types')">&#9660; Types of Incentives</button>
+      <div id="inc-types" style="display:none;">
+        <div class="grid-2">
+          <div class="grid-item">
+            <h4>Financial Incentives</h4>
+            <ul><li>Short-term &amp; long-term loans</li><li>Financial assistance</li><li>Tax concessions</li><li>Refinancing facilities</li></ul>
+          </div>
+          <div class="grid-item">
+            <h4>Non-Financial Incentives</h4>
+            <ul><li>Advisory services</li><li>Entrepreneur development programs</li><li>Research and technological services</li><li>Infrastructure facilities</li><li>Market facilities</li><li>Awards and excellence awards</li></ul>
+          </div>
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSection('inc-orgs')">&#9660; Organizations Providing Incentives</button>
+      <div id="inc-orgs" style="display:none;">
+        <div class="grid-2">
+          <div class="grid-item">
+            <h4>Government Institutions</h4>
+            <ul><li>Industrial Development Board</li><li>Export Development Board</li><li>SL Standards Institution</li><li>National Development Bank</li><li>Industrial Technology Institution</li></ul>
+          </div>
+          <div class="grid-item">
+            <h4>Other Institutions</h4>
+            <ul><li>Sarvodaya</li><li>JICA</li><li>Private tax organizations</li><li>Sanasa</li><li>Private banks &amp; financial institutions</li></ul>
+          </div>
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSection('inc-projects')">&#9660; Current Loan Projects</button>
+      <div id="inc-projects" style="display:none;">
+        <ul class="list">
+          <li><strong>Liya Isura</strong> &mdash; Interest-free loans for women micro-entrepreneurs (Regional Development Bank)</li>
+          <li><strong>Suwana / SMILE</strong> &mdash; Small and Micro Industries Leader and Entrepreneur promotion (NDB with JBIC)</li>
+          <li><strong>Shanya</strong> &mdash; Loan scheme with Asian Development Bank (DFCC and commercial banks)</li>
+          <li><strong>Sanasa Loan Project</strong> &mdash; Loans for agrarians, livestock, small industry, trading</li>
+          <li><strong>Co-operative Rural Bank Loans</strong> &mdash; For agrarian, fisheries, livestock, trading</li>
+          <li><strong>Samurdhi / Divineguma Loan Scheme</strong> &mdash; For Samurdhi beneficiaries</li>
+          <li><strong>Agrarian Bank Pilot Project</strong> &mdash; Short and long-term loans for farmers</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Business Studies &mdash; Lesson 5 &bull; Entrepreneurship &bull; Based on original lesson notes</p>
+  </footer>
+</div>
+<script>
+  const canvas = document.getElementById('particles-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = []; let mouseX = -1000, mouseY = -1000;
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  resize(); window.addEventListener('resize', resize);
+  class Particle {
+    constructor() { this.reset(); }
+    reset() { this.x = Math.random()*canvas.width; this.y = Math.random()*canvas.height; this.size = Math.random()*2+0.5; this.speedX = (Math.random()-0.5)*0.3; this.speedY = (Math.random()-0.5)*0.3; this.opacity = Math.random()*0.5+0.1; }
+    update() { this.x+=this.speedX; this.y+=this.speedY; if(this.x<0||this.x>canvas.width)this.speedX*=-1; if(this.y<0||this.y>canvas.height)this.speedY*=-1; const dx=this.x-mouseX,dy=this.y-mouseY,dist=Math.sqrt(dx*dx+dy*dy); if(dist<120){const force=(120-dist)/120;this.x+=dx*force*0.008;this.y+=dy*force*0.008;} }
+    draw() { ctx.beginPath(); ctx.arc(this.x,this.y,this.size,0,Math.PI*2); ctx.fillStyle=`rgba(212,165,116,${this.opacity})`; ctx.fill(); }
+  }
+  for(let i=0;i<120;i++)particles.push(new Particle());
+  function animateParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw();});for(let i=0;i<particles.length;i++){for(let j=i+1;j<particles.length;j++){const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y,dist=Math.sqrt(dx*dx+dy*dy);if(dist<140){ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle=`rgba(212,165,116,${0.06*(1-dist/140)})`;ctx.lineWidth=0.5;ctx.stroke();}}}requestAnimationFrame(animateParticles);}
+  animateParticles();
+  document.addEventListener('mousemove',e=>{mouseX=e.clientX;mouseY=e.clientY;});
+  window.addEventListener('scroll',()=>{const s=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-document.documentElement.clientHeight;document.getElementById('progress-bar').style.width=(s/h*100)+'%';});
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1});
+  document.querySelectorAll('.section').forEach(s=>observer.observe(s));
+  function toggleSection(id){const el=document.getElementById(id);if(el.style.display==='none'){el.style.display='block';el.style.animation='fadeUp 0.4s ease forwards';}else{el.style.display='none';}}
+</script>
+</body>
+</html>

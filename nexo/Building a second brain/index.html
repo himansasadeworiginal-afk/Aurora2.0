@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Building a Second Brain — Interactive Summary</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0a0a0f;
+    color: #e0e0e0;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background particles */
+  #particles-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  header {
+    text-align: center;
+    padding: 3rem 0 2rem;
+    animation: fadeSlideDown 1s ease-out;
+  }
+
+  header h1 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #a78bfa, #60a5fa, #34d399);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+  }
+
+  header .subtitle {
+    margin-top: 0.5rem;
+    color: #8888aa;
+    font-size: 1.05rem;
+    font-weight: 300;
+  }
+
+  header .author {
+    margin-top: 0.3rem;
+    font-size: 0.9rem;
+    color: #6666aa;
+  }
+
+  /* Brain icon animation */
+  .brain-icon {
+    font-size: 4rem;
+    display: inline-block;
+    animation: pulse 3s ease-in-out infinite;
+    margin-bottom: 0.5rem;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.15); opacity: 1; }
+  }
+
+  /* Tab navigation */
+  .tabs {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin: 2rem 0 1.5rem;
+    animation: fadeSlideUp 0.8s ease-out 0.2s both;
+  }
+
+  .tab-btn {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: #aaa;
+    padding: 0.7rem 1.4rem;
+    border-radius: 100px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tab-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 100px;
+    background: linear-gradient(135deg, #a78bfa22, #60a5fa22);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .tab-btn:hover {
+    border-color: rgba(167,139,250,0.3);
+    color: #ddd;
+    transform: translateY(-2px);
+  }
+
+  .tab-btn:hover::before { opacity: 1; }
+
+  .tab-btn.active {
+    background: linear-gradient(135deg, #a78bfa33, #60a5fa33);
+    border-color: #a78bfa66;
+    color: #fff;
+    box-shadow: 0 0 25px rgba(167,139,250,0.15);
+  }
+
+  /* Tab content */
+  .tab-panel {
+    display: none;
+    animation: fadeIn 0.5s ease;
+  }
+
+  .tab-panel.active { display: block; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeSlideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Cards */
+  .card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    animation: fadeSlideUp 0.6s ease-out both;
+  }
+
+  .card:hover {
+    border-color: rgba(167,139,250,0.2);
+    background: rgba(255,255,255,0.05);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  }
+
+  .card h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #a78bfa;
+    margin-bottom: 0.6rem;
+  }
+
+  .card h2 .emoji { margin-right: 0.5rem; }
+
+  .card p, .card li {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #c0c0d0;
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.3rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: #60a5fa;
+  }
+
+  /* CODE letter boxes */
+  .code-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 0.8rem;
+    margin-top: 0.5rem;
+  }
+
+  .code-box {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 1.2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: default;
+  }
+
+  .code-box:hover {
+    transform: scale(1.05) translateY(-5px);
+    box-shadow: 0 8px 25px rgba(167,139,250,0.2);
+  }
+
+  .code-box .letter {
+    font-size: 2rem;
+    font-weight: 800;
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+
+  .code-box .letter.c { color: #a78bfa; }
+  .code-box .letter.o { color: #60a5fa; }
+  .code-box .letter.d { color: #34d399; }
+  .code-box .letter.e { color: #f59e0b; }
+
+  .code-box .label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #ccc;
+  }
+
+  .code-box .desc {
+    font-size: 0.75rem;
+    color: #888;
+    margin-top: 0.3rem;
+    line-height: 1.4;
+  }
+
+  /* Quote box */
+  .quote-box {
+    background: linear-gradient(135deg, rgba(167,139,250,0.08), rgba(96,165,250,0.08));
+    border-left: 3px solid #a78bfa;
+    border-radius: 0 12px 12px 0;
+    padding: 1.2rem 1.5rem;
+    margin: 1rem 0;
+    font-style: italic;
+    animation: fadeSlideUp 0.6s ease-out both;
+  }
+
+  .quote-box p {
+    font-size: 1rem;
+    color: #d0d0e8;
+    line-height: 1.6;
+  }
+
+  .quote-box .attribution {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: #8888aa;
+    font-style: normal;
+  }
+
+  /* Interactive PARA section */
+  .para-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .para-card {
+    border-radius: 12px;
+    padding: 1.2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    border: 1px solid rgba(255,255,255,0.06);
+    background: rgba(255,255,255,0.02);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .para-card::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 0; height: 0;
+    border-radius: 50%;
+    transition: all 0.5s ease;
+    transform: translate(-50%, -50%);
+  }
+
+  .para-card.flip::after {
+    width: 300px; height: 300px;
+    opacity: 0;
+  }
+
+  .para-card .para-letter {
+    font-size: 2.2rem;
+    font-weight: 800;
+    display: block;
+  }
+
+  .para-card .para-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-top: 0.3rem;
+  }
+
+  .para-card .para-desc {
+    font-size: 0.75rem;
+    color: #888;
+    margin-top: 0.4rem;
+    line-height: 1.4;
+  }
+
+  .para-card .para-detail {
+    font-size: 0.75rem;
+    color: #6666aa;
+    margin-top: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .para-card.show-detail .para-detail { opacity: 1; }
+
+  .para-card:nth-child(1) .para-letter { color: #a78bfa; }
+  .para-card:nth-child(2) .para-letter { color: #60a5fa; }
+  .para-card:nth-child(3) .para-letter { color: #34d399; }
+  .para-card:nth-child(4) .para-letter { color: #f59e0b; }
+
+  .para-card:nth-child(1) { border-color: rgba(167,139,250,0.15); }
+  .para-card:nth-child(2) { border-color: rgba(96,165,250,0.15); }
+  .para-card:nth-child(3) { border-color: rgba(52,211,153,0.15); }
+  .para-card:nth-child(4) { border-color: rgba(245,158,11,0.15); }
+
+  /* Progress bar */
+  .progress-container {
+    margin: 2rem 0;
+    text-align: center;
+  }
+
+  .progress-bar-bg {
+    width: 100%;
+    height: 8px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 100px;
+    overflow: hidden;
+    margin-top: 0.5rem;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #a78bfa, #60a5fa, #34d399);
+    border-radius: 100px;
+    transition: width 0.8s ease;
+  }
+
+  .progress-label {
+    font-size: 0.8rem;
+    color: #888;
+  }
+
+  /* Accordion toggle */
+  .accordion-header {
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .accordion-header .arrow {
+    transition: transform 0.3s ease;
+    font-size: 0.9rem;
+    color: #666;
+  }
+
+  .accordion-header.open .arrow { transform: rotate(180deg); }
+
+  .accordion-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s ease;
+    padding: 0 0.5rem;
+  }
+
+  .accordion-body.open {
+    max-height: 500px;
+    padding: 0.8rem 0.5rem 0.3rem;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    font-size: 0.8rem;
+    color: #555;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    header h1 { font-size: 2rem; }
+    .code-grid { grid-template-columns: 1fr 1fr; }
+    .para-grid { grid-template-columns: 1fr 1fr; }
+    .tab-btn { padding: 0.5rem 1rem; font-size: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="particles-canvas"></canvas>
+
+<div class="content">
+  <header>
+    <div class="brain-icon">🧠</div>
+    <h1>Building a Second Brain</h1>
+    <div class="subtitle">A Proven Method to Organize Your Digital Life<br>and Unlock Your Creative Potential</div>
+    <div class="author">by Tiago Forte</div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="overview">Overview</button>
+    <button class="tab-btn" data-tab="code">C.O.D.E.</button>
+    <button class="tab-btn" data-tab="para">P.A.R.A.</button>
+    <button class="tab-btn" data-tab="principles">Principles</button>
+    <button class="tab-btn" data-tab="quotes">Quotes</button>
+  </div>
+
+  <!-- TAB: Overview -->
+  <div class="tab-panel active" id="tab-overview">
+    <div class="card" style="animation-delay: 0s;">
+      <h2><span class="emoji">🧠</span> What is a Second Brain?</h2>
+      <p>A <strong>Second Brain</strong> is a trusted digital system for capturing, organizing, and retrieving your ideas and knowledge. It's like having an external memory that never forgets — freeing your biological brain to do what it does best: think, create, and connect.</p>
+    </div>
+
+    <div class="card" style="animation-delay: 0.1s;">
+      <h2><span class="emoji">🎯</span> The Big Idea</h2>
+      <p>"Your mind is for <strong>having ideas</strong>, not holding them." The goal is to offload information storage to a digital system so you can focus on creativity and action.</p>
+    </div>
+
+    <div class="card" style="animation-delay: 0.2s;">
+      <h2><span class="emoji">⚡</span> Why It Matters</h2>
+      <ul>
+        <li>Stop forgetting great ideas</li>
+        <li>Connect insights across different domains</li>
+        <li>Reduce mental clutter and anxiety</li>
+        <li>Produce better creative work, faster</li>
+        <li>Turn information consumption into creation</li>
+      </ul>
+    </div>
+
+    <div class="progress-container">
+      <div class="progress-label">Knowledge journey</div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progress-fill" style="width: 42%;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: C.O.D.E. -->
+  <div class="tab-panel" id="tab-code">
+    <p style="color:#888; margin-bottom:1rem; font-size: 0.9rem;">The four-step method to build your Second Brain. Click each to expand.</p>
+
+    <div class="code-grid">
+      <div class="code-box">
+        <span class="letter c">C</span>
+        <span class="label">Capture</span>
+        <span class="desc">Keep what resonates. Save ideas, quotes, insights — anything that sparks your interest.</span>
+      </div>
+      <div class="code-box">
+        <span class="letter o">O</span>
+        <span class="label">Organize</span>
+        <span class="desc">Save for actionability. Use the P.A.R.A. system to keep things findable.</span>
+      </div>
+      <div class="code-box">
+        <span class="letter d">D</span>
+        <span class="label">Distill</span>
+        <span class="desc">Find the essence. Use progressive summarization to layer meaning over time.</span>
+      </div>
+      <div class="code-box">
+        <span class="letter e">E</span>
+        <span class="label">Express</span>
+        <span class="desc">Share your work. Create intermediate packets and ship before perfection.</span>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:1rem;">
+      <h2>📖 Progressive Summarization</h2>
+      <p>Don't summarize everything at once. Let important ideas emerge naturally:</p>
+      <ul>
+        <li><strong>Layer 1:</strong> Saved notes (original content)</li>
+        <li><strong>Layer 2:</strong> Bold the important passages</li>
+        <li><strong>Layer 3:</strong> Highlight the most important</li>
+        <li><strong>Layer 4:</strong> Executive summary (a few sentences)</li>
+        <li><strong>Layer 5:</strong> Remix into something new</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- TAB: P.A.R.A. -->
+  <div class="tab-panel" id="tab-para">
+    <p style="color:#888; margin-bottom:1rem; font-size: 0.9rem;">The organization system. Tap any card for more detail.</p>
+
+    <div class="para-grid">
+      <div class="para-card" onclick="toggleDetail(this)">
+        <span class="para-letter">P</span>
+        <span class="para-title">Projects</span>
+        <span class="para-desc">Short-term outcomes you're actively working on</span>
+        <span class="para-detail">e.g. "Build portfolio", "Plan vacation", "Write report"</span>
+      </div>
+      <div class="para-card" onclick="toggleDetail(this)">
+        <span class="para-letter">A</span>
+        <span class="para-title">Areas</span>
+        <span class="para-desc">Long-term responsibilities you maintain</span>
+        <span class="para-detail">e.g. "Health", "Finances", "Career", "Relationships"</span>
+      </div>
+      <div class="para-card" onclick="toggleDetail(this)">
+        <span class="para-letter">R</span>
+        <span class="para-title">Resources</span>
+        <span class="para-desc">Topics of interest you want to reference</span>
+        <span class="para-detail">e.g. "Design notes", "Book summaries", "Recipes"</span>
+      </div>
+      <div class="para-card" onclick="toggleDetail(this)">
+        <span class="para-letter">A</span>
+        <span class="para-title">Archives</span>
+        <span class="para-desc">Inactive items from the other categories</span>
+        <span class="para-detail">Old projects, past areas, outdated resources — kept for reference</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🗂️ The P.A.R.A. Rule</h2>
+      <p>Everything you save falls into exactly one of these four categories. When a project finishes, move it to Archives. When an area becomes inactive, archive it. This keeps your system clean and focused on the present.</p>
+    </div>
+  </div>
+
+  <!-- TAB: Principles -->
+  <div class="tab-panel" id="tab-principles">
+    <div class="card" style="animation-delay: 0s;">
+      <h2>🔹 1. Your Brain is for Having Ideas, Not Holding Them</h2>
+      <p>Offload memory to your Second Brain. Trust the system so you can focus on connecting and creating.</p>
+    </div>
+    <div class="card" style="animation-delay: 0.08s;">
+      <h2>🔹 2. Just-in-Time Organization</h2>
+      <p>Don't over-organize upfront. Organize only when you need to find something. Let structure emerge naturally.</p>
+    </div>
+    <div class="card" style="animation-delay: 0.16s;">
+      <h2>🔹 3. Intermediate Packets</h2>
+      <p>Break work into small, reusable chunks — a paragraph, a screenshot, a bullet list. Remix them later into something bigger.</p>
+    </div>
+    <div class="card" style="animation-delay: 0.24s;">
+      <h2>🔹 4. Divergent & Convergent Modes</h2>
+      <p>Separate creation from editing. Capture freely first (divergent), then refine and organize (convergent).</p>
+    </div>
+    <div class="card" style="animation-delay: 0.32s;">
+      <h2>🔹 5. Curated Consumption</h2>
+      <p>Be intentional about what you consume. Capture only what resonates — surprising, useful, or thought-provoking.</p>
+    </div>
+    <div class="card" style="animation-delay: 0.4s;">
+      <h2>🔹 6. Weekly Review</h2>
+      <p>Spend 30 minutes each week reviewing your notes and projects. This keeps your Second Brain alive and relevant.</p>
+    </div>
+  </div>
+
+  <!-- TAB: Quotes -->
+  <div class="tab-panel" id="tab-quotes">
+    <div class="quote-box" style="animation-delay: 0s;">
+      <p>"We can now build a digital version of our mind — a Second Brain — that works the way our biological brain wishes it could."</p>
+    </div>
+    <div class="quote-box" style="animation-delay: 0.1s;">
+      <p>"The best way to get better at organizing your notes is to organize your notes."</p>
+    </div>
+    <div class="quote-box" style="animation-delay: 0.2s;">
+      <p>"Creativity is not about creating something from nothing. It's about combining existing ideas in new ways."</p>
+    </div>
+    <div class="quote-box" style="animation-delay: 0.3s;">
+      <p>"Your mind is for having ideas, not holding them."</p>
+    </div>
+    <div class="quote-box" style="animation-delay: 0.4s;">
+      <p>"Don't wait for perfection — share your intermediate packets along the way."</p>
+    </div>
+
+    <div class="card" style="margin-top: 1.5rem;">
+      <h2>🎬 Ready to start?</h2>
+      <p>Just start capturing. Use any tool you already have — Notes, Notion, Obsidian, Apple Notes, Google Docs. The system can evolve. What matters is taking the first step.</p>
+      <p style="margin-top: 0.8rem; color: #a78bfa; font-weight: 600;">→ Open your capture tool and save one thing that resonates right now.</p>
+    </div>
+  </div>
+
+  <footer>
+    Built with 🧠 from the summary of <em>Building a Second Brain</em> by Tiago Forte
+  </footer>
+</div>
+
+<script>
+  // ── Particle Background ──────────────────────────────────────────
+  const canvas = document.getElementById('particles-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  let mouse = { x: 0, y: 0 };
+  let animFrame;
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = document.documentElement.scrollHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  document.addEventListener('mousemove', e => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY + window.scrollY;
+  });
+
+  class Particle {
+    constructor() { this.reset(); }
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 2.5 + 0.5;
+      this.speedX = (Math.random() - 0.5) * 0.3;
+      this.speedY = (Math.random() - 0.5) * 0.3;
+      this.opacity = Math.random() * 0.4 + 0.1;
+      this.hue = Math.random() * 60 + 240; // purple-blue range
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+
+      // Mouse attraction
+      const dx = mouse.x - this.x;
+      const dy = mouse.y - this.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 150) {
+        this.x -= dx * 0.003;
+        this.y -= dy * 0.003;
+      }
+
+      if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+        this.reset();
+      }
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${this.hue}, 70%, 70%, ${this.opacity})`;
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+  function drawConnections() {
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 120) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `hsla(260, 50%, 70%, ${0.06 * (1 - dist / 120)})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
+    drawConnections();
+    animFrame = requestAnimationFrame(animateParticles);
+  }
+
+  animateParticles();
+
+  // ── Tab Switching ────────────────────────────────────────────────
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabPanels = document.querySelectorAll('.tab-panel');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      tabPanels.forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+      // Recalculate canvas height for new content
+      setTimeout(resizeCanvas, 100);
+    });
+  });
+
+  // ── PARA Detail Toggle ───────────────────────────────────────────
+  function toggleDetail(el) {
+    el.classList.toggle('show-detail');
+  }
+
+  // ── Scroll progress bar (overview tab only) ──────────────────────
+  // Already set to 42% as an artistic choice
+
+  // ── Resize canvas on scroll too ──────────────────────────────────
+  window.addEventListener('scroll', resizeCanvas);
+</script>
+</body>
+</html>

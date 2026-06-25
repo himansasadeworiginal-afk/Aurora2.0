@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 7 – Insurance</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #04101a;
+    --surface: rgba(255,255,255,0.04);
+    --surface-hover: rgba(255,255,255,0.08);
+    --border: rgba(255,255,255,0.06);
+    --text: #e0f2fe;
+    --text-dim: #7dd3fc;
+    --accent: #0ea5e9;
+    --accent2: #14b8a6;
+    --accent3: #f59e0b;
+    --radius: 16px;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+  #particles-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  .ambient-glow {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 0;
+    animation: floatGlow 20s ease-in-out infinite alternate;
+  }
+  .ambient-glow:nth-child(1) {
+    width: 600px; height: 600px;
+    background: rgba(14,165,233,0.08);
+    top: -10%; left: -10%;
+  }
+  .ambient-glow:nth-child(2) {
+    width: 500px; height: 500px;
+    background: rgba(20,184,166,0.06);
+    bottom: -10%; right: -10%;
+    animation-delay: -7s;
+  }
+  .ambient-glow:nth-child(3) {
+    width: 400px; height: 400px;
+    background: rgba(245,158,11,0.04);
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    animation-delay: -14s;
+  }
+  @keyframes floatGlow {
+    0% { transform: translate(0,0) scale(1); }
+    33% { transform: translate(60px,-40px) scale(1.1); }
+    66% { transform: translate(-30px,50px) scale(0.9); }
+    100% { transform: translate(40px,20px) scale(1.05); }
+  }
+  .content { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 40px 24px 120px; }
+  header {
+    text-align: center;
+    padding: 100px 0 60px;
+    opacity: 0;
+    transform: translateY(40px);
+    animation: fadeUp 1s ease forwards;
+  }
+  header .badge {
+    display: inline-block;
+    padding: 6px 18px;
+    border-radius: 100px;
+    background: linear-gradient(135deg, rgba(14,165,233,0.15), rgba(20,184,166,0.15));
+    border: 1px solid rgba(14,165,233,0.2);
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    margin-bottom: 24px;
+  }
+  header h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.2;
+    background: linear-gradient(135deg, #e0f2fe 0%, var(--accent) 40%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  header p {
+    color: var(--text-dim);
+    font-size: 1.1rem;
+    margin-top: 16px;
+    max-width: 600px;
+    margin-inline: auto;
+  }
+  .toc {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin: 0 0 60px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.3s forwards;
+  }
+  .toc a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px;
+    border-radius: var(--radius);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  .toc a:hover {
+    background: var(--surface-hover);
+    border-color: rgba(14,165,233,0.3);
+    color: var(--text);
+    transform: translateY(-2px);
+  }
+  .toc a .num {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(14,165,233,0.2), rgba(20,184,166,0.2));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .section { margin: 40px 0; opacity: 0; transform: translateY(30px); transition: all 0.6s ease; }
+  .section.visible { opacity: 1; transform: translateY(0); }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 36px 32px;
+    backdrop-filter: blur(20px);
+    transition: all 0.4s ease;
+  }
+  .card:hover { border-color: rgba(14,165,233,0.15); box-shadow: 0 8px 40px rgba(0,0,0,0.3); }
+  .card h2 {
+    font-size: 1.5rem; font-weight: 700; margin-bottom: 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .card h2 .icon {
+    width: 40px; height: 40px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; flex-shrink: 0;
+  }
+  .card .subtitle { color: var(--text-dim); font-size: 14px; margin-bottom: 20px; }
+  .def-box {
+    background: linear-gradient(135deg, rgba(14,165,233,0.06), rgba(20,184,166,0.06));
+    border-left: 3px solid var(--accent);
+    padding: 20px 24px; border-radius: 0 12px 12px 0;
+    margin: 16px 0; font-style: italic; color: var(--text-dim);
+  }
+  ul.features, ul.list {
+    list-style: none; display: flex; flex-direction: column; gap: 8px; margin: 16px 0;
+  }
+  ul.features li, ul.list li {
+    padding: 10px 16px 10px 36px; border-radius: 10px;
+    background: var(--surface); border: 1px solid var(--border);
+    position: relative; transition: all 0.3s ease; font-size: 15px;
+  }
+  ul.features li:hover, ul.list li:hover { background: var(--surface-hover); transform: translateX(4px); }
+  ul.features li::before { content: "\2713"; position: absolute; left: 12px; color: var(--accent2); font-weight: 700; }
+  ul.list li::before { content: "\2022"; position: absolute; left: 14px; color: var(--accent); font-weight: 700; }
+  .examples { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+  .examples span { padding: 5px 14px; border-radius: 100px; background: linear-gradient(135deg, rgba(14,165,233,0.1), rgba(20,184,166,0.1)); border: 1px solid rgba(14,165,233,0.15); font-size: 13px; color: var(--accent); }
+  .comparison-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+  .comparison-table th, .comparison-table td { padding: 14px 18px; text-align: left; border-bottom: 1px solid var(--border); }
+  .comparison-table th { background: linear-gradient(135deg, rgba(14,165,233,0.1), rgba(20,184,166,0.1)); font-weight: 600; color: var(--accent); }
+  .comparison-table th:first-child { border-radius: 12px 0 0 0; }
+  .comparison-table th:last-child { border-radius: 0 12px 0 0; }
+  .comparison-table tr:hover td { background: var(--surface-hover); }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+  @media (max-width: 640px) { .grid-2 { grid-template-columns: 1fr; } }
+  .grid-item { padding: 20px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); }
+  .grid-item h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--accent); }
+  .grid-item ul { list-style: none; }
+  .grid-item ul li { padding: 4px 0 4px 16px; position: relative; font-size: 14px; color: var(--text-dim); }
+  .grid-item ul li::before { content: "\2192"; position: absolute; left: 0; color: var(--accent2); }
+  .progress-bar { position: fixed; top: 0; left: 0; width: 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3)); z-index: 100; transition: width 0.1s ease; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .toggle-btn { background: none; border: 1px solid var(--border); color: var(--text-dim); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 13px; font-family: inherit; transition: all 0.3s ease; margin: 8px 0; }
+  .toggle-btn:hover { border-color: var(--accent); color: var(--accent); }
+  footer { text-align: center; padding: 40px 0; color: var(--text-dim); font-size: 13px; border-top: 1px solid var(--border); margin-top: 60px; }
+  ::selection { background: rgba(14,165,233,0.3); color: #fff; }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+</style>
+</head>
+<body>
+<div class="ambient-glow"></div>
+<div class="ambient-glow"></div>
+<div class="ambient-glow"></div>
+<canvas id="particles-canvas"></canvas>
+<div class="progress-bar" id="progress-bar"></div>
+<div class="content">
+  <header>
+    <div class="badge">Business Studies &mdash; Lesson 7</div>
+    <h1>Insurance</h1>
+    <p>Risk, insurable vs non-insurable risks, principles of insurance, life insurance, and general insurance categories.</p>
+  </header>
+  <nav class="toc">
+    <a href="#sec-risk"><span class="num">1</span> Risk &amp; Insurance</a>
+    <a href="#sec-principles"><span class="num">2</span> Principles</a>
+    <a href="#sec-life"><span class="num">3</span> Life Insurance</a>
+    <a href="#sec-fire"><span class="num">4</span> Fire Insurance</a>
+    <a href="#sec-theft"><span class="num">5</span> Theft &amp; Marine</a>
+    <a href="#sec-motor"><span class="num">6</span> Motor Insurance</a>
+    <a href="#sec-liability"><span class="num">7</span> Liability</a>
+    <a href="#sec-transit"><span class="num">8</span> Transit Insurance</a>
+  </nav>
+
+  <div class="section" id="sec-risk">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(14,165,233,0.2),rgba(20,184,166,0.2));">&#9888;</span> Risk &amp; Insurance</h2>
+      <div class="def-box">The space of occurring damage which can be estimated financially is known as a <strong>risk</strong> in insurance.</div>
+      <p style="margin:12px 0;color:var(--text-dim);font-size:15px;">Business risks include: fire, theft, business loss, damage to properties.</p>
+
+      <button class="toggle-btn" onclick="toggleSection('insurable')">&#9660; Insurable vs Non-Insurable Risks</button>
+      <div id="insurable" style="display:none;">
+        <div class="grid-2">
+          <div class="grid-item">
+            <h4>Insurable Risks</h4>
+            <ul><li>Can be forecast</li><li>Calculable in money terms</li><li>Not certain (random)</li><li>No connection to other insured loss</li><li>Verifiable cause, place, time</li></ul>
+            <p style="margin-top:8px;font-size:13px;color:var(--accent);">E.g. fire, motor accidents, money in transit, debtor non-payment</p>
+          </div>
+          <div class="grid-item">
+            <h4>Non-Insurable Risks</h4>
+            <ul><li>Business losses</li><li>Natural reasons (depreciation, expiration, vaporization)</li><li>One&rsquo;s ability/strength (exam failure, loss of love)</li><li>Design changes</li></ul>
+          </div>
+        </div>
+      </div>
+
+      <button class="toggle-btn" onclick="toggleSection('insurance-def')">&#9660; Insurance Agreement</button>
+      <div id="insurance-def" style="display:none;">
+        <div class="def-box" style="border-left-color:var(--accent2);">Insurance is an agreement between the <strong>insurer</strong> and the <strong>insured</strong> whereby the insured pays the premium and the insurer pays compensation for insured risks.</div>
+        <ul class="list">
+          <li><strong>Insured (1st party)</strong> &mdash; Person who presents proposal / obtains coverage</li>
+          <li><strong>Insurer (2nd party)</strong> &mdash; Insurance company that accepts the proposal</li>
+          <li><strong>Third party</strong> &mdash; External party that comes into activation of the agreement</li>
+        </ul>
+      </div>
+
+      <p style="margin:16px 0;color:var(--text-dim);font-size:14px;">
+        Insurance agreement validity requires: idea of legal obligation, insurance offer/proposal, acceptance, legal validity, ability to have legal obligation by parties.
+      </p>
+      <p style="margin:16px 0;color:var(--text-dim);font-size:14px;">
+        <strong>Insurance policy</strong> is a written certificate given by the insurance institute to the insured after the agreement.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" id="sec-principles">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(20,184,166,0.2),rgba(14,165,233,0.2));">&#9850;</span> Principles of Insurance</h2>
+      <ul class="features">
+        <li><strong>Insurable Interest</strong> &mdash; Economic advantage from existence; disadvantage from loss. E.g. spouse has interest in each other&rsquo;s life; legal owner in property; creditor in debtor&rsquo;s life</li>
+        <li><strong>Utmost Good Faith</strong> &mdash; Both parties reveal all information related to the agreement morally</li>
+        <li><strong>Indemnity</strong> &mdash; Payment of adequate compensation to restore the damaged property (e.g. Rs. 2.5L paid for Rs. 2.5L damage on Rs. 40L vehicle)</li>
+        <li><strong>Contribution</strong> &mdash; When insured in multiple companies, they pay proportionately (e.g. 5:3:2 ratio)</li>
+        <li><strong>Subrogation</strong> &mdash; After settling loss, insurer obtains other rights/advantages from external parties (e.g. insurer takes debris after total loss)</li>
+        <li><strong>Proximate Cause</strong> &mdash; Compensation paid only if the proximate (nearest) reason is covered by the policy</li>
+      </ul>
+
+      <button class="toggle-btn" onclick="toggleSection('principles-notes')">&#9660; Key Notes</button>
+      <div id="principles-notes" style="display:none;">
+        <ul class="list">
+          <li>Insurable interest, utmost good faith, and proximate cause apply to <strong>life insurance</strong></li>
+          <li>Indemnity, contribution, subrogation do <strong>not</strong> apply to life insurance (loss is immeasurable)</li>
+          <li><strong>Reinsurance</strong> &mdash; Insurer insures a risk it has undertaken under another insurance company</li>
+          <li><strong>Underwriting</strong> &mdash; Dividing a high-value risk among several insurance companies</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-life">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(14,165,233,0.2));">&#9783;</span> Life Insurance / Long Term Insurance</h2>
+      <div class="def-box">Provides monetary benefits to the insured or beneficiaries against risks due to demise, disability, or old age.</div>
+      <button class="toggle-btn" onclick="toggleSection('life-details')">&#9660; Features &amp; Differences</button>
+      <div id="life-details" style="display:none;">
+        <table class="comparison-table">
+          <tr><th>Life Insurance</th><th>Other Insurance</th></tr>
+          <tr><td>Risk is certain</td><td>Risk is uncertain</td></tr>
+          <tr><td>Indemnity principle NOT relevant</td><td>Indemnity principle is relevant</td></tr>
+          <tr><td>Equal to a saving</td><td>Compensation only when loss occurs</td></tr>
+          <tr><td>Policy cannot be transferred</td><td>Policy can be transferred</td></tr>
+        </table>
+        <p style="margin:12px 0;color:var(--text-dim);font-size:14px;">If the insured dies during the period, the agreed value goes to beneficiaries. If they live until the end, they obtain the policy value and benefits.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-fire">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(239,68,68,0.2),rgba(245,158,11,0.2));">&#128293;</span> Fire Insurance</h2>
+      <div class="def-box">Covers losses caused to a person, building, or property due to fire.</div>
+      <button class="toggle-btn" onclick="toggleSection('fire-extras')">&#9660; Additional Covered Risks (with extra premium)</button>
+      <div id="fire-extras" style="display:none;">
+        <ul class="features">
+          <li>Losses by riots / strikes</li>
+          <li>Losses by explosions</li>
+          <li>Losses by electricity</li>
+          <li>Earthquakes / tsunami</li>
+          <li>Flood / whirl winds / storms</li>
+          <li>Aircraft crashes</li>
+          <li>Losses from crashes</li>
+          <li>Consequential losses</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-theft">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(99,102,241,0.2),rgba(14,165,233,0.2));">&#128274;</span> Theft &amp; Marine Insurance</h2>
+      <button class="toggle-btn" onclick="toggleSection('theft-detail')">&#9660; Theft &amp; Burglary Insurance</button>
+      <div id="theft-detail" style="display:none;">
+        <p style="margin:12px 0;color:var(--text-dim);font-size:14px;">Covers risks to business premises or homes from thievery. Natural disaster insurance covers losses from storms etc.</p>
+      </div>
+      <button class="toggle-btn" onclick="toggleSection('marine-detail')">&#9660; Marine Insurance</button>
+      <div id="marine-detail" style="display:none;">
+        <p style="margin:12px 0;color:var(--text-dim);font-size:14px;">Covers losses to ships and goods while transporting by sea. Two parts:</p>
+        <div class="grid-2">
+          <div class="grid-item">
+            <h4>Hull Insurance</h4>
+            <ul><li>Full option (comprehensive) policy</li><li>Total loss policy</li><li>Port risk policy</li><li>Maintenance policy</li><li>Construction all risk policy</li></ul>
+          </div>
+          <div class="grid-item">
+            <h4>Cargo Insurance</h4>
+            <ul><li>Valued policy</li><li>Open cover / floating policy</li><li>Future time policy</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-motor">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(14,165,233,0.2));">&#128663;</span> Motor Traffic Insurance</h2>
+      <div class="def-box">An agreement between a vehicle owner and an insurance company for compensation against motor vehicle accidents.</div>
+      <button class="toggle-btn" onclick="toggleSection('motor-types')">&#9660; Types of Motor Insurance</button>
+      <div id="motor-types" style="display:none;">
+        <table class="comparison-table">
+          <tr><th>Type</th><th>Coverage</th></tr>
+          <tr><td><strong>Full Insurance</strong></td><td>Loss to the vehicle, people, and properties that travel in the vehicle</td></tr>
+          <tr><td><strong>Third Party Fire &amp; Theft</strong></td><td>Loss to vehicle by fire/theft + losses to external people and properties</td></tr>
+          <tr><td><strong>Minimum Third Party</strong></td><td>Loss only to third party and properties (minimum required to drive on the road)</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-liability">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(139,92,246,0.2),rgba(14,165,233,0.2));">&#9878;</span> Liability Insurance</h2>
+      <div class="def-box">Ensuring the liability for losses caused to other parties is known as <strong>liability insurance</strong>.</div>
+      <button class="toggle-btn" onclick="toggleSection('liability-types')">&#9660; Types</button>
+      <div id="liability-types" style="display:none;">
+        <ul class="features">
+          <li><strong>General Liability Insurance</strong> &mdash; For unexpected losses from properties or business activities</li>
+          <li><strong>Product Liability Insurance</strong> &mdash; For losses to consumers from consuming products sold</li>
+          <li><strong>Employer Liability Insurance</strong> &mdash; Covers employer&rsquo;s compensation liability for employee accidents at work</li>
+          <li><strong>Goods in Transit Insurance</strong> &mdash; Covers losses to goods from loading to unloading during land transport</li>
+          <li><strong>Money in Transit Insurance</strong> &mdash; Covers loss while taking money from one place to another</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-transit">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(16,185,129,0.2));">&#128666;</span> Goods &amp; Money in Transit</h2>
+      <div class="grid-2">
+        <div class="grid-item">
+          <h4>Goods in Transit Insurance</h4>
+          <ul><li>Covers losses from loading to unloading</li><li>For transport on land</li><li>Protects goods during the journey</li></ul>
+        </div>
+        <div class="grid-item">
+          <h4>Money in Transit Insurance</h4>
+          <ul><li>Covers loss while moving money</li><li>Between locations</li><li>Essential for cash-heavy businesses</li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Business Studies &mdash; Lesson 7 &bull; Insurance &bull; Based on original lesson notes</p>
+  </footer>
+</div>
+<script>
+  const canvas = document.getElementById('particles-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles=[];let mouseX=-1000,mouseY=-1000;
+  function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+  resize();window.addEventListener('resize',resize);
+  class Particle{constructor(){this.reset();}reset(){this.x=Math.random()*canvas.width;this.y=Math.random()*canvas.height;this.size=Math.random()*2+0.5;this.speedX=(Math.random()-0.5)*0.3;this.speedY=(Math.random()-0.5)*0.3;this.opacity=Math.random()*0.5+0.1;}update(){this.x+=this.speedX;this.y+=this.speedY;if(this.x<0||this.x>canvas.width)this.speedX*=-1;if(this.y<0||this.y>canvas.height)this.speedY*=-1;const dx=this.x-mouseX,dy=this.y-mouseY,dist=Math.sqrt(dx*dx+dy*dy);if(dist<120){const force=(120-dist)/120;this.x+=dx*force*0.008;this.y+=dy*force*0.008;}}draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);ctx.fillStyle=`rgba(125,211,252,${this.opacity})`;ctx.fill();}}
+  for(let i=0;i<120;i++)particles.push(new Particle());
+  function animateParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw();});for(let i=0;i<particles.length;i++){for(let j=i+1;j<particles.length;j++){const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y,dist=Math.sqrt(dx*dx+dy*dy);if(dist<140){ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle=`rgba(125,211,252,${0.06*(1-dist/140)})`;ctx.lineWidth=0.5;ctx.stroke();}}}requestAnimationFrame(animateParticles);}
+  animateParticles();
+  document.addEventListener('mousemove',e=>{mouseX=e.clientX;mouseY=e.clientY;});
+  window.addEventListener('scroll',()=>{const s=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-document.documentElement.clientHeight;document.getElementById('progress-bar').style.width=(s/h*100)+'%';});
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1});
+  document.querySelectorAll('.section').forEach(s=>observer.observe(s));
+  function toggleSection(id){const el=document.getElementById(id);if(el.style.display==='none'){el.style.display='block';el.style.animation='fadeUp 0.4s ease forwards';}else{el.style.display='none';}}
+</script>
+</body>
+</html>

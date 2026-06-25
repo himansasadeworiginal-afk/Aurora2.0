@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The 48 Laws of Power — Interactive Summary</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0f;
+    --bg-alt: #12121a;
+    --surface: #1a1a28;
+    --surface-hover: #222238;
+    --text: #e8e4dd;
+    --text-dim: #8884a0;
+    --gold: #c9a84c;
+    --gold-light: #e8c95a;
+    --gold-dark: #8a6e2a;
+    --red: #c0392b;
+    --red-dim: #7a1f1a;
+    --border: #2a2a42;
+    --shadow: 0 8px 32px rgba(0,0,0,0.4);
+    --radius: 12px;
+    --radius-sm: 8px;
+    --transition: 0.35s cubic-bezier(.22,1,.36,1);
+    --header-bg: rgba(10,10,15,0.85);
+  }
+
+  .light {
+    --bg: #f5f2ed;
+    --bg-alt: #ebe6de;
+    --surface: #ffffff;
+    --surface-hover: #f5f2ed;
+    --text: #1a1814;
+    --text-dim: #6b6560;
+    --gold: #b8860b;
+    --gold-light: #d4a017;
+    --gold-dark: #8a6e2a;
+    --red: #c0392b;
+    --red-dim: #e8c4c0;
+    --border: #d4d0c8;
+    --shadow: 0 8px 32px rgba(0,0,0,0.06);
+    --header-bg: rgba(245,242,237,0.9);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    transition: background var(--transition), color var(--transition);
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+  .theme-toggle {
+    position: fixed; top: 20px; right: 20px; z-index: 1000;
+    background: var(--surface); border: 1px solid var(--gold-dark);
+    color: var(--gold); width: 44px; height: 44px; border-radius: 50%;
+    cursor: pointer; font-size: 1.2rem;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--shadow); transition: all var(--transition);
+  }
+  .theme-toggle:hover { transform: scale(1.1); border-color: var(--gold); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    padding: 2rem; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 30%, rgba(201,168,76,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 70%, rgba(192,57,43,0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-line {
+    width: 60px; height: 2px; background: var(--gold); margin-bottom: 2rem;
+    opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero-badge {
+    display: inline-block; padding: 8px 24px;
+    border: 1px solid var(--gold-dark); border-radius: 0;
+    color: var(--gold); font-size: 0.75rem;
+    font-weight: 500; letter-spacing: 3px; text-transform: uppercase;
+    margin-bottom: 2rem; opacity: 0; animation: fadeUp 0.8s 0.3s forwards;
+    font-family: 'Cinzel', serif;
+  }
+  .hero h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2.2rem, 7vw, 5rem);
+    font-weight: 700; letter-spacing: 2px;
+    color: var(--gold); margin-bottom: 0.5rem;
+    opacity: 0; animation: fadeUp 0.8s 0.5s forwards;
+  }
+  .hero h1 .sm { font-size: 0.4em; display: block; color: var(--text); font-family: 'Inter', sans-serif; font-weight: 300; letter-spacing: 6px; margin-top: 0.5rem; }
+  .hero p {
+    font-size: 1.05rem; color: var(--text-dim); max-width: 520px;
+    line-height: 1.6; font-weight: 300;
+    opacity: 0; animation: fadeUp 0.8s 0.7s forwards;
+  }
+  .hero-author {
+    margin-top: 0.6rem; color: var(--gold); font-size: 0.9rem;
+    letter-spacing: 2px; font-weight: 500;
+    opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
+  }
+  .hero-arrow {
+    margin-top: 3rem; font-size: 1.5rem;
+    opacity: 0; animation: fadeUp 0.8s 1s forwards, bounce 2s 1s infinite;
+  }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes fadeInScale { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+  @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+
+  /* ─── SECTION ─── */
+  section { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
+
+  .section-ornament {
+    text-align: center; color: var(--gold); font-size: 1.5rem;
+    letter-spacing: 12px; margin-bottom: 1.5rem;
+  }
+  .section-label {
+    font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem;
+  }
+  section h2 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-weight: 700; letter-spacing: 1px;
+    margin-bottom: 0.6rem;
+  }
+  section h2 .hl { color: var(--gold); }
+  .section-desc {
+    color: var(--text-dim); font-size: 1rem; max-width: 600px;
+    margin-bottom: 2.5rem; font-weight: 300;
+  }
+
+  /* ─── STATS ─── */
+  .stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem; margin: 2rem 0;
+  }
+  .stat {
+    text-align: center; padding: 1.5rem 1rem;
+    background: var(--surface); border: 1px solid var(--border);
+    transition: all var(--transition);
+  }
+  .stat:hover { border-color: var(--gold-dark); }
+  .stat-value {
+    font-size: 2.5rem; font-weight: 700; color: var(--gold);
+    font-family: 'Cinzel', serif;
+  }
+  .stat-label { font-size: 0.75rem; color: var(--text-dim); margin-top: 0.3rem; letter-spacing: 1px; text-transform: uppercase; }
+
+  /* ─── LAW SEARCH ─── */
+  .law-header {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    align-items: center; justify-content: space-between;
+    margin-bottom: 2rem;
+  }
+  .law-search {
+    flex: 1; min-width: 200px; max-width: 360px;
+    padding: 12px 18px; background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); font-size: 0.9rem; outline: none;
+    transition: all var(--transition); font-family: 'Inter', sans-serif;
+  }
+  .law-search:focus { border-color: var(--gold); }
+  .law-search::placeholder { color: var(--text-dim); }
+  .law-count { font-size: 0.85rem; color: var(--text-dim); }
+
+  /* ─── LAW GRID ─── */
+  .law-grid {
+    display: grid; gap: 1.2rem;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  }
+  .law-card {
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 1.5rem; transition: all var(--transition);
+    cursor: pointer; position: relative; overflow: hidden;
+    opacity: 0; transform: translateY(16px);
+  }
+  .law-card.visible { opacity: 1; transform: translateY(0); }
+  .law-card:hover { border-color: var(--gold-dark); background: var(--surface-hover); }
+  .law-card.hidden { display: none; }
+  .law-card .num {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem; letter-spacing: 2px; color: var(--gold);
+    margin-bottom: 0.6rem;
+  }
+  .law-card h3 {
+    font-size: 0.95rem; font-weight: 700; line-height: 1.4;
+    margin-bottom: 0.6rem; padding-right: 1.5rem;
+  }
+  .law-card .preview {
+    font-size: 0.85rem; color: var(--text-dim); line-height: 1.5;
+    transition: all 0.4s ease;
+  }
+  .law-card .full {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.5s ease, margin 0.4s ease;
+    margin-top: 0;
+  }
+  .law-card .full-inner {
+    font-size: 0.85rem; color: var(--text-dim); line-height: 1.6;
+    border-top: 1px solid var(--border); padding-top: 0.8rem;
+  }
+  .law-card .expand-icon {
+    position: absolute; top: 1.5rem; right: 1.5rem;
+    color: var(--gold); font-size: 1.2rem; transition: transform 0.4s ease;
+  }
+  .law-card.open .expand-icon { transform: rotate(45deg); }
+  .law-card.open .full { max-height: 400px; margin-top: 0.8rem; }
+
+  /* ─── RANDOM LAW ─── */
+  .random-section {
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 3rem 2rem; text-align: center;
+  }
+  .random-section .r-label {
+    font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 4px;
+    color: var(--gold); text-transform: uppercase; margin-bottom: 0.5rem;
+  }
+  .random-section .r-law {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem; color: var(--gold);
+    margin-bottom: 0.3rem;
+  }
+  .random-section .r-title {
+    font-size: 1.3rem; font-weight: 700; margin-bottom: 0.8rem;
+    max-width: 500px; margin-left: auto; margin-right: auto;
+  }
+  .random-section .r-text {
+    font-size: 0.9rem; color: var(--text-dim); max-width: 500px;
+    margin: 0 auto 1.5rem; line-height: 1.6;
+  }
+  .random-section .r-text.fade { opacity: 0; transition: opacity 0.3s ease; }
+
+  .btn {
+    padding: 12px 32px; border: none; cursor: pointer;
+    font-size: 0.85rem; font-weight: 600; letter-spacing: 1px;
+    text-transform: uppercase; transition: all var(--transition);
+    font-family: 'Inter', sans-serif;
+  }
+  .btn-gold {
+    background: var(--gold); color: #0a0a0f;
+  }
+  .btn-gold:hover { background: var(--gold-light); transform: translateY(-2px); }
+  .btn-outline {
+    background: transparent; border: 1px solid var(--gold-dark);
+    color: var(--gold);
+  }
+  .btn-outline:hover { border-color: var(--gold); background: rgba(201,168,76,0.08); }
+
+  /* ─── PREAMBLE ─── */
+  .preamble {
+    background: var(--surface); border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    padding: 2rem; margin-bottom: 2rem;
+  }
+  .preamble p {
+    font-size: 0.9rem; color: var(--text-dim); line-height: 1.7;
+    margin-bottom: 0.8rem;
+  }
+  .preamble p:last-child { margin-bottom: 0; }
+  .preamble .attribution {
+    font-family: 'Cinzel', serif; color: var(--gold); font-size: 0.85rem;
+    text-align: right; margin-top: 1rem;
+  }
+
+  /* ─── QUOTE ─── */
+  .quote-block {
+    text-align: center; max-width: 600px; margin: 3rem auto;
+    padding: 2rem 0;
+  }
+  .quote-block blockquote {
+    font-size: 1.15rem; font-style: italic; line-height: 1.6;
+    color: var(--text); font-weight: 400;
+  }
+  .quote-block cite {
+    display: block; margin-top: 0.8rem; color: var(--gold);
+    font-style: normal; font-size: 0.85rem; letter-spacing: 1px;
+  }
+  .quote-block .ornament { color: var(--gold); font-size: 2rem; margin-bottom: 1rem; }
+
+  /* ─── CATEGORIES ─── */
+  .cat-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem; margin-bottom: 2rem;
+  }
+  .cat-card {
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 1.2rem; text-align: center; transition: all var(--transition);
+    cursor: pointer; opacity: 0; transform: translateY(12px);
+  }
+  .cat-card.visible { opacity: 1; transform: translateY(0); }
+  .cat-card:hover { border-color: var(--gold-dark); }
+  .cat-card .cat-icon { font-size: 1.8rem; margin-bottom: 0.4rem; display: block; }
+  .cat-card h4 { font-size: 0.85rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+  .cat-card .cat-count { font-size: 0.75rem; color: var(--text-dim); margin-top: 0.3rem; }
+
+  /* ─── TIMELINE ─── */
+  .timeline { position: relative; padding: 1rem 0; }
+  .timeline::before {
+    content: ''; position: absolute; left: 20px; top: 0; bottom: 0;
+    width: 1px; background: var(--border);
+  }
+  .tl-item {
+    padding-left: 50px; position: relative; margin-bottom: 1.5rem;
+    opacity: 0; transform: translateX(-10px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .tl-item.visible { opacity: 1; transform: translateX(0); }
+  .tl-item::before {
+    content: ''; position: absolute; left: 14px; top: 6px;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--gold); border: 2px solid var(--bg);
+  }
+  .tl-item h4 { font-size: 0.9rem; font-weight: 600; }
+  .tl-item p { font-size: 0.8rem; color: var(--text-dim); margin-top: 0.2rem; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    text-align: center; padding: 3rem 2rem; color: var(--text-dim);
+    font-size: 0.8rem; border-top: 1px solid var(--border);
+    margin-top: 2rem;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 600px) {
+    section { padding: 3rem 1.2rem; }
+    .law-grid { grid-template-columns: 1fr; }
+    .law-header { flex-direction: column; align-items: stretch; }
+    .law-search { max-width: 100%; }
+    .hero h1 .sm { font-size: 0.3em; letter-spacing: 3px; }
+  }
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☀️</button>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-line"></div>
+  <div class="hero-badge">A Modern Interpretation</div>
+  <h1>
+    The 48 Laws<br>of Power
+    <span class="sm">Robert Greene</span>
+  </h1>
+  <p>The essential guide to the mechanics of power — how to acquire it, defend it, and wield it without falling victim to those who play the game better than you.</p>
+  <div class="hero-author">✦ Play or Be Played ✦</div>
+  <div class="hero-arrow" style="color:var(--gold);">↓</div>
+</header>
+
+<!-- STATS -->
+<section>
+  <div class="stats">
+    <div class="stat"><div class="stat-value">48</div><div class="stat-label">Laws of Power</div></div>
+    <div class="stat"><div class="stat-value">3,000+</div><div class="stat-label">Years of History</div></div>
+    <div class="stat"><div class="stat-value">1</div><div class="stat-label">Game You Can't Opt Out Of</div></div>
+    <div class="stat"><div class="stat-value">∞</div><div class="stat-label">Ways to Apply Them</div></div>
+  </div>
+</section>
+
+<!-- PREAMBLE -->
+<section>
+  <div class="section-ornament">✦ ✦ ✦</div>
+  <div class="section-label">The Premise</div>
+  <h2>There Is Only <span class="hl">One Game</span></h2>
+  <div class="preamble">
+    <p>The feeling of having no power over people and events is unbearable. No one wants less power; everyone wants more. In the world today, it is dangerous to seem too power-hungry — so we must appear fair and decent while playing a game of constant duplicity.</p>
+    <p>The world is like a giant scheming court. Those who claim to be above the game are often the most dangerous players of all, using displays of weakness and morality as clever power moves. The only way out is to play masterfully.</p>
+    <p class="attribution">— Preface, <em>The 48 Laws of Power</em></p>
+  </div>
+</section>
+
+<!-- THE LAWS -->
+<section id="laws">
+  <div class="section-ornament">✦ ✦ ✦</div>
+  <div class="section-label">The 48 Laws</div>
+  <h2>Master the <span class="hl">Game</span></h2>
+  <p class="section-desc">Click any law to reveal its full meaning. Use the search to navigate.</p>
+
+  <div class="law-header">
+    <input class="law-search" id="lawSearch" placeholder="Search laws by number or keyword..." autocomplete="off">
+    <span class="law-count" id="lawCount">Showing 48 / 48</span>
+  </div>
+
+  <div class="law-grid" id="lawGrid"></div>
+</section>
+
+<!-- RANDOM LAW GENERATOR -->
+<section>
+  <div class="section-ornament">✦ ✦ ✦</div>
+  <div class="section-label">The Oracle</div>
+  <h2>Draw a <span class="hl">Law</span></h2>
+  <p class="section-desc">Let chance decide which law you need to hear right now.</p>
+
+  <div class="random-section" id="randomSection">
+    <div class="r-label">Law of Power</div>
+    <div class="r-law" id="rLaw">LAW 48</div>
+    <div class="r-title" id="rTitle">Assume Formlessness</div>
+    <div class="r-text" id="rText">By taking a shape, by having a visible plan, you open yourself to attack. Instead, keep yourself adaptable and on the move. Be as fluid and formless as water.</div>
+    <button class="btn btn-gold" id="randomBtn">✦ Draw Again ✦</button>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section>
+  <div class="section-ornament">✦ ✦ ✦</div>
+  <div class="section-label">The Categories</div>
+  <h2>The Laws by <span class="hl">Theme</span></h2>
+  <p class="section-desc">The 48 laws grouped by their strategic purpose.</p>
+
+  <div class="cat-grid">
+    <div class="cat-card"><span class="cat-icon">👁️</span><h4>Reputation & Image</h4><div class="cat-count">Laws 5, 6, 14, 25, 26, 30, 34, 37, 46</div></div>
+    <div class="cat-card"><span class="cat-icon">🎭</span><h4>Deception & Misdirection</h4><div class="cat-count">Laws 3, 4, 12, 17, 21, 44, 48</div></div>
+    <div class="cat-card"><span class="cat-icon">⚔️</span><h4>Confrontation & Victory</h4><div class="cat-count">Laws 9, 15, 22, 28, 36, 39, 42, 47</div></div>
+    <div class="cat-card"><span class="cat-icon">👥</span><h4>Allies & Opponents</h4><div class="cat-count">Laws 1, 2, 7, 8, 11, 13, 19, 20, 24, 41, 43</div></div>
+    <div class="cat-card"><span class="cat-icon">🧠</span><h4>Psychology & Timing</h4><div class="cat-count">Laws 10, 16, 23, 29, 31, 32, 33, 35, 38, 40, 45</div></div>
+  </div>
+</section>
+
+<!-- KEY QUOTE -->
+<div class="quote-block">
+  <div class="ornament">✦</div>
+  <blockquote>"Any man who tries to be good all the time is bound to come to ruin among the great number who are not good."</blockquote>
+  <cite>— Niccolò Machiavelli, quoted in the Preface</cite>
+</div>
+
+<!-- HOW TO READ THIS BOOK -->
+<section>
+  <div class="section-ornament">✦ ✦ ✦</div>
+  <div class="section-label">Approach</div>
+  <h2>How to Read <span class="hl">This Book</span></h2>
+  <p class="section-desc">Greene's work is descriptive, not necessarily prescriptive. A reader's guide.</p>
+
+  <div class="timeline" id="timeline">
+    <div class="tl-item"><h4>Read Critically</h4><p>Understand the mechanics Greene describes without treating them as a personal playbook. Power is amoral — your ethics are your own.</p></div>
+    <div class="tl-item"><h4>Look for Patterns</h4><p>The same strategic patterns recur across centuries. Notice how different historical figures applied (or violated) the same law.</p></div>
+    <div class="tl-item"><h4>Beware the "Nonplayer"</h4><p>Those who claim to be above power games are often the most skilled players. Naivety and moral posturing can be sophisticated strategies.</p></div>
+    <div class="tl-item"><h4>Know When to Break a Law</h4><p>Some laws contradict others. Greene acknowledges that context matters — knowing <em>when</em> to apply a law is as important as knowing the law itself.</p></div>
+    <div class="tl-item"><h4>Don't Take It Personally</h4><p>The book is about power dynamics, not personal morality. It reveals how the world works, not necessarily how it should work.</p></div>
+  </div>
+</section>
+
+<footer>
+  <p>Based on <em>The 48 Laws of Power</em> by Robert Greene &mdash; Interactive Summary</p>
+</footer>
+
+<script>
+  // ─── ALL 48 LAWS ───
+  const laws = [
+    {n:1, title:"Never Outshine the Master", text:"Make those above you feel comfortably superior. Do not go too far in displaying your talents or you might inspire fear and insecurity. Make your masters appear more brilliant than they are and you will attain the heights of power."},
+    {n:2, title:"Never Put Too Much Trust in Friends, Learn How to Use Enemies", text:"Be wary of friends — they will betray you more quickly, for they are easily aroused to envy. Hire a former enemy and he will be more loyal than a friend, because he has more to prove. You have more to fear from friends than from enemies."},
+    {n:3, title:"Conceal Your Intentions", text:"Keep people off-balance and in the dark by never revealing the purpose behind your actions. If they have no clue what you are up to, they cannot prepare a defense. Guide them far enough down the wrong path and by the time they realize your intentions, it will be too late."},
+    {n:4, title:"Always Say Less Than Necessary", text:"When you try to impress people with words, the more you say, the more common you appear. Powerful people impress and intimidate by saying less. The more you say, the more likely you are to say something foolish."},
+    {n:5, title:"So Much Depends on Reputation — Guard It with Your Life", text:"Reputation is the cornerstone of power. Through reputation alone you can intimidate and win; once it slips, you are vulnerable. Make your reputation unassailable. Learn to destroy your enemies by opening holes in their own reputations."},
+    {n:6, title:"Court Attention at All Cost", text:"Everything is judged by its appearance; what is unseen counts for nothing. Never let yourself get lost in the crowd. Stand out. Be conspicuous. Make yourself a magnet of attention by appearing larger, more colorful, more mysterious than the masses."},
+    {n:7, title:"Get Others to Do the Work for You, But Always Take the Credit", text:"Use the wisdom, knowledge, and legwork of other people to further your own cause. Such assistance saves you time and gives you a godlike aura of efficiency. In the end your helpers will be forgotten and you will be remembered."},
+    {n:8, title:"Make Other People Come to You — Use Bait If Necessary", text:"When you force the other person to act, you are the one in control. It is always better to make your opponent come to you, abandoning his own plans in the process. Lure him with fabulous gains — then attack."},
+    {n:9, title:"Win Through Your Actions, Never Through Argument", text:"Any momentary triumph gained through argument is a Pyrrhic victory. The resentment and ill will you stir up is stronger than any change of opinion. It is much more powerful to get others to agree through your actions, without saying a word."},
+    {n:10, title:"Infection: Avoid the Unhappy and Unlucky", text:"You can die from someone else's misery — emotional states are as infectious as diseases. The unfortunate sometimes draw misfortune on themselves; they will also draw it on you. Associate with the happy and fortunate instead."},
+    {n:11, title:"Learn to Keep People Dependent on You", text:"To maintain your independence you must always be needed and wanted. The more you are relied on, the more freedom you have. Make people depend on you for their happiness and prosperity and you have nothing to fear."},
+    {n:12, title:"Use Selective Honesty and Generosity to Disarm Your Victim", text:"One sincere and honest move will cover over dozens of dishonest ones. Open-hearted gestures of honesty and generosity bring down the guard of even the most suspicious people. A timely gift — a Trojan horse — will serve the same purpose."},
+    {n:13, title:"When Asking for Help, Appeal to People's Self-Interest, Never to Their Mercy or Gratitude", text:"Do not remind others of your past assistance — they will ignore you. Instead, uncover something in your request that will benefit them and emphasize it. They will respond enthusiastically when they see something to be gained for themselves."},
+    {n:14, title:"Pose as a Friend, Work as a Spy", text:"Knowing about your rival is critical. Use spies to gather valuable information. Better still: play the spy yourself. In social encounters, learn to probe. Ask indirect questions to get people to reveal their weaknesses and intentions."},
+    {n:15, title:"Crush Your Enemy Totally", text:"All great leaders have known that a feared enemy must be crushed completely. If one ember is left alight, no matter how dimly it smolders, a fire will eventually break out. More is lost through stopping halfway than through total annihilation."},
+    {n:16, title:"Use Absence to Increase Respect and Honor", text:"Too much circulation makes the price go down. The more you are seen, the more common you appear. If you are already established, temporary withdrawal will make you more talked about and admired. Create value through scarcity."},
+    {n:17, title:"Keep Others in Suspended Terror: Cultivate an Air of Unpredictability", text:"Humans are creatures of habit who need familiarity. Your predictability gives others a sense of control. Be deliberately unpredictable. Behavior that seems to have no consistency will keep them off-balance, wearing them out trying to explain you."},
+    {n:18, title:"Do Not Build Fortresses to Protect Yourself — Isolation Is Dangerous", text:"A fortress seems safest but exposes you to more dangers — it cuts you off from information, makes you conspicuous, and an easy target. Better to circulate among people, find allies, and mingle. You are shielded by the crowd."},
+    {n:19, title:"Know Who You're Dealing With — Do Not Offend the Wrong Person", text:"There are many kinds of people. Deceive some and they will spend their lives seeking revenge — wolves in lambs' clothing. Choose your victims and opponents carefully. Never offend or deceive the wrong person."},
+    {n:20, title:"Do Not Commit to Anyone", text:"It is the fool who always rushes to take sides. Do not commit to any side or cause but yourself. By maintaining your independence you become the master of others — playing people against one another, making them pursue you."},
+    {n:21, title:"Play a Sucker to Catch a Sucker — Seem Dumber Than Your Mark", text:"No one likes feeling stupider than the next person. Make your victims feel smart — smarter than you. Once convinced of this, they will never suspect you may have ulterior motives."},
+    {n:22, title:"Use the Surrender Tactic: Transform Weakness Into Power", text:"When you are weaker, never fight for honor's sake — choose surrender instead. Surrender gives you time to recover, time to torment your conqueror, time to wait for his power to wane. Make surrender a tool of power."},
+    {n:23, title:"Concentrate Your Forces", text:"Conserve your forces by keeping them concentrated at their strongest point. Intensity defeats extensity every time. Find one rich mine and mine it deeper rather than flitting from one shallow mine to another."},
+    {n:24, title:"Play the Perfect Courtier", text:"The perfect courtier thrives in a world of power and political dexterity. Master indirection — flatter, yield to superiors, assert power over others in the most oblique and graceful manner. There will be no limit to how far you can rise."},
+    {n:25, title:"Re-Create Yourself", text:"Do not accept the roles society foists on you. Forge a new identity that commands attention and never bores. Be the master of your own image. Incorporate dramatic devices into your gestures and your character will seem larger than life."},
+    {n:26, title:"Keep Your Hands Clean", text:"You must seem a paragon of civility and efficiency — your hands never soiled by mistakes or nasty deeds. Maintain a spotless appearance by using others as scapegoats and cat's-paws to disguise your involvement."},
+    {n:27, title:"Play on People's Need to Believe to Create a Cult-like Following", text:"People have an overwhelming desire to believe in something. Become the focal point by offering a cause, a new faith. Keep words vague but full of promise. Emphasize enthusiasm over rationality. Give rituals to perform."},
+    {n:28, title:"Enter Action with Boldness", text:"If you are unsure of a course of action, do not attempt it — your doubts will infect execution. Timidity is dangerous. Any mistakes you commit through audacity are easily corrected with more audacity. Everyone admires the bold."},
+    {n:29, title:"Plan All the Way to the End", text:"The ending is everything. Plan all the way to it, taking into account all consequences, obstacles, and twists of fortune. By planning to the end you will not be overwhelmed by circumstances and you will know when to stop."},
+    {n:30, title:"Make Your Accomplishments Seem Effortless", text:"Your actions must seem natural and executed with ease. Conceal all toil and practice. Avoid the temptation of revealing how hard you work — it only raises questions. Teach no one your tricks or they will be used against you."},
+    {n:31, title:"Control the Options: Get Others to Play with the Cards You Deal", text:"The best deceptions give the other person a choice. Your victims feel in control but are puppets. Give options that serve your purpose whichever they choose. Put them on the horns of a dilemma."},
+    {n:32, title:"Play to People's Fantasies", text:"Truth is often avoided because it is ugly. Never appeal to truth unless prepared for the anger of disenchantment. People who manufacture romance or fantasy are like oases in the desert. Great power lies in tapping into the fantasies of the masses."},
+    {n:33, title:"Discover Each Man's Thumbscrew", text:"Everyone has a weakness — a gap in the castle wall. Usually an insecurity, an uncontrollable emotion or need, or a secret pleasure. Once found, it is a thumbscrew you can turn to your advantage."},
+    {n:34, title:"Be Royal in Your Own Fashion: Act Like a King to Be Treated Like One", text:"The way you carry yourself determines how you are treated. A king respects himself and inspires the same in others. By acting regally and confident in your powers, you make yourself seem destined to wear a crown."},
+    {n:35, title:"Master the Art of Timing", text:"Never seem to be in a hurry — it betrays a lack of control. Always seem patient, as if you know everything will come to you eventually. Become a detective of the right moment. Strike fiercely when the time is ripe."},
+    {n:36, title:"Disdain Things You Cannot Have: Ignoring Them Is the Best Revenge", text:"By acknowledging a petty problem you give it existence. The more attention you pay an enemy, the stronger you make him. If there is something you want but cannot have, show contempt for it. The less interest, the more superior you seem."},
+    {n:37, title:"Create Compelling Spectacles", text:"Striking imagery and grand symbolic gestures create the aura of power. Stage spectacles full of arresting visuals and radiant symbols that heighten your presence. Dazzled by appearances, no one will notice what you are really doing."},
+    {n:38, title:"Think as You Like But Behave Like Others", text:"If you flaunt unconventional ideas, people will think you look down on them and will find a way to punish you. Blend in and nurture the common touch. Share your originality only with tolerant, trusted friends."},
+    {n:39, title:"Stir Up Waters to Catch Fish", text:"Anger and emotion are strategically counterproductive. Stay calm and objective. But if you can make your enemies angry while staying calm yourself, you gain a decided advantage. Find the chink in their vanity and rattle them."},
+    {n:40, title:"Despise the Free Lunch", text:"What is offered for free is dangerous — it involves a trick or hidden obligation. What has worth is worth paying for. Pay your own way to stay clear of gratitude, guilt, and deceit. Generosity is a sign and magnet for power."},
+    {n:41, title:"Avoid Stepping into a Great Man's Shoes", text:"What happens first always appears better. If you succeed a great figure, you must accomplish double their achievements. Establish your own name and identity by changing course. Slay the overbearing father and shine in your own way."},
+    {n:42, title:"Strike the Shepherd and the Sheep Will Scatter", text:"Trouble can often be traced to a single agitator. Do not wait for troubles to multiply. Neutralize their influence by isolating or banishing them. Strike at the source and the followers will scatter."},
+    {n:43, title:"Work on the Hearts and Minds of Others", text:"Coercion creates a reaction that works against you. Seduce others into wanting to move in your direction. Operate on their psychology and weaknesses. Ignore hearts and minds and they will grow to hate you."},
+    {n:44, title:"Disarm and Infuriate with the Mirror Effect", text:"The mirror reflects reality but is also a tool for deception. When you mirror your enemies, they cannot figure your strategy. The Mirror Effect mocks and humiliates, making them overreact. Hold up a mirror to teach them a lesson."},
+    {n:45, title:"Preach the Need for Change, But Never Reform Too Much at Once", text:"Everyone understands change in the abstract, but people are creatures of habit. Too much innovation leads to revolt. Make change feel like a gentle improvement on the past. Respect old ways while innovating."},
+    {n:46, title:"Never Appear Too Perfect", text:"Appearing better than others is dangerous; appearing flawless is worst of all. Envy creates silent enemies. Display occasional defects and admit harmless vices to deflect envy. Only gods and the dead can seem perfect with impunity."},
+    {n:47, title:"Do Not Go Past the Mark You Aimed For; In Victory, Learn When to Stop", text:"The moment of victory is often the moment of greatest peril. Overconfidence can push you past your goal, creating more enemies than you defeated. Set a goal, and when you reach it, stop. Strategy, not ego."},
+    {n:48, title:"Assume Formlessness", text:"By taking a visible shape or plan, you open yourself to attack. Keep yourself adaptable and on the move. Accept that nothing is certain and no law is fixed. Be as fluid and formless as water — never bet on stability or lasting order."}
+  ];
+
+  // ─── THEME ───
+  const themeToggle = document.getElementById('themeToggle');
+  themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('light');
+    themeToggle.textContent = document.body.classList.contains('light') ? '🌙' : '☀️';
+  });
+
+  // ─── RENDER LAWS ───
+  const grid = document.getElementById('lawGrid');
+  const search = document.getElementById('lawSearch');
+  const count = document.getElementById('lawCount');
+
+  function renderLaws(filter = '') {
+    grid.innerHTML = '';
+    const q = filter.toLowerCase();
+    let visible = 0;
+
+    laws.forEach(law => {
+      const match = !q ||
+        law.n.toString().includes(q) ||
+        law.title.toLowerCase().includes(q) ||
+        law.text.toLowerCase().includes(q);
+
+      if (match) visible++;
+
+      const card = document.createElement('div');
+      card.className = `law-card${match ? '' : ' hidden'}`;
+      card.dataset.n = law.n;
+
+      card.innerHTML = `
+        <div class="num">LAW ${law.n}</div>
+        <h3>${law.title}</h3>
+        <div class="preview">${law.text.substring(0, 100)}…</div>
+        <div class="full"><div class="full-inner">${law.text}</div></div>
+        <div class="expand-icon">+</div>
+      `;
+
+      card.addEventListener('click', () => {
+        card.classList.toggle('open');
+      });
+
+      grid.appendChild(card);
+    });
+
+    count.textContent = `Showing ${visible} / ${laws.length}`;
+  }
+
+  renderLaws();
+
+  search.addEventListener('input', (e) => renderLaws(e.target.value));
+
+  // ─── SCROLL REVEAL ───
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.law-card, .cat-card, .tl-item').forEach(el => observer.observe(el));
+
+  // ─── RANDOM LAW ───
+  const rLaw = document.getElementById('rLaw');
+  const rTitle = document.getElementById('rTitle');
+  const rText = document.getElementById('rText');
+  const rBtn = document.getElementById('randomBtn');
+
+  rBtn.addEventListener('click', () => {
+    rText.classList.add('fade');
+    setTimeout(() => {
+      const l = laws[Math.floor(Math.random() * laws.length)];
+      rLaw.textContent = `LAW ${l.n}`;
+      rTitle.textContent = l.title;
+      rText.textContent = l.text;
+      rText.classList.remove('fade');
+    }, 300);
+  });
+</script>
+</body>
+</html>

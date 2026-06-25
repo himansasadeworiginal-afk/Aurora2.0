@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Changing World Order — Interactive Summary</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0e17;
+    --bg-alt: #0f1520;
+    --surface: #141c2a;
+    --surface-hover: #1a2436;
+    --text: #d8dce6;
+    --text-dim: #6b7a99;
+    --accent: #00bcd4;
+    --accent-light: #4dd0e1;
+    --accent-dim: #00838f;
+    --gold: #f5a623;
+    --orange: #ff6d00;
+    --red: #e53935;
+    --green: #43a047;
+    --purple: #7c4dff;
+    --border: #1e2a3a;
+    --shadow: 0 8px 32px rgba(0,0,0,0.5);
+    --radius: 12px;
+    --radius-sm: 8px;
+    --transition: 0.35s cubic-bezier(.22,1,.36,1);
+  }
+
+  .light {
+    --bg: #f2f4f8;
+    --bg-alt: #e8ecf2;
+    --surface: #ffffff;
+    --surface-hover: #f5f7fa;
+    --text: #1a1f2e;
+    --text-dim: #6b7a99;
+    --accent: #00838f;
+    --accent-light: #00acc1;
+    --accent-dim: #00bcd4;
+    --gold: #e65100;
+    --border: #d0d6e0;
+    --shadow: 0 8px 32px rgba(0,0,0,0.06);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    transition: background var(--transition), color var(--transition);
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+  .theme-toggle {
+    position: fixed; top: 20px; right: 20px; z-index: 1000;
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); width: 44px; height: 44px; border-radius: 50%;
+    cursor: pointer; font-size: 1.2rem;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--shadow); transition: all var(--transition);
+  }
+  .theme-toggle:hover { transform: scale(1.1); border-color: var(--accent); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+  @keyframes pulse { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
+  @keyframes slideIn { from { opacity: 0; transform: translateX(-16px); } to { opacity: 1; transform: translateX(0); } }
+
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    padding: 2rem; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 30% 30%, rgba(0,188,212,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse at 70% 70%, rgba(124,77,255,0.04) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-line {
+    width: 60px; height: 2px; background: var(--accent); margin-bottom: 1.5rem;
+    opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero-badge {
+    display: inline-block; padding: 8px 24px;
+    border: 1px solid var(--accent-dim); color: var(--accent-light);
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+    margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.8s 0.3s forwards;
+  }
+  .hero h1 {
+    font-weight: 800;
+    font-size: clamp(2.2rem, 7vw, 4.5rem);
+    letter-spacing: -1px; line-height: 1.1;
+    color: var(--text); margin-bottom: 0.5rem;
+    opacity: 0; animation: fadeUp 0.8s 0.5s forwards;
+  }
+  .hero h1 .hl { color: var(--accent); }
+  .hero h1 .sm { font-size: 0.4em; display: block; font-weight: 400; letter-spacing: 4px; color: var(--text-dim); margin-top: 0.5rem; }
+  .hero p {
+    font-size: 1.05rem; color: var(--text-dim); max-width: 560px;
+    line-height: 1.6; font-weight: 300; margin-top: 0.5rem;
+    opacity: 0; animation: fadeUp 0.8s 0.7s forwards;
+  }
+  .hero-sub {
+    margin-top: 0.6rem; color: var(--accent-light); font-size: 0.8rem;
+    letter-spacing: 2px; font-weight: 500;
+    opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
+  }
+  .hero-arrow {
+    margin-top: 2.5rem; font-size: 1.5rem; color: var(--accent);
+    opacity: 0; animation: fadeUp 0.8s 1s forwards, bounce 2s 1s infinite;
+  }
+
+  section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+
+  .section-ornament { text-align: center; color: var(--accent-dim); font-size: 1rem; letter-spacing: 8px; margin-bottom: 0.8rem; opacity: 0.5; }
+  .section-label {
+    font-size: 0.7rem; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--accent-light); margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+  section h2 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800; letter-spacing: -1px; margin-bottom: 0.3rem;
+  }
+  section h2 .hl { color: var(--accent); }
+  .section-desc {
+    color: var(--text-dim); font-size: 1rem; max-width: 600px;
+    margin-bottom: 2rem; font-weight: 300;
+  }
+
+  .stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem; margin: 2rem 0;
+  }
+  .stat {
+    text-align: center; padding: 1.5rem 1rem;
+    background: var(--surface); border: 1px solid var(--border);
+    transition: all var(--transition);
+  }
+  .stat:hover { border-color: var(--accent-dim); }
+  .stat-value { font-size: 2.2rem; font-weight: 800; color: var(--accent-light); }
+  .stat-label { font-size: 0.75rem; color: var(--text-dim); margin-top: 0.3rem; letter-spacing: 1px; text-transform: uppercase; }
+
+  .phase-block {
+    margin-bottom: 2.5rem;
+  }
+  .phase-block h3 {
+    font-size: 1.3rem; font-weight: 700; margin-bottom: 0.2rem;
+  }
+  .phase-block .phase-sub {
+    font-size: 0.8rem; color: var(--accent-light); margin-bottom: 0.8rem;
+    font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+  }
+  .phase-block .phase-note {
+    font-size: 0.85rem; color: var(--text-dim); margin-bottom: 1rem;
+    padding: 0.8rem 1rem;
+    border-left: 2px solid var(--accent-dim);
+    background: var(--surface); line-height: 1.6;
+  }
+
+  .stages {
+    display: flex; flex-direction: column; gap: 0.6rem;
+    margin: 1rem 0;
+  }
+  .stage-item {
+    display: flex; gap: 0.8rem; align-items: flex-start;
+    padding: 0.8rem 1rem;
+    background: var(--surface); border: 1px solid var(--border);
+    cursor: pointer; transition: all var(--transition);
+    opacity: 0; transform: translateY(8px);
+  }
+  .stage-item.visible { opacity: 1; transform: translateY(0); }
+  .stage-item:hover { border-color: var(--accent-dim); }
+  .stage-item .s-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--accent); color: #fff; font-weight: 700; font-size: 0.75rem;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .stage-item .s-body h4 { font-size: 0.9rem; font-weight: 600; }
+  .stage-item .s-body p { font-size: 0.8rem; color: var(--text-dim); margin-top: 0.1rem; }
+  .stage-item .s-body .s-detail {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.4s ease, margin 0.3s ease; margin-top: 0;
+  }
+  .stage-item.open .s-body .s-detail {
+    max-height: 200px; margin-top: 0.4rem;
+  }
+  .stage-item .s-body .s-detail p {
+    font-size: 0.8rem; color: var(--text-dim); line-height: 1.5;
+    padding-top: 0.4rem; border-top: 1px solid var(--border);
+  }
+
+  .grid { display: grid; gap: 1.2rem; }
+  .grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .grid-3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .grid-4 { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 1.5rem; transition: all var(--transition);
+    opacity: 0; transform: translateY(16px);
+  }
+  .card.visible { opacity: 1; transform: translateY(0); }
+  .card:hover { border-color: var(--accent-dim); }
+  .card .c-icon { font-size: 1.5rem; margin-bottom: 0.4rem; display: block; }
+  .card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .card p { font-size: 0.85rem; color: var(--text-dim); line-height: 1.5; }
+
+  .empire-card {
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 1.5rem; transition: all var(--transition);
+    opacity: 0; transform: translateY(16px);
+  }
+  .empire-card.visible { opacity: 1; transform: translateY(0); }
+  .empire-card:hover { border-color: var(--accent-dim); }
+  .empire-card .e-period {
+    font-size: 0.7rem; letter-spacing: 2px; color: var(--accent-light);
+    font-weight: 600; text-transform: uppercase; margin-bottom: 0.3rem;
+  }
+  .empire-card h4 { font-size: 1.1rem; font-weight: 700; }
+  .empire-card .e-desc {
+    font-size: 0.85rem; color: var(--text-dim); line-height: 1.5;
+    margin-top: 0.3rem;
+  }
+  .empire-card .e-detail {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.5s ease, margin 0.4s ease; margin-top: 0;
+  }
+  .empire-card.open .e-detail { max-height: 400px; margin-top: 0.8rem; }
+  .empire-card .e-detail-inner {
+    font-size: 0.85rem; color: var(--text-dim); line-height: 1.6;
+    border-top: 1px solid var(--border); padding-top: 0.8rem;
+  }
+  .empire-card .e-expand {
+    margin-top: 0.6rem; font-size: 0.8rem; color: var(--accent-light);
+    cursor: pointer; font-weight: 500; letter-spacing: 1px;
+  }
+
+  .force-header {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    align-items: center; justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  .force-search {
+    flex: 1; min-width: 200px; max-width: 360px;
+    padding: 10px 16px; background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); font-size: 0.85rem; outline: none;
+    transition: all var(--transition); font-family: 'Inter', sans-serif;
+  }
+  .force-search:focus { border-color: var(--accent); }
+  .force-search::placeholder { color: var(--text-dim); }
+  .force-count { font-size: 0.8rem; color: var(--text-dim); }
+
+  .force-list { display: grid; gap: 0.6rem; }
+  .force-item {
+    display: flex; gap: 0.8rem; align-items: flex-start;
+    padding: 0.8rem 1rem;
+    background: var(--surface); border: 1px solid var(--border);
+    transition: all var(--transition);
+    opacity: 0; transform: translateY(8px);
+  }
+  .force-item.visible { opacity: 1; transform: translateY(0); }
+  .force-item.hidden { display: none; }
+  .force-item:hover { border-color: var(--accent-dim); }
+  .force-item .f-num {
+    font-size: 0.7rem; font-weight: 700; color: var(--accent-light);
+    flex-shrink: 0; width: 24px; letter-spacing: 1px;
+  }
+  .force-item .f-body h4 { font-size: 0.9rem; font-weight: 600; }
+  .force-item .f-body p { font-size: 0.8rem; color: var(--text-dim); margin-top: 0.1rem; }
+
+  .where-box {
+    background: var(--surface); border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    padding: 1.5rem; margin: 1rem 0;
+  }
+  .where-box p { font-size: 0.9rem; color: var(--text-dim); line-height: 1.7; margin-bottom: 0.6rem; }
+  .where-box p:last-child { margin-bottom: 0; }
+  .where-box .attribution { font-size: 0.8rem; color: var(--accent-light); text-align: right; }
+
+  .insight-box {
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 2rem; text-align: center;
+  }
+  .insight-box .i-label {
+    font-size: 0.7rem; letter-spacing: 3px;
+    color: var(--accent-light); text-transform: uppercase; margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+  .insight-box .i-text {
+    font-size: 1.1rem; font-weight: 500; color: var(--text);
+    margin-bottom: 1rem; max-width: 550px; margin-left: auto; margin-right: auto;
+    transition: opacity 0.3s ease; line-height: 1.6;
+  }
+  .insight-box .i-text.fade { opacity: 0; }
+
+  .btn {
+    padding: 12px 32px; border: none; cursor: pointer;
+    font-size: 0.85rem; font-weight: 600; letter-spacing: 1px;
+    text-transform: uppercase; transition: all var(--transition);
+    font-family: 'Inter', sans-serif;
+  }
+  .btn-accent {
+    background: var(--accent); color: #0a0e17;
+  }
+  .btn-accent:hover { background: var(--accent-light); transform: translateY(-2px); }
+  .btn-outline {
+    background: transparent; border: 1px solid var(--accent-dim);
+    color: var(--accent-light);
+  }
+  .btn-outline:hover { border-color: var(--accent-light); background: rgba(0,188,212,0.08); }
+
+  footer {
+    text-align: center; padding: 3rem 2rem; color: var(--text-dim);
+    font-size: 0.8rem; border-top: 1px solid var(--border);
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 600px) {
+    section { padding: 3rem 1.2rem; }
+    .hero h1 .sm { font-size: 0.3em; letter-spacing: 3px; }
+  }
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☀️</button>
+
+<header class="hero">
+  <div class="hero-line"></div>
+  <div class="hero-badge">A Bridgewater Study</div>
+  <h1>
+    The Changing<br><span class="hl">World Order</span>
+    <span class="sm">Why Nations Succeed and Fail</span>
+  </h1>
+  <p>Why the next 10–20 years will be radically different — and why understanding the cycles of history is the only way to navigate what's coming.</p>
+  <div class="hero-sub">✦ Ray Dalio ✦</div>
+  <div class="hero-arrow">↓</div>
+</header>
+
+<section>
+  <div class="stats">
+    <div class="stat"><div class="stat-value">500+</div><div class="stat-label">Years of History</div></div>
+    <div class="stat"><div class="stat-value">11</div><div class="stat-label">Empires Studied</div></div>
+    <div class="stat"><div class="stat-value">17</div><div class="stat-label">Forces Driving Cycles</div></div>
+    <div class="stat"><div class="stat-value">250</div><div class="stat-label">Year Empire Cycle</div></div>
+  </div>
+</section>
+
+<section>
+  <div class="section-ornament">✦ ✦ ✦</div>
+  <div class="section-label">The Premise</div>
+  <h2>Three Big Forces Are <span class="hl">Converging</span></h2>
+  <p class="section-desc">For the first time in our lifetimes, three massive cycles are peaking simultaneously — just as they did in 1930-45.</p>
+
+  <div class="where-box">
+    <p><strong>1. The Long-Term Debt Cycle:</strong> Interest rates are at or near 0%, debt is at all-time highs, and central banks have exhausted their traditional tools. Printing money is the only option left — and it devalues currencies.</p>
+    <p><strong>2. The Domestic Wealth & Power Cycle:</strong> Wealth, values, and political gaps are wider than at any time in our lifetimes. Economic downturns will trigger intense conflict over how to divide the shrinking pie.</p>
+    <p><strong>3. The International Wealth & Power Cycle:</strong> For the first time in his lifetime, Dalio sees the US encountering a true rival — China — challengning it in trade, technology, geopolitics, and capital.</p>
+  </div>
+</section>
+
+<section>
+  <div class="section-ornament">✦ ✦ ✦</div>
+  <div class="section-label">The Archetype</div>
+  <h2>The Big Cycle of <span class="hl">Empires</span></h2>
+  <p class="section-desc">Every empire follows the same three-phase arc: Ascent → Top → Decline. Click each phase to expand.</p>
+
+  <div class="phase-block">
+    <h3>Phase 1: Ascent</h3>
+    <div class="phase-sub">50–100 Years of Building</div>
+    <div class="phase-note">Strong education, character, and work ethic → competitiveness → income growth → investment → new technologies → world trade → military strength → financial center → reserve currency.</div>
+  </div>
+
+  <div class="phase-block">
+    <h3>Phase 2: Top</h3>
+    <div class="phase-sub">Seeds of Decline Grow Within Success</div>
+    <div class="phase-note">People become expensive → copied by competitors → decadence sets in → over-borrowing (reserve currency privilege) → empire becomes uneconomical → wealth gaps widen.</div>
+  </div>
+
+  <div class="phase-block">
+    <h3>Phase 3: Decline</h3>
+    <div class="phase-sub">Self-Reinforcing Downward Spiral</div>
+    <div class="phase-note">Debt crisis → printing money → wealth gaps → internal conflict → capital flight → rival powers challenge → revolution/war → destruction → restructuring → new order.</div>
+  </div>
+
+  <h3 style="margin-top:2rem; font-size:1.1rem;">The 6 Stages of the Internal Cycle</h3>
+  <p style="font-size:0.85rem; color:var(--text-dim); margin-bottom:1rem;">Click each stage to learn more.</p>
+
+  <div class="stages" id="stages"></div>
+</section>
+
+<section>
+  <div class="section-ornament">✦ ✦ ✦</div>
+  <div class="section-label">The 8 Measures</div>
+  <h2>How Power Is <span class="hl">Measured</span></h2>
+  <p class="section-desc">Dalio created an index of total power from eight composite measures. They rise and fall in a specific order.</p>
+
+  <div class="grid grid-2" style="margin-bottom:1.5rem;">
+    <div class="card">
+      <span class="c-icon">📚</span>
+      <h4>Education</h4>
+      <p><em>The long-leading indicator.</em> Quality of education predicts future competitiveness and innovation. It's the first to rise and the first to decline.</p>
+    </div>
+    <div class="card">
+      <span class="c-icon">🏆</span>
+      <h4>Competitiveness</h4>
+      <p>How cost-effective and productive a country's workers are relative to global peers. Success breeds higher costs, which erodes competitiveness.</p>
+    </div>
+    <div class="card">
+      <span class="c-icon">💡</span>
+      <h4>Technology</h4>
+      <p>Innovation drives both commercial and military advantage. New technologies create new industries and disrupt existing power structures.</p>
+    </div>
+    <div class="card">
+      <span class="c-icon">🏭</span>
+      <h4>Economic Output</h4>
+      <p>Share of global production. The largest economy typically has the most resources to invest in military, infrastructure, and R&D.</p>
+    </div>
+    <div class="card">
+      <span class="c-icon">🌍</span>
+      <h4>World Trade Share</h4>
+      <p>Dominance in global trade requires a strong military to protect routes, and a strong financial system to facilitate transactions.</p>
+    </div>
+    <div class="card">
+      <span class="c-icon">⚔️</span>
+      <h4>Military Strength</h4>
+      <p>Needed to protect trade, enforce influence, and project power. Expensive to maintain — especially when empire becomes overextended.</p>
+    </div>
+    <div class="card">
+      <span class="c-icon">🏦</span>
+      <h4>Financial Center</h4>
+      <p>The world's leading financial center (Amsterdam → London → New York → Shanghai?) attracts and distributes global capital.</p>
+    </div>
+    <div class="card">
+      <span class="c-icon">💰</span>
+      <h4>Reserve Currency</h4>
+      <p><em>The long-lagging indicator.</em> Last to rise, last to fall. Gives "exorbitant privilege" — but always, eventually, every reserve currency dies.</p>
+    </div>
+  </div>
+
+  <div class="where-box" style="border-left-color:var(--gold);">
+    <p><strong>Key insight:</strong> Education rises first, reserve currency falls last. The US still has dollar dominance, but its education and competitiveness have been declining for decades. History says the dollar will eventually follow — the question is when and how.</p>
+  </div>
+</section>
+
+<section>
+  <div class="section-ornament">✦ ✦ ✦</div>
+  <div class="section-label">Case Studies</div>
+  <h2>The Rise & Fall of <span class="hl">Empires</span></h2>
+  <p class="section-desc">Four empires that followed the same archetypical cycle. Click to expand each story.</p>
+
+  <div class="grid grid-2">
+    <div class="empire-card" id="ec0">
+      <div class="e-period">1600s Peak</div>
+      <h4>Dutch Empire</h4>
+      <div class="e-desc">A small country became the world's greatest empire through trade, shipping, and finance.</div>
+      <div class="e-detail"><div class="e-detail-inner">The Dutch created the Dutch East India Company (the first multinational corporation) and Amsterdam became the world's financial center. The guilder was the first reserve currency. Decline came from becoming too expensive, being copied by the British, and overextending militarily. The Anglo-Dutch wars and financial bubbles accelerated the decline.</div></div>
+      <div class="e-expand" onclick="toggleEmpire(0)">+ Expand</div>
+    </div>
+    <div class="empire-card" id="ec1">
+      <div class="e-period">1800s Peak</div>
+      <h4>British Empire</h4>
+      <div class="e-desc">The Industrial Revolution gave Britain a decisive edge in production, trade, and military power.</div>
+      <div class="e-detail"><div class="e-detail-inner">London became the world's financial center, the pound the reserve currency. The Royal Navy ruled the seas. Decline: lost American colonies, faced German/Japanese challenges, took on enormous debt in WWI and WWII, colonies became uneconomical. By 1945, Britain was bankrupt and the US took over as the dominant power.</div></div>
+      <div class="e-expand" onclick="toggleEmpire(1)">+ Expand</div>
+    </div>
+    <div class="empire-card" id="ec2">
+      <div class="e-period">1945 — Present</div>
+      <h4>American Empire</h4>
+      <div class="e-desc">After WWII, the US had 80% of the world's gold, half of global production, and a nuclear monopoly.</div>
+      <div class="e-detail"><div class="e-detail-inner">Bretton Woods (1944) made the dollar the reserve currency. The US built the post-war world order (UN, World Bank, IMF, NATO). Decades of peace and prosperity followed. Now: extreme debt, wealth gaps, political polarization, overextended empire, and a rising China challenger. Classic late-cycle position.</div></div>
+      <div class="e-expand" onclick="toggleEmpire(2)">+ Expand</div>
+    </div>
+    <div class="empire-card" id="ec3">
+      <div class="e-period">600 AD — Present</div>
+      <h4>Chinese Empire</h4>
+      <div class="e-desc">Dominant for centuries, then declined, and is now rising back toward its historical position.</div>
+      <div class="e-detail"><div class="e-detail-inner">China was the world's leading power for most of history before 1800. Then came the "Century of Humiliation" (1800-1949). Under Mao (1949-76): foundation building. Deng (1978-2013): reforms, opening up, rapid growth. Xi (2013-present): becoming a world power. Now challenging the US in every domain. History suggests this conflict is natural and predictable.</div></div>
+      <div class="e-expand" onclick="toggleEmpire(3)">+ Expand</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-ornament">✦ ✦ ✦</div>
+  <div class="section-label">The Forces</div>
+  <h2>The 17 Drivers of <span class="hl">Change</span></h2>
+  <p class="section-desc">Dalio identified 17 timeless and universal forces that explain the rises and declines of empires.</p>
+
+  <div class="force-header">
+    <input class="force-search" id="forceSearch" placeholder="Search forces by name or keyword..." autocomplete="off">
+    <span class="force-count" id="forceCount">Showing 17 / 17</span>
+  </div>
+
+  <div class="force-list" id="forceList"></div>
+</section>
+
+<section>
+  <div class="section-ornament">✦ ✦ ✦</div>
+  <div class="section-label">US-China</div>
+  <h2>The Seven <span class="hl">Wars</span></h2>
+  <p class="section-desc">The US and China are now engaged in conflicts across seven domains simultaneously.</p>
+
+  <div class="grid grid-2">
+    <div class="card"><span class="c-icon">📦</span><h4>Trade/Economic War</h4><p>Tariffs, supply chain decoupling, export controls. Both sides trying to reduce dependence on the other.</p></div>
+    <div class="card"><span class="c-icon">💻</span><h4>Technology War</h4><p>5G, AI, semiconductors, software bans. Who controls the next generation of technology will control the future.</p></div>
+    <div class="card"><span class="c-icon">🌏</span><h4>Geopolitical War</h4><p>South China Sea, alliances (Quad, AUKUS vs. Belt & Road), influence in developing nations.</p></div>
+    <div class="card"><span class="c-icon">🏦</span><h4>Capital War</h4><p>Sanctions, currency competition, capital controls. China is pushing to internationalize the yuan.</p></div>
+    <div class="card"><span class="c-icon">⚔️</span><h4>Military War</h4><p>Show-of-force operations, proxy conflicts, Taiwan tensions, military buildup on both sides.</p></div>
+    <div class="card"><span class="c-icon">🎭</span><h4>Culture War</h4><p>Ideology, values, propaganda, soft power competition. Each side presents its system as superior.</p></div>
+    <div class="card" style="grid-column: 1 / -1; text-align:center;"><span class="c-icon">🪞</span><h4>War with Ourselves</h4><p><em>"The enemy is us."</em> Each country's internal divisions are its greatest vulnerability. A house divided cannot stand.</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="section-ornament">✦ ✦ ✦</div>
+  <div class="section-label">Where We Are</div>
+  <h2>Where the US Is in Its <span class="hl">Big Cycle</span></h2>
+  <p class="section-desc">Dalio's assessment: The US is in the late stage of its cycle — with declining relative power, extreme debt, and internal conflict. China is in its ascent phase.</p>
+
+  <div class="where-box" style="border-left-color:var(--orange);">
+    <p><strong>The current confluence:</strong> The last major destruction/restructuring period was 1930-45. That created a new world order in 1945. It is now 75+ years later — classically near the end of a long-term debt cycle. We have high debt, near-zero rates, large wealth gaps, political polarization, a rising challenger, and a pandemic. This exact confluence happened in 1930-45 — and before that in similar periods.</p>
+    <p class="attribution">— Based on <em>The Changing World Order</em>, Ray Dalio</p>
+  </div>
+</section>
+
+<section>
+  <div class="section-ornament">✦ ✦ ✦</div>
+  <div class="section-label">Perspective</div>
+  <h2>A <span class="hl">Dalio</span> Insight</h2>
+  <p class="section-desc">Each click surfaces a principle from the book's research.</p>
+
+  <div class="insight-box" id="insightBox">
+    <div class="i-label">Timeless & Universal</div>
+    <div class="i-text" id="insightText">"The only things that change are the clothes the characters are wearing and the technologies they're using."</div>
+    <button class="btn btn-accent" id="insightBtn">✦ Next Insight ✦</button>
+  </div>
+</section>
+
+<section>
+  <div class="section-ornament">✦ ✦ ✦</div>
+  <div class="section-label">Principles</div>
+  <h2>How to <span class="hl">Navigate</span> What's Coming</h2>
+  <p class="section-desc">Practical takeaways from Dalio's study of 500+ years of history.</p>
+
+  <div class="grid grid-2">
+    <div class="card"><span class="c-icon">1</span><h4>Know Where You Are in the Cycle</h4><p>Most people miss big changes because they've never experienced them before. Study history to see the patterns.</p></div>
+    <div class="card"><span class="c-icon">2</span><h4>Diversify Across Countries & Currencies</h4><p>Don't bet everything on one country or one currency. Reserve currencies always decline eventually.</p></div>
+    <div class="card"><span class="c-icon">3</span><h4>Don't Confuse the Recent Past with the Future</h4><p>The last 40 years of declining inflation and rising peace were not normal — they were one phase of a long cycle.</p></div>
+    <div class="card"><span class="c-icon">4</span><h4>Watch Leading Indicators</h4><p>Education quality, debt levels, infrastructure investment, and wealth gaps predict where a country is headed.</p></div>
+    <div class="card"><span class="c-icon">5</span><h4>Invest in Adaptability</h4><p>Humanity's power to adapt and invent always wins in the long run. Bad periods don't last forever.</p></div>
+    <div class="card"><span class="c-icon">6</span><h4>Expect Radical Change</h4><p>The next 10-20 years will be radically different from what we've experienced. Prepare mentally and financially.</p></div>
+  </div>
+</section>
+
+<footer>
+  <p>Based on <em>The Changing World Order: Why Nations Succeed and Fail</em> by Ray Dalio &mdash; Interactive Summary</p>
+</footer>
+
+<script>
+  // ─── THEME ───
+  const themeToggle = document.getElementById('themeToggle');
+  themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('light');
+    themeToggle.textContent = document.body.classList.contains('light') ? '🌙' : '☀️';
+  });
+
+  // ─── EMPIRE EXPAND ───
+  function toggleEmpire(i) {
+    const card = document.getElementById('ec' + i);
+    card.classList.toggle('open');
+    const expand = card.querySelector('.e-expand');
+    expand.textContent = card.classList.contains('open') ? '− Collapse' : '+ Expand';
+  }
+
+  // ─── SIX STAGES ───
+  const stages = [
+    {n:1, title:"The New Order Begins", desc:"New leadership consolidates power. The winning power establishes new rules, systems, and a new world order. Peace and prosperity follow.", detail:"This is where empires are born — out of the chaos of war or revolution. The new leader has strong mandate, establishes rule of law, and builds the foundation for future growth."},
+    {n:2, title:"Resource-Allocation Systems Built", desc:"Government bureaucracies and resource-allocation systems are developed. Infrastructure, education, and R&D are invested in.", detail:"The systems that will drive growth are created. This is the 'building phase' — roads, schools, courts, and financial systems are established. The country becomes more efficient."},
+    {n:3, title:"Peace & Prosperity", desc:"The golden era. People work together harmoniously. No one challenges the dominant power. Debt-financed booms begin.", detail:"This is the longest phase. The empire is at its peak. Trade flourishes, culture thrives, and wealth is created. But debt begins to accumulate and wealth gaps start to widen."},
+    {n:4, title:"Excesses", desc:"Over-borrowing, speculative bubbles, and large wealth gaps emerge. Values and political polarization grow.", detail:"The excesses of prosperity sow the seeds of decline. People borrow to consume more than they produce. The rich get richer while others fall behind. Society fragments."},
+    {n:5, title:"Bad Conditions & Intense Conflict", desc:"Debt crisis hits. Wealth gaps trigger populism (left vs. right). Internal fighting over how to divide the shrinking pie.", detail:"The 'perfect storm' phase. Economic downturn + internal conflict + external challenge = maximum danger. Civil unrest, polarization, and calls for radical change. Democracy is challenged by autocracy."},
+    {n:6, title:"Civil War / Revolution", desc:"The old order breaks down. A destructive period of fighting and restructuring. A new leader emerges and the cycle resets.", detail:"The destruction phase typically lasts 10-20 years. Debt is restructured or defaulted on. The old system is torn down. New leadership emerges from the chaos and establishes a new order. Then the cycle begins again."}
+  ];
+
+  const stagesContainer = document.getElementById('stages');
+  stages.forEach((s, i) => {
+    const el = document.createElement('div');
+    el.className = 'stage-item';
+    el.innerHTML = `
+      <div class="s-num">${s.n}</div>
+      <div class="s-body">
+        <h4>${s.title}</h4>
+        <p>${s.desc}</p>
+        <div class="s-detail"><p>${s.detail}</p></div>
+      </div>
+    `;
+    el.addEventListener('click', () => el.classList.toggle('open'));
+    stagesContainer.appendChild(el);
+  });
+
+  // ─── 17 FORCES ───
+  const forces = [
+    {n:1, title:"Long-Term Debt & Money Cycle", desc:"The 50-100 year cycle of debt accumulation, credit expansion, and eventual deleveraging. The most important driver of the big cycle."},
+    {n:2, title:"Domestic Wealth & Power Cycle", desc:"The cycle of wealth concentration and redistribution within a country. Large gaps lead to conflict and systemic change."},
+    {n:3, title:"International Wealth & Power Cycle", desc:"The cycle of rising and declining empires competing for global dominance. Emerging challengers vs. existing powers."},
+    {n:4, title:"Education Quality", desc:"The long-leading indicator. Strong education produces skilled workers, innovation, and social cohesion."},
+    {n:5, title:"Competitiveness", desc:"Cost-effective, productive workers relative to global peers. Erodes as a country becomes richer."},
+    {n:6, title:"Innovation & Technology", desc:"New technologies drive commercial and military advantage. The source of productivity gains."},
+    {n:7, title:"Economic Output", desc:"Share of global production. The larger the economy, the more resources available for investment and military."},
+    {n:8, title:"Share of World Trade", desc:"Dominance in global trade requires military protection and financial infrastructure."},
+    {n:9, title:"Military Strength", desc:"Needed to protect trade routes and project power. Becomes a burden when empire is overextended."},
+    {n:10, title:"Financial Center Strength", desc:"The world's leading financial center attracts global capital and provides economic influence."},
+    {n:11, title:"Reserve Currency Status", desc:"The privilege of printing the world's primary currency. Always lost eventually — usually traumatically."},
+    {n:12, title:"Leadership Quality", desc:"Strong leadership can steer a country through difficult transitions. Weak leadership accelerates decline."},
+    {n:13, title:"Internal Order & Disorder", desc:"The balance between civility, rule of law, and conflict. Cycles between harmony and chaos."},
+    {n:14, title:"External Order & Disorder", desc:"The relationships between world powers. Periods of peace vs. periods of war and competition."},
+    {n:15, title:"Acts of Nature", desc:"Pandemics, droughts, floods, and natural disasters that stress-test societies and accelerate existing trends."},
+    {n:16, title:"Productivity Evolution", desc:"The long-term upward trend in output per person driven by learning and technology. The foundation of rising living standards."},
+    {n:17, title:"Class Struggle Dynamic", desc:"The tension between those who have wealth/power and those who don't. The driver of internal revolutions."}
+  ];
+
+  const forceList = document.getElementById('forceList');
+  const forceSearch = document.getElementById('forceSearch');
+  const forceCount = document.getElementById('forceCount');
+
+  function renderForces(filter = '') {
+    forceList.innerHTML = '';
+    const q = filter.toLowerCase();
+    let visible = 0;
+
+    forces.forEach(f => {
+      const match = !q ||
+        f.title.toLowerCase().includes(q) ||
+        f.desc.toLowerCase().includes(q);
+
+      if (match) visible++;
+
+      const el = document.createElement('div');
+      el.className = `force-item${match ? '' : ' hidden'}`;
+      el.innerHTML = `
+        <div class="f-num">${String(f.n).padStart(2, '0')}</div>
+        <div class="f-body">
+          <h4>${f.title}</h4>
+          <p>${f.desc}</p>
+        </div>
+      `;
+      forceList.appendChild(el);
+    });
+
+    forceCount.textContent = `Showing ${visible} / ${forces.length}`;
+  }
+
+  renderForces();
+  forceSearch.addEventListener('input', (e) => renderForces(e.target.value));
+
+  // ─── SCROLL REVEAL ───
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.force-item, .stage-item, .card, .empire-card').forEach(el => observer.observe(el));
+
+  // ─── INSIGHT GENERATOR ───
+  const insights = [
+    "\"The only things that change are the clothes the characters are wearing and the technologies they're using.\"",
+    "\"The times ahead will be radically different from the times we have experienced so far in our lifetimes, though similar to many other times in history.\"",
+    "\"If some big and important event had happened in the past, I couldn't say for sure that it wouldn't happen to me.\"",
+    "\"There are only a limited number of personality types going down a limited number of paths to produce a limited number of stories that repeat over time.\"",
+    "Reserve currency status is the last strength to rise and the last to fall — but it always falls.",
+    "Debt eats equity: when you can't service debt, creditors take over your assets.",
+    "The most dangerous time is when economic downturn, internal conflict, and external challenge converge.",
+    "Humanity's power to adapt and invent is greater than all the bad stuff that can be thrown at us.",
+    "Education is the long-leading indicator. Reserve currency is the long-lagging indicator.",
+    "The person who clears the path ultimately controls its direction.",
+    "Prosperous periods lead to excesses that sow the seeds of the next decline.",
+    "It takes less time and money to copy than to invent — so emerging empires always gain on mature ones.",
+    "The empire cycle lasts about 250 years, give or take 150. Bad periods: 10-20 years. Good periods: 40-80 years.",
+    "When wealth and values gaps are large and there's an economic downturn, expect intense conflict over the shrinking pie.",
+    "Populists tend to be more autocratic, more inclined to fight, and more inclined to respect power than law.",
+    "Just as a doctor studies many cases of a disease, Dalio studies many cases of historical cycles to understand the archetype.",
+    "The most important thing is to know where you are in the cycle — and most people don't."
+  ];
+  const insightText = document.getElementById('insightText');
+  const insightBtn = document.getElementById('insightBtn');
+
+  insightBtn.addEventListener('click', () => {
+    insightText.classList.add('fade');
+    setTimeout(() => {
+      const random = insights[Math.floor(Math.random() * insights.length)];
+      insightText.textContent = random;
+      insightText.classList.remove('fade');
+    }, 300);
+  });
+</script>
+</body>
+</html>

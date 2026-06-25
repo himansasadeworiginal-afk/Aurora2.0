@@ -1,0 +1,13 @@
+{
+  "name": "Aurora 5.0 — AI Second Brain",
+  "short_name": "Aurora",
+  "description": "AI-Powered Second Brain with Interactive 3D Knowledge Space",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#050508",
+  "theme_color": "#050508",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

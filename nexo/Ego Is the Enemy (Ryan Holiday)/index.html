@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ego Is the Enemy — Interactive Summary</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0d0d;
+    --bg-alt: #161616;
+    --surface: #1c1c1c;
+    --surface-hover: #262626;
+    --text: #e8e4dd;
+    --text-dim: #7a7570;
+    --accent: #c62828;
+    --accent-light: #e53935;
+    --accent-dim: #7f1d1d;
+    --gold: #c9a84c;
+    --border: #2a2a2a;
+    --shadow: 0 8px 32px rgba(0,0,0,0.5);
+    --radius: 12px;
+    --radius-sm: 8px;
+    --transition: 0.35s cubic-bezier(.22,1,.36,1);
+    --header-bg: rgba(13,13,13,0.85);
+  }
+
+  .light {
+    --bg: #f2efe9;
+    --bg-alt: #e8e4dc;
+    --surface: #ffffff;
+    --surface-hover: #f5f2eb;
+    --text: #1a1815;
+    --text-dim: #706a63;
+    --accent: #b71c1c;
+    --accent-light: #d32f2f;
+    --accent-dim: #c62828;
+    --gold: #8a6e2a;
+    --border: #d4cfc7;
+    --shadow: 0 8px 32px rgba(0,0,0,0.06);
+    --header-bg: rgba(242,239,233,0.9);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    transition: background var(--transition), color var(--transition);
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+  .theme-toggle {
+    position: fixed; top: 20px; right: 20px; z-index: 1000;
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); width: 44px; height: 44px; border-radius: 50%;
+    cursor: pointer; font-size: 1.2rem;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--shadow); transition: all var(--transition);
+  }
+  .theme-toggle:hover { transform: scale(1.1); border-color: var(--accent); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideIn { from { opacity: 0; transform: translateX(-16px); } to { opacity: 1; transform: translateX(0); } }
+  @keyframes pulse { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
+
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    padding: 2rem; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 20%, rgba(198,40,40,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(201,168,76,0.04) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-line {
+    width: 50px; height: 2px; background: var(--accent); margin-bottom: 1.5rem;
+    opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero-badge {
+    display: inline-block; padding: 8px 24px;
+    border: 1px solid var(--accent-dim); color: var(--accent-light);
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+    margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.8s 0.3s forwards;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 8vw, 5.5rem);
+    font-weight: 700; letter-spacing: 1px; line-height: 1.1;
+    color: var(--text); margin-bottom: 0.5rem;
+    opacity: 0; animation: fadeUp 0.8s 0.5s forwards;
+  }
+  .hero h1 .hl { color: var(--accent-light); font-style: italic; }
+  .hero h1 .sm { font-size: 0.35em; display: block; font-family: 'Inter', sans-serif; font-weight: 300; letter-spacing: 6px; color: var(--text-dim); margin-top: 0.6rem; text-transform: uppercase; }
+  .hero p {
+    font-size: 1.05rem; color: var(--text-dim); max-width: 520px;
+    line-height: 1.6; font-weight: 300; margin-top: 0.8rem;
+    opacity: 0; animation: fadeUp 0.8s 0.7s forwards;
+  }
+  .hero-sub {
+    margin-top: 0.5rem; color: var(--accent-light); font-size: 0.85rem;
+    letter-spacing: 2px; font-weight: 500;
+    opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
+  }
+  .hero-arrow {
+    margin-top: 2.5rem; font-size: 1.5rem; color: var(--accent);
+    opacity: 0; animation: fadeUp 0.8s 1s forwards, bounce 2s 1s infinite;
+  }
+
+  section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+
+  .section-ornament { text-align: center; color: var(--accent-dim); font-size: 1rem; letter-spacing: 8px; margin-bottom: 1rem; opacity: 0.6; }
+  .section-label {
+    font-size: 0.7rem; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--accent-light); margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+  section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 4vw, 2.6rem);
+    font-weight: 700; letter-spacing: 0.5px; margin-bottom: 0.5rem;
+  }
+  section h2 .hl { color: var(--accent-light); font-style: italic; }
+  .section-desc {
+    color: var(--text-dim); font-size: 1rem; max-width: 600px;
+    margin-bottom: 2.5rem; font-weight: 300;
+  }
+
+  .stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem; margin: 2rem 0;
+  }
+  .stat {
+    text-align: center; padding: 1.5rem 1rem;
+    background: var(--surface); border: 1px solid var(--border);
+    transition: all var(--transition);
+  }
+  .stat:hover { border-color: var(--accent-dim); }
+  .stat-value {
+    font-size: 2.2rem; font-weight: 800; color: var(--accent-light);
+  }
+  .stat-label { font-size: 0.75rem; color: var(--text-dim); margin-top: 0.3rem; letter-spacing: 1px; text-transform: uppercase; }
+
+  .phase-header {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    align-items: center; justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+  .phase-search {
+    flex: 1; min-width: 200px; max-width: 360px;
+    padding: 10px 16px; background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); font-size: 0.85rem; outline: none;
+    transition: all var(--transition); font-family: 'Inter', sans-serif;
+  }
+  .phase-search:focus { border-color: var(--accent); }
+  .phase-search::placeholder { color: var(--text-dim); }
+  .phase-count { font-size: 0.8rem; color: var(--text-dim); }
+
+  .phase-section {
+    margin-bottom: 3rem;
+  }
+  .phase-section h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem; font-weight: 700; margin-bottom: 0.3rem;
+  }
+  .phase-section .phase-sub {
+    font-size: 0.85rem; color: var(--text-dim); margin-bottom: 1.2rem;
+    font-style: italic;
+  }
+  .phase-section .phase-desc {
+    font-size: 0.9rem; color: var(--text-dim); margin-bottom: 1.5rem;
+    line-height: 1.6; padding: 1rem 1.2rem;
+    border-left: 2px solid var(--accent-dim);
+    background: var(--surface);
+  }
+
+  .ch-grid { display: grid; gap: 0.8rem; }
+  .ch-card {
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 1.2rem 1.5rem; cursor: pointer;
+    transition: all var(--transition); position: relative;
+    opacity: 0; transform: translateY(12px);
+  }
+  .ch-card.visible { opacity: 1; transform: translateY(0); }
+  .ch-card:hover { border-color: var(--accent-dim); background: var(--surface-hover); }
+  .ch-card.hidden { display: none; }
+  .ch-card .ch-num {
+    font-size: 0.7rem; letter-spacing: 2px; color: var(--accent-light);
+    font-weight: 600; text-transform: uppercase; margin-bottom: 0.3rem;
+  }
+  .ch-card h4 {
+    font-size: 1rem; font-weight: 600; margin-bottom: 0.3rem;
+    padding-right: 2rem;
+  }
+  .ch-card .ch-preview {
+    font-size: 0.85rem; color: var(--text-dim); line-height: 1.5;
+  }
+  .ch-card .ch-full {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.5s ease, margin 0.4s ease;
+    margin-top: 0;
+  }
+  .ch-card .ch-full-inner {
+    font-size: 0.85rem; color: var(--text-dim); line-height: 1.6;
+    border-top: 1px solid var(--border); padding-top: 0.8rem; margin-top: 0.5rem;
+  }
+  .ch-card .ch-icon {
+    position: absolute; top: 1.2rem; right: 1.5rem;
+    color: var(--accent); font-size: 1.2rem; transition: transform 0.4s ease;
+  }
+  .ch-card.open .ch-icon { transform: rotate(45deg); }
+  .ch-card.open .ch-full { max-height: 400px; }
+
+  .grid { display: grid; gap: 1.2rem; }
+  .grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .grid-3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 1.5rem; transition: all var(--transition);
+    opacity: 0; transform: translateY(16px);
+  }
+  .card.visible { opacity: 1; transform: translateY(0); }
+  .card:hover { border-color: var(--accent-dim); }
+  .card .c-icon { font-size: 1.6rem; margin-bottom: 0.5rem; display: block; }
+  .card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .card p { font-size: 0.85rem; color: var(--text-dim); line-height: 1.5; }
+
+  .quote-block {
+    text-align: center; max-width: 650px; margin: 2.5rem auto;
+    padding: 2rem 0;
+  }
+  .quote-block .q-ornament { color: var(--accent-dim); font-size: 2.5rem; margin-bottom: 0.5rem; }
+  .quote-block blockquote {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem; font-style: italic; line-height: 1.7;
+    color: var(--text); font-weight: 400;
+  }
+  .quote-block cite {
+    display: block; margin-top: 0.8rem; color: var(--accent-light);
+    font-style: normal; font-size: 0.85rem; letter-spacing: 1px;
+  }
+
+  .virtue-table {
+    width: 100%; border-collapse: collapse; margin: 1.5rem 0;
+  }
+  .virtue-table th, .virtue-table td {
+    padding: 0.8rem 1rem; text-align: left;
+    border-bottom: 1px solid var(--border); font-size: 0.85rem;
+  }
+  .virtue-table th {
+    background: var(--surface); color: var(--accent-light);
+    font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase;
+    font-weight: 600;
+  }
+  .virtue-table tr:hover td { background: var(--surface-hover); }
+
+  .insight-section {
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 2.5rem 2rem; text-align: center;
+  }
+  .insight-section .i-label {
+    font-size: 0.7rem; letter-spacing: 4px;
+    color: var(--accent-light); text-transform: uppercase; margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+  .insight-section .i-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem; font-style: italic; color: var(--text);
+    margin-bottom: 1rem; max-width: 550px; margin-left: auto; margin-right: auto;
+    transition: opacity 0.3s ease;
+  }
+  .insight-section .i-text.fade { opacity: 0; }
+
+  .btn {
+    padding: 12px 32px; border: none; cursor: pointer;
+    font-size: 0.85rem; font-weight: 600; letter-spacing: 1px;
+    text-transform: uppercase; transition: all var(--transition);
+    font-family: 'Inter', sans-serif;
+  }
+  .btn-accent {
+    background: var(--accent); color: #fff;
+  }
+  .btn-accent:hover { background: var(--accent-light); transform: translateY(-2px); }
+  .btn-outline {
+    background: transparent; border: 1px solid var(--accent-dim);
+    color: var(--accent-light);
+  }
+  .btn-outline:hover { border-color: var(--accent-light); background: rgba(198,40,40,0.08); }
+
+  footer {
+    text-align: center; padding: 3rem 2rem; color: var(--text-dim);
+    font-size: 0.8rem; border-top: 1px solid var(--border);
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 600px) {
+    section { padding: 3rem 1.2rem; }
+    .phase-header { flex-direction: column; align-items: stretch; }
+    .phase-search { max-width: 100%; }
+    .hero h1 .sm { font-size: 0.3em; letter-spacing: 3px; }
+  }
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☀️</button>
+
+<header class="hero">
+  <div class="hero-line"></div>
+  <div class="hero-badge">A Stoic Field Guide</div>
+  <h1>
+    Ego Is<br>the <span class="hl">Enemy</span>
+    <span class="sm">Ryan Holiday</span>
+  </h1>
+  <p>The fight against our own worst enemy — the unhealthy belief in our own importance that undermines us at every stage of life.</p>
+  <div class="hero-sub">✦ Humble in Aspiration · Gracious in Success · Resilient in Failure ✦</div>
+  <div class="hero-arrow">↓</div>
+</header>
+
+<section>
+  <div class="stats">
+    <div class="stat"><div class="stat-value">3</div><div class="stat-label">Stages of Life</div></div>
+    <div class="stat"><div class="stat-value">23</div><div class="stat-label">Chapters</div></div>
+    <div class="stat"><div class="stat-value">2,000+</div><div class="stat-label">Years of Wisdom</div></div>
+    <div class="stat"><div class="stat-value">1</div><div class="stat-label">Enemy Within</div></div>
+  </div>
+</section>
+
+<section>
+  <div class="section-ornament">✦ ✦ ✦</div>
+  <div class="section-label">The Premise</div>
+  <h2>Your Worst Enemy Lives <span class="hl">Inside You</span></h2>
+  <p class="section-desc">Ego defined: an unhealthy belief in our own importance. Arrogance. Self-centered ambition. The voice that tells us we're better than we really are.</p>
+
+  <div style="background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 1.5rem; margin-bottom: 2rem;">
+    <p style="font-size: 0.9rem; color: var(--text-dim); line-height: 1.7;">"Wherever you are, whatever you're doing, your worst enemy already lives inside you: your ego. Precisely what makes us so promising as thinkers, doers, creatives, and entrepreneurs, what drives us to the top of those fields, makes us vulnerable to this darker side of the psyche."</p>
+    <p style="font-size: 0.85rem; color: var(--accent-light); text-align: right; margin-top: 0.8rem;">— Ryan Holiday, <em>Ego Is the Enemy</em></p>
+  </div>
+
+  <div class="grid grid-3">
+    <div class="card">
+      <span class="c-icon">🎯</span>
+      <h4>Ego Distorts Reality</h4>
+      <p>When the notion of ourselves grows so inflated it begins to distort the reality that surrounds us. Self-confidence becomes arrogance, assertiveness becomes obstinacy.</p>
+    </div>
+    <div class="card">
+      <span class="c-icon">🧠</span>
+      <h4>Ego Inhibits Growth</h4>
+      <p>It tells us we don't need to improve. It's defensive precisely when we cannot afford to be defensive. Blocks us from getting better.</p>
+    </div>
+    <div class="card">
+      <span class="c-icon">🔄</span>
+      <h4>Ego Is a Short-Term Fix</h4>
+      <p>Comfort is what keeps ego around. It soothes fear and insecurity — but it's a short-term fix with a long-term consequence. Real confidence is earned, not self-anointed.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PART I: ASPIRE -->
+<section>
+  <div class="section-ornament">✦ ✦ ✦</div>
+  <div class="section-label">Part I</div>
+  <h2><span class="hl">Aspire</span></h2>
+  <p class="section-desc">When you're just starting out — the cure for ego is humility and reality. Talk less, serve more, stay a student.</p>
+
+  <div class="phase-header">
+    <input class="phase-search" id="searchAspire" placeholder="Search chapters..." autocomplete="off">
+    <span class="phase-count" id="countAspire">Showing 9 / 9</span>
+  </div>
+
+  <div class="ch-grid" id="gridAspire"></div>
+</section>
+
+<!-- PART II: SUCCESS -->
+<section>
+  <div class="section-ornament">✦ ✦ ✦</div>
+  <div class="section-label">Part II</div>
+  <h2><span class="hl">Success</span></h2>
+  <p class="section-desc">When you achieve — don't believe your own press. Stay a student, maintain perspective, keep your sobriety.</p>
+
+  <div class="phase-header">
+    <input class="phase-search" id="searchSuccess" placeholder="Search chapters..." autocomplete="off">
+    <span class="phase-count" id="countSuccess">Showing 8 / 8</span>
+  </div>
+
+  <div class="ch-grid" id="gridSuccess"></div>
+</section>
+
+<!-- PART III: FAILURE -->
+<section>
+  <div class="section-ornament">✦ ✦ ✦</div>
+  <div class="section-label">Part III</div>
+  <h2><span class="hl">Failure</span></h2>
+  <p class="section-desc">When you fall — turn dead time into alive time. The effort is enough. Draw the line. Maintain your own scorecard.</p>
+
+  <div class="phase-header">
+    <input class="phase-search" id="searchFailure" placeholder="Search chapters..." autocomplete="off">
+    <span class="phase-count" id="countFailure">Showing 6 / 6</span>
+  </div>
+
+  <div class="ch-grid" id="gridFailure"></div>
+</section>
+
+<!-- THE THREE VIRTUES -->
+<section>
+  <div class="section-ornament">✦ ✦ ✦</div>
+  <div class="section-label">The Framework</div>
+  <h2>The Three <span class="hl">Virtues</span></h2>
+  <p class="section-desc">Ego is the enemy at every stage. Here's what to cultivate instead.</p>
+
+  <table class="virtue-table">
+    <thead>
+      <tr><th>Phase</th><th>Virtue</th><th>Enemy</th><th>Motto</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Aspire</strong></td><td>Humility</td><td style="color:var(--accent-light);">Pride</td><td>Talk less, do more</td></tr>
+      <tr><td><strong>Success</strong></td><td>Graciousness</td><td style="color:var(--accent-light);">Arrogance</td><td>Stay a student</td></tr>
+      <tr><td><strong>Failure</strong></td><td>Resilience</td><td style="color:var(--accent-light);">Self-pity</td><td>The effort is enough</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- KEY IDEAS -->
+<section>
+  <div class="section-ornament">✦ ✦ ✦</div>
+  <div class="section-label">Core Concepts</div>
+  <h2>The Big <span class="hl">Ideas</span></h2>
+  <p class="section-desc">Practical frameworks from the book to apply in your life.</p>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <span class="c-icon">🖼️</span>
+      <h4>The Canvas Strategy</h4>
+      <p>Be an anteambulo — one who clears the path for others. Find canvases for other people to paint on. Help yourself by helping others. The person who clears the path ultimately controls its direction.</p>
+    </div>
+    <div class="card">
+      <span class="c-icon">🛤️</span>
+      <h4>To Be or To Do?</h4>
+      <p>John Boyd's fork: pursue status and recognition (to be somebody) or pursue purpose and impact (to do something). One is about ego, the other about contribution.</p>
+    </div>
+    <div class="card">
+      <span class="c-icon">⏳</span>
+      <h4>Alive Time vs. Dead Time</h4>
+      <p>Every moment is either alive or dead — it depends on what you do with it. Dead time: waiting, complaining. Alive time: learning, growing, using the setback productively.</p>
+    </div>
+    <div class="card">
+      <span class="c-icon">🎯</span>
+      <h4>Purpose Over Passion</h4>
+      <p>Passion is overrated. Purpose has boundaries. Passion is about what you feel; purpose is about what you do. Realism and deliberateness beat unbridled enthusiasm.</p>
+    </div>
+    <div class="card">
+      <span class="c-icon">📝</span>
+      <h4>Maintain Your Own Scorecard</h4>
+      <p>Don't let the world define success for you. Measure yourself by your own standards. Other people's opinions are not your reality.</p>
+    </div>
+    <div class="card">
+      <span class="c-icon">🌌</span>
+      <h4>Meditate on the Immensity</h4>
+      <p>The universe is vast. Your problems and achievements are small. Perspective is the antidote to ego. Read history. Look at the stars. Get over yourself.</p>
+    </div>
+  </div>
+</section>
+
+<!-- INSIGHT GENERATOR -->
+<section>
+  <div class="section-ornament">✦ ✦ ✦</div>
+  <div class="section-label">Confront Yourself</div>
+  <h2>The <span class="hl">Insight</span> You Need</h2>
+  <p class="section-desc">A random principle from the book — let honesty replace ego.</p>
+
+  <div class="insight-section" id="insightSection">
+    <div class="i-label">Remember This</div>
+    <div class="i-text" id="insightText">"The first principle is that you must not fool yourself — and you are the easiest person to fool."</div>
+    <button class="btn btn-accent" id="insightBtn">✦ Confront ✦</button>
+  </div>
+</section>
+
+<!-- KEY QUOTES -->
+<section>
+  <div class="section-ornament">✦ ✦ ✦</div>
+  <div class="section-label">Wisdom</div>
+  <h2>Memorable <span class="hl">Quotes</span></h2>
+  <p class="section-desc">Words that cut through ego and get to the truth.</p>
+
+  <div class="quote-block">
+    <div class="q-ornament">❝</div>
+    <blockquote>"It is impossible to learn that which one thinks one already knows."</blockquote>
+    <cite>— Epictetus</cite>
+  </div>
+
+  <div class="quote-block">
+    <div class="q-ornament">❝</div>
+    <blockquote>"If you start believing in your greatness, it is the death of your creativity."</blockquote>
+    <cite>— Marina Abramović</cite>
+  </div>
+
+  <div class="quote-block">
+    <div class="q-ornament">❝</div>
+    <blockquote>"Be natural and yourself and this glittering flattery will be as the passing breeze of the sea on a warm summer day."</blockquote>
+    <cite>— William Tecumseh Sherman</cite>
+  </div>
+
+  <div class="quote-block">
+    <div class="q-ornament">❝</div>
+    <blockquote>"Ego is the enemy of what you want and of what you have."</blockquote>
+    <cite>— Ryan Holiday</cite>
+  </div>
+</section>
+
+<footer>
+  <p>Based on <em>Ego Is the Enemy</em> by Ryan Holiday &mdash; Interactive Summary</p>
+</footer>
+
+<script>
+  // ─── ALL CHAPTERS ───
+  const chapters = {
+    aspire: [
+      {n:1, title:"Talk, Talk, Talk", text:"Silence is strength. Talking depletes the energy needed for actual work. Talking about your goals tricks your brain into feeling progress without doing it. The more difficult the task, the more costly talk will be. Do great work quietly — let results speak."},
+      {n:2, title:"To Be or To Do?", text:"John Boyd's fork in the road: 'To be somebody or to do something.' Pursuing status (being) vs. purpose (doing). Ego pushes you toward being — recognition, title, image. Purpose pushes you toward doing — impact, craft, contribution. Choose wisely."},
+      {n:3, title:"Become a Student", text:"Kirk Hammett joined Metallica and still found a guitar teacher. Frank Shamrock's formula: someone better (to learn from), someone lesser (to teach), someone equal (to challenge you). True students are self-critical, feedback-hungry, always learning. 'It is impossible to learn that which one thinks one already knows.'"},
+      {n:4, title:"Don't Be Passionate", text:"Passion is overrated. What you need is purpose and realism. Purpose = passion with boundaries. Realism = detachment and perspective. John Wooden was 'dispassionate' — never passion's slave. Leave passion for amateurs. 'Surtout, pas trop de zèle.'"},
+      {n:5, title:"Follow the Canvas Strategy", text:"Be an anteambulo — one who clears the path for others. Find canvases for other people to paint on. Benjamin Franklin wrote for his brother's paper and got no credit. Bill Belichick analyzed film for free. Be lesser, do more. The path-clearer ultimately controls the direction."},
+      {n:6, title:"Restrain Yourself", text:"Jackie Robinson endured unimaginable abuse without reacting. Self-control is not weakness — it's power. Anger and ego make you predictable and easy to defeat. 'I have observed that those who have accomplished the greatest results are those who keep under the body.' — Booker T. Washington"},
+      {n:7, title:"Get Out of Your Own Head", text:"Detachment from your own thoughts and emotions. See yourself with distance. Ego keeps you trapped inside your own narrative. Cultivate the ability to observe yourself objectively — it's the natural antidote to ego."},
+      {n:8, title:"The Danger of Early Pride", text:"Early success is dangerous because it feeds ego before you've earned it. Pride before destruction. The young person who achieves early must be especially careful — the very qualities that got you there can undo you if unchecked."},
+      {n:9, title:"Work, Work, Work", text:"There is no substitute for actual work. Focus on the process, not the praise. Put your head down and produce. The only relationship between work and chatter is that one kills the other."}
+    ],
+    success: [
+      {n:1, title:"Always Stay a Student", text:"Success doesn't mean you know everything. The moment you think you've arrived, you start declining. Keep seeking teachers, feedback, and growth. The most dangerous person is the one who thinks they have nothing left to learn."},
+      {n:2, title:"Don't Tell Yourself a Story", text:"We edit our history into a heroic narrative and start believing it. Stay grounded in facts, not fiction. 'The first principle is that you must not fool yourself — and you are the easiest person to fool.' — Feynman."},
+      {n:3, title:"What's Important to You?", text:"Success brings more options and distractions. You must know your values or you'll drift. Purpose keeps you anchored. Without a clear sense of what matters, ego fills the void with more, more, more."},
+      {n:4, title:"Entitlement, Control, and Paranoia", text:"Success breeds entitlement — the belief that you deserve special treatment. This leads to a need for control, which leads to paranoia. Let go. Trust others. Stay open. The opposite of paranoia is faith in your preparation."},
+      {n:5, title:"Managing Yourself", text:"You are your own most difficult project. Self-management is harder than managing others. Success amplifies who you already are — if you were undisciplined before, success will make you recklessly so."},
+      {n:6, title:"Beware the Disease of Me", text:"When everything becomes about you, you lose perspective. The Disease of Me destroys teams, relationships, and success. The best leaders make it about the mission, not themselves."},
+      {n:7, title:"Meditate on the Immensity", text:"The universe is vast. Your problems and achievements are small. Perspective is the antidote to ego. Read history. Look at the stars. Get over yourself. 'A man's life is but a moment in the vast sweep of time.'"},
+      {n:8, title:"Maintain Your Sobriety", text:"Success is intoxicating. Stay sober-minded. Don't believe the hype — yours or anyone else's. 'Be natural and yourself and this glittering flattery will be as the passing breeze of the sea on a warm summer day.' — Sherman"}
+    ],
+    failure: [
+      {n:1, title:"Alive Time or Dead Time?", text:"Every moment is either alive or dead — the difference is what you do with it. Dead time: waiting, complaining, doing nothing. Alive time: learning, growing, using the setback. The same experience can be one or the other — you choose."},
+      {n:2, title:"The Effort Is Enough", text:"You can control only effort, not outcomes. If you gave it your best, that is enough. Detach from results. Focus on what you can control. This is not resignation — it's liberation from the tyranny of outcomes."},
+      {n:3, title:"Fight Club Moments", text:"It's only after we've lost everything that we're free to do anything. Failure strips away ego and reveals who you really are. The first rule of failure: you can talk about it — but only to learn, not to wallow."},
+      {n:4, title:"Draw the Line", text:"There's a difference between productive struggle and destructive self-destruction. Know when to persevere and when to walk away. Don't let ego keep you in a losing battle. Sometimes the most courageous thing is to quit."},
+      {n:5, title:"Maintain Your Own Scorecard", text:"Don't let the world define success for you. Measure yourself by your own standards. Other people's opinions are not your reality. The only score that matters is the one you keep yourself."},
+      {n:6, title:"Always Love", text:"Don't let failure make you bitter. The only response to hate and disappointment is love. Relationships matter more than any setback. In the end, how you treated people is all that remains."}
+    ]
+  };
+
+  // ─── THEME ───
+  const themeToggle = document.getElementById('themeToggle');
+  themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('light');
+    themeToggle.textContent = document.body.classList.contains('light') ? '🌙' : '☀️';
+  });
+
+  // ─── RENDER CHAPTERS ───
+  function renderPhase(id, data, searchId, countId) {
+    const grid = document.getElementById(id);
+    const search = document.getElementById(searchId);
+    const count = document.getElementById(countId);
+
+    function render(filter = '') {
+      grid.innerHTML = '';
+      const q = filter.toLowerCase();
+      let visible = 0;
+
+      data.forEach(ch => {
+        const match = !q ||
+          ch.title.toLowerCase().includes(q) ||
+          ch.text.toLowerCase().includes(q);
+
+        if (match) visible++;
+
+        const card = document.createElement('div');
+        card.className = `ch-card${match ? '' : ' hidden'}`;
+        card.dataset.n = ch.n;
+
+        card.innerHTML = `
+          <div class="ch-num">Chapter ${ch.n}</div>
+          <h4>${ch.title}</h4>
+          <div class="ch-preview">${ch.text.substring(0, 120)}…</div>
+          <div class="ch-full"><div class="ch-full-inner">${ch.text}</div></div>
+          <div class="ch-icon">+</div>
+        `;
+
+        card.addEventListener('click', () => {
+          card.classList.toggle('open');
+        });
+
+        grid.appendChild(card);
+      });
+
+      count.textContent = `Showing ${visible} / ${data.length}`;
+    }
+
+    render();
+    search.addEventListener('input', (e) => render(e.target.value));
+  }
+
+  renderPhase('gridAspire', chapters.aspire, 'searchAspire', 'countAspire');
+  renderPhase('gridSuccess', chapters.success, 'searchSuccess', 'countSuccess');
+  renderPhase('gridFailure', chapters.failure, 'searchFailure', 'countFailure');
+
+  // ─── SCROLL REVEAL ───
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.ch-card, .card').forEach(el => observer.observe(el));
+
+  // ─── INSIGHT GENERATOR ───
+  const insights = [
+    "\"The first principle is that you must not fool yourself — and you are the easiest person to fool.\" — Richard Feynman",
+    "\"It is impossible to learn that which one thinks one already knows.\" — Epictetus",
+    "\"Those who know do not speak. Those who speak do not know.\" — Lao Tzu",
+    "\"If you start believing in your greatness, it is the death of your creativity.\" — Marina Abramović",
+    "\"Be natural and yourself and this glittering flattery will be as the passing breeze of the sea on a warm summer day.\" — Sherman",
+    "\"Ego is the enemy of what you want and of what you have.\" — Ryan Holiday",
+    "Silence is strength. Talking depletes the energy needed for actual work.",
+    "To be or to do? Choose purpose over status.",
+    "Clear the path for others and you will create a path for yourself.",
+    "Passion is for amateurs. Purpose is for professionals.",
+    "The person who clears the path ultimately controls its direction.",
+    "Stay a student forever. The moment you think you've arrived, you start declining.",
+    "Dead time or alive time? The same setback can be either — you choose.",
+    "The effort is enough. Detach from outcomes. Focus on what you can control.",
+    "Maintain your own scorecard. Other people's opinions are not your reality.",
+    "Don't tell yourself a story. Stick to facts.",
+    "Meditate on the immensity. The universe is vast. You are small. This is liberating.",
+    "Success is intoxicating. Maintain your sobriety.",
+    "It's only after we've lost everything that we're free to do anything.",
+    "Always love. Don't let failure make you bitter."
+  ];
+  const insightText = document.getElementById('insightText');
+  const insightBtn = document.getElementById('insightBtn');
+
+  insightBtn.addEventListener('click', () => {
+    insightText.classList.add('fade');
+    setTimeout(() => {
+      const random = insights[Math.floor(Math.random() * insights.length)];
+      insightText.textContent = random;
+      insightText.classList.remove('fade');
+    }, 300);
+  });
+</script>
+</body>
+</html>

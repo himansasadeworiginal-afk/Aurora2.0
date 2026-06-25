@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Psycho-Cybernetics - Reprogram Your Success Mechanism</title>
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#08080f;--bg2:#0e0e1a;--bg3:#1a1a2e;--card:#141428;
+    --text:#e8e8f8;--muted:#9090b8;--accent:#8b5cf6;--accent2:#06b6d4;
+    --gold:#f59e0b;--border:#252540;
+    --glow:0 0 30px rgba(139,92,246,.3);
+  }
+  html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:var(--accent) var(--bg)}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
+  ::-webkit-scrollbar{width:8px}
+  ::-webkit-scrollbar-track{background:var(--bg)}
+  ::-webkit-scrollbar-thumb{background:var(--accent);border-radius:4px}
+  #progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--gold));z-index:9999;transition:width .1s;width:0%}
+  #bgCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.35}
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(20px);background:rgba(8,8,15,.85);border-bottom:1px solid var(--border);transform:translateY(-100%);transition:transform .3s}
+  nav.visible{transform:translateY(0)}
+  nav .logo{font-size:1.1rem;font-weight:700;color:var(--accent)}
+  nav ul{list-style:none;display:flex;gap:1.2rem}
+  nav a{color:var(--muted);text-decoration:none;font-size:.75rem;transition:color .3s;text-transform:uppercase;letter-spacing:1px}
+  nav a:hover{color:var(--accent)}
+  .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;position:relative;z-index:1;padding:2rem}
+  .hero-badge{display:inline-block;padding:.4rem 1.2rem;border:1px solid var(--accent);border-radius:50px;color:var(--accent);font-size:.75rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:2rem;opacity:0;animation:fadeUp .8s .2s forwards}
+  .hero h1{font-size:clamp(2.5rem,7vw,6.5rem);font-weight:800;line-height:1.05;margin-bottom:.5rem;opacity:0;animation:fadeUp .8s .4s forwards}
+  .hero h1 span{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .hero .subtitle{font-size:clamp(1rem,2.5vw,1.3rem);color:var(--muted);max-width:650px;margin-bottom:1rem;opacity:0;animation:fadeUp .8s .6s forwards}
+  .hero .author{color:var(--gold);font-size:1rem;font-style:italic;opacity:0;animation:fadeUp .8s .8s forwards}
+  .hero .tagline{color:var(--muted);font-size:1.05rem;margin-top:1.5rem;opacity:0;animation:fadeUp .8s 1s forwards;font-style:italic;max-width:600px}
+  .scroll-hint{position:absolute;bottom:2rem;opacity:0;animation:fadeUp .8s 1.2s forwards}
+  .scroll-hint span{display:block;width:24px;height:40px;border:2px solid var(--muted);border-radius:12px;position:relative}
+  .scroll-hint span::after{content:'';width:4px;height:8px;background:var(--accent);border-radius:2px;position:absolute;top:6px;left:50%;transform:translateX(-50%);animation:bounce 2s infinite}
+  section{position:relative;z-index:1;padding:6rem 2rem}
+  .container{max-width:1100px;margin:0 auto}
+  .section-label{display:inline-block;color:var(--accent);font-size:.75rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:.5rem}
+  .section-title{font-size:clamp(2rem,4vw,3rem);font-weight:700;margin-bottom:1rem}
+  .section-desc{color:var(--muted);font-size:1.1rem;max-width:700px;margin-bottom:3rem}
+  .reveal{opacity:0;transform:translateY(40px);transition:opacity .7s,transform .7s}
+  .reveal.visible{opacity:1;transform:translateY(0)}
+  .reveal-delay-1{transition-delay:.1s}
+  .reveal-delay-2{transition-delay:.2s}
+  .reveal-delay-3{transition-delay:.3s}
+  .key-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-top:2rem}
+  .key-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem;cursor:pointer;transition:all .4s;position:relative;overflow:hidden}
+  .key-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));transform:scaleX(0);transition:transform .4s;transform-origin:left}
+  .key-card:hover::before{transform:scaleX(1)}
+  .key-card:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:var(--glow)}
+  .key-card .icon{font-size:2.5rem;margin-bottom:1rem}
+  .key-card h3{font-size:1.3rem;margin-bottom:.5rem}
+  .key-card p{color:var(--muted);font-size:.95rem}
+  .key-card .expanded{max-height:0;overflow:hidden;transition:max-height .5s,margin .5s}
+  .key-card.open .expanded{max-height:300px;margin-top:1rem}
+  .key-card .toggle{color:var(--accent);font-size:.8rem;margin-top:.5rem;display:inline-block;transition:transform .3s}
+  .key-card.open .toggle{transform:rotate(180deg)}
+  .formula-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:3rem;text-align:center;margin:3rem 0;position:relative;overflow:hidden}
+  .formula-box::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(139,92,246,.06) 0%,transparent 70%);animation:pulse 4s infinite}
+  .formula{font-size:clamp(1.1rem,2.5vw,1.8rem);font-weight:600;color:var(--gold);position:relative;z-index:1}
+  .formula-label{color:var(--muted);margin-top:.5rem;font-size:.9rem}
+  .comparison{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin:2rem 0}
+  .comp-side{padding:2rem;border-radius:16px;cursor:pointer;transition:all .4s}
+  .comp-side.creative{background:linear-gradient(135deg,rgba(139,92,246,.1),rgba(6,182,212,.03));border:1px solid var(--accent)}
+  .comp-side.destructive{background:linear-gradient(135deg,rgba(245,158,11,.05),rgba(245,158,11,.02));border:1px solid var(--gold)}
+  .comp-side:hover{transform:scale(1.02)}
+  .comp-side h4{margin-bottom:1rem;font-size:1.2rem}
+  .comp-side.creative h4{color:var(--accent)}
+  .comp-side.destructive h4{color:var(--gold)}
+  .comp-side ul{list-style:none}
+  .comp-side ul li{padding:.3rem 0;color:var(--muted);font-size:.9rem}
+  .comp-side ul li::before{content:'\2192  ';color:inherit}
+  .part-divider{text-align:center;padding:4rem 2rem;position:relative;z-index:1}
+  .part-divider .line{width:1px;height:60px;background:linear-gradient(to bottom,transparent,var(--accent),transparent);margin:0 auto 2rem}
+  .part-divider h2{font-size:clamp(1.5rem,3vw,2.5rem);color:var(--accent)}
+  .part-divider p{color:var(--muted);margin-top:.5rem}
+  .rule{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2.5rem;margin-bottom:2rem;transition:all .4s}
+  .rule:hover{border-color:var(--accent)}
+  .rule-header{display:flex;align-items:center;gap:1.5rem;margin-bottom:1.2rem;cursor:pointer}
+  .rule-num{font-size:2.5rem;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;min-width:60px;text-align:center}
+  .rule h3{font-size:1.35rem}
+  .rule-body{max-height:0;overflow:hidden;transition:max-height .6s}
+  .rule.open .rule-body{max-height:4000px}
+  .rule-body p{color:var(--muted);margin-bottom:.8rem}
+  .rule-body ul{list-style:none;padding:0}
+  .rule-body ul li{padding:.6rem 0 .6rem 2rem;position:relative;color:var(--muted);border-bottom:1px solid var(--border)}
+  .rule-body ul li:last-child{border:none}
+  .rule-body ul li::before{content:'';position:absolute;left:0;top:1.1rem;width:10px;height:2px;background:var(--accent)}
+  .expand-btn{color:var(--accent);font-size:.85rem;cursor:pointer;margin-top:.8rem;display:inline-block;transition:transform .3s}
+  .rule.open .expand-btn{transform:rotate(180deg)}
+  .success-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;margin:2rem 0}
+  .success-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;text-align:center;transition:all .4s;cursor:pointer;position:relative}
+  .success-item:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:var(--glow)}
+  .success-item .letter{font-size:2.5rem;font-weight:900;color:var(--accent);margin-bottom:.3rem}
+  .success-item h5{font-size:.9rem;margin-bottom:.3rem}
+  .success-item p{color:var(--muted);font-size:.8rem}
+  .success-item .detail{max-height:0;overflow:hidden;transition:max-height .4s,margin .4s,opacity .4s;opacity:0}
+  .success-item.open .detail{max-height:150px;margin-top:.5rem;opacity:1}
+  .success-item .click-hint{color:var(--accent);font-size:.65rem;margin-top:.3rem}
+  .failure-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;margin:2rem 0}
+  .failure-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;text-align:center;transition:all .4s;cursor:pointer;position:relative}
+  .failure-item:hover{transform:translateY(-4px);border-color:var(--gold);box-shadow:0 0 20px rgba(245,158,11,.2)}
+  .failure-item .letter{font-size:2.5rem;font-weight:900;color:var(--gold);margin-bottom:.3rem}
+  .failure-item h5{font-size:.9rem;margin-bottom:.3rem}
+  .failure-item p{color:var(--muted);font-size:.8rem}
+  .failure-item .detail{max-height:0;overflow:hidden;transition:max-height .4s,margin .4s,opacity .4s;opacity:0}
+  .failure-item.open .detail{max-height:150px;margin-top:.5rem;opacity:1}
+  .failure-item .click-hint{color:var(--gold);font-size:.65rem;margin-top:.3rem}
+  .self-image-section{text-align:center;margin:4rem 0}
+  .self-image-diagram{max-width:500px;margin:2rem auto;position:relative}
+  .self-image-circle{width:200px;height:200px;border-radius:50%;border:3px solid var(--accent);display:flex;align-items:center;justify-content:center;margin:0 auto 2rem;font-size:1.1rem;color:var(--accent);font-weight:600;animation:glow 3s infinite}
+  .arrows{display:flex;justify-content:space-around;margin-top:1rem}
+  .arrow-item{text-align:center;max-width:120px}
+  .arrow-item .arrow-icon{font-size:1.5rem;color:var(--accent2);margin-bottom:.3rem}
+  .arrow-item p{color:var(--muted);font-size:.8rem}
+  .visualization-section{text-align:center}
+  .viz-demo{max-width:600px;margin:2rem auto;position:relative}
+  .viz-display{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:3rem;min-height:200px;display:flex;align-items:center;justify-content:center}
+  .viz-display .placeholder{color:var(--muted);font-size:1rem}
+  .viz-display.active{border-color:var(--accent)}
+  .viz-display.active .placeholder{color:var(--accent)}
+  .viz-controls{display:flex;justify-content:center;gap:1rem;margin-top:1.5rem}
+  .viz-btn{padding:.8rem 1.5rem;border:2px solid var(--accent);background:transparent;color:var(--accent);border-radius:50px;font-size:.9rem;cursor:pointer;transition:all .3s;font-weight:600}
+  .viz-btn:hover{background:var(--accent);color:var(--bg)}
+  .viz-btn.active{background:var(--accent);color:var(--bg)}
+  .exercises-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-top:2rem}
+  .exercise-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem;transition:all .4s;cursor:pointer;position:relative;overflow:hidden}
+  .exercise-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));transform:scaleX(0);transition:transform .4s}
+  .exercise-card:hover::after{transform:scaleX(1)}
+  .exercise-card:hover{transform:translateY(-4px);border-color:var(--accent)}
+  .exercise-card .ex-num{position:absolute;top:10px;right:15px;font-size:3rem;font-weight:900;color:var(--bg3);line-height:1}
+  .exercise-card h4{font-size:1.1rem;margin-bottom:.5rem;color:var(--accent2)}
+  .exercise-card p{color:var(--muted);font-size:.9rem}
+  .exercise-card .ex-detail{max-height:0;overflow:hidden;transition:max-height .5s,margin .5s,opacity .5s;opacity:0}
+  .exercise-card.open .ex-detail{max-height:200px;margin-top:1rem;opacity:1}
+  .exercise-card .click-hint{color:var(--accent2);font-size:.7rem;margin-top:.5rem}
+  .timer-section{text-align:center}
+  .timer-modes{display:flex;justify-content:center;gap:.5rem;margin-bottom:1rem}
+  .timer-mode{padding:.5rem 1rem;border:1px solid var(--border);background:transparent;color:var(--muted);border-radius:8px;cursor:pointer;font-size:.85rem;transition:all .3s}
+  .timer-mode.active{border-color:var(--accent);color:var(--accent);background:rgba(139,92,246,.1)}
+  .timer-ring{width:300px;height:300px;margin:0 auto;position:relative}
+  .timer-ring svg{transform:rotate(-90deg)}
+  .timer-ring circle{fill:none;stroke-width:4}
+  .timer-ring .bg{stroke:var(--border)}
+  .timer-ring .progress{stroke:var(--accent);stroke-linecap:round;transition:stroke-dashoffset 1s linear}
+  .timer-display{font-size:clamp(3.5rem,9vw,7rem);font-weight:800;font-variant-numeric:tabular-nums;margin:2rem 0;color:var(--text)}
+  .timer-controls{display:flex;justify-content:center;gap:1rem;margin-bottom:1rem}
+  .timer-btn{padding:.8rem 2rem;border:2px solid var(--accent);background:transparent;color:var(--accent);border-radius:50px;font-size:1rem;cursor:pointer;transition:all .3s;font-weight:600}
+  .timer-btn:hover{background:var(--accent);color:var(--bg)}
+  .timer-btn.active{background:var(--accent);color:var(--bg)}
+  .timer-btn.reset{border-color:var(--gold);color:var(--gold)}
+  .timer-btn.reset:hover{background:var(--gold);color:var(--bg)}
+  .takeaway-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:2rem}
+  .takeaway{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;transition:all .4s;position:relative;overflow:hidden}
+  .takeaway:hover{transform:translateY(-4px);border-color:var(--accent)}
+  .takeaway .num{position:absolute;top:-10px;right:10px;font-size:4rem;font-weight:900;color:var(--bg3);line-height:1}
+  .takeaway p{color:var(--muted);position:relative;z-index:1}
+  footer{text-align:center;padding:4rem 2rem;border-top:1px solid var(--border);color:var(--muted);position:relative;z-index:1}
+  footer .quote{font-size:1.4rem;font-style:italic;color:var(--text);max-width:700px;margin:0 auto 1rem}
+  footer .quote-author{color:var(--gold)}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes bounce{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,12px)}}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  @keyframes glow{0%,100%{box-shadow:0 0 20px rgba(139,92,246,.2)}50%{box-shadow:0 0 40px rgba(139,92,246,.4)}}
+  .floating{animation:float 3s ease-in-out infinite}
+  .missile-anim{display:inline-block;transition:transform .5s}
+  @media(max-width:768px){
+    nav ul{display:none}
+    .comparison{grid-template-columns:1fr}
+    .success-grid,.failure-grid{grid-template-columns:repeat(auto-fit,minmax(100px,1fr))}
+    section{padding:4rem 1.5rem}
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<canvas id="bgCanvas"></canvas>
+<nav id="nav">
+  <div class="logo">PSYCHO-CYBERNETICS</div>
+  <ul>
+    <li><a href="#self-image">Self-Image</a></li>
+    <li><a href="#mechanism">Mechanism</a></li>
+    <li><a href="#success">SUCCESS</a></li>
+    <li><a href="#failure">FAILURE</a></li>
+    <li><a href="#exercises">Exercises</a></li>
+    <li><a href="#timer">Timer</a></li>
+    <li><a href="#takeaways">Takeaways</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-badge">Classic Self-Help -- Since 1960</div>
+  <h1><span>Psycho</span>-Cybernetics</h1>
+  <p class="subtitle">Reprogram Your Success Mechanism</p>
+  <p class="author">by Maxwell Maltz, M.D.</p>
+  <p class="tagline">"You are not a machine -- but you have a machine built inside you that can change your entire life."</p>
+  <div class="scroll-hint"><span></span></div>
+</section>
+
+<!-- SELF-IMAGE -->
+<section id="self-image">
+  <div class="container">
+    <div class="reveal"><span class="section-label">The Core Discovery</span>
+    <h2 class="section-title">The Self-Image</h2>
+    <p class="section-desc">The most important psychological discovery of the 20th century. Your self-image is a mental blueprint of "the sort of person I am." Every action, feeling, and ability is consistent with it.</p></div>
+    <div class="key-grid">
+      <div class="key-card reveal" onclick="toggleCard(this)">
+        <div class="icon">&#x1F52E;</div>
+        <h3>Your Golden Key</h3>
+        <p>You cannot outperform the person you see yourself as. Change the image, change your life.</p>
+        <div class="expanded"><p>The self-image is built from past experiences, failures, triumphs, and how others reacted to you (especially in childhood). Once a belief about yourself enters this picture, it becomes "true" -- and you act accordingly, despite all willpower.</p></div>
+        <span class="toggle">Click to expand &#x25BC;</span>
+      </div>
+      <div class="key-card reveal reveal-delay-1" onclick="toggleCard(this)">
+        <div class="icon">&#x1F9E0;</div>
+        <h3>Surgeon's Discovery</h3>
+        <p>Dr. Maltz changed patients' faces -- but some still felt ugly inside. The real problem wasn't physical.</p>
+        <div class="expanded"><p>Some patients whose faces were "fixed" still carried feelings of unworthiness and insecurity. This led to the insight: they suffered from a distorted self-image that no scalpel could reach. The incisions needed to go deeper than skin -- into the psyche.</p></div>
+        <span class="toggle">Click to expand &#x25BC;</span>
+      </div>
+      <div class="key-card reveal reveal-delay-2" onclick="toggleCard(this)">
+        <div class="icon">&#x1F4E1;</div>
+        <h3>The Two Laws</h3>
+        <p>(1) You always act like the person you conceive yourself to be. (2) You literally cannot act otherwise.</p>
+        <div class="expanded"><p>The man who sees himself as a failure finds ways to fail even if opportunity is dumped in his lap. The person who sees themselves as a victim of injustice will always find evidence of injustice. But change the self-image, and everything changes.</p></div>
+        <span class="toggle">Click to expand &#x25BC;</span>
+      </div>
+    </div>
+    <div class="formula-box reveal">
+      <div class="formula">Self-Image &rarr; Actions &rarr; Feelings &rarr; Results &rarr; Reinforced Self-Image</div>
+      <div class="formula-label">The feedback loop that runs your entire life</div>
+    </div>
+  </div>
+</section>
+
+<div class="part-divider"><div class="line"></div><h2>Your Built-In Guidance System</h2><p>Cybernetics meets psychology</p></div>
+
+<!-- MECHANISM -->
+<section id="mechanism">
+  <div class="container">
+    <div class="reveal"><span class="section-label">The Science</span>
+    <h2 class="section-title">The Success Mechanism</h2>
+    <p class="section-desc">Your brain and nervous system form a built-in servo-mechanism -- a goal-striving device that works automatically, like a guided missile or thermostat.</p></div>
+    <div class="key-grid">
+      <div class="key-card reveal" onclick="toggleCard(this)">
+        <div class="icon">&#x1F680;</div>
+        <h3>Guided Missile</h3>
+        <p>Reaches its target by making a series of mistakes and correcting course.</p>
+        <div class="expanded"><p>You cannot correct course if you're standing still. Act, miss, correct -- that's how guided torpedoes work. Mistakes are data points, not indictments of your character. Every wrong attempt discarded is another step forward.</p></div>
+        <span class="toggle">Click to expand &#x25BC;</span>
+      </div>
+      <div class="key-card reveal reveal-delay-1" onclick="toggleCard(this)">
+        <div class="icon">&#x1F3AF;</div>
+        <h3>Goal-Striving</h3>
+        <p>The mechanism needs a clear target. Without a goal, it has nothing to work on.</p>
+        <div class="expanded"><p>Like a thermostat needs a temperature setting, your Success Mechanism needs a goal. Feed it images of success and it steers toward them. Feed it images of failure and it steers toward those too. Garbage in, garbage out.</p></div>
+        <span class="toggle">Click to expand &#x25BC;</span>
+      </div>
+      <div class="key-card reveal reveal-delay-2" onclick="toggleCard(this)">
+        <div class="icon">&#x2699;</div>
+        <h3>Impersonal Machine</h3>
+        <p>It has no will of its own. It works on whatever data you feed it through imagination and belief.</p>
+        <div class="expanded"><p>Conscious thinking is the "control knob." It was by conscious thought (perhaps irrational) that negative patterns were formed -- and it's by conscious rational thought that they can be changed. You are the operator, not the machine.</p></div>
+        <span class="toggle">Click to expand &#x25BC;</span>
+      </div>
+    </div>
+    <div class="formula-box reveal">
+      <div class="formula">Your Nervous System Cannot Tell Real Experience from Vividly Imagined Experience</div>
+      <div class="formula-label">This is the scientific foundation of visualization</div>
+    </div>
+    <div class="comparison reveal">
+      <div class="comp-side creative">
+        <h4>&#x2728; Creative Imagination</h4>
+        <ul><li>Picture success vividly</li><li>See possibilities and solutions</li><li>Act "as if" it's already real</li><li>Your mechanism steers toward it</li><li>Strengthens neural pathways</li></ul>
+      </div>
+      <div class="comp-side destructive">
+        <h4>&#x1F4A5; Destructive Imagination</h4>
+        <ul><li>Picture failure in detail</li><li>Dwell on worst-case scenarios</li><li>Experience failure emotions in advance</li><li>Your mechanism steers toward it</li><li>Worry = negative visualization</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="part-divider"><div class="line"></div><h2>The 8 Ingredients of Success</h2><p>Spelled out in the word itself</p></div>
+
+<!-- S-U-C-C-E-S-S -->
+<section id="success">
+  <div class="container">
+    <div class="reveal"><span class="section-label">The Success-Type Personality</span>
+    <h2 class="section-title">S-U-C-C-E-S-S</h2>
+    <p class="section-desc">Just as failure can be diagnosed from symptoms, so can success. The success-type personality is composed of these 8 ingredients.</p></div>
+    <div class="success-grid">
+      <div class="success-item reveal" onclick="toggleSuccess(this)">
+        <div class="letter">S</div>
+        <h5>Sense of Direction</h5>
+        <p>Have a clear goal to shoot for</p>
+        <div class="detail"><p>The creative mechanism is goal-striving. Without a target, you're like a ship's skipper who's let go of the wheel, hoping to drift in the right direction.</p></div>
+        <div class="click-hint">tap</div>
+      </div>
+      <div class="success-item reveal reveal-delay-1" onclick="toggleSuccess(this)">
+        <div class="letter">U</div>
+        <h5>Understanding</h5>
+        <p>See things as they are</p>
+        <div class="detail"><p>Use reason to examine beliefs. Don't jump to conclusions. Understand that mistakes are part of the process, not evidence of personal deficiency.</p></div>
+        <div class="click-hint">tap</div>
+      </div>
+      <div class="success-item reveal reveal-delay-1" onclick="toggleSuccess(this)">
+        <div class="letter">C</div>
+        <h5>Courage</h5>
+        <p>Act despite fear</p>
+        <div class="detail"><p>Courage is not absence of fear -- it's acting with purpose despite it. The only way to build courage is to practice it. Take one step, the next is easier.</p></div>
+        <div class="click-hint">tap</div>
+      </div>
+      <div class="success-item reveal reveal-delay-2" onclick="toggleSuccess(this)">
+        <div class="letter">C</div>
+        <h5>Compassion</h5>
+        <p>Understand others</p>
+        <div class="detail"><p>A successful personality is warm and empathetic. Understanding others' struggles builds genuine connection and deepens your own sense of purpose.</p></div>
+        <div class="click-hint">tap</div>
+      </div>
+      <div class="success-item reveal reveal-delay-2" onclick="toggleSuccess(this)">
+        <div class="letter">E</div>
+        <h5>Esteem</h5>
+        <p>Use self-esteem for yourself</p>
+        <div class="detail"><p>Big personalities make mistakes and admit them. Only little people are afraid to be wrong. Your worth is not contingent on being perfect.</p></div>
+        <div class="click-hint">tap</div>
+      </div>
+      <div class="success-item reveal reveal-delay-3" onclick="toggleSuccess(this)">
+        <div class="letter">S</div>
+        <h5>Self-Confidence</h5>
+        <p>Picture yourself succeeding</p>
+        <div class="detail"><p>Confidence comes from experience AND imagination. Act "as if" you already have the confidence you want. Your mechanism will fill in the details.</p></div>
+        <div class="click-hint">tap</div>
+      </div>
+      <div class="success-item reveal reveal-delay-3" onclick="toggleSuccess(this)">
+        <div class="letter">S</div>
+        <h5>Self-Acceptance</h5>
+        <p>Accept imperfection</p>
+        <div class="detail"><p>Perfection is neither required nor possible. Approximations are good enough for all practical purposes. Accept yourself with flaws and mistakes.</p></div>
+        <div class="click-hint">tap</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="part-divider"><div class="line"></div><h2>The Failure Mechanism</h2><p>Recognize the signs. Correct the course.</p></div>
+
+<!-- F-A-I-L-U-R-E -->
+<section id="failure">
+  <div class="container">
+    <div class="reveal"><span class="section-label">Negative Feedback Signals</span>
+    <h2 class="section-title">F-A-I-L-U-R-E</h2>
+    <p class="section-desc">These symptoms act as red lights. Recognize them, understand them, and take corrective action. Nobody is immune -- even the most successful experience them at times.</p></div>
+    <div class="failure-grid">
+      <div class="failure-item reveal" onclick="toggleFailure(this)">
+        <div class="letter">F</div>
+        <h5>Frustration</h5>
+        <p>Goals cannot be realized</p>
+        <div class="detail"><p>Learn that perfection is unnecessary. Approximations are good enough. Tolerate imperfection in yourself and in life.</p></div>
+        <div class="click-hint">tap</div>
+      </div>
+      <div class="failure-item reveal reveal-delay-1" onclick="toggleFailure(this)">
+        <div class="letter">A</div>
+        <h5>Aggressiveness</h5>
+        <p>Misdirected energy</p>
+        <div class="detail"><p>Positive aggression = moving toward your goal with purpose. Misdirected = attacking the wrong target instead of solving the real problem.</p></div>
+        <div class="click-hint">tap</div>
+      </div>
+      <div class="failure-item reveal reveal-delay-1" onclick="toggleFailure(this)">
+        <div class="letter">I</div>
+        <h5>Insecurity</h5>
+        <p>False need for perfection</p>
+        <div class="detail"><p>Built on the premise that you must be perfect to be worthy. Mistakes are normal, expected, and necessary. Nobody is right all the time.</p></div>
+        <div class="click-hint">tap</div>
+      </div>
+      <div class="failure-item reveal reveal-delay-2" onclick="toggleFailure(this)">
+        <div class="letter">L</div>
+        <h5>Loneliness</h5>
+        <p>Lack of "oneness"</p>
+        <div class="detail"><p>Self-imposed disconnection through emotional scar tissue. The cure: remove the protective shell and risk genuine connection again.</p></div>
+        <div class="click-hint">tap</div>
+      </div>
+      <div class="failure-item reveal reveal-delay-2" onclick="toggleFailure(this)">
+        <div class="letter">U</div>
+        <h5>Uncertainty</h5>
+        <p>Avoiding mistakes</p>
+        <div class="detail"><p>"The greatest mistake is being afraid of making one." You cannot correct course if you're standing still. Act, miss, correct -- repeat.</p></div>
+        <div class="click-hint">tap</div>
+      </div>
+      <div class="failure-item reveal reveal-delay-3" onclick="toggleFailure(this)">
+        <div class="letter">R</div>
+        <h5>Resentment</h5>
+        <p>Blaming unfairness</p>
+        <div class="detail"><p>A deadly poison to the spirit. Uses enormous energy. Makes happiness impossible. It's a way of avoiding personal responsibility.</p></div>
+        <div class="click-hint">tap</div>
+      </div>
+      <div class="failure-item reveal reveal-delay-3" onclick="toggleFailure(this)">
+        <div class="letter">E</div>
+        <h5>Emptiness</h5>
+        <p>No goals, no purpose</p>
+        <div class="detail"><p>The feeling that nothing matters. Usually from having no direction. The cure: find something meaningful to work toward and commit to it.</p></div>
+        <div class="click-hint">tap</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KEY CHAPTERS -->
+<section>
+  <div class="container">
+    <div class="reveal"><span class="section-label">Core Chapters</span>
+    <h2 class="section-title">How to Apply Psycho-Cybernetics</h2></div>
+
+    <div class="rule reveal" onclick="toggleRule(this)">
+      <div class="rule-header"><div class="rule-num">&#x1F9E0;</div><div><h3>Dehypnotize False Beliefs</h3><p style="color:var(--muted);font-size:.85rem">Chapter 4</p></div></div>
+      <div class="rule-body">
+        <p>False beliefs are literal self-hypnosis. When Adler's teacher called him "dumb in math," he accepted it -- and his grades proved it. Only after breaking free did his real ability emerge.</p>
+        <ul>
+          <li>"I'm not the type who..." is not a fact -- it's a belief you accepted uncritically</li>
+          <li>These beliefs formed in the past, often in childhood</li>
+          <li>They are hypotheses you can test, challenge, and replace</li>
+          <li>Replace "I can't" with "How can I?"</li>
+          <li>Rational, conscious thinking IS the control knob of your unconscious machine</li>
+        </ul>
+      </div>
+      <span class="expand-btn">Click to expand &#x25BC;</span>
+    </div>
+
+    <div class="rule reveal" onclick="toggleRule(this)">
+      <div class="rule-header"><div class="rule-num">&#x262E;</div><div><h3>The Habit of Happiness</h3><p style="color:var(--muted);font-size:.85rem">Chapter 7</p></div></div>
+      <div class="rule-body">
+        <p>"Be happy -- and you will be good, more successful, healthier, and act more charitably toward others." Happiness is native to the human mind. It's a habit, not a reward.</p>
+        <ul>
+          <li>When happy: you see better, hear better, perform better, remember better</li>
+          <li>It's NOT earned, deserved, or a reward for suffering</li>
+          <li>It's not something that happens when everything goes right</li>
+          <li>It IS a habit, an attitude, a way of approaching life</li>
+          <li>Consciously choose pleasant thoughts -- not denial, but deliberate focus on the good</li>
+        </ul>
+      </div>
+      <span class="expand-btn">Click to expand &#x25BC;</span>
+    </div>
+
+    <div class="rule reveal" onclick="toggleRule(this)">
+      <div class="rule-header"><div class="rule-num">&#x1F6CC;</div><div><h3>Relax & Let the Mechanism Work</h3><p style="color:var(--muted);font-size:.85rem">Chapter 6</p></div></div>
+      <div class="rule-body">
+        <p>Modern man tries to solve everything by conscious thought. But the forebrain is the operator, not the machine. It poses problems -- it doesn't solve them. Stress and excessive effort jam the mechanism.</p>
+        <ul>
+          <li>Decide on your goal consciously, then TRUST the mechanism to find the way</li>
+          <li>Don't micromanage the process</li>
+          <li>William James: modern man is too tense, too anxious about results</li>
+          <li>Form the habit of freeing thoughts from egoistic preoccupation about results</li>
+          <li>Let your Success Mechanism work while you sleep</li>
+        </ul>
+      </div>
+      <span class="expand-btn">Click to expand &#x25BC;</span>
+    </div>
+
+    <div class="rule reveal" onclick="toggleRule(this)">
+      <div class="rule-header"><div class="rule-num">&#x1F6E1;</div><div><h3>Remove Emotional Scars</h3><p style="color:var(--muted);font-size:.85rem">Chapter 10</p></div></div>
+      <div class="rule-body">
+        <p>Emotional injuries form scar tissue -- hardened attitudes, callousness, withdrawal -- to guard against future hurt. But these scars become a liability: they protect you from getting hurt, but also prevent you from living.</p>
+        <ul>
+          <li>Recognize scar tissue for what it is: protection that became a prison</li>
+          <li>The original injury is in the past</li>
+          <li>Living fully is more important than being safe</li>
+          <li>Practice openness and vulnerability in small steps</li>
+          <li>Risk connection again</li>
+        </ul>
+      </div>
+      <span class="expand-btn">Click to expand &#x25BC;</span>
+    </div>
+
+    <div class="rule reveal" onclick="toggleRule(this)">
+      <div class="rule-header"><div class="rule-num">&#x1F513;</div><div><h3>Unlock Your Real Personality</h3><p style="color:var(--muted);font-size:.85rem">Chapter 11</p></div></div>
+      <div class="rule-body">
+        <p>Personality is not acquired from without -- it's released from within. Everyone has personality locked up inside. "Poor personality" = inhibited personality = locked-up real self.</p>
+        <ul>
+          <li>Reduce excessive sensitivity to negative feedback</li>
+          <li>Negative feedback should correct course, not stop forward motion</li>
+          <li>If your mechanism is too sensitive, it overcorrects and goes nowhere</li>
+          <li>A baby has "personality plus" -- no phoniness, no inhibition, emotionally honest</li>
+          <li>Be yourself. Express your real feelings without guile.</li>
+        </ul>
+      </div>
+      <span class="expand-btn">Click to expand &#x25BC;</span>
+    </div>
+
+    <div class="rule reveal" onclick="toggleRule(this)">
+      <div class="rule-header"><div class="rule-num">&#x1F3C6;</div><div><h3>Get the Winning Feeling</h3><p style="color:var(--muted);font-size:.85rem">Chapter 14</p></div></div>
+      <div class="rule-body">
+        <p>Your Creative Mechanism is teleological -- it operates in terms of goals and end results. You supply the goal. Your mechanism supplies the "means whereby."</p>
+        <ul>
+          <li>Think of the end result as a PRESENT POSSIBILITY</li>
+          <li>Picture it so vividly it becomes "real" to your nervous system</li>
+          <li>Capture the FEELING you'd have if the goal were already achieved</li>
+          <li>Worry is the reverse: picturing failure so vividly you feel failure emotions in advance</li>
+          <li>The winning feeling is a thermometer -- it tells you your mechanism is geared for success</li>
+        </ul>
+      </div>
+      <span class="expand-btn">Click to expand &#x25BC;</span>
+    </div>
+  </div>
+</section>
+
+<!-- PRACTICAL EXERCISES -->
+<section id="exercises">
+  <div class="container">
+    <div class="reveal"><span class="section-label">Daily Practice</span>
+    <h2 class="section-title">6 Exercises from the Book</h2>
+    <p class="section-desc">These aren't theoretical. They're practical exercises designed to reprogram your Success Mechanism. Do them consistently for 21 days.</p></div>
+    <div class="exercises-grid">
+      <div class="exercise-card reveal" onclick="toggleExercise(this)">
+        <div class="ex-num">1</div>
+        <h4>Theater of the Mind</h4>
+        <p>30 minutes daily in a quiet room. Relax completely.</p>
+        <div class="ex-detail"><p>Create a vivid mental movie of yourself acting, feeling, and being the person you want to be. See yourself succeeding in specific situations. Do this consistently for 21 days to form a new self-image.</p></div>
+        <div class="click-hint">tap for details</div>
+      </div>
+      <div class="exercise-card reveal reveal-delay-1" onclick="toggleExercise(this)">
+        <div class="ex-num">2</div>
+        <h4>Act As If</h4>
+        <p>Act as if you're already the person you want to become.</p>
+        <div class="ex-detail"><p>Not faking -- choosing which version of yourself to express. Your self-image will catch up to your actions. When you don't know how to act, ask: "What would the person I want to be do right now?"</p></div>
+        <div class="click-hint">tap for details</div>
+      </div>
+      <div class="exercise-card reveal reveal-delay-1" onclick="toggleExercise(this)">
+        <div class="ex-num">3</div>
+        <h4>Rational Examination</h4>
+        <p>When you feel a negative emotion, examine the belief behind it.</p>
+        <div class="ex-detail"><p>Is it based on facts? Or on a false belief you accepted uncritically? Use your power of reason. Conscious rational thinking is the control knob of your unconscious machine. Question everything.</p></div>
+        <div class="click-hint">tap for details</div>
+      </div>
+      <div class="exercise-card reveal reveal-delay-2" onclick="toggleExercise(this)">
+        <div class="ex-num">4</div>
+        <h4>The Happiness Habit</h4>
+        <p>Consciously choose pleasant thoughts throughout the day.</p>
+        <div class="ex-detail"><p>Not denial of problems -- a deliberate decision to focus on the good that exists alongside the bad. Think of three things you're grateful for. Savor pleasant memories. This rewires your default emotional state.</p></div>
+        <div class="click-hint">tap for details</div>
+      </div>
+      <div class="exercise-card reveal reveal-delay-2" onclick="toggleExercise(this)">
+        <div class="ex-num">5</div>
+        <h4>Relaxation Before Sleep</h4>
+        <p>Before sleep, review the day. Release the day's failures.</p>
+        <div class="ex-detail"><p>Picture your Success Mechanism working while you sleep. Trust it to find solutions. Let sleeping dogs lie -- don't dredge up past failures. Your mechanism processes data during sleep better than conscious worry ever could.</p></div>
+        <div class="click-hint">tap for details</div>
+      </div>
+      <div class="exercise-card reveal reveal-delay-3" onclick="toggleExercise(this)">
+        <div class="ex-num">6</div>
+        <h4>Forgive Yourself</h4>
+        <p>Remember: your mechanism corrects through mistakes.</p>
+        <div class="ex-detail"><p>Forgive yourself for errors. They are data points, not indictments of your character. A guided missile makes hundreds of corrections to reach its target. You're doing the same thing. Every mistake is a course correction.</p></div>
+        <div class="click-hint">tap for details</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VISUALIZATION TIMER -->
+<section id="timer" class="timer-section">
+  <div class="container">
+    <div class="reveal"><span class="section-label">Practice</span>
+    <h2 class="section-title">Theater of the Mind Timer</h2>
+    <p class="section-desc" style="margin:0 auto 2rem">Maltz recommended 30 minutes of daily mental rehearsal. Start your session.</p></div>
+    <div class="reveal">
+      <div class="timer-modes">
+        <button class="timer-mode" onclick="setTimer(15,this)">15 min</button>
+        <button class="timer-mode active" onclick="setTimer(30,this)">30 min</button>
+        <button class="timer-mode" onclick="setTimer(60,this)">60 min</button>
+      </div>
+      <div class="timer-ring">
+        <svg width="300" height="300"><circle class="bg" cx="150" cy="150" r="140"/><circle class="progress" id="ringProgress" cx="150" cy="150" r="140" stroke-dasharray="879.6" stroke-dashoffset="0"/></svg>
+        <div class="timer-display" id="timerDisplay" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">30:00</div>
+      </div>
+      <div class="timer-controls">
+        <button class="timer-btn" id="startBtn" onclick="toggleTimer()">Start</button>
+        <button class="timer-btn reset" onclick="resetTimer()">Reset</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TAKEAWAYS -->
+<section id="takeaways">
+  <div class="container">
+    <div class="reveal"><span class="section-label">Remember</span>
+    <h2 class="section-title">Key Takeaways</h2></div>
+    <div class="takeaway-grid">
+      <div class="takeaway reveal"><div class="num">1</div><p>Your <strong style="color:var(--text)">self-image</strong> is everything. You cannot outperform the person you see yourself as.</p></div>
+      <div class="takeaway reveal reveal-delay-1"><div class="num">2</div><p>You have a <strong style="color:var(--text)">built-in Success Mechanism</strong>. Feed it images of success, it delivers success.</p></div>
+      <div class="takeaway reveal reveal-delay-1"><div class="num">3</div><p><strong style="color:var(--text)">Imagination</strong> is the key. Your nervous system can't tell real from vividly imagined.</p></div>
+      <div class="takeaway reveal reveal-delay-2"><div class="num">4</div><p><strong style="color:var(--text)">False beliefs</strong> are self-hypnosis. "I'm just not the type..." is not a fact -- it's a belief you can replace.</p></div>
+      <div class="takeaway reveal reveal-delay-2"><div class="num">5</div><p><strong style="color:var(--text)">Happiness is a habit</strong>, not a reward. Acquire it through daily practice.</p></div>
+      <div class="takeaway reveal reveal-delay-3"><div class="num">6</div><p><strong style="color:var(--text)">Relax and trust</strong> the mechanism. Excessive effort jams the system.</p></div>
+      <div class="takeaway reveal reveal-delay-3"><div class="num">7</div><p><strong style="color:var(--text)">Mistakes are data</strong>. A guided missile reaches its target through corrections. You cannot correct if you're standing still.</p></div>
+      <div class="takeaway reveal"><div class="num">8</div><p><strong style="color:var(--text)">Remove emotional scars</strong>. Protection that becomes a prison is worse than no protection.</p></div>
+      <div class="takeaway reveal reveal-delay-1"><div class="num">9</div><p><strong style="color:var(--text)">Act as if</strong> -- your self-image will catch up to your actions.</p></div>
+      <div class="takeaway reveal reveal-delay-1"><div class="num">10</div><p><strong style="color:var(--text)">Capture the winning feeling</strong> before success arrives. Your mechanism responds to feelings.</p></div>
+      <div class="takeaway reveal reveal-delay-2"><div class="num">11</div><p><strong style="color:var(--text)">Never stop setting goals</strong>. Goal-setting is the fountain of youth.</p></div>
+      <div class="takeaway reveal reveal-delay-2"><div class="num">12</div><p>Practice the <strong style="color:var(--text)">Theater of the Mind</strong> for 30 minutes daily for 21 days. Watch your life transform.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p class="quote">"Your automatic mechanism always acts and reacts appropriately to the environment, circumstance, or situation. The only information available to it is what you believe to be true."</p>
+  <p class="quote-author">&mdash; Dr. Maxwell Maltz</p>
+</footer>
+
+<script>
+const canvas=document.getElementById('bgCanvas'),ctx=canvas.getContext('2d');
+let particles=[];
+function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
+resize();window.addEventListener('resize',resize);
+class Particle{constructor(){this.reset()}reset(){this.x=Math.random()*canvas.width;this.y=Math.random()*canvas.height;this.vx=(Math.random()-.5)*.3;this.vy=(Math.random()-.5)*.3;this.r=Math.random()*2+.5;this.a=Math.random()*.5+.1}update(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>canvas.width)this.vx*=-1;if(this.y<0||this.y>canvas.height)this.vy*=-1}draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fillStyle=`rgba(139,92,246,${this.a})`;ctx.fill()}}
+for(let i=0;i<80;i++)particles.push(new Particle());
+function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw()});for(let i=0;i<particles.length;i++)for(let j=i+1;j<particles.length;j++){const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<120){ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle=`rgba(139,92,246,${.08*(1-d/120)})`;ctx.stroke()}}requestAnimationFrame(animate)}animate();
+
+window.addEventListener('scroll',()=>{const s=window.scrollY/(document.body.scrollHeight-window.innerHeight)*100;document.getElementById('progress').style.width=s+'%';document.getElementById('nav').classList.toggle('visible',window.scrollY>300)});
+
+const observer=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}})},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+function toggleCard(el){el.classList.toggle('open')}
+function toggleRule(el){el.classList.toggle('open')}
+function toggleSuccess(el){el.classList.toggle('open')}
+function toggleFailure(el){el.classList.toggle('open')}
+function toggleExercise(el){el.classList.toggle('open')}
+
+let timerDuration=30*60,timerRemaining=30*60,timerInterval=null,timerRunning=false;
+const circumference=2*Math.PI*140;
+function setTimer(min,btn){document.querySelectorAll('.timer-mode').forEach(b=>b.classList.remove('active'));btn.classList.add('active');if(timerRunning){clearInterval(timerInterval);timerRunning=false}timerDuration=min*60;timerRemaining=min*60;updateDisplay();document.getElementById('ringProgress').style.strokeDashoffset=0;document.getElementById('startBtn').textContent='Start';document.getElementById('startBtn').classList.remove('active')}
+function toggleTimer(){if(timerRunning){clearInterval(timerInterval);timerRunning=false;document.getElementById('startBtn').textContent='Resume';document.getElementById('startBtn').classList.remove('active')}else{timerRunning=true;document.getElementById('startBtn').textContent='Pause';document.getElementById('startBtn').classList.add('active');timerInterval=setInterval(()=>{timerRemaining--;if(timerRemaining<=0){clearInterval(timerInterval);timerRunning=false;timerRemaining=0;document.getElementById('startBtn').textContent='Done!';document.getElementById('startBtn').classList.remove('active')};updateDisplay()},1000)}}
+function resetTimer(){clearInterval(timerInterval);timerRunning=false;timerRemaining=timerDuration;updateDisplay();document.getElementById('ringProgress').style.strokeDashoffset=0;document.getElementById('startBtn').textContent='Start';document.getElementById('startBtn').classList.remove('active')}
+function updateDisplay(){const m=Math.floor(timerRemaining/60),s=timerRemaining%60;document.getElementById('timerDisplay').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;const progress=(timerDuration-timerRemaining)/timerDuration;document.getElementById('ringProgress').style.strokeDashoffset=circumference*(1-progress)}
+</script>
+</body>
+</html>

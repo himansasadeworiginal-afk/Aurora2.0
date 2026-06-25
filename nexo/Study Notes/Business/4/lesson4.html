@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 4 - Business Organizations</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0a0a1a;
+    --surface: rgba(255,255,255,0.04);
+    --surface-hover: rgba(255,255,255,0.08);
+    --border: rgba(255,255,255,0.06);
+    --text: #e2e8f0;
+    --text-dim: #94a3b8;
+    --accent: #60a5fa;
+    --accent2: #a78bfa;
+    --accent3: #34d399;
+    --radius: 16px;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  #particles-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+  .ambient-glow {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 0;
+    animation: floatGlow 20s ease-in-out infinite alternate;
+  }
+  .ambient-glow:nth-child(1) {
+    width: 600px; height: 600px;
+    background: rgba(96,165,250,0.08);
+    top: -10%; left: -10%;
+  }
+  .ambient-glow:nth-child(2) {
+    width: 500px; height: 500px;
+    background: rgba(167,139,250,0.07);
+    bottom: -10%; right: -10%;
+    animation-delay: -7s;
+  }
+  .ambient-glow:nth-child(3) {
+    width: 400px; height: 400px;
+    background: rgba(52,211,153,0.05);
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    animation-delay: -14s;
+  }
+  @keyframes floatGlow {
+    0% { transform: translate(0,0) scale(1); }
+    33% { transform: translate(60px,-40px) scale(1.1); }
+    66% { transform: translate(-30px,50px) scale(0.9); }
+    100% { transform: translate(40px,20px) scale(1.05); }
+  }
+
+  .content { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 40px 24px 120px; }
+
+  header {
+    text-align: center;
+    padding: 100px 0 60px;
+    opacity: 0;
+    transform: translateY(40px);
+    animation: fadeUp 1s ease forwards;
+  }
+  header .badge {
+    display: inline-block;
+    padding: 6px 18px;
+    border-radius: 100px;
+    background: linear-gradient(135deg, rgba(96,165,250,0.15), rgba(167,139,250,0.15));
+    border: 1px solid rgba(96,165,250,0.2);
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    margin-bottom: 24px;
+  }
+  header h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.2;
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 50%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  header p {
+    color: var(--text-dim);
+    font-size: 1.1rem;
+    margin-top: 16px;
+    max-width: 600px;
+    margin-inline: auto;
+  }
+
+  .toc {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin: 0 0 60px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.3s forwards;
+  }
+  .toc a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px;
+    border-radius: var(--radius);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  .toc a:hover {
+    background: var(--surface-hover);
+    border-color: rgba(96,165,250,0.3);
+    color: var(--text);
+    transform: translateY(-2px);
+  }
+  .toc a .num {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(96,165,250,0.2), rgba(167,139,250,0.2));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .section {
+    margin: 40px 0;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+  }
+  .section.visible { opacity: 1; transform: translateY(0); }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 36px 32px;
+    backdrop-filter: blur(20px);
+    transition: all 0.4s ease;
+  }
+  .card:hover {
+    border-color: rgba(96,165,250,0.15);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+  }
+  .card h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .card h2 .icon {
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+  .card .subtitle {
+    color: var(--text-dim);
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  .def-box {
+    background: linear-gradient(135deg, rgba(96,165,250,0.06), rgba(167,139,250,0.06));
+    border-left: 3px solid var(--accent);
+    padding: 20px 24px;
+    border-radius: 0 12px 12px 0;
+    margin: 16px 0;
+    font-style: italic;
+    color: var(--text-dim);
+  }
+
+  ul.features, ul.list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 16px 0;
+  }
+  ul.features li, ul.list li {
+    padding: 10px 16px 10px 36px;
+    border-radius: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    position: relative;
+    transition: all 0.3s ease;
+    font-size: 15px;
+  }
+  ul.features li:hover, ul.list li:hover {
+    background: var(--surface-hover);
+    transform: translateX(4px);
+  }
+  ul.features li::before {
+    content: "\2713";
+    position: absolute;
+    left: 12px;
+    color: var(--accent3);
+    font-weight: 700;
+  }
+  ul.list li::before {
+    content: "\2022";
+    position: absolute;
+    left: 14px;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .examples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0;
+  }
+  .examples span {
+    padding: 5px 14px;
+    border-radius: 100px;
+    background: linear-gradient(135deg, rgba(96,165,250,0.1), rgba(167,139,250,0.1));
+    border: 1px solid rgba(96,165,250,0.15);
+    font-size: 13px;
+    color: var(--accent);
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 14px;
+  }
+  .comparison-table th, .comparison-table td {
+    padding: 14px 18px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .comparison-table th {
+    background: linear-gradient(135deg, rgba(96,165,250,0.1), rgba(167,139,250,0.1));
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .comparison-table th:first-child { border-radius: 12px 0 0 0; }
+  .comparison-table th:last-child { border-radius: 0 12px 0 0; }
+  .comparison-table tr:hover td { background: var(--surface-hover); }
+
+  .step-list {
+    counter-reset: step;
+    list-style: none;
+    margin: 16px 0;
+  }
+  .step-list li {
+    counter-increment: step;
+    padding: 12px 16px 12px 48px;
+    position: relative;
+    border-left: 2px solid var(--border);
+    margin-left: 12px;
+    transition: all 0.3s ease;
+  }
+  .step-list li:hover { border-left-color: var(--accent); }
+  .step-list li::before {
+    content: counter(step);
+    position: absolute;
+    left: -14px;
+    top: 10px;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+    color: #fff;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 16px 0;
+  }
+  @media (max-width: 640px) { .grid-2 { grid-template-columns: 1fr; } }
+  .grid-item {
+    padding: 20px;
+    border-radius: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+  .grid-item h4 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--accent);
+  }
+  .grid-item ul { list-style: none; }
+  .grid-item ul li {
+    padding: 4px 0 4px 16px;
+    position: relative;
+    font-size: 14px;
+    color: var(--text-dim);
+  }
+  .grid-item ul li::before {
+    content: "\2192";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+    z-index: 100;
+    transition: width 0.1s ease;
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .toggle-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    margin: 8px 0;
+  }
+  .toggle-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  footer {
+    text-align: center;
+    padding: 40px 0;
+    color: var(--text-dim);
+    font-size: 13px;
+    border-top: 1px solid var(--border);
+    margin-top: 60px;
+  }
+
+  ::selection { background: rgba(96,165,250,0.3); color: #fff; }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+</style>
+</head>
+<body>
+
+<div class="ambient-glow"></div>
+<div class="ambient-glow"></div>
+<div class="ambient-glow"></div>
+<canvas id="particles-canvas"></canvas>
+<div class="progress-bar" id="progress-bar"></div>
+
+<div class="content">
+  <header>
+    <div class="badge">Business Studies &mdash; Lesson 4</div>
+    <h1>The Importance of Establishing &amp; Maintaining Different Types of Business Organizations Formally</h1>
+    <p>Exploring sole proprietorships, partnerships, companies, co-operatives, franchises, business combinations, and the public sector.</p>
+  </header>
+
+  <nav class="toc" id="toc">
+    <a href="#sec-org"><span class="num">1</span> Organization</a>
+    <a href="#sec-sole"><span class="num">2</span> Sole Proprietorship</a>
+    <a href="#sec-partner"><span class="num">3</span> Partnership</a>
+    <a href="#sec-company"><span class="num">4</span> Company</a>
+    <a href="#sec-coop"><span class="num">5</span> Co-Operative</a>
+    <a href="#sec-franchise"><span class="num">6</span> Franchise</a>
+    <a href="#sec-combine"><span class="num">7</span> Combinations</a>
+    <a href="#sec-public"><span class="num">8</span> Public Sector</a>
+  </nav>
+
+  <div class="section" id="sec-org">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(96,165,250,0.2),rgba(167,139,250,0.2));">&#9632;</span> What is an Organization?</h2>
+      <div class="def-box">A social unit made up with a group of individuals joining together and having a common goal is an <strong>organization</strong>.</div>
+      <p class="subtitle">Examples: School, Temple, Church, Shop</p>
+
+      <h3 style="font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--accent);">Common Characteristics of a Formal Organization</h3>
+      <ul class="features">
+        <li>Has a goal</li>
+        <li>Involves individuals</li>
+        <li>Has an organizational structure</li>
+      </ul>
+
+      <div class="def-box" style="border-left-color:var(--accent2);">
+        <strong>Business organizations</strong> are enterprises engaged in production, distribution and selling of goods and services with the objective of earning profits or achieving social wellbeing.
+      </div>
+
+      <p style="margin-top:16px;color:var(--text-dim);font-size:15px;">
+        Business organizations can be categorized as <strong>private sector</strong> and <strong>public sector</strong> based on ownership.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" id="sec-sole">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(52,211,153,0.2),rgba(96,165,250,0.2));">&#9783;</span> Sole Proprietorship</h2>
+      <div class="def-box">Where the ownership of the business is held by a <strong>single individual</strong>, it is called sole proprietorship.</div>
+      <p class="subtitle">Examples: Chanuli Super Centre, Dasatha Book shop, Imalka saloon</p>
+
+      <button class="toggle-btn" onclick="toggleSection('sole-chars')">&#9660; Key Characteristics</button>
+      <div id="sole-chars" style="display:none;">
+        <ul class="features">
+          <li>The owner provides the capital required on his own</li>
+          <li>All managerial decisions are made by the owner</li>
+          <li>The unlimited liability of the owner</li>
+          <li>Not a legal entity</li>
+          <li>Registration is not compulsory</li>
+          <li>Enjoy profits and losses alone</li>
+          <li>Faces risks alone</li>
+          <li>No continuity</li>
+          <li>Accounting is not compulsory</li>
+          <li>Not liable for the taxes in the name of the business</li>
+        </ul>
+      </div>
+
+      <button class="toggle-btn" onclick="toggleSection('sole-adv')">&#9660; Advantages</button>
+      <div id="sole-adv" style="display:none;">
+        <ul class="features">
+          <li>Easy to initiate</li>
+          <li>All the profits belong to the owner</li>
+          <li>Ability of independent decision making</li>
+          <li>Fewer rules and regulations are applicable</li>
+          <li>The ability of keeping the business information confidentially</li>
+          <li>Termination of the business is convenient</li>
+          <li>Possibility of maintaining direct relations with the customers</li>
+          <li>Control is convenient</li>
+        </ul>
+      </div>
+
+      <button class="toggle-btn" onclick="toggleSection('sole-lim')">&#9660; Limitations</button>
+      <div id="sole-lim" style="display:none;">
+        <ul class="list">
+          <li>The unlimited liability of the owner</li>
+          <li>Problems increase when additional capital is needed</li>
+          <li>Possibility of unsuccessful decisions by the owner</li>
+          <li>Not a legal entity</li>
+          <li>No continuity</li>
+          <li>Management becomes inconvenient with expansion</li>
+          <li>Bearing losses alone</li>
+        </ul>
+      </div>
+
+      <button class="toggle-btn" onclick="toggleSection('sole-reg')">&#9660; Registration Process</button>
+      <div id="sole-reg" style="display:none;">
+        <p style="margin:12px 0;color:var(--text-dim);font-size:14px;">
+          If a sole proprietorship is carried on in a name other than the full name of the owner, registration is compulsory at the <strong>Provincial Business Name Registrar</strong> under the Business Name Ordinance No. 6 of 1918.
+        </p>
+        <ol class="step-list">
+          <li>Obtain an application form from the Divisional Secretariat office</li>
+          <li>Obtain a report from the relevant Grama Niladari</li>
+          <li>Submit the completed form, Grama Niladari report, and fee to the Divisional Secretary</li>
+          <li>Certificate of registration is issued after examination</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-partner">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(167,139,250,0.2),rgba(52,211,153,0.2));">&#10064;</span> Partnership</h2>
+      <div class="def-box">
+        <strong>Partnership Ordinance 1890:</strong> &ldquo;The relationship between the individuals who carry out a business with a profit motive is Partnership.&rdquo;
+      </div>
+      <p class="subtitle">Examples: Gunawardena &amp; Sons, Don Carolis &amp; Sons</p>
+
+      <p style="font-size:15px;font-weight:500;color:var(--accent);">Essential Characteristics</p>
+      <ul class="features">
+        <li>Profit generating objectives</li>
+        <li>The existence of business activity</li>
+        <li>Existence of individuals</li>
+        <li>Having a mutual relationship</li>
+      </ul>
+
+      <button class="toggle-btn" onclick="toggleSection('part-chars')">&#9660; Key Features</button>
+      <div id="part-chars" style="display:none;">
+        <ul class="features">
+          <li>Minimum 2 partners, maximum 20 partners</li>
+          <li>There must be an agreement between the partners</li>
+          <li>Having an agreement on profit sharing</li>
+          <li>Every partner is an agent and a head of himself and other partners</li>
+          <li>The existence of any kind of business affair</li>
+        </ul>
+      </div>
+
+      <button class="toggle-btn" onclick="toggleSection('part-deed')">&#9660; Partnership Deed</button>
+      <div id="part-deed" style="display:none;">
+        <p style="margin:12px 0;color:var(--text-dim);font-size:14px;">
+          The written agreement between partners is known as the <strong>partnership deed</strong> or partnership constitution. It includes:
+        </p>
+        <ul class="list">
+          <li>Basic info: business name, partner details, nature and duration</li>
+          <li>Capital investment details</li>
+          <li>Profit and loss sharing arrangement</li>
+          <li>Objectives of the partnership</li>
+          <li>Limitations on drawings</li>
+          <li>Interest on capital and drawings</li>
+          <li>Conditions on dissolution</li>
+          <li>Additional capital investment conditions</li>
+          <li>Actions on admission, retirement, or death of a partner</li>
+        </ul>
+      </div>
+
+      <button class="toggle-btn" onclick="toggleSection('part-rights')">&#9660; Partner Rights &amp; Rules</button>
+      <div id="part-rights" style="display:none;">
+        <ul class="list">
+          <li>Expenditure incurred personally on behalf of the partnership must be reimbursed</li>
+          <li>Partners are entitled to 5% interest on money invested beyond agreed capital</li>
+          <li>No partner is entitled to interest on capital (standard)</li>
+          <li>Every partner has the right to participate in management</li>
+          <li>No partner has the right to receive a salary for services rendered</li>
+          <li>New partners require consent of all existing partners</li>
+          <li>Disagreements solved by majority; fundamental changes require unanimous agreement</li>
+          <li>Books of accounts kept at head office; any partner may inspect and copy</li>
+        </ul>
+      </div>
+
+      <button class="toggle-btn" onclick="toggleSection('part-proscons')">&#9660; Advantages &amp; Limitations</button>
+      <div id="part-proscons" style="display:none;">
+        <div class="grid-2">
+          <div class="grid-item">
+            <h4>Advantages</h4>
+            <ul>
+              <li>Easy to commence</li>
+              <li>Can be dissolved easily</li>
+              <li>Possibility of gathering immense capital</li>
+              <li>Multiple skills and talents</li>
+              <li>Liabilities distributed among partners</li>
+              <li>Enhanced enthusiasm and efficiency</li>
+            </ul>
+          </div>
+          <div class="grid-item">
+            <h4>Limitations</h4>
+            <ul>
+              <li>Unlimited liability of partners</li>
+              <li>Disagreements can adversely affect the business</li>
+              <li>No continuity</li>
+              <li>All partners liable for conduct of a single partner</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <button class="toggle-btn" onclick="toggleSection('part-compare')">&#9660; Comparison: Sole vs Partnership</button>
+      <div id="part-compare" style="display:none;">
+        <table class="comparison-table">
+          <tr><th>Aspect</th><th>Sole Proprietorship</th><th>Partnership</th></tr>
+          <tr><td>Ownership</td><td>Single individual</td><td>Two or more individuals</td></tr>
+          <tr><td>Capital</td><td>Limited</td><td>Higher</td></tr>
+          <tr><td>Decision Making</td><td>Independent</td><td>Collective</td></tr>
+          <tr><td>Liability</td><td>Unlimited</td><td>Unlimited (joint &amp; several)</td></tr>
+          <tr><td>Continuity</td><td>No</td><td>No</td></tr>
+          <tr><td>Legal Entity</td><td>No</td><td>No</td></tr>
+          <tr><td>Registration</td><td>Not compulsory</td><td>Not compulsory (but name registration may apply)</td></tr>
+          <tr><td>Profit Sharing</td><td>Owner alone</td><td>Shared per agreement</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-company">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(251,191,36,0.2),rgba(96,165,250,0.2));">&#9702;</span> Company</h2>
+      <div class="def-box">
+        A collection of individuals incorporated under the <strong>Companies Act No. 7 of 2007</strong> can be introduced as a company.
+      </div>
+      <p class="subtitle">Examples: Aralia Company Ltd, Pratheeba Company (Pvt.) Ltd</p>
+
+      <button class="toggle-btn" onclick="toggleSection('comp-chars')">&#9660; Characteristics of Incorporated Companies</button>
+      <div id="comp-chars" style="display:none;">
+        <ul class="features">
+          <li>Independent entity incorporated under the Company Act</li>
+          <li>Independent legal entity distinct from its shareholders</li>
+          <li>Continuous existence / perpetual succession</li>
+          <li>Liability of members/shareholders is limited</li>
+          <li>Capital accumulation through share issues</li>
+          <li>Ability to transfer shares</li>
+          <li>Management by a Board of Directors</li>
+        </ul>
+      </div>
+
+      <button class="toggle-btn" onclick="toggleSection('comp-adv')">&#9660; Advantages</button>
+      <div id="comp-adv" style="display:none;">
+        <ul class="features">
+          <li>Ability to raise a large amount of capital</li>
+          <li>Possibility of beginning large-scale businesses</li>
+          <li>Ability to recruit a smart management team</li>
+          <li>Ability to attract new investors (limited liability)</li>
+          <li>Death/resignation of a shareholder does not affect the business</li>
+          <li>Ability to assemble qualified and skillful human resources</li>
+          <li>The business has a legality</li>
+        </ul>
+      </div>
+
+      <button class="toggle-btn" onclick="toggleSection('comp-lim')">&#9660; Limitations</button>
+      <div id="comp-lim" style="display:none;">
+        <ul class="list">
+          <li>Legal impacts being strict</li>
+          <li>Establishment procedure is complicated and expensive</li>
+          <li>Minority shareholders lack influence (1 vote per share)</li>
+          <li>Profit subjected to double taxation (company profit + dividends)</li>
+          <li>Dissolution procedure is complicated</li>
+        </ul>
+      </div>
+
+      <button class="toggle-btn" onclick="toggleSection('comp-inc')">&#9660; Incorporation Procedure</button>
+      <div id="comp-inc" style="display:none;">
+        <p style="margin:12px 0;color:var(--text-dim);font-size:14px;">
+          Incorporation is done under <strong>Companies Act No. 7 of 2007</strong> with the Department of Company Registrar.
+        </p>
+        <ol class="step-list">
+          <li>Register the name of the company</li>
+          <li>Submit documents: application for registration, articles of association, director consent statements, secretary consent statement</li>
+          <li>The <strong>Articles of Association</strong> contains objectives, shareholder rights and responsibilities, management and administration details</li>
+          <li>Registrar issues the <strong>Certificate of Incorporation</strong> once satisfied</li>
+        </ol>
+      </div>
+
+      <button class="toggle-btn" onclick="toggleSection('comp-types')">&#9660; Types of Companies</button>
+      <div id="comp-types" style="display:none;">
+        <table class="comparison-table">
+          <tr><th>Type</th><th>Key Features</th><th>Examples</th></tr>
+          <tr><td><strong>Private Limited</strong></td><td>Min 1 / Max 50 shareholders; min 1 director; shares not sold to public</td><td>Central Depository (Pvt) Ltd, Lanka Clear (PVT) Ltd</td></tr>
+          <tr><td><strong>Public Limited</strong></td><td>Min 1 shareholder, unlimited max; min 2 directors; can issue shares to public; insolvency test required for dividends</td><td>&mdash;</td></tr>
+          <tr><td><strong>Listed (Quoted)</strong></td><td>Listed on the Colombo Stock Exchange</td><td>DFCC Bank PLC, Ceylinco PLC</td></tr>
+          <tr><td><strong>Unlisted (Unquoted)</strong></td><td>Not listed on CSE</td><td>Ceylon Biscuit Company Ltd, Maliban Biscuit Co. Ltd</td></tr>
+          <tr><td><strong>Offshore Company</strong></td><td>Incorporated in one country, operates outside it; must register in both countries</td><td>Sunrecko Marine Company, Asia Pacific Company</td></tr>
+          <tr><td><strong>Unlimited Company</strong></td><td>Liability of shareholders is unlimited per articles of association</td><td>&mdash;</td></tr>
+          <tr><td><strong>Limited by Guarantee</strong></td><td>No share issue; liability limited to a guaranteed amount; min 2 members; no profit sharing; public purposes</td><td>Colombo Stock Exchange (GTE) Ltd</td></tr>
+          <tr><td><strong>Overseas Company</strong></td><td>Incorporated abroad, established in Sri Lanka; must register within 1 month</td><td>HSBC</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-coop">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(52,211,153,0.2),rgba(251,191,36,0.2));">&#9776;</span> Co-Operative Business</h2>
+      <div class="def-box">
+        &ldquo;A co-operative is an autonomous association of people united voluntarily in their common economic, social and cultural needs and aspirations through a jointly owned and democratically controlled enterprise.&rdquo;
+        <br><span style="font-size:13px;color:var(--text-dim);">&mdash; International Co-operative Alliance</span>
+      </div>
+      <p class="subtitle">Examples: Maharagama Multi-purpose Co-operative Society Ltd, Cloth-weavers&rsquo; Co-operative Society Ltd, Fisheries Co-operative Society Ltd</p>
+
+      <button class="toggle-btn" onclick="toggleSection('coop-chars')">&#9660; Key Characteristics</button>
+      <div id="coop-chars" style="display:none;">
+        <ul class="features">
+          <li>An independent business organization</li>
+          <li>Group of individuals who have got together voluntarily</li>
+          <li>Collective ownership of its members</li>
+          <li>Having common needs and expectations</li>
+          <li>Democratically controlled business</li>
+          <li>Value of a share is unchanged (Rs. 100)</li>
+          <li>One vote for each member (one man one vote)</li>
+          <li>Surplus distributed according to transaction value with the society</li>
+          <li>Profit making is not the initial objective</li>
+        </ul>
+      </div>
+
+      <button class="toggle-btn" onclick="toggleSection('coop-principles')">&#9660; Co-Operative Principles (1995 ICA, Manchester)</button>
+      <div id="coop-principles" style="display:none;">
+        <ul class="features">
+          <li>Voluntary and open membership</li>
+          <li>Democratic control of members</li>
+          <li>Member economic participation</li>
+          <li>Autonomy and independence</li>
+          <li>Co-operative education, training and provision of information</li>
+          <li>Co-operation among co-operatives (regional, national, international)</li>
+          <li>Concern for the community</li>
+        </ul>
+      </div>
+
+      <button class="toggle-btn" onclick="toggleSection('coop-benefits')">&#9660; Benefits &amp; Limitations</button>
+      <div id="coop-benefits" style="display:none;">
+        <div class="grid-2">
+          <div class="grid-item">
+            <h4>Benefits</h4>
+            <ul>
+              <li>10 people can initiate conveniently at low investment</li>
+              <li>Democratic control</li>
+              <li>Goods and services at reasonable prices</li>
+              <li>Different types of business activities</li>
+              <li>Mutual co-operation</li>
+              <li>Surplus distributed among members</li>
+            </ul>
+          </div>
+          <div class="grid-item">
+            <h4>Limitations</h4>
+            <ul>
+              <li>Limited means of fund raising</li>
+              <li>Restricted to co-operative policies</li>
+              <li>Limited opening hours</li>
+              <li>Public sector interference</li>
+              <li>No credit sales</li>
+              <li>Board may be inefficient (elected by voting)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <button class="toggle-btn" onclick="toggleSection('coop-reg')">&#9660; Registration Process</button>
+      <div id="coop-reg" style="display:none;">
+        <p style="margin:12px 0;color:var(--text-dim);font-size:14px;">
+          Registered under <strong>Co-operative Societies Act No. 05 of 1972</strong> with the Co-operative Development Commissioner.
+        </p>
+        <ol class="step-list">
+          <li>Any 10 people above 18 may apply</li>
+          <li>Submit: application form, 2 copies of interim constitution, feasibility report, minutes of the general meeting, membership fee certificate, route map</li>
+          <li>Commissioner inspects and confirms compliance</li>
+          <li>Certificate of registration is issued</li>
+        </ol>
+      </div>
+
+      <button class="toggle-btn" onclick="toggleSection('coop-trends')">&#9660; Emerging Trends &amp; Proposals</button>
+      <div id="coop-trends" style="display:none;">
+        <div class="grid-2">
+          <div class="grid-item">
+            <h4>Emerging Trends</h4>
+            <ul>
+              <li>Modified self-service outlets (Co-op City, Co-op Super)</li>
+              <li>New business fields (insurance, fuel stations)</li>
+              <li>Electronic payment systems</li>
+              <li>Mobile shopping centers</li>
+            </ul>
+          </div>
+          <div class="grid-item">
+            <h4>Development Proposals</h4>
+            <ul>
+              <li>Extend business hours</li>
+              <li>Credit sales options</li>
+              <li>Experienced management board</li>
+              <li>Promotional strategies</li>
+              <li>Expand self-service outlets</li>
+              <li>Attractive showrooms</li>
+              <li>Increase member benefits</li>
+              <li>Member promotion propaganda</li>
+              <li>Modern technology for consumer service</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-franchise">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(239,68,68,0.2),rgba(251,191,36,0.2));">&#9733;</span> Franchise</h2>
+      <div class="def-box">
+        A business model where one firm (the <strong>franchisor</strong>) assigns the authority of selling its goods/services to another (the <strong>franchisee</strong>) in a specific trade zone.
+      </div>
+
+      <button class="toggle-btn" onclick="toggleSection('fran-parties')">&#9660; Parties &amp; Agreement</button>
+      <div id="fran-parties" style="display:none;">
+        <ul class="features">
+          <li><strong>Franchisor</strong> &mdash; the franchising company that permits the franchisee to market products under its brand</li>
+          <li><strong>Franchisee</strong> &mdash; the organization that receives permission from the franchisor</li>
+        </ul>
+        <p style="margin:12px 0;color:var(--text-dim);font-size:14px;">
+          The <strong>Franchise Agreement</strong> governs the relationship, including use of trade name, logo, brand, rules, services, financial conditions, initial payment, and monthly royalties.
+        </p>
+      </div>
+
+      <button class="toggle-btn" onclick="toggleSection('fran-support')">&#9660; Franchisor Support &amp; Franchisee Duties</button>
+      <div id="fran-support" style="display:none;">
+        <div class="grid-2">
+          <div class="grid-item">
+            <h4>Franchisor Provides</h4>
+            <ul>
+              <li>Permission to use trade name</li>
+              <li>Management training</li>
+              <li>Marketing assistance</li>
+              <li>Financial assistance</li>
+              <li>Layout &amp; design help</li>
+              <li>Product supply &amp; equipment</li>
+              <li>Technical knowledge</li>
+            </ul>
+          </div>
+          <div class="grid-item">
+            <h4>Franchee Must</h4>
+            <ul>
+              <li>Act per franchisor conditions</li>
+              <li>Make capital investment</li>
+              <li>Purchase only from franchisor/authorized suppliers</li>
+              <li>Make agreed payments</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <button class="toggle-btn" onclick="toggleSection('fran-types')">&#9660; Types of Franchises</button>
+      <div id="fran-types" style="display:none;">
+        <table class="comparison-table">
+          <tr><th>Type</th><th>Description</th><th>Example</th></tr>
+          <tr><td><strong>Product Franchise</strong></td><td>Franchisee authorized to purchase and resell goods under brand name</td><td>IOC Fuel Stations</td></tr>
+          <tr><td><strong>Manufacturing Franchise</strong></td><td>Franchisee authorized to manufacture and distribute under brand name</td><td>Coca-Cola, Pepsi bottling</td></tr>
+          <tr><td><strong>Business Format Franchise</strong></td><td>Franchisee follows franchisor&rsquo;s entire business procedure and brand</td><td>McDonalds, KFC, Pizza Hut</td></tr>
+        </table>
+      </div>
+
+      <button class="toggle-btn" onclick="toggleSection('fran-proscons')">&#9660; Benefits &amp; Limitations</button>
+      <div id="fran-proscons" style="display:none;">
+        <div class="grid-2">
+          <div class="grid-item">
+            <h4>Benefits to Franchisor</h4>
+            <ul>
+              <li>Expand without further investment</li>
+              <li>Share advertising costs</li>
+              <li>Returns from franchisee investment</li>
+              <li>Spontaneous returns from franchisee efficiency</li>
+              <li>Nourished by the franchisee</li>
+            </ul>
+          </div>
+          <div class="grid-item">
+            <h4>Benefits to Franchisee</h4>
+            <ul>
+              <li>Large market niche from goodwill</li>
+              <li>Lower tendency to be unsuccessful</li>
+              <li>Convenient publicity (popular trade name)</li>
+              <li>Management training</li>
+              <li>Financial support</li>
+              <li>Raw materials at minimum price</li>
+            </ul>
+          </div>
+        </div>
+        <div class="grid-2" style="margin-top:12px;">
+          <div class="grid-item">
+            <h4>Limitations for Franchisor</h4>
+            <ul>
+              <li>Franchisee failure affects profits</li>
+              <li>Unfavorable activities affect goodwill</li>
+              <li>Franchisee retains most profits</li>
+            </ul>
+          </div>
+          <div class="grid-item">
+            <h4>Limitations for Franchisee</h4>
+            <ul>
+              <li>No perfect autonomy</li>
+              <li>Greater cost to receive franchise</li>
+              <li>Profitability uncertainty</li>
+              <li>Dependence on franchisor&rsquo;s goodwill</li>
+              <li>Inconvenience from agreement adherence</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-combine">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(167,139,250,0.2),rgba(239,68,68,0.2));">&#8853;</span> Business Combinations</h2>
+      <div class="def-box">
+        Joining up of two or more businesses and engaging in business activities can be introduced as <strong>Business Combinations</strong>.
+      </div>
+
+      <button class="toggle-btn" onclick="toggleSection('comb-types')">&#9660; Mergers &amp; Acquisitions</button>
+      <div id="comb-types" style="display:none;">
+        <div class="grid-2">
+          <div class="grid-item">
+            <h4>Merger (Amalgamation)</h4>
+            <ul>
+              <li>Two or more companies convert into a single entity</li>
+              <li>One company purchases assets and liabilities of another</li>
+              <li>Or all companies terminate and form a new company</li>
+            </ul>
+          </div>
+          <div class="grid-item">
+            <h4>Acquisition</h4>
+            <ul>
+              <li>One company purchases most ordinary share capital of another</li>
+              <li>The purchasing company gains power of control</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <button class="toggle-btn" onclick="toggleSection('comb-strategies')">&#9660; Combination Strategies</button>
+      <div id="comb-strategies" style="display:none;">
+        <table class="comparison-table">
+          <tr><th>Type</th><th>Definition</th><th>Examples</th></tr>
+          <tr><td><strong>Horizontal</strong></td><td>Combination of businesses engaged in <strong>similar</strong> activities</td><td>Two footwear manufacturers; MBSL Savings + Merchant Bank + MBSL Financial (2015); Microsoft + Nokia; Fair First Insurance amalgamation; DFCC Bank merger</td></tr>
+          <tr><td><strong>Vertical</strong></td><td>Combination of businesses at <strong>different stages</strong> in the same production/marketing process</td><td>Shoe manufacturer + leather manufacturer + shoe marketing company</td></tr>
+          <tr><td><strong>Conglomerate</strong></td><td>Combination of businesses <strong>not in the same industry</strong></td><td>Shoe manufacturer + biscuit manufacturer</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-public">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(14,165,233,0.2),rgba(99,102,241,0.2));">&#9730;</span> Public Sector / State Sector</h2>
+      <div class="def-box">
+        All business entities carried out and controlled by the state or a local authority are known as <strong>state sector</strong> or <strong>public sector</strong> enterprises.
+      </div>
+
+      <button class="toggle-btn" onclick="toggleSection('pub-reasons')">&#9660; Reasons for State Involvement</button>
+      <div id="pub-reasons" style="display:none;">
+        <ul class="features">
+          <li>To control pricing levels and prevent unreasonable private profits</li>
+          <li>To prevent monopolistic firms</li>
+          <li>To engage in fields required for national defense</li>
+          <li>To provide essential goods and services at reasonable prices</li>
+          <li>To minimize wastage of natural resources</li>
+          <li>To maintain non-profit large-scale projects</li>
+        </ul>
+      </div>
+
+      <button class="toggle-btn" onclick="toggleSection('pub-categories')">&#9660; Categories of State Sector Organizations</button>
+      <div id="pub-categories" style="display:none;">
+        <table class="comparison-table">
+          <tr><th>Category</th><th>Key Characteristics</th><th>Examples</th></tr>
+          <tr><td><strong>State Corporation / Statutory Board</strong></td><td>Established under special/general act; has legality; full/major government ownership; board appointed by government; capital from government loans, reinvestment, and public debt; objective: efficient service at minimum price</td><td>SLTB, Mahaweli Authority, SL Rupavahini Corporation, SL Petroleum Corporation</td></tr>
+          <tr><td><strong>Government Department</strong></td><td>No separate legality; represented in official name of the head; funds allocated through annual budget</td><td>Education Dept, Agriculture Dept, Health Dept, Dept of Railways</td></tr>
+          <tr><td><strong>State Company</strong></td><td>Incorporated under Companies Act as a PLC; &gt;51% capital by state organizations</td><td>SL Insurance Company Ltd, Lanka Phosphate Company Ltd, SL Telecom, Litro Gas Ltd, State Trading Company</td></tr>
+          <tr><td><strong>Local Authority Companies</strong></td><td>Under provincial councils, urban councils, Pradeshiya Sabha; ownership with local authority; funds from local/central government</td><td>&mdash;</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Business Studies &mdash; Lesson 4 &bull; Based on original lesson notes</p>
+  </footer>
+</div>
+
+<script>
+  // Particles
+  const canvas = document.getElementById('particles-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  let mouseX = -1000, mouseY = -1000;
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  class Particle {
+    constructor() { this.reset(); }
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 2 + 0.5;
+      this.speedX = (Math.random() - 0.5) * 0.3;
+      this.speedY = (Math.random() - 0.5) * 0.3;
+      this.opacity = Math.random() * 0.5 + 0.1;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+      const dx = this.x - mouseX;
+      const dy = this.y - mouseY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 120) {
+        const force = (120 - dist) / 120;
+        this.x += dx * force * 0.008;
+        this.y += dy * force * 0.008;
+      }
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(148, 163, 184, ${this.opacity})`;
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < 120; i++) particles.push(new Particle());
+
+  function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
+    // Draw lines between nearby particles
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 140) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(148, 163, 184, ${0.06 * (1 - dist / 140)})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(animateParticles);
+  }
+  animateParticles();
+
+  document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+
+  // Progress bar
+  window.addEventListener('scroll', () => {
+    const scrollTop = document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    document.getElementById('progress-bar').style.width = (scrollTop / scrollHeight * 100) + '%';
+  });
+
+  // Intersection Observer for section animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.section').forEach(s => observer.observe(s));
+
+  // Toggle sections
+  function toggleSection(id) {
+    const el = document.getElementById(id);
+    if (el.style.display === 'none') {
+      el.style.display = 'block';
+      el.style.animation = 'fadeUp 0.4s ease forwards';
+    } else {
+      el.style.display = 'none';
+    }
+  }
+</script>
+</body>
+</html>

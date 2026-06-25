@@ -1,0 +1,102 @@
+================================================================================
+                     BUILDING A SECOND BRAIN
+              by Tiago Forte — Book Summary
+================================================================================
+
+WHAT IS A SECOND BRAIN?
+A "Second Brain" is a digital system for capturing, organizing, and retrieving
+ideas and information. It's a trusted external memory that helps you think
+better, be more creative, and get things done without relying on your fallible
+biological brain.
+
+================================================================================
+THE C.O.D.E. METHOD
+================================================================================
+
+C — CAPTURE
+  Keep what resonates. Don't try to capture everything — be selective. Save
+  ideas, insights, quotes, and anything that sparks your interest. Use a
+  trusted capture tool (Notes, Notion, Evernote, etc.) that's always within
+  reach.
+
+O — ORGANIZE
+  Save for actionability, not just for reference. Tiago's P.A.R.A. system:
+    P - Projects: Short-term outcomes you're working on (active)
+    A - Areas: Long-term responsibilities (health, finances, etc.)
+    R - Resources: Topics of interest you want to reference later
+    A - Archives: Inactive items from the other three categories
+
+D — DISTILL
+  Find the essence. Use progressive summarization:
+    Layer 1: Saved notes (original)
+    Layer 2: Bold passages (what's important)
+    Layer 3: Highlighted passages (what's most important)
+    Layer 4: Executive summary (a few sentences)
+    Layer 5: Remix into something new (your own output)
+
+E — EXPRESS
+  Share your work. The ultimate goal is not just to consume information, but
+  to create something with it. Don't wait for perfection — share your "inter-
+  mediate packets" (small, incomplete, but useful outputs).
+
+================================================================================
+KEY PRINCIPLES
+================================================================================
+
+1. YOUR BRAIN IS FOR HAVING IDEAS, NOT HOLDING THEM
+   Offload memory to your Second Brain so you can focus on thinking and
+   creating.
+
+2. THE HERRINGBONE METHOD / JUST-IN-TIME ORGANIZATION
+   Don't over-organize upfront. Organize only when you need to find something.
+
+3. INTERMEDIATE PACKETS
+   Break work into small, reusable chunks. A single paragraph, a screenshot,
+   a bullet list — each is an "intermediate packet" you can remix later.
+
+4. DIVERGENT & CONVERGENT MODES
+   Separate the creative (divergent) phase from the editing (convergent) phase.
+   Capture freely first, then organize and refine.
+
+5. SCAFFOLDING
+   Use templates and frameworks to reduce friction. Create note templates for
+   common types of information.
+
+================================================================================
+THE 4 STAGES OF CREATIVITY (The Creative Process)
+================================================================================
+
+1. DIVERGENT EXPLORATION — Gather ideas broadly (Capture)
+2. CONVERGENT SELECTION — Choose what matters (Organize)
+3. DIVERGENT CONNECTION — Connect ideas in new ways (Distill)
+4. CONVERGENT EXPRESSION — Produce output (Express)
+
+================================================================================
+PRACTICAL TIPS
+================================================================================
+
+- "Capture Criteria": Capture only what resonates — surprising, useful,
+  or thought-provoking.
+- "Curated Consumption": Be intentional about what you consume.
+- "Project Lists": Keep a list of all current projects (no more than 10-15).
+- "Weekly Review": Every week, review your notes and projects for 30 mins.
+- "Slow Burns": Let ideas marinate over time instead of forcing immediate
+  output.
+- "Archiving is not deleting": Archive freely — you can always retrieve.
+
+================================================================================
+QUOTABLE QUOTES
+================================================================================
+
+  "We can now build a digital version of our mind — a Second Brain — that
+  works the way our biological brain wishes it could."
+
+  "The best way to get better at organizing your notes is to organize your
+  notes."
+
+  "Creativity is not about creating something from nothing. It's about
+  combining existing ideas in new ways."
+
+  "Your mind is for having ideas, not holding them."
+
+================================================================================

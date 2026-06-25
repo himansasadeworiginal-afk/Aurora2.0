@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Studies Lesson 1 - Basis of Business & Environment</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #080c08;
+    --card: #0e160e;
+    --accent: #10b981;
+    --accent2: #34d399;
+    --accent3: #fbbf24;
+    --text: #e0e0e0;
+    --text-muted: #8a9a8a;
+    --gradient: linear-gradient(135deg, #10b981, #34d399, #fbbf24);
+    --border: rgba(16, 185, 129, 0.15);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+
+  #particles {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 2rem;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    animation: fadeInDown 1s ease;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    font-weight: 800;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    animation: fadeInUp 1s ease 0.2s both;
+  }
+
+  .hero p {
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: var(--text-muted);
+    max-width: 650px;
+    animation: fadeInUp 1s ease 0.4s both;
+  }
+
+  .hero-scroll {
+    position: absolute; bottom: 2rem;
+    left: 50%; transform: translateX(-50%);
+    animation: float 3s ease-in-out infinite;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+  }
+
+  .container {
+    position: relative; z-index: 1;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem;
+  }
+
+  .section {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+    opacity: 0; transform: translateY(40px) scale(0.97);
+  }
+
+  .section.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition: opacity 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .section:hover {
+    transform: translateY(-4px) scale(1.005);
+    box-shadow: 0 24px 72px rgba(16, 185, 129, 0.06);
+  }
+
+  .section-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    display: inline-block;
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  .section h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section h2 .underline {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+
+  .section h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1.5rem 0 0.8rem;
+  }
+
+  .section h4 {
+    color: var(--accent2);
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 1rem 0 0.5rem;
+  }
+
+  .section ul, .section ol { padding-left: 1.5rem; }
+  .section li { margin-bottom: 0.4rem; color: var(--text); }
+  .section p { margin-bottom: 0.8rem; color: var(--text); }
+
+  .highlight {
+    display: inline-block;
+    padding: 0.1rem 0.5rem;
+    background: rgba(16, 185, 129, 0.12);
+    border-radius: 4px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .highlight-green { background: rgba(52, 211, 153, 0.12); color: var(--accent2); }
+  .highlight-amber { background: rgba(251, 191, 36, 0.12); color: var(--accent3); }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .info-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 1.2rem;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: default;
+  }
+
+  .info-card:hover {
+    background: rgba(16, 185, 129, 0.06);
+    border-color: rgba(16, 185, 129, 0.18);
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 12px 32px rgba(16, 185, 129, 0.08);
+  }
+
+  .info-card .emoji { font-size: 2rem; margin-bottom: 0.5rem; }
+  .info-card .label { font-weight: 600; color: #fff; margin-bottom: 0.3rem; }
+  .info-card .desc { font-size: 0.85rem; color: var(--text-muted); }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin: 1rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .comparison > div { padding: 1.2rem; }
+  .comparison .left { background: rgba(16, 185, 129, 0.06); border-right: 1px solid var(--border); }
+  .comparison .right { background: rgba(52, 211, 153, 0.06); }
+  .comparison .header {
+    font-weight: 700; font-size: 1.1rem;
+    text-align: center; padding: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .comparison .left .header { color: var(--accent); }
+  .comparison .right .header { color: var(--accent2); }
+  .comparison ul { list-style: none; padding: 0; }
+  .comparison li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.9rem;
+  }
+  .comparison li:last-child { border-bottom: none; }
+
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    margin: 1rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .three-col > div { padding: 1rem; }
+  .three-col .col1 { background: rgba(16, 185, 129, 0.06); }
+  .three-col .col2 { background: rgba(52, 211, 153, 0.06); }
+  .three-col .col3 { background: rgba(251, 191, 36, 0.06); }
+  .three-col .header { font-weight: 700; text-align: center; padding: 0.7rem; border-bottom: 1px solid var(--border); }
+  .three-col .col1 .header { color: var(--accent); }
+  .three-col .col2 .header { color: var(--accent2); }
+  .three-col .col3 .header { color: var(--accent3); }
+  .three-col ul { list-style: none; padding: 0; }
+  .three-col li { padding: 0.4rem 0; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 0.85rem; }
+
+  .flashcard-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .flashcard {
+    perspective: 1000px;
+    height: 170px;
+    cursor: pointer;
+  }
+
+  .flashcard-inner {
+    position: relative;
+    width: 100%; height: 100%;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+  }
+
+  .flashcard.flipped .flashcard-inner {
+    transform: rotateY(180deg);
+  }
+
+  .flashcard-front, .flashcard-back {
+    position: absolute;
+    width: 100%; height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+
+  .flashcard-front {
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.18);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .flashcard-back {
+    background: rgba(52, 211, 153, 0.1);
+    border: 1px solid rgba(52, 211, 153, 0.18);
+    color: var(--accent2);
+    transform: rotateY(180deg);
+    font-size: 0.82rem;
+  }
+
+  .flashcard-hint {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin: 1rem 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2), var(--accent3));
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2.35rem; top: 0.5rem;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+
+  .timeline-item .title { font-weight: 600; color: #fff; }
+  .timeline-item .desc { font-size: 0.9rem; color: var(--text-muted); }
+
+  /* Quiz */
+  .quiz-question {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin: 1rem 0;
+  }
+  .quiz-question .q { font-weight: 600; margin-bottom: 0.8rem; color: #fff; }
+
+  .quiz-option {
+    display: block; width: 100%;
+    padding: 0.7rem 1rem; margin-bottom: 0.5rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    color: var(--text); cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left; font-size: 0.9rem;
+    font-family: inherit;
+  }
+
+  .quiz-option:hover {
+    background: rgba(16, 185, 129, 0.08);
+    border-color: var(--accent);
+  }
+
+  .quiz-option.correct {
+    background: rgba(16, 185, 129, 0.18);
+    border-color: var(--accent); color: var(--accent2);
+  }
+
+  .quiz-option.wrong {
+    background: rgba(239, 68, 68, 0.18);
+    border-color: #ef4444; color: #ef4444;
+  }
+
+  .quiz-feedback {
+    margin-top: 0.8rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    display: none;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct { background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.18); color: var(--accent2); }
+  .quiz-feedback.wrong { background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.18); color: #ef4444; }
+
+  .progress-container {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 3px; z-index: 100;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: var(--gradient);
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes shimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-12px); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.1); }
+  }
+
+  @media (max-width: 600px) {
+    .comparison { grid-template-columns: 1fr; }
+    .comparison .left { border-right: none; border-bottom: 1px solid var(--border); }
+    .three-col { grid-template-columns: 1fr; }
+    .section { padding: 1.2rem; }
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin: 0.2rem;
+  }
+  .tag-green { background: rgba(16, 185, 129, 0.12); color: var(--accent); }
+  .tag-light { background: rgba(52, 211, 153, 0.12); color: var(--accent2); }
+  .tag-amber { background: rgba(251, 191, 36, 0.12); color: var(--accent3); }
+
+  .formula-box {
+    background: rgba(16, 185, 129, 0.04);
+    border: 1px solid rgba(16, 185, 129, 0.12);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
+
+<canvas id="particles"></canvas>
+
+<section class="hero">
+  <div class="hero-badge">Chapter 1</div>
+  <h1>Basis of Business<br>&amp; the Environment</h1>
+  <p>Exploring the foundations of business, its evolution, environment, and the forces that shape modern commerce.</p>
+  <div class="hero-scroll">&#x2193;</div>
+</section>
+
+<div class="container">
+
+  <!-- Concept of Business -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F3ED;</div>
+    <h2>Concept of Business <span class="underline"></span></h2>
+    <p>All the activities related to the production, distribution, selling of goods and services with a profit motive in order to satisfy human needs and wants can generally be defined as <span class="highlight">business</span>.</p>
+    <p>There are also businesses which fulfill needs without a profit motive &mdash; e.g. Red Cross, Leo Club.</p>
+
+    <h3>Needs vs Wants</h3>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x2764;&#xFE0F; Needs</div>
+        <ul>
+          <li>Compulsory for survival</li>
+          <li>Food, clothes, house, education, health</li>
+          <li>Common to all</li>
+          <li>Essential for survival</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x2728; Wants</div>
+        <ul>
+          <li>Different ways of fulfilling needs</li>
+          <li>Unlimited &amp; vary from person to person</li>
+          <li>Can be created by businesses</li>
+          <li>Subjective</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Characteristics -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F9E0;</div>
+    <h2>Characteristics of a Business <span class="underline"></span></h2>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F4B1;</div><div class="label">Exchange or Selling</div><div class="desc">Goods/services sold for monetary value</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4E6;</div><div class="label">Goods &amp; Services</div><div class="desc">Consumer goods &amp; industrial goods</div></div>
+      <div class="info-card"><div class="emoji">&#x1F504;</div><div class="label">Continuous</div><div class="desc">Long-term, repeated transactions</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4B0;</div><div class="label">Profit Motive</div><div class="desc">Earn money, build relationships, social welfare</div></div>
+      <div class="info-card"><div class="emoji">&#x26A0;&#xFE0F;</div><div class="label">Risk</div><div class="desc">Uncertainty in earning profit, possibility of loss</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4A1;</div><div class="label">Creates Wants</div><div class="desc">Produces goods/services to satisfy wants</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3E2;</div><div class="label">Economic Activity</div><div class="desc">Uses limited resources, money-oriented</div></div>
+    </div>
+  </div>
+
+  <!-- Evolution of Business -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F9ED;</div>
+    <h2>Evolution of Business <span class="underline"></span></h2>
+
+    <h3>Drawbacks of the Barter System</h3>
+    <ul>
+      <li>Lack of double coincidence of wants</li>
+      <li>Lack of a common measure of value</li>
+      <li>Indivisibility of certain goods</li>
+      <li>Difficulty in making deferred payments</li>
+      <li>Difficulty in storing value</li>
+    </ul>
+
+    <h3>Stages of Evolution</h3>
+    <div class="timeline">
+      <div class="timeline-item"><div class="title">&#x1F4B1; Barter System</div><div class="desc">First stage &mdash; direct exchange of goods for goods</div></div>
+      <div class="timeline-item"><div class="title">&#x1F4B0; Use of Money</div><div class="desc">Materials &rarr; Metals &rarr; Coins &amp; Notes &rarr; Bank Money &rarr; Electronic Money</div></div>
+      <div class="timeline-item"><div class="title">&#x1F3ED; Industrial Revolution</div><div class="desc">Cottage industries &rarr; large scale; growth of banking, transport, insurance</div></div>
+      <div class="timeline-item"><div class="title">&#x1F4BB; Information Era</div><div class="desc">E-Commerce &amp; E-Business &mdash; internet-based transactions</div></div>
+    </div>
+
+    <div class="formula-box">
+      Commerce = Trade + Support Services
+    </div>
+  </div>
+
+  <!-- E-Commerce -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F310;</div>
+    <h2>E-Commerce &amp; E-Business <span class="underline"></span></h2>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F4BB; E-Commerce</div>
+        <ul>
+          <li>Buying &amp; selling through internet</li>
+          <li>Only transactions</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F4BB; E-Business</div>
+        <ul>
+          <li>All business activities via internet</li>
+          <li>Includes communication, collaboration, etc.</li>
+        </ul>
+      </div>
+    </div>
+    <h3>E-Commerce Models</h3>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F465;</div><div class="label">B2B</div><div class="desc">Business to Business</div></div>
+      <div class="info-card"><div class="emoji">&#x1F9D1;</div><div class="label">B2C</div><div class="desc">Business to Consumer</div></div>
+      <div class="info-card"><div class="emoji">&#x1F91D;</div><div class="label">C2C</div><div class="desc">Consumer to Consumer</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3DB;&#xFE0F;</div><div class="label">G2C</div><div class="desc">Government to Citizen</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3E2;</div><div class="label">B2G</div><div class="desc">Business to Government</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3F0;</div><div class="label">G2B</div><div class="desc">Government to Business</div></div>
+      <div class="info-card"><div class="emoji">&#x1F464;</div><div class="label">C2G</div><div class="desc">Citizen to Government</div></div>
+    </div>
+  </div>
+
+  <!-- Classification -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4CA;</div>
+    <h2>Classification of Business <span class="underline"></span></h2>
+    <div class="three-col">
+      <div class="col1">
+        <div class="header">&#x1F33F; Primary</div>
+        <ul>
+          <li>Agriculture, forestry, fishing</li>
+          <li>Mining &amp; quarrying</li>
+          <li>Extracting natural resources</li>
+        </ul>
+      </div>
+      <div class="col2">
+        <div class="header">&#x1F3ED; Secondary</div>
+        <ul>
+          <li>Manufacturing industries</li>
+          <li>Construction industries</li>
+          <li>Converting resources</li>
+        </ul>
+      </div>
+      <div class="col3">
+        <div class="header">&#x1F3E2; Tertiary</div>
+        <ul>
+          <li>Banking, insurance, real estate</li>
+          <li>Electricity, gas, water</li>
+          <li>Service provision</li>
+        </ul>
+      </div>
+    </div>
+    <h3>Other Bases of Classification</h3>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F3E2;</div><div class="label">Ownership</div><div class="desc">Private sector / Public (government) sector</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3AF;</div><div class="label">Goals</div><div class="desc">Profit motive / Non-profit motive</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4CF;</div><div class="label">Scale</div><div class="desc">Small &amp; medium / Large-scale</div></div>
+      <div class="info-card"><div class="emoji">&#x1F33E;</div><div class="label">Production Sector</div><div class="desc">Agriculture / Industries / Services</div></div>
+    </div>
+  </div>
+
+  <!-- Business Resources -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F3D7;&#xFE0F;</div>
+    <h2>Business Resources <span class="underline"></span></h2>
+    <p>Inputs used for business activities:</p>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F3D4;&#xFE0F;</div><div class="label">Land</div><div class="desc">Building site, ventilation, natural light</div></div>
+      <div class="info-card"><div class="emoji">&#x1F9D1;&#x200D;&#x1F3EB;</div><div class="label">Labour</div><div class="desc">Physical &amp; mental effort of all workers</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3ED;</div><div class="label">Capital</div><div class="desc">Buildings, machines, equipment, vehicles, money</div></div>
+      <div class="info-card"><div class="emoji">&#x1F9E9;</div><div class="label">Entrepreneurship</div><div class="desc">Decision-maker, risk-taker, profit recipient</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4CB;</div><div class="label">Information</div><div class="desc">Market data, consumer taste, tech updates</div></div>
+      <div class="info-card"><div class="emoji">&#x23F0;</div><div class="label">Time</div><div class="desc">Working hours, machine time, decision time</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4DA;</div><div class="label">Knowledge</div><div class="desc">Patents, skills, expertise, legal knowledge</div></div>
+    </div>
+  </div>
+
+  <!-- Functions -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x2699;&#xFE0F;</div>
+    <h2>Basic Functions of a Business <span class="underline"></span></h2>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F4C4;</div><div class="label">Administration</div><div class="desc">Files, advice, attendance</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3ED;</div><div class="label">Production</div><div class="desc">Raw materials, inventory, quality control</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4E2;</div><div class="label">Marketing</div><div class="desc">Distribution, advertising, pricing</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4B5;</div><div class="label">Finance</div><div class="desc">Funds, salaries, investments</div></div>
+      <div class="info-card"><div class="emoji">&#x1F91D;</div><div class="label">Human Resources</div><div class="desc">Recruiting, training, promotion</div></div>
+      <div class="info-card"><div class="emoji">&#x1F52C;</div><div class="label">R&amp;D</div><div class="desc">Innovation, product improvement</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4CA;</div><div class="label">MIS</div><div class="desc">Information systems, data updates</div></div>
+    </div>
+    <div class="formula-box" style="font-size: 0.9rem;">
+      Inputs (Land, Labour, Capital, Entrepreneurship, Info, Time, Knowledge) &rarr; Business Functions &rarr; Outputs (Goods &amp; Services)
+    </div>
+  </div>
+
+  <!-- Stakeholders -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F465;</div>
+    <h2>Stakeholders of a Business <span class="underline"></span></h2>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F464;</div><div class="label">Owners</div><div class="desc">Adequate profit, growth, market share</div></div>
+      <div class="info-card"><div class="emoji">&#x1F9D1;&#x200D;&#x1F4BC;</div><div class="label">Managers</div><div class="desc">Maximize profit, growth, decision success</div></div>
+      <div class="info-card"><div class="emoji">&#x1F9D1;&#x200D;&#x1F3EB;</div><div class="label">Employees</div><div class="desc">Higher salary, bonuses, promotions</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3E6;</div><div class="label">Creditors</div><div class="desc">Loan recovery, collateral safety</div></div>
+      <div class="info-card"><div class="emoji">&#x1F9CD;</div><div class="label">Customers</div><div class="desc">Quality goods, responsibility, existence</div></div>
+      <div class="info-card"><div class="emoji">&#x1F69A;</div><div class="label">Suppliers</div><div class="desc">Continuous orders, timely payment</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3DB;&#xFE0F;</div><div class="label">Government</div><div class="desc">Taxes, employment, development</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3E0;</div><div class="label">Community</div><div class="desc">Environment protection, jobs</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4C8;</div><div class="label">Potential Investors</div><div class="desc">Future resource investment</div></div>
+    </div>
+  </div>
+
+  <!-- Vision Mission -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4A1;</div>
+    <h2>Vision, Mission &amp; Objectives <span class="underline"></span></h2>
+    <div class="timeline">
+      <div class="timeline-item"><div class="title">&#x1F4A1; Vision</div><div class="desc">Ultimate, inspirational, long-term aspiration. "What do we want to ultimately become?" <span style="color:var(--text-muted);font-size:0.85rem;">Ex: Google — "Provide access to the world's information in one click"</span></div></div>
+      <div class="timeline-item"><div class="title">&#x1F3AF; Mission</div><div class="desc">Core purpose and focus. "Why do we exist? Who do we serve?" <span style="color:var(--text-muted);font-size:0.85rem;">Ex: Alphabet — "Organize the world's information and make it universally accessible"</span></div></div>
+      <div class="timeline-item"><div class="title">&#x1F4CB; Objectives</div><div class="desc">Broad, long-term outcomes to fulfill the vision</div></div>
+      <div class="timeline-item"><div class="title">&#x2705; SMART Goals</div><div class="desc">Specific, Measurable, Achievable, Relevant, Time-bound targets</div></div>
+    </div>
+  </div>
+
+  <!-- Products -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4E6;</div>
+    <h2>Types of Products <span class="underline"></span></h2>
+    <p>Anything of value offered to satisfy a want or need:</p>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F4A0;</div><div class="label">Goods</div><div class="desc">Tangible — Dyson vacuum, Levi's jeans</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3ED;</div><div class="label">Services</div><div class="desc">Intangible — Doctor, Spotify, bank loan</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4A1;</div><div class="label">Ideas</div><div class="desc">Concepts, restructuring plans, campaigns</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3AC;</div><div class="label">Experiences</div><div class="desc">Cooking class, hot-air balloon, VIP tour</div></div>
+      <div class="info-card"><div class="emoji">&#x1F389;</div><div class="label">Events</div><div class="desc">FIFA World Cup, CES, music festival</div></div>
+      <div class="info-card"><div class="emoji">&#x1F464;</div><div class="label">People</div><div class="desc">Messi, Oprah — talent/fame as product</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3D4;&#xFE0F;</div><div class="label">Places</div><div class="desc">Destinations, real estate, waterfront</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3DB;&#xFE0F;</div><div class="label">Organizations</div><div class="desc">WWF, TED, alumni associations</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4CA;</div><div class="label">Information</div><div class="desc">WSJ subscription, market reports</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3F7;&#xFE0F;</div><div class="label">Property</div><div class="desc">Stock certificates, software licenses</div></div>
+    </div>
+  </div>
+
+  <!-- Business Environment -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F30D;</div>
+    <h2>Business Environment <span class="underline"></span></h2>
+    <p>The environment in which the factors which influence the business operates is known as <span class="highlight">business environment</span>.</p>
+
+    <h3>Internal Environment</h3>
+    <p>Forces and conditions within the organization: <span class="tag tag-green">Owners</span> <span class="tag tag-green">Managers</span> <span class="tag tag-green">Employees</span> <span class="tag tag-green">Organization Culture</span> <span class="tag tag-green">Organization Structure</span> <span class="tag tag-green">Resources</span></p>
+
+    <h3>External Environment</h3>
+
+    <h4>Task (Immediate) Environment</h4>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F9CD;</div><div class="label">Customers</div><div class="desc">Buyers of goods/services</div></div>
+      <div class="info-card"><div class="emoji">&#x1F69A;</div><div class="label">Suppliers</div><div class="desc">Providers of resources</div></div>
+      <div class="info-card"><div class="emoji">&#x1F91B;</div><div class="label">Competitors</div><div class="desc">Similar goods/services providers</div></div>
+      <div class="info-card"><div class="emoji">&#x1F504;</div><div class="label">Substitute Producers</div><div class="desc">Alternative product suppliers</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4C8;</div><div class="label">Potential Entrants</div><div class="desc">Future market entrants</div></div>
+    </div>
+
+    <h4>Macro (General) Environment</h4>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x2696;&#xFE0F;</div><div class="label">Political</div><div class="desc">Govt policies, political vision</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4DC;</div><div class="label">Legal</div><div class="desc">Acts, rules, regulations</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4B0;</div><div class="label">Economic</div><div class="desc">Inflation, interest, GDP, employment</div></div>
+      <div class="info-card"><div class="emoji">&#x1F30D;</div><div class="label">Social &amp; Cultural</div><div class="desc">Beliefs, values, customs, religion</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4F1;</div><div class="label">Technological</div><div class="desc">New inventions, rapid change</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4CA;</div><div class="label">Demographic</div><div class="desc">Population size, age, gender, education</div></div>
+      <div class="info-card"><div class="emoji">&#x1F33F;</div><div class="label">Natural</div><div class="desc">Resources, climate, location, disasters</div></div>
+      <div class="info-card"><div class="emoji">&#x1F310;</div><div class="label">Global</div><div class="desc">Trade agreements, trade blocs, WTO</div></div>
+    </div>
+  </div>
+
+  <!-- Challenges & Trends -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4C8;</div>
+    <h2>Modern Challenges &amp; Trends <span class="underline"></span></h2>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x26A0;&#xFE0F; Challenges</div>
+        <ul>
+          <li>Customer empowerment (social media)</li>
+          <li>Strict environmental rules</li>
+          <li>Rapid technology change (AI)</li>
+          <li>Globalization threats</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F4C8; Trends</div>
+        <ul>
+          <li>E-money &amp; digital payments</li>
+          <li>CSR &amp; green products</li>
+          <li>Outsourcing &amp; digitalization</li>
+          <li>Sustainable development</li>
+        </ul>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="emoji">&#x1F310;</div>
+      <div class="label">Globalization</div>
+      <div class="desc">The process by which businesses, cultures, and economies integrate worldwide through trade, investment, technology, and information flow.</div>
+    </div>
+  </div>
+
+  <!-- Quiz -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F9F0;</div>
+    <h2>Test Your Knowledge <span class="underline"></span></h2>
+
+    <div class="quiz-question" data-q="1">
+      <div class="q">1. Which of the following is NOT a characteristic of a business?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Exchange or selling takes place</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Continuous transactions</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">One-time transaction</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Involves risk</button>
+      <div class="quiz-feedback" data-feedback="1"></div>
+    </div>
+
+    <div class="quiz-question" data-q="2">
+      <div class="q">2. What is the correct formula for Commerce?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Commerce = Trade + Production</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Commerce = Trade + Support Services</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Commerce = Production + Distribution</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Commerce = Marketing + Sales</button>
+      <div class="quiz-feedback" data-feedback="2"></div>
+    </div>
+
+    <div class="quiz-question" data-q="3">
+      <div class="q">3. Mining and quarrying belong to which sector?</div>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Primary Sector</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Secondary Sector</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Tertiary Sector</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Quaternary Sector</button>
+      <div class="quiz-feedback" data-feedback="3"></div>
+    </div>
+
+    <div class="quiz-question" data-q="4">
+      <div class="q">4. In the B2C e-commerce model, who are the participants?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Government and Citizen</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Business and Consumer</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Consumer and Consumer</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Business and Government</button>
+      <div class="quiz-feedback" data-feedback="4"></div>
+    </div>
+
+    <div class="quiz-question" data-q="5">
+      <div class="q">5. Which is NOT a resource/input for business activities?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Land</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Entrepreneurship</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Information</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Advertising</button>
+      <div class="quiz-feedback" data-feedback="5"></div>
+    </div>
+
+    <div class="quiz-question" data-q="6">
+      <div class="q">6. The ultimate, inspirational long-term aspiration of an organization is its:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Mission</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Vision</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Goal</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Objective</button>
+      <div class="quiz-feedback" data-feedback="6"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Particles
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  class Particle {
+    constructor() { this.reset(); }
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 2.5 + 0.5;
+      this.speedX = (Math.random() - 0.5) * 0.4;
+      this.speedY = (Math.random() - 0.5) * 0.4;
+      this.opacity = Math.random() * 0.4 + 0.08;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(16, 185, 129, ${this.opacity})`;
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+  function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
+
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 150) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(16, 185, 129, ${0.05 * (1 - dist / 150)})`;
+          ctx.lineWidth = 0.5;
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(animateParticles);
+  }
+  animateParticles();
+
+  // Scroll reveal
+  const sections = document.querySelectorAll('[data-section]');
+
+  function revealSections() {
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 80) {
+        section.classList.add('visible');
+      }
+    });
+  }
+  window.addEventListener('scroll', revealSections);
+  revealSections();
+
+  // Progress bar
+  const progressBar = document.getElementById('progressBar');
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    progressBar.style.width = (scrollTop / docHeight) * 100 + '%';
+  });
+
+  // Quiz
+  function checkAnswer(btn, isCorrect) {
+    const question = btn.closest('.quiz-question');
+    const options = question.querySelectorAll('.quiz-option');
+    const feedback = question.querySelector('.quiz-feedback');
+
+    options.forEach(opt => {
+      opt.disabled = true;
+      opt.style.cursor = 'not-allowed';
+      if (opt.dataset.correct === 'true') opt.classList.add('correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.textContent = '✅ Correct!';
+      feedback.className = 'quiz-feedback show correct';
+    } else {
+      btn.classList.add('wrong');
+      const correctBtn = question.querySelector('[data-correct="true"]');
+      feedback.textContent = '❌ Incorrect. The answer was: ' + correctBtn.textContent;
+      feedback.className = 'quiz-feedback show wrong';
+    }
+  }
+</script>
+
+</body>
+</html>

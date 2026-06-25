@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Economics Lesson 1 - Introduction to Economics</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --primary: #2d3436;
+    --accent: #0984e3;
+    --accent2: #00b894;
+    --accent3: #fdcb6e;
+    --bg: #0a0a0f;
+    --card: #14141f;
+    --text: #e0e0e0;
+    --text-muted: #888;
+    --gradient: linear-gradient(135deg, #0984e3, #00b894, #fdcb6e);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+
+  /* Particles Canvas */
+  #particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Hero Section */
+  .hero {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background: rgba(9, 132, 227, 0.15);
+    border: 1px solid rgba(9, 132, 227, 0.3);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    animation: fadeInDown 1s ease;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    font-weight: 800;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    animation: fadeInUp 1s ease 0.2s both;
+  }
+
+  .hero p {
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: var(--text-muted);
+    max-width: 600px;
+    animation: fadeInUp 1s ease 0.4s both;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: bounce 2s infinite;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+  }
+
+  /* Container */
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem;
+  }
+
+  /* Section */
+  .section {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .section.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .section:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 60px rgba(9, 132, 227, 0.08);
+  }
+
+  .section-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .section h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section h2 .underline {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+
+  .section h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1.5rem 0 0.8rem;
+  }
+
+  .section h4 {
+    color: var(--accent2);
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 1rem 0 0.5rem;
+  }
+
+  .section ul, .section ol {
+    padding-left: 1.5rem;
+  }
+
+  .section li {
+    margin-bottom: 0.4rem;
+    color: var(--text);
+  }
+
+  .section p {
+    margin-bottom: 0.8rem;
+    color: var(--text);
+  }
+
+  .highlight {
+    display: inline-block;
+    padding: 0.1rem 0.5rem;
+    background: rgba(9, 132, 227, 0.15);
+    border-radius: 4px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .highlight-green {
+    background: rgba(0, 184, 148, 0.15);
+    color: var(--accent2);
+  }
+
+  .highlight-yellow {
+    background: rgba(253, 203, 110, 0.15);
+    color: var(--accent3);
+  }
+
+  /* Card Grid */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .info-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: default;
+  }
+
+  .info-card:hover {
+    background: rgba(9,132,227,0.08);
+    border-color: rgba(9,132,227,0.2);
+    transform: translateY(-5px);
+  }
+
+  .info-card .emoji {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .info-card .label {
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.3rem;
+  }
+
+  .info-card .desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  /* Comparison Table */
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin: 1rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .comparison > div {
+    padding: 1.2rem;
+  }
+
+  .comparison .left {
+    background: rgba(9,132,227,0.08);
+    border-right: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .comparison .right {
+    background: rgba(0,184,148,0.08);
+  }
+
+  .comparison .header {
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-align: center;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .comparison .left .header { color: var(--accent); }
+  .comparison .right .header { color: var(--accent2); }
+
+  .comparison ul { list-style: none; padding: 0; }
+  .comparison li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.9rem;
+  }
+  .comparison li:last-child { border-bottom: none; }
+
+  /* Flashcards */
+  .flashcard-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .flashcard {
+    perspective: 1000px;
+    height: 180px;
+    cursor: pointer;
+  }
+
+  .flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+  }
+
+  .flashcard.flipped .flashcard-inner {
+    transform: rotateY(180deg);
+  }
+
+  .flashcard-front, .flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+
+  .flashcard-front {
+    background: rgba(9,132,227,0.1);
+    border: 1px solid rgba(9,132,227,0.2);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .flashcard-back {
+    background: rgba(0,184,148,0.15);
+    border: 1px solid rgba(0,184,148,0.2);
+    color: var(--accent2);
+    transform: rotateY(180deg);
+  }
+
+  .flashcard-hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin: 1rem 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2));
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2.35rem;
+    top: 0.5rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+
+  .timeline-item .title {
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .timeline-item .desc {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  /* Interactive Quiz */
+  .quiz-question {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin: 1rem 0;
+  }
+
+  .quiz-question .q {
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    color: #fff;
+  }
+
+  .quiz-option {
+    display: block;
+    width: 100%;
+    padding: 0.7rem 1rem;
+    margin-bottom: 0.5rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    font-size: 0.9rem;
+    font-family: inherit;
+  }
+
+  .quiz-option:hover {
+    background: rgba(9,132,227,0.1);
+    border-color: var(--accent);
+  }
+
+  .quiz-option.correct {
+    background: rgba(0,184,148,0.2);
+    border-color: var(--accent2);
+    color: var(--accent2);
+  }
+
+  .quiz-option.wrong {
+    background: rgba(214,48,49,0.2);
+    border-color: #d63031;
+    color: #d63031;
+  }
+
+  .quiz-feedback {
+    margin-top: 0.8rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .quiz-feedback.show {
+    display: block;
+  }
+
+  .quiz-feedback.correct {
+    background: rgba(0,184,148,0.1);
+    border: 1px solid rgba(0,184,148,0.2);
+    color: var(--accent2);
+  }
+
+  .quiz-feedback.wrong {
+    background: rgba(214,48,49,0.1);
+    border: 1px solid rgba(214,48,49,0.2);
+    color: #d63031;
+  }
+
+  /* Progress Bar */
+  .progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    z-index: 100;
+    background: transparent;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: var(--gradient);
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+
+  /* Animations */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+    40% { transform: translateX(-50%) translateY(-10px); }
+    60% { transform: translateX(-50%) translateY(-5px); }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .comparison { grid-template-columns: 1fr; }
+    .comparison .left { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .section { padding: 1.2rem; }
+    .flashcard-container { grid-template-columns: 1fr; }
+  }
+
+  /* Tag */
+  .tag {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 0.3rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .tag-blue { background: rgba(9,132,227,0.15); color: var(--accent); }
+  .tag-green { background: rgba(0,184,148,0.15); color: var(--accent2); }
+  .tag-yellow { background: rgba(253,203,110,0.15); color: var(--accent3); }
+  .tag-red { background: rgba(214,48,49,0.15); color: #d63031; }
+
+  /* Formula box */
+  .formula-box {
+    background: rgba(9,132,227,0.06);
+    border: 1px solid rgba(9,132,227,0.15);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+  }
+
+  .diagram-box {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    text-align: center;
+    overflow-x: auto;
+  }
+
+  .diagram-box pre {
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: var(--accent2);
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-container">
+  <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<canvas id="particles"></canvas>
+
+<section class="hero">
+  <div class="hero-badge">Chapter 1</div>
+  <h1>Introduction to<br>Economics</h1>
+  <p>Exploring the fundamentals of economic behavior, scarcity, and the choices that shape our world.</p>
+  <div class="hero-scroll">&#x2193;</div>
+</section>
+
+<div class="container">
+
+  <!-- 1. What is Economics? -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4CA;</div>
+    <h2>What is Economics? <span class="underline"></span></h2>
+    <p>Every subject in the world can be divided into two main parts:</p>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F52C; Natural Sciences</div>
+        <ul>
+          <li>Studies natural phenomena</li>
+          <li>Based on laboratory tests</li>
+          <li>Biology, Chemistry, Physics, Geology, Space Science, Medical Science</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F465; Social Sciences</div>
+        <ul>
+          <li>Studies behavior of people in society</li>
+          <li>Political Science, Psychology, Criminology, Sociology, Geography, History</li>
+          <li><strong>Economics</strong> &mdash; studies economic behavior of people</li>
+        </ul>
+      </div>
+    </div>
+    <div class="info-card" style="margin-top: 1rem;">
+      <div class="emoji">&#x1F451;</div>
+      <div class="label">Economics is the Queen of Social Sciences</div>
+      <div class="desc">Adam Smith &mdash; Father of Economics, author of <em>The Wealth of Nations</em> (1776)</div>
+    </div>
+  </div>
+
+  <!-- 2. Micro vs Macro -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4CB;</div>
+    <h2>Microeconomics vs Macroeconomics <span class="underline"></span></h2>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F9E0; Microeconomics</div>
+        <ul>
+          <li>Study of economics <strong>as units</strong></li>
+          <li>Small units: households, firms, individuals</li>
+          <li>Analyzes separate economic variables</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F30D; Macroeconomics</div>
+        <ul>
+          <li>Study of economics <strong>as a whole</strong></li>
+          <li>Aggregate economic behavior</li>
+          <li>National income, inflation, unemployment</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Positive vs Normative -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x2696;&#xFE0F;</div>
+    <h2>Positive &amp; Normative Statements <span class="underline"></span></h2>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x2705; Positive Statements</div>
+        <ul>
+          <li>Answer: what is, what happened, what will happen</li>
+          <li>Can be verified with real-world facts</li>
+          <li>Scientific and objective</li>
+          <li>Ex: "Positive relationship exists between money supply and price level"</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F4AD; Normative Statements</div>
+        <ul>
+          <li>Answer: what should be / should happen</li>
+          <li>Based on personal views, beliefs, traditions</li>
+          <li>Subjective &mdash; hard to test objectively</li>
+          <li>Ex: "Sri Lanka should obtain foreign aids for development"</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Needs & Wants -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F6D2;</div>
+    <h2>Needs &amp; Wants <span class="underline"></span></h2>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x2764;&#xFE0F; Needs</div>
+        <ul>
+          <li>Basic necessities to sustain life</li>
+          <li>Combined with biological sources</li>
+          <li>Limited</li>
+          <li>Do not change with time</li>
+          <li>Common to all</li>
+          <li>Ex: Food</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x2728; Wants</div>
+        <ul>
+          <li>Various forms of fulfilling needs</li>
+          <li>Combined with traditions, values, culture</li>
+          <li>Unlimited</li>
+          <li>Change with time</li>
+          <li>Differ from person to person</li>
+          <li>Ex: Rice, Bread, String Hoppers, Hoppers</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Goods & Services -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4E6;</div>
+    <h2>Goods &amp; Services <span class="underline"></span></h2>
+    <div class="card-grid">
+      <div class="info-card">
+        <div class="emoji">&#x1F4A0;</div>
+        <div class="label">Goods</div>
+        <div class="desc">Tangible, positive utility</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F3ED;</div>
+        <div class="label">Services</div>
+        <div class="desc">Intangible, positive utility</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x2622;&#xFE0F;</div>
+        <div class="label">Bads</div>
+        <div class="desc">Negative utility, disposal cost</div>
+      </div>
+    </div>
+
+    <h3>Economic vs Non-Economic Goods</h3>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F4B0; Economic Goods</div>
+        <ul>
+          <li>Scarce supply</li>
+          <li>Resource cost involved</li>
+          <li>Opportunity cost exists</li>
+          <li>Has ownership</li>
+          <li>Involves a price</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F30A; Non-Economic Goods</div>
+        <ul>
+          <li>Unlimited supply at zero price</li>
+          <li>No resource cost</li>
+          <li>No opportunity cost</li>
+          <li>No ownership</li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin-top: 0.8rem; font-size: 0.95rem; color: var(--text-muted);">
+      <em>Can non-economic goods become economic goods?</em> Yes! Examples: oxygen for divers, bottled water, solar panels.
+    </p>
+  </div>
+
+  <!-- 6. Production Resources -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F3D7;&#xFE0F;</div>
+    <h2>Production Resources <span class="underline"></span></h2>
+    <p>All inputs used to produce goods and services to fulfill human wants.</p>
+
+    <div class="flashcard-container">
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F3D4;&#xFE0F; Land
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Natural resources from nature<br>
+            <small>Forests, minerals, oceans, rivers, air<br>Payment: <strong>Rent</strong></small>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F9D1;&#x200D;&#x1F3EB; Labour
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Mental &amp; physical effort<br>
+            <small>Payment: <strong>Wages</strong></small>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F3ED; Capital
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Man-made aids for production<br>
+            <small>Payment: <strong>Interest</strong></small>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F9E9; Entrepreneurship
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Combining all factors, risk-taking<br>
+            <small>Payment: <strong>Profit</strong></small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Types of Capital</h3>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F3F7;&#xFE0F;</div><div class="label">Fixed Capital</div><div class="desc">Durable: factories, machinery</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4E6;</div><div class="label">Circulating Capital</div><div class="desc">Raw materials, semi-finished goods</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3ED;</div><div class="label">Economic Overhead</div><div class="desc">Ports, airports, highways</div></div>
+      <div class="info-card"><div class="emoji">&#x2764;&#xFE0F;</div><div class="label">Social Overhead</div><div class="desc">Hospitals, schools, drainage</div></div>
+      <div class="info-card"><div class="emoji">&#x1F9D1;&#x200D;&#x1F393;</div><div class="label">Human Capital</div><div class="desc">Skills, education, training</div></div>
+      <div class="info-card"><div class="emoji">&#x1F91D;</div><div class="label">Social Capital</div><div class="desc">Institutions, networks, traditions</div></div>
+    </div>
+  </div>
+
+  <!-- 7. Scarcity & Choice -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x26A0;&#xFE0F;</div>
+    <h2>Scarcity &amp; Choice <span class="underline"></span></h2>
+    <div class="info-card">
+      <div class="emoji">&#x26A0;&#xFE0F;</div>
+      <div class="label">Scarcity</div>
+      <div class="desc">Limited resources &times; Unlimited wants &rarr; the central economic problem</div>
+    </div>
+    <h3>Scarcity vs Poverty</h3>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x26A0;&#xFE0F; Scarcity</div>
+        <ul>
+          <li>Lack of resources relative to wants</li>
+          <li>Cannot be reduced by government policy</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F4B0; Poverty</div>
+        <ul>
+          <li>Total absence of resources for basic needs</li>
+          <li>Can be reduced by government policy</li>
+        </ul>
+      </div>
+    </div>
+    <h3>Scarcity vs Shortage</h3>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x26A0;&#xFE0F; Scarcity</div>
+        <ul>
+          <li>Permanent resource limitation</li>
+          <li>Central problem of every economy</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x23F0; Shortage</div>
+        <ul>
+          <li>Delay of stocks; demand &gt; supply</li>
+          <li>Temporary &mdash; disappears with arrival of stocks</li>
+        </ul>
+      </div>
+    </div>
+    <h3>Three Basic Economic Questions</h3>
+    <div class="timeline">
+      <div class="timeline-item"><div class="title">&#x1F4CB; What to produce &mdash; in what quantity?</div><div class="desc">Due to scarcity and alternative uses</div></div>
+      <div class="timeline-item"><div class="title">&#x2699;&#xFE0F; How to produce?</div><div class="desc">Labour-intensive vs Capital-intensive techniques</div></div>
+      <div class="timeline-item"><div class="title">&#x1F465; For whom to produce?</div><div class="desc">Distribution of limited goods and services</div></div>
+    </div>
+  </div>
+
+  <!-- 8. Opportunity Cost -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4B1;</div>
+    <h2>Opportunity Cost <span class="underline"></span></h2>
+    <div class="info-card">
+      <div class="emoji">&#x1F4B1;</div>
+      <div class="label">Opportunity Cost</div>
+      <div class="desc">The value of the next best alternative forgone when making a choice</div>
+    </div>
+    <div class="formula-box">
+      Opportunity Cost = Value of Next Best Alternative Forgone
+    </div>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x2705;</div><div class="label">Positive Concept</div><div class="desc">Only with economic goods</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4B0;</div><div class="label">Real, not Financial</div><div class="desc">Shows real value, not monetary</div></div>
+      <div class="info-card"><div class="emoji">&#x1F9D1;&#x200D;&#x1F4AC;</div><div class="label">Individual</div><div class="desc">Expressed only by the person choosing</div></div>
+    </div>
+    <h3>When can opportunity cost be zero?</h3>
+    <ul>
+      <li>Unlimited resources (non-economic goods)</li>
+      <li>Absence of alternative uses</li>
+      <li>Unemployed resources</li>
+    </ul>
+  </div>
+
+  <!-- 9. Economic Systems -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F3DB;&#xFE0F;</div>
+    <h2>Economic Systems <span class="underline"></span></h2>
+    <p>An institutional structure made by people to solve basic economic problems caused by scarcity.</p>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F3ED;</div><div class="label">Market Economy</div><div class="desc">Private ownership, price mechanism, self-interest</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3F0;</div><div class="label">Command Economy</div><div class="desc">Public ownership, central planning, social welfare</div></div>
+      <div class="info-card"><div class="emoji">&#x2696;&#xFE0F;</div><div class="label">Mixed Economy</div><div class="desc">Both price mechanism &amp; planning</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3F4;</div><div class="label">Traditional Economy</div><div class="desc">Customs, barter, tribes, hunting/gathering</div></div>
+    </div>
+    <div class="formula-box" style="font-size: 0.9rem;">
+      Classification: Ownership of Property &times; Decision Coordination &times; Incentives
+    </div>
+  </div>
+
+  <!-- 10. PPF -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4C8;</div>
+    <h2>Production Possibility Frontier <span class="underline"></span></h2>
+    <div class="info-card">
+      <div class="emoji">&#x1F4C8;</div>
+      <div class="label">PPF</div>
+      <div class="desc">The line showing maximum combination of two goods an economy can produce with full efficiency</div>
+    </div>
+    <div class="diagram-box">
+      <pre>
+Pen
+  |
+6 |    A
+5 |   /
+4 |  /
+3 | /
+2 |/
+1 |
+  +------------------ Pencil
+  0  20 40 60 80 100
+      </pre>
+    </div>
+    <h3>Types of Opportunity Cost on PPF</h3>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x2014;</div><div class="label">Constant OC</div><div class="desc">Linear PPF, homogeneous resources</div></div>
+      <div class="info-card"><div class="emoji">&#x2197;&#xFE0F;</div><div class="label">Increasing OC</div><div class="desc">Concave PPF, non-homogeneous resources</div></div>
+      <div class="info-card"><div class="emoji">&#x2198;&#xFE0F;</div><div class="label">Decreasing OC</div><div class="desc">Convex PPF</div></div>
+      <div class="info-card"><div class="emoji">&#x25CB;</div><div class="label">Zero OC</div><div class="desc">Moving inside curve &rarr; to curve</div></div>
+    </div>
+    <div class="formula-box" style="font-size: 0.9rem;">
+      Opportunity Cost = Amount Reduced &divide; Amount Increased
+    </div>
+  </div>
+
+  <!-- PPF Concepts -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F9E9;</div>
+    <h2>PPF Concepts <span class="underline"></span></h2>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x274C;</div><div class="label">Scarcity</div><div class="desc">Point <strong>outside</strong> PPF</div></div>
+      <div class="info-card"><div class="emoji">&#x2705;</div><div class="label">Production Efficiency</div><div class="desc">Any point <strong>on</strong> PPF (full employment + full production)</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3AF;</div><div class="label">Allocative Efficiency</div><div class="desc"><strong>One</strong> point on PPF where P = MC or MC = MB</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4C9;</div><div class="label">Unemployment/Innefficiency</div><div class="desc">Point <strong>inside</strong> PPF</div></div>
+    </div>
+    <div class="diagram-box">
+      <pre>
+        Good X
+          |
+    C     |     B
+     \    |    /
+      \   |   /
+       \  |  /
+        \ | /
+         \|/
+          +---------- Good Y
+
+  A - Inside (unemployment, inefficiency)
+  B - On PPF (full employment, efficiency)
+  C - Outside (scarcity - unattainable)
+      </pre>
+    </div>
+    <h3>Economic Growth &amp; Depression</h3>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F4C8;</div><div class="label">Economic Growth</div><div class="desc">PPF shifts <strong>right</strong> &mdash; increased production capacity</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4C9;</div><div class="label">Economic Depression</div><div class="desc">PPF shifts <strong>left</strong> &mdash; decreased production capacity</div></div>
+    </div>
+    <h3>Factors Affecting Production Capacity</h3>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x2197;&#xFE0F; Increase (Growth)</div>
+        <ul>
+          <li>Increase in resources (Land, Labour, Capital, Entrepreneurship)</li>
+          <li>Increase in productivity (Investment, Technology, Management)</li>
+          <li>Increase in innovations</li>
+          <li>Economic development</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x2198;&#xFE0F; Decrease (Depression)</div>
+        <ul>
+          <li>Decrease in resources</li>
+          <li>Decrease in productivity</li>
+          <li>Decrease in innovations</li>
+          <li>Natural disasters / Civil war</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Quiz -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F9F0;</div>
+    <h2>Test Your Knowledge <span class="underline"></span></h2>
+
+    <div class="quiz-question" data-q="1">
+      <div class="q">1. Who is known as the Father of Economics?</div>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Adam Smith</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">John Maynard Keynes</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Karl Marx</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">David Ricardo</button>
+      <div class="quiz-feedback" data-feedback="1"></div>
+    </div>
+
+    <div class="quiz-question" data-q="2">
+      <div class="q">2. What does Macroeconomics study?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Small economic units like households</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">The economy as a whole</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Individual market prices</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Consumer behavior only</button>
+      <div class="quiz-feedback" data-feedback="2"></div>
+    </div>
+
+    <div class="quiz-question" data-q="3">
+      <div class="q">3. Which is an example of a Positive Statement?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Sri Lanka should obtain foreign aid</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Positive relationship exists between money supply and price level</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">People should control their expenditures</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">The government ought to reduce taxes</button>
+      <div class="quiz-feedback" data-feedback="3"></div>
+    </div>
+
+    <div class="quiz-question" data-q="4">
+      <div class="q">4. The payment for the factor "Capital" is called:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Rent</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Wages</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Interest</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Profit</button>
+      <div class="quiz-feedback" data-feedback="4"></div>
+    </div>
+
+    <div class="quiz-question" data-q="5">
+      <div class="q">5. A point inside the PPF represents:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Scarcity</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Economic growth</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Unemployment / Inefficiency</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Production efficiency</button>
+      <div class="quiz-feedback" data-feedback="5"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Particles
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  class Particle {
+    constructor() {
+      this.reset();
+    }
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 2 + 0.5;
+      this.speedX = (Math.random() - 0.5) * 0.5;
+      this.speedY = (Math.random() - 0.5) * 0.5;
+      this.opacity = Math.random() * 0.5 + 0.1;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(9, 132, 227, ${this.opacity})`;
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+  function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
+
+    // Draw connections
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 150) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(9, 132, 227, ${0.06 * (1 - dist / 150)})`;
+          ctx.lineWidth = 0.5;
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(animateParticles);
+  }
+  animateParticles();
+
+  // Scroll reveal
+  const sections = document.querySelectorAll('[data-section]');
+
+  function revealSections() {
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 80) {
+        section.classList.add('visible');
+      }
+    });
+  }
+  window.addEventListener('scroll', revealSections);
+  revealSections();
+
+  // Progress bar
+  const progressBar = document.getElementById('progressBar');
+
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / docHeight) * 100;
+    progressBar.style.width = progress + '%';
+  });
+
+  // Quiz
+  function checkAnswer(btn, isCorrect) {
+    const question = btn.closest('.quiz-question');
+    const options = question.querySelectorAll('.quiz-option');
+    const feedback = question.querySelector('.quiz-feedback');
+
+    options.forEach(opt => {
+      opt.disabled = true;
+      opt.style.cursor = 'not-allowed';
+      if (opt.dataset.correct === 'true') opt.classList.add('correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.textContent = '&#x2705; Correct!';
+      feedback.className = 'quiz-feedback show correct';
+    } else {
+      btn.classList.add('wrong');
+      const correctBtn = question.querySelector('[data-correct="true"]');
+      feedback.textContent = '&#x274C; Incorrect. The answer was: ' + correctBtn.textContent;
+      feedback.className = 'quiz-feedback show wrong';
+    }
+  }
+</script>
+
+</body>
+</html>

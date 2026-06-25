@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hyperfocus — Interactive Summary</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #faf9f6;
+    --bg-alt: #f0ede6;
+    --surface: #ffffff;
+    --text: #1a1a2e;
+    --text-dim: #6b6b80;
+    --accent: #6c5ce7;
+    --accent2: #00cec9;
+    --accent3: #fd79a8;
+    --amber: #fdcb6e;
+    --border: #e0ddd5;
+    --shadow: 0 8px 32px rgba(0,0,0,0.06);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --transition: 0.35s cubic-bezier(.22,1,.36,1);
+  }
+
+  .dark {
+    --bg: #0f0f1a;
+    --bg-alt: #1a1a2e;
+    --surface: #24243e;
+    --text: #eeeef8;
+    --text-dim: #9898b8;
+    --border: #3a3a5c;
+    --shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    transition: background var(--transition), color var(--transition);
+    overflow-x: hidden;
+  }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+  /* ─── THEME TOGGLE ─── */
+  .theme-toggle {
+    position: fixed; top: 20px; right: 20px; z-index: 1000;
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); width: 44px; height: 44px; border-radius: 50%;
+    cursor: pointer; font-size: 1.2rem;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--shadow); transition: all var(--transition);
+  }
+  .theme-toggle:hover { transform: scale(1.1); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    padding: 2rem; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 40%, var(--accent) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 60%, var(--accent2) 0%, transparent 60%);
+    opacity: 0.08; pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-block; padding: 6px 18px; border-radius: 50px;
+    background: var(--accent); color: #fff; font-size: 0.8rem;
+    font-weight: 600; letter-spacing: 0.5px; margin-bottom: 1.5rem;
+    opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero h1 {
+    font-size: clamp(3rem, 10vw, 7rem); font-weight: 900;
+    letter-spacing: -3px; line-height: 1; opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+  .hero h1 .hl { background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero p {
+    font-size: 1.2rem; color: var(--text-dim); max-width: 560px;
+    margin-top: 1rem; opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
+  }
+  .hero-sub {
+    margin-top: 0.8rem; font-size: 0.95rem; color: var(--text-dim);
+    opacity: 0; animation: fadeUp 0.8s 0.7s forwards;
+  }
+  .hero-arrow {
+    margin-top: 3rem; font-size: 1.8rem; color: var(--accent);
+    animation: bounce 2s infinite; opacity: 0;
+    animation: fadeUp 0.8s 0.9s forwards, bounce 2s 0.9s infinite;
+  }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
+  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+  @keyframes float {
+    0%,100% { transform: translateY(0) rotate(0deg); }
+    33% { transform: translateY(-12px) rotate(1deg); }
+    66% { transform: translateY(-6px) rotate(-1deg); }
+  }
+  @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+  @keyframes countUp { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
+
+  /* ─── SECTIONS ─── */
+  section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+
+  .section-label {
+    display: inline-block; padding: 4px 14px; border-radius: 50px;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; margin-bottom: 1rem;
+  }
+  .section-label.hf { background: var(--accent); color: #fff; }
+  .section-label.sf { background: var(--accent2); color: #0f0f1a; }
+  .section-label.tools { background: var(--accent3); color: #fff; }
+  .section-label.quotes { background: var(--amber); color: #1a1a2e; }
+
+  section h2 {
+    font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800;
+    letter-spacing: -1.5px; margin-bottom: 0.6rem;
+  }
+  section h2 .hl { -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  section h2 .hl.purple { background-image: linear-gradient(135deg, var(--accent), #a29bfe); }
+  section h2 .hl.teal { background-image: linear-gradient(135deg, var(--accent2), #55efc4); }
+
+  .section-desc {
+    color: var(--text-dim); font-size: 1.05rem; max-width: 600px;
+    margin-bottom: 2.5rem;
+  }
+
+  /* ─── GRID CARDS ─── */
+  .grid { display: grid; gap: 1.5rem; }
+  .grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .grid-3 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+  .grid-4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.5rem;
+    box-shadow: var(--shadow); transition: all var(--transition);
+    cursor: default; opacity: 0; transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease, border-color var(--transition), box-shadow var(--transition);
+  }
+  .card.visible { opacity: 1; transform: translateY(0); }
+  .card:hover { border-color: var(--accent); box-shadow: 0 12px 40px rgba(108,92,231,0.12); }
+  .card.teal:hover { border-color: var(--accent2); box-shadow: 0 12px 40px rgba(0,206,201,0.12); }
+
+  .card-icon { font-size: 1.8rem; margin-bottom: 0.6rem; display: block; }
+  .card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .card p { font-size: 0.9rem; color: var(--text-dim); line-height: 1.5; }
+  .card .num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; border-radius: 8px;
+    background: var(--accent); color: #fff; font-weight: 700; font-size: 0.85rem;
+    margin-bottom: 0.8rem;
+  }
+  .card.teal .num { background: var(--accent2); color: #0f0f1a; }
+
+  /* ─── STAGE FLOW ─── */
+  .stage-flow {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    justify-content: center; margin: 2rem 0;
+  }
+  .stage {
+    flex: 1; min-width: 160px; max-width: 220px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 1.2rem;
+    text-align: center; transition: all var(--transition);
+    opacity: 0; transform: translateY(16px);
+  }
+  .stage.visible { opacity: 1; transform: translateY(0); }
+  .stage:hover { transform: translateY(-4px) scale(1.02); box-shadow: var(--shadow); }
+  .stage .s-num {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--accent); color: #fff; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 0.6rem;
+  }
+  .stage h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .stage p { font-size: 0.8rem; color: var(--text-dim); }
+
+  /* ─── TIMER ─── */
+  .timer-section {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 2.5rem; text-align: center;
+    box-shadow: var(--shadow);
+  }
+  .timer-display {
+    font-size: clamp(3.5rem, 10vw, 6rem); font-weight: 800;
+    font-variant-numeric: tabular-nums; letter-spacing: 2px;
+    margin: 1rem 0; color: var(--text);
+  }
+  .timer-display.running { color: var(--accent); }
+  .timer-controls { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
+  .timer-presets { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .timer-presets button {
+    padding: 6px 18px; border: 1px solid var(--border); border-radius: 50px;
+    background: var(--bg-alt); color: var(--text); cursor: pointer;
+    font-size: 0.85rem; font-weight: 500; transition: all var(--transition);
+  }
+  .timer-presets button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  .btn {
+    padding: 12px 28px; border: none; border-radius: 50px;
+    font-size: 0.95rem; font-weight: 600; cursor: pointer;
+    transition: all var(--transition);
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(108,92,231,0.3); }
+  .btn-outline {
+    background: transparent; border: 1px solid var(--border); color: var(--text);
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ─── INSIGHT GENERATOR ─── */
+  .insight-box {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 2rem; text-align: center;
+    box-shadow: var(--shadow); min-height: 180px;
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; transition: all var(--transition);
+  }
+  .insight-text {
+    font-size: 1.15rem; font-weight: 500; max-width: 500px;
+    margin-bottom: 1rem; transition: opacity 0.4s ease;
+  }
+  .insight-text.fade { opacity: 0; }
+
+  /* ─── QUOTE CARDS ─── */
+  .quote-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-left: 4px solid var(--accent); border-radius: var(--radius-sm);
+    padding: 1.5rem; transition: all var(--transition);
+    opacity: 0; transform: translateY(16px);
+  }
+  .quote-card.visible { opacity: 1; transform: translateY(0); }
+  .quote-card:nth-child(2) { border-left-color: var(--accent2); }
+  .quote-card:nth-child(3) { border-left-color: var(--accent3); }
+  .quote-card:nth-child(4) { border-left-color: var(--amber); }
+  .quote-card blockquote {
+    font-size: 1rem; font-weight: 500; font-style: italic;
+    margin-bottom: 0.5rem; color: var(--text);
+  }
+  .quote-card cite { font-size: 0.85rem; color: var(--text-dim); font-style: normal; }
+
+  /* ─── STATS BAR ─── */
+  .stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem; margin: 2rem 0;
+  }
+  .stat {
+    text-align: center; padding: 1.2rem; background: var(--surface);
+    border: 1px solid var(--border); border-radius: var(--radius-sm);
+    transition: all var(--transition);
+  }
+  .stat:hover { border-color: var(--accent); }
+  .stat-value {
+    font-size: 2.2rem; font-weight: 800; color: var(--accent);
+  }
+  .stat-label { font-size: 0.8rem; color: var(--text-dim); margin-top: 0.2rem; }
+  .stat .unit { font-size: 1rem; }
+
+  /* ─── SCATTERFOCUS MODES ─── */
+  .mode-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.5rem;
+    transition: all var(--transition); cursor: pointer;
+    opacity: 0; transform: translateY(20px);
+  }
+  .mode-card.visible { opacity: 1; transform: translateY(0); }
+  .mode-card:hover { border-color: var(--accent2); box-shadow: 0 12px 40px rgba(0,206,201,0.1); }
+  .mode-card h3 { font-size: 1rem; font-weight: 700; }
+  .mode-card p { font-size: 0.85rem; color: var(--text-dim); margin-top: 0.3rem; }
+
+  .mode-card .mode-detail {
+    max-height: 0; overflow: hidden; transition: max-height 0.5s ease, margin 0.5s ease;
+    margin-top: 0;
+  }
+  .mode-card.active .mode-detail {
+    max-height: 200px; margin-top: 0.8rem;
+  }
+  .mode-card .mode-detail p {
+    font-size: 0.85rem; color: var(--text-dim); line-height: 1.5;
+    border-top: 1px solid var(--border); padding-top: 0.8rem;
+  }
+
+  /* ─── QUICK TIPS ─── */
+  .tip-list { list-style: none; }
+  .tip-list li {
+    display: flex; gap: 0.8rem; align-items: flex-start;
+    padding: 1rem 0; border-bottom: 1px solid var(--border);
+    opacity: 0; transform: translateX(-10px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .tip-list li.visible { opacity: 1; transform: translateX(0); }
+  .tip-list li:last-child { border-bottom: none; }
+  .tip-list .check {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--accent2); color: #0f0f1a;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-size: 0.75rem; font-weight: 700; margin-top: 2px;
+  }
+  .tip-list strong { display: block; font-weight: 700; }
+  .tip-list span { font-size: 0.9rem; color: var(--text-dim); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    text-align: center; padding: 3rem 2rem; color: var(--text-dim);
+    font-size: 0.85rem; border-top: 1px solid var(--border);
+    margin-top: 2rem;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 600px) {
+    section { padding: 3rem 1.2rem; }
+    .stage-flow { flex-direction: column; align-items: center; }
+    .stage { max-width: 100%; }
+    .timer-controls { flex-direction: column; align-items: center; }
+  }
+
+  /* ─── PARTICLES ─── */
+  #particles {
+    position: fixed; inset: 0; pointer-events: none; z-index: -1;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-badge">📘 Book Summary</div>
+  <h1><span class="hl">Hyperfocus</span></h1>
+  <p>How to Be More Productive in a World of Distraction</p>
+  <div class="hero-sub">by Chris Bailey &middot; Interactive Summary</div>
+  <div class="hero-arrow">↓</div>
+</header>
+
+<!-- STATS -->
+<section>
+  <div class="stats">
+    <div class="stat"><div class="stat-value" id="statIntent">0<span class="unit">%</span></div><div class="stat-label">Time spent intentionally</div></div>
+    <div class="stat"><div class="stat-value" id="statSeconds">0<span class="unit">s</span></div><div class="stat-label">Avg focus before distraction</div></div>
+    <div class="stat"><div class="stat-value" id="statWander">47<span class="unit">%</span></div><div class="stat-label">Time mind wanders</div></div>
+    <div class="stat"><div class="stat-value" id="statBits">40</div><div class="stat-label">Bits processed consciously</div></div>
+  </div>
+</section>
+
+<!-- PART 1: HYPERFOCUS -->
+<section>
+  <div class="section-label hf">Part One</div>
+  <h2><span class="hl purple">Hyperfocus</span></h2>
+  <p class="section-desc">The art of concentrating on one important thing at a time — your brain's most productive mode.</p>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <span class="card-icon">🧠</span>
+      <h3>Attentional Space</h3>
+      <p>Your mental RAM. Of 11 million bits of sensory input per second, you consciously process only <strong>40 bits</strong>. You can hold about <strong>4 chunks</strong> in short-term memory.</p>
+    </div>
+    <div class="card teal">
+      <span class="card-icon">✈️</span>
+      <h3>Autopilot Mode</h3>
+      <p>~40% of our actions are habits. We default to autopilot, reacting to whatever is most stimulating — email pings, notifications, the news.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">📊</span>
+      <h3>Four Task Types</h3>
+      <p><strong>Purposeful</strong> (productive + attractive) — the sweet spot.<br>
+      <strong>Necessary</strong> (productive + unattractive).<br>
+      <strong>Distracting</strong> (unproductive + attractive).<br>
+      <strong>Unnecessary</strong> (unproductive + unattractive).</p>
+    </div>
+    <div class="card teal">
+      <span class="card-icon">🔄</span>
+      <h3>Attention Residue</h3>
+      <p>After switching tasks, part of your brain keeps processing the previous one. Task switching can make your work take <strong>50% longer</strong>.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:2.5rem; font-weight:700;">The Four Stages of Hyperfocus</h3>
+  <div class="stage-flow">
+    <div class="stage"><div class="s-num">1</div><h4>Choose</h4><p>Pick one object of attention</p></div>
+    <div class="stage"><div class="s-num">2</div><h4>Eliminate</h4><p>Remove distractions ahead of time</p></div>
+    <div class="stage"><div class="s-num">3</div><h4>Focus</h4><p>Direct full attention to the task</p></div>
+    <div class="stage"><div class="s-num">4</div><h4>Return</h4><p>Notice wandering & gently refocus</p></div>
+  </div>
+</section>
+
+<!-- TIMER -->
+<section>
+  <div class="section-label tools">⚡ Focus Timer</div>
+  <h2>Try a <span class="hl purple">Hyperfocus</span> Session</h2>
+  <p class="section-desc">Set a timer and eliminate all distractions. Give one task your full attention.</p>
+
+  <div class="timer-section" id="timerSection">
+    <div class="timer-presets" id="timerPresets">
+      <button data-minutes="5">5 min</button>
+      <button data-minutes="15">15 min</button>
+      <button data-minutes="25" class="active">25 min</button>
+      <button data-minutes="45">45 min</button>
+      <button data-minutes="90">90 min</button>
+    </div>
+    <div class="timer-display" id="timerDisplay">25:00</div>
+    <div class="timer-controls">
+      <button class="btn btn-primary" id="timerStart">▶ Start</button>
+      <button class="btn btn-outline" id="timerReset">↺ Reset</button>
+    </div>
+  </div>
+</section>
+
+<!-- PART 2: SCATTERFOCUS -->
+<section>
+  <div class="section-label sf">Part Two</div>
+  <h2><span class="hl teal">Scatterfocus</span></h2>
+  <p class="section-desc">Intentionally letting your mind wander — it's not slacking, it's how you plan, recharge, and connect ideas.</p>
+
+  <div class="grid grid-3">
+    <div class="mode-card">
+      <h3>📝 Capture Mode</h3>
+      <p>Let your mind roam freely. Capture whatever surfaces.</p>
+      <div class="mode-detail"><p>Best for identifying what's on your mind. Sit with a notebook and see what rises to consciousness — tasks, ideas, people to follow up with.</p></div>
+    </div>
+    <div class="mode-card">
+      <h3>🧩 Problem-Crunching Mode</h3>
+      <p>Hold a problem loosely while your mind wanders around it.</p>
+      <div class="mode-detail"><p>Best for mulling over a specific challenge. Let your subconscious make connections you wouldn't find by force.</p></div>
+    </div>
+    <div class="mode-card">
+      <h3>🚿 Habitual Mode</h3>
+      <p>Do a simple task while your mind wanders. <em>The most powerful style.</em></p>
+      <div class="mode-detail"><p>Walking, showering, washing dishes. The mindless task frees your attentional space for insights. This is where eureka moments are born.</p></div>
+    </div>
+  </div>
+
+  <div class="grid grid-3" style="margin-top:1.5rem;">
+    <div class="card">
+      <div class="num">48%</div>
+      <h3>Future</h3>
+      <p>Your mind spends most wandering time planning what's next — the most productive form of daydreaming.</p>
+    </div>
+    <div class="card">
+      <div class="num">28%</div>
+      <h3>Present</h3>
+      <p>Reflecting on your current approach and considering alternatives you wouldn't see while deep in focus.</p>
+    </div>
+    <div class="card">
+      <div class="num">12%</div>
+      <h3>Past</h3>
+      <p>Learning from memories and past experiences — even the cringeworthy ones have value.</p>
+    </div>
+  </div>
+</section>
+
+<!-- INSIGHT GENERATOR -->
+<section>
+  <div class="section-label sf">💡 Try This</div>
+  <h2><span class="hl teal">Scatterfocus</span> Insight Generator</h2>
+  <p class="section-desc">Click to let your mind wander. Each click surfaces a different way to think about your attention.</p>
+
+  <div class="insight-box" id="insightBox">
+    <div class="insight-text" id="insightText">Your attention is the most powerful tool you have to live a good life.</div>
+    <button class="btn btn-primary" id="insightBtn">✨ Wander</button>
+  </div>
+</section>
+
+<!-- QUOTES -->
+<section>
+  <div class="section-label quotes">❝</div>
+  <h2>Key <span class="hl purple">Quotes</span></h2>
+  <p class="section-desc">Memorable lines from the book that capture its essence.</p>
+
+  <div class="grid" style="display:flex; flex-direction:column; gap:1rem;">
+    <div class="quote-card"><blockquote>"We are what we pay attention to."</blockquote><cite>— Chris Bailey</cite></div>
+    <div class="quote-card"><blockquote>"Productivity means accomplishing what we intend to. Being busy doesn't make us productive."</blockquote><cite>— Chris Bailey</cite></div>
+    <div class="quote-card"><blockquote>"The more demands made on your time, the more essential it becomes to choose what — and how many — things you pay attention to."</blockquote><cite>— Chris Bailey</cite></div>
+    <div class="quote-card"><blockquote>"Your attention is the most valuable ingredient you have to live a good life."</blockquote><cite>— Chris Bailey</cite></div>
+  </div>
+</section>
+
+<!-- QUICK TIPS -->
+<section>
+  <div class="section-label tools">✅ Quick Tactics</div>
+  <h2>Put It Into <span class="hl purple">Practice</span></h2>
+  <p class="section-desc">Small, actionable changes you can make today.</p>
+
+  <ul class="tip-list" id="tipList">
+    <li><span class="check">✓</span><div><strong>Leave your phone in another room</strong><span>Smartphones are productivity black holes. Physical distance reduces temptation.</span></div></li>
+    <li><span class="check">✓</span><div><strong>Set 3 daily intentions each morning</strong><span>Decide in advance what you'll focus on. Intention is the bouncer of your attentional space.</span></div></li>
+    <li><span class="check">✓</span><div><strong>Keep a distractions list</strong><span>Capture stray thoughts on paper so they don't hijack your attention while you work.</span></div></li>
+    <li><span class="check">✓</span><div><strong>Use an hourly awareness chime</strong><span>Every hour, check: "What's occupying my attentional space right now?"</span></div></li>
+    <li><span class="check">✓</span><div><strong>Schedule scatterfocus time</strong><span>Block 15 minutes to sit with a notebook and let your mind wander without guilt.</span></div></li>
+    <li><span class="check">✓</span><div><strong>Meditate for 5 minutes a day</strong><span>The single most validated way to expand your attentional space — proven to increase it by 30%+.</span></div></li>
+  </ul>
+</section>
+
+<footer>
+  <p>Based on <em>Hyperfocus</em> by Chris Bailey &mdash; Interactive Summary</p>
+</footer>
+
+<script>
+  // ─── THEME ───
+  const themeToggle = document.getElementById('themeToggle');
+  themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    themeToggle.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+  });
+
+  // ─── SCROLL REVEAL ───
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.card, .stage, .quote-card, .mode-card, .tip-list li').forEach(el => observer.observe(el));
+
+  // ─── COUNTER ANIMATION ───
+  function animateCounter(el, target, suffix = '') {
+    let current = 0;
+    const step = Math.ceil(target / 40);
+    const interval = setInterval(() => {
+      current += step;
+      if (current >= target) { current = target; clearInterval(interval); }
+      el.innerHTML = current + suffix;
+    }, 30);
+  }
+
+  const statObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        animateCounter(document.getElementById('statIntent'), 42, '<span class="unit">%</span>');
+        animateCounter(document.getElementById('statSeconds'), 40, '<span class="unit">s</span>');
+        statObserver.disconnect();
+      }
+    });
+  }, { threshold: 0.5 });
+  statObserver.observe(document.querySelector('.stats'));
+
+  // ─── TIMER ───
+  let timerMinutes = 25;
+  let timerSeconds = 25 * 60;
+  let timerRunning = false;
+  let timerInterval = null;
+  const timerDisplay = document.getElementById('timerDisplay');
+  const timerStart = document.getElementById('timerStart');
+  const timerReset = document.getElementById('timerReset');
+  const presets = document.querySelectorAll('#timerPresets button');
+
+  function updateTimerDisplay() {
+    const m = Math.floor(timerSeconds / 60);
+    const s = timerSeconds % 60;
+    timerDisplay.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  }
+
+  function stopTimer() {
+    timerRunning = false;
+    timerInterval && clearInterval(timerInterval);
+    timerStart.textContent = '▶ Start';
+    timerDisplay.classList.remove('running');
+  }
+
+  function startTimer() {
+    if (timerRunning) { stopTimer(); return; }
+    if (timerSeconds <= 0) { resetTimer(); return; }
+    timerRunning = true;
+    timerStart.textContent = '⏸ Pause';
+    timerDisplay.classList.add('running');
+    timerInterval = setInterval(() => {
+      timerSeconds--;
+      updateTimerDisplay();
+      if (timerSeconds <= 0) {
+        stopTimer();
+        timerDisplay.textContent = '✨ Done!';
+        timerDisplay.classList.remove('running');
+        timerSeconds = 0;
+      }
+    }, 1000);
+  }
+
+  function resetTimer() {
+    stopTimer();
+    timerSeconds = timerMinutes * 60;
+    updateTimerDisplay();
+  }
+
+  timerStart.addEventListener('click', startTimer);
+  timerReset.addEventListener('click', resetTimer);
+
+  presets.forEach(btn => {
+    btn.addEventListener('click', () => {
+      presets.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      timerMinutes = parseInt(btn.dataset.minutes);
+      resetTimer();
+    });
+  });
+
+  // ─── INSIGHT GENERATOR ───
+  const insights = [
+    "Your attention is the most powerful tool you have to live a good life.",
+    "The more demands on your time, the more essential it becomes to choose what you pay attention to.",
+    "What you attend to becomes your reality.",
+    "When we invest our limited attention intelligently and deliberately, we focus more deeply and think more clearly.",
+    "Managing your attention is like choosing what to watch on Netflix — except there are thousands of paths.",
+    "We are what we pay attention to. You are what you consume.",
+    "The tidier you keep your attentional space, the more clearly you think.",
+    "Scatterfocus lets you step back from life and work with greater intention.",
+    "Productivity means accomplishing what you intend to — not cramming more into your day.",
+    "The best way to deal with distractions is to eliminate them before they tempt you.",
+    "Meditation is the most validated technique for expanding your attentional space.",
+    "Hyperfocus without scatterfocus leads to burnout. Scatterfocus without hyperfocus leads to chaos.",
+    "Leaving some attentional space to spare allows you to reflect on the best approach.",
+    "Your brain processes 11 million bits per second. You consciously handle only 40. Choose them wisely.",
+    "We spend 47% of our time with a wandering mind. Make that wandering intentional.",
+    "Intention is the bouncer of your attentional space.",
+    "The smaller the object of attention, the more your mind will wander — but the more you expand your capacity.",
+    "Creativity emerges when you connect old ideas in new ways.",
+  ];
+  const insightText = document.getElementById('insightText');
+  const insightBtn = document.getElementById('insightBtn');
+
+  insightBtn.addEventListener('click', () => {
+    insightText.classList.add('fade');
+    setTimeout(() => {
+      const random = insights[Math.floor(Math.random() * insights.length)];
+      insightText.textContent = random;
+      insightText.classList.remove('fade');
+    }, 300);
+  });
+
+  // ─── MODE CARDS (click to expand) ───
+  document.querySelectorAll('.mode-card').forEach(card => {
+    card.addEventListener('click', () => {
+      card.classList.toggle('active');
+    });
+  });
+
+  // ─── PARTICLES ───
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = document.body.scrollHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  for (let i = 0; i < 30; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: Math.random() * 3 + 1,
+      speedX: (Math.random() - 0.5) * 0.3,
+      speedY: (Math.random() - 0.5) * 0.3,
+      opacity: Math.random() * 0.3 + 0.1,
+    });
+  }
+
+  function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      p.x += p.speedX;
+      p.y += p.speedY;
+      if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+      if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = document.body.classList.contains('dark')
+        ? `rgba(108,92,231,${p.opacity})`
+        : `rgba(108,92,231,${p.opacity * 0.7})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(animateParticles);
+  }
+  animateParticles();
+
+  // Recalc canvas height on scroll
+  window.addEventListener('scroll', resizeCanvas);
+</script>
+</body>
+</html>

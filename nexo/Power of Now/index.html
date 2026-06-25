@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Power of Now — Interactive Summary</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0a0a12;
+    color: #ddd;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── Ambient background ── */
+  #bg-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  header {
+    text-align: center;
+    padding: 3rem 0 2rem;
+    animation: fadeSlideDown 1s ease-out;
+  }
+
+  .sun-icon {
+    font-size: 4.5rem;
+    display: inline-block;
+    animation: glowPulse 4s ease-in-out infinite;
+    margin-bottom: 0.5rem;
+    filter: drop-shadow(0 0 30px rgba(251,191,36,0.2));
+  }
+
+  @keyframes glowPulse {
+    0%, 100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 20px rgba(251,191,36,0.15)); }
+    50% { transform: scale(1.1) rotate(5deg); filter: drop-shadow(0 0 40px rgba(251,191,36,0.35)); }
+  }
+
+  header h1 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b, #d97706);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+  }
+
+  header .subtitle {
+    margin-top: 0.5rem;
+    color: #9990aa;
+    font-size: 1.05rem;
+    font-weight: 300;
+  }
+
+  header .author {
+    margin-top: 0.3rem;
+    font-size: 0.9rem;
+    color: #776688;
+  }
+
+  /* ── Tabs ── */
+  .tabs {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin: 2rem 0 1.5rem;
+    animation: fadeSlideUp 0.8s ease-out 0.2s both;
+  }
+
+  .tab-btn {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    color: #999;
+    padding: 0.7rem 1.4rem;
+    border-radius: 100px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .tab-btn:hover {
+    border-color: rgba(251,191,36,0.3);
+    color: #ccc;
+    transform: translateY(-2px);
+  }
+
+  .tab-btn.active {
+    background: linear-gradient(135deg, rgba(251,191,36,0.15), rgba(245,158,11,0.15));
+    border-color: rgba(251,191,36,0.4);
+    color: #fbbf24;
+    box-shadow: 0 0 30px rgba(251,191,36,0.08);
+  }
+
+  /* ── Tab panels ── */
+  .tab-panel {
+    display: none;
+    animation: fadeIn 0.5s ease;
+  }
+
+  .tab-panel.active { display: block; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeSlideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeScale { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+  /* ── Cards ── */
+  .card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    backdrop-filter: blur(8px);
+    transition: all 0.35s ease;
+    animation: fadeSlideUp 0.6s ease-out both;
+  }
+
+  .card:hover {
+    border-color: rgba(251,191,36,0.12);
+    background: rgba(255,255,255,0.04);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+
+  .card h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+  }
+
+  .card p, .card li {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #c0c0d0;
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    padding: 0.3rem 0 0.3rem 1.5rem;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: '✦';
+    position: absolute;
+    left: 0;
+    color: #fbbf24;
+    font-size: 0.7rem;
+    top: 0.5rem;
+  }
+
+  /* ── Color helpers ── */
+  .gold { color: #fbbf24; }
+  .amber { color: #f59e0b; }
+  .warm { color: #e8d0a0; }
+  .muted { color: #9990aa; }
+
+  /* ── Key insight box ── */
+  .insight-box {
+    background: linear-gradient(135deg, rgba(251,191,36,0.06), rgba(217,119,6,0.06));
+    border: 1px solid rgba(251,191,36,0.12);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    animation: fadeScale 0.8s ease-out;
+  }
+
+  .insight-box .big {
+    font-size: 2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #fbbf24, #d97706);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .insight-box .small {
+    font-size: 0.9rem;
+    color: #aaa0b8;
+    margin-top: 0.5rem;
+    line-height: 1.6;
+  }
+
+  /* ── Quote box ── */
+  .quote-box {
+    background: linear-gradient(135deg, rgba(251,191,36,0.04), rgba(217,119,6,0.04));
+    border-left: 3px solid #f59e0b;
+    border-radius: 0 12px 12px 0;
+    padding: 1.2rem 1.5rem;
+    margin: 1rem 0;
+    font-style: italic;
+    animation: fadeSlideUp 0.6s ease-out both;
+  }
+
+  .quote-box p {
+    font-size: 1rem;
+    color: #d8d0e0;
+    line-height: 1.6;
+  }
+
+  .quote-box .attr {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: #776688;
+    font-style: normal;
+  }
+
+  /* ── Practice cards grid ── */
+  .practice-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.8rem;
+    margin: 1rem 0;
+  }
+
+  .practice-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.35s ease;
+    user-select: none;
+  }
+
+  .practice-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(251,191,36,0.2);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  }
+
+  .practice-card .icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+
+  .practice-card .title {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #fbbf24;
+  }
+
+  .practice-card .detail {
+    font-size: 0.75rem;
+    color: #888;
+    margin-top: 0.4rem;
+    line-height: 1.5;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, margin 0.3s ease;
+    margin-top: 0;
+  }
+
+  .practice-card.open .detail {
+    max-height: 200px;
+    margin-top: 0.6rem;
+  }
+
+  /* ── Accordion (for concepts) ── */
+  .accordion-header {
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .accordion-header .arrow {
+    transition: transform 0.3s ease;
+    font-size: 0.9rem;
+    color: #555;
+  }
+
+  .accordion-header.open .arrow { transform: rotate(180deg); }
+
+  .accordion-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s ease;
+    padding: 0;
+  }
+
+  .accordion-body.open {
+    max-height: 600px;
+    padding: 0.8rem 0 0.3rem;
+  }
+
+  /* ── Breath animation ── */
+  .breath-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(251,191,36,0.15), transparent);
+    margin: 1.5rem auto;
+    animation: breathe 6s ease-in-out infinite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    color: #fbbf24;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  @keyframes breathe {
+    0%, 100% { transform: scale(0.8); opacity: 0.4; }
+    50% { transform: scale(1.3); opacity: 0.8; }
+  }
+
+  /* ── Progress ── */
+  .progress-container {
+    margin: 2rem 0;
+    text-align: center;
+  }
+
+  .progress-label {
+    font-size: 0.8rem;
+    color: #776688;
+  }
+
+  .progress-bar-bg {
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 100px;
+    overflow: hidden;
+    margin-top: 0.5rem;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #fbbf24, #f59e0b, #d97706);
+    border-radius: 100px;
+    transition: width 1s ease;
+  }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.8rem;
+    color: #444;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 600px) {
+    header h1 { font-size: 2rem; }
+    .tab-btn { padding: 0.5rem 1rem; font-size: 0.75rem; }
+    .practice-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<div class="content">
+  <header>
+    <div class="sun-icon">☀️</div>
+    <h1>The Power of Now</h1>
+    <div class="subtitle">A Guide to Spiritual Enlightenment</div>
+    <div class="author">by Eckhart Tolle</div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="essence">Essence</button>
+    <button class="tab-btn" data-tab="concepts">Concepts</button>
+    <button class="tab-btn" data-tab="practices">Practices</button>
+    <button class="tab-btn" data-tab="quotes">Quotes</button>
+  </div>
+
+  <!-- ═══════════ TAB: Essence ═══════════ -->
+  <div class="tab-panel active" id="tab-essence">
+    <div class="insight-box">
+      <div class="big">Be Here Now.</div>
+      <div class="small">
+        The present moment is all there ever is. Suffering comes from identifying<br>
+        with the mind — dwelling on the past or worrying about the future.<br>
+        <strong style="color:#fbbf24;">Presence is the path to peace.</strong>
+      </div>
+    </div>
+
+    <div class="card" style="animation-delay: 0.1s;">
+      <h2>🧠 You Are Not Your Mind</h2>
+      <p>Your thoughts are not who you are. You are the <strong>awareness</strong> behind them. The voice in your head is the conditioned mind — watch it without judgment and you discover your true self.</p>
+    </div>
+
+    <div class="card" style="animation-delay: 0.2s;">
+      <h2>⏳ The Illusion of Time</h2>
+      <p>Past and future are mental constructs — they exist only as thoughts <em>right now</em>. Problems need time to survive. In the present moment, there are no problems — only situations to be handled.</p>
+    </div>
+
+    <div class="card" style="animation-delay: 0.3s;">
+      <h2>🔥 The Pain-Body</h2>
+      <p>Accumulated emotional pain lives in you as an energy field. It feeds on negative thinking and drama. The cure: simply <strong>observe it</strong> without judgment. Awareness dissolves it.</p>
+    </div>
+
+    <div class="breath-circle">Breathe</div>
+  </div>
+
+  <!-- ═══════════ TAB: Concepts ═══════════ -->
+  <div class="tab-panel" id="tab-concepts">
+    <p style="color:#888; margin-bottom:1rem; font-size:0.9rem;">Click any concept to expand.</p>
+
+    <div class="card">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h2 style="margin-bottom:0;">🎭 The Ego</h2>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="accordion-body">
+        <p>The ego is a false self built on thought patterns, beliefs, and stories. It thrives on past (resentment, regret) and future (anxiety, expectation). The ego needs problems to maintain its identity. Letting go of ego feels like dying — but that's liberation.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h2 style="margin-bottom:0;">👁️ The Watcher</h2>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="accordion-body">
+        <p>There is a dimension of awareness beyond thought — the witnessing presence. When you observe your emotions, thoughts, and sensations without labeling them good or bad, you step into the Watcher. This is your true self.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h2 style="margin-bottom:0;">🌊 Surrender</h2>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="accordion-body">
+        <p>Surrender is not giving up. It's accepting the present moment as it is — without resistance. Surrender to "what is" opens the door to deeper life energy. Acceptance of the Now frees you from suffering.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h2 style="margin-bottom:0;">💫 Presence</h2>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="accordion-body">
+        <p>Presence is the state of being fully in the Now. It's not a technique — it's a way of being. When present, you don't judge, you don't resist. You simply <em>are</em>. Presence is accessed through the body, the breath, and the senses.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <h2 style="margin-bottom:0;">🔥 The Pain-Body</h2>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="accordion-body">
+        <p>Old emotional pain accumulates as a negative energy field in your body. It gets triggered by situations and people, then feeds on more negativity. Observing the pain-body without judgment is the only way to dissolve it. Don't fight it — just witness it.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ TAB: Practices ═══════════ -->
+  <div class="tab-panel" id="tab-practices">
+    <p style="color:#888; margin-bottom:1rem; font-size:0.9rem;">Tap any practice to read more.</p>
+
+    <div class="practice-grid">
+      <div class="practice-card" onclick="this.classList.toggle('open')">
+        <span class="icon">👤</span>
+        <span class="title">Watch the Thinker</span>
+        <span class="detail">Listen to the voice in your head. Observe it without engaging. That observing presence is your true self.</span>
+      </div>
+      <div class="practice-card" onclick="this.classList.toggle('open')">
+        <span class="icon">🫁</span>
+        <span class="title">Focus on the Breath</span>
+        <span class="detail">One conscious breath anchors you in the Now. Feel the air moving in and out. The breath is always present.</span>
+      </div>
+      <div class="practice-card" onclick="this.classList.toggle('open')">
+        <span class="icon">🙌</span>
+        <span class="title">Feel the Body</span>
+        <span class="detail">Close your eyes. Feel the aliveness in your hands, feet, chest. Do this for 30 seconds, several times a day.</span>
+      </div>
+      <div class="practice-card" onclick="this.classList.toggle('open')">
+        <span class="icon">👁️</span>
+        <span class="title">Use Your Senses</span>
+        <span class="detail">See, hear, touch as if for the first time. Senses only exist in the Now. Let them pull you into presence.</span>
+      </div>
+      <div class="practice-card" onclick="this.classList.toggle('open')">
+        <span class="icon">⏸️</span>
+        <span class="title">Presence Triggers</span>
+        <span class="detail">Waiting in line, at a red light, washing hands — use these as cues to become aware of your body and breath.</span>
+      </div>
+      <div class="practice-card" onclick="this.classList.toggle('open')">
+        <span class="icon">🕉️</span>
+        <span class="title">Inner Body</span>
+        <span class="detail">Direct attention into your body. Feel the subtle energy that animates you. This takes you beyond thought.</span>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:0.5rem;">
+      <h2>🌅 The Daily Practice</h2>
+      <p>Set a gentle alarm 3-4 times a day. When it goes off, stop everything for 10 seconds. Take one conscious breath. Feel your body. That's it. Over time, presence becomes your natural state.</p>
+    </div>
+
+    <div class="breath-circle">Breathe</div>
+  </div>
+
+  <!-- ═══════════ TAB: Quotes ═══════════ -->
+  <div class="tab-panel" id="tab-quotes">
+    <div class="quote-box">
+      <p>"Realize deeply that the present moment is all you have. Make the Now the primary focus of your life."</p>
+    </div>
+    <div class="quote-box" style="animation-delay: 0.08s;">
+      <p>"You are not your mind."</p>
+    </div>
+    <div class="quote-box" style="animation-delay: 0.16s;">
+      <p>"The primary cause of unhappiness is never the situation but your thoughts about it."</p>
+    </div>
+    <div class="quote-box" style="animation-delay: 0.24s;">
+      <p>"The past has no power over the present moment."</p>
+    </div>
+    <div class="quote-box" style="animation-delay: 0.32s;">
+      <p>"Wherever you are, be there totally."</p>
+    </div>
+    <div class="quote-box" style="animation-delay: 0.40s;">
+      <p>"Life is now. There was never a time when your life was not now, nor will there ever be."</p>
+    </div>
+    <div class="quote-box" style="animation-delay: 0.48s;">
+      <p>"As soon as you honor the present moment, all unhappiness and struggle dissolve, and life begins to flow with joy and ease."</p>
+    </div>
+
+    <div class="card" style="margin-top: 1.5rem;">
+      <h2>🌄 One Final Thought</h2>
+      <p>You don't need to read more books to be present. You don't need more knowledge. Just stop. Breathe. Look around. <strong style="color:#fbbf24;">This moment is enough.</strong></p>
+    </div>
+  </div>
+
+  <div class="progress-container">
+    <div class="progress-label">You are here —</div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" style="width: 100%;"></div>
+    </div>
+  </div>
+
+  <footer>
+    Summarized from <em>The Power of Now</em> by Eckhart Tolle — ☀️
+  </footer>
+</div>
+
+<script>
+  // ── Ambient particles ──────────────────────────────────────────
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  let animFrame;
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = document.documentElement.scrollHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  window.addEventListener('scroll', resize);
+
+  let mouse = { x: 0, y: 0 };
+  document.addEventListener('mousemove', e => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY + window.scrollY;
+  });
+
+  class Particle {
+    constructor() { this.reset(); }
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 3 + 0.5;
+      this.speedX = (Math.random() - 0.5) * 0.2;
+      this.speedY = (Math.random() - 0.5) * 0.2;
+      this.opacity = Math.random() * 0.3 + 0.05;
+      this.hue = 40 + Math.random() * 20; // warm golden range
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+
+      const dx = mouse.x - this.x;
+      const dy = mouse.y - this.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 120) {
+        this.x -= dx * 0.002;
+        this.y -= dy * 0.002;
+      }
+
+      if (this.x < -10 || this.x > canvas.width + 10 || this.y < -10 || this.y > canvas.height + 10) {
+        this.reset();
+      }
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${this.hue}, 80%, 70%, ${this.opacity})`;
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < 60; i++) particles.push(new Particle());
+
+  function drawConnections() {
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 100) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `hsla(40, 60%, 70%, ${0.04 * (1 - dist / 100)})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
+    drawConnections();
+    animFrame = requestAnimationFrame(animate);
+  }
+
+  animate();
+
+  // ── Tabs ──
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+      setTimeout(resize, 200);
+    });
+  });
+
+  // ── Accordion ──
+  function toggleAccordion(header) {
+    const body = header.nextElementSibling;
+    header.classList.toggle('open');
+    body.classList.toggle('open');
+  }
+</script>
+</body>
+</html>

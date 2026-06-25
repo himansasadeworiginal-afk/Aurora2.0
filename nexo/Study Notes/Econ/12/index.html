@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Economics Lesson 12 - Sri Lankan Economy Post-Independence</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --primary: #a855f7;
+    --accent: #a855f7;
+    --accent2: #ec4899;
+    --accent3: #f59e0b;
+    --bg: #0a0a0f;
+    --card: #15101a;
+    --text: #e0e0e0;
+    --text-muted: #999;
+    --gradient: linear-gradient(135deg, #a855f7, #ec4899, #f59e0b);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+
+  #particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background: rgba(168, 85, 247, 0.15);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    animation: fadeInDown 1s ease;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    font-weight: 800;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    animation: fadeInUp 1s ease 0.2s both;
+  }
+
+  .hero p {
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: var(--text-muted);
+    max-width: 600px;
+    animation: fadeInUp 1s ease 0.4s both;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: bounce 2s infinite;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem;
+  }
+
+  .section {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .section.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .section:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 60px rgba(168, 85, 247, 0.08);
+  }
+
+  .section-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .section h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section h2 .underline {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+
+  .section h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1.5rem 0 0.8rem;
+  }
+
+  .section h4 {
+    color: var(--accent2);
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 1rem 0 0.5rem;
+  }
+
+  .section ul, .section ol {
+    padding-left: 1.5rem;
+  }
+
+  .section li {
+    margin-bottom: 0.4rem;
+    color: var(--text);
+  }
+
+  .section p {
+    margin-bottom: 0.8rem;
+    color: var(--text);
+  }
+
+  .highlight {
+    display: inline-block;
+    padding: 0.1rem 0.5rem;
+    background: rgba(168, 85, 247, 0.15);
+    border-radius: 4px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .highlight-pink {
+    background: rgba(236, 72, 153, 0.15);
+    color: var(--accent2);
+  }
+
+  .highlight-amber {
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--accent3);
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .info-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: default;
+  }
+
+  .info-card:hover {
+    background: rgba(168,85,247,0.08);
+    border-color: rgba(168,85,247,0.2);
+    transform: translateY(-5px);
+  }
+
+  .info-card .emoji {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .info-card .label {
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.3rem;
+  }
+
+  .info-card .desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin: 1rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .comparison > div {
+    padding: 1.2rem;
+  }
+
+  .comparison .left {
+    background: rgba(168,85,247,0.08);
+    border-right: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .comparison .right {
+    background: rgba(236,72,153,0.08);
+  }
+
+  .comparison .header {
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-align: center;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .comparison .left .header { color: var(--accent); }
+  .comparison .right .header { color: var(--accent2); }
+
+  .comparison ul { list-style: none; padding: 0; }
+  .comparison li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.9rem;
+  }
+  .comparison li:last-child { border-bottom: none; }
+
+  .flashcard-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .flashcard {
+    perspective: 1000px;
+    height: 180px;
+    cursor: pointer;
+  }
+
+  .flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+  }
+
+  .flashcard.flipped .flashcard-inner {
+    transform: rotateY(180deg);
+  }
+
+  .flashcard-front, .flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+
+  .flashcard-front {
+    background: rgba(168,85,247,0.1);
+    border: 1px solid rgba(168,85,247,0.2);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .flashcard-back {
+    background: rgba(245,158,11,0.15);
+    border: 1px solid rgba(245,158,11,0.2);
+    color: var(--accent3);
+    transform: rotateY(180deg);
+  }
+
+  .flashcard-hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin: 1rem 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2), var(--accent3));
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2.35rem;
+    top: 0.5rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+
+  .timeline-item.pink::before { background: var(--accent2); }
+  .timeline-item.amber::before { background: var(--accent3); }
+
+  .timeline-item .year {
+    display: inline-block;
+    padding: 0.15rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    background: rgba(168,85,247,0.15);
+    color: var(--accent);
+    margin-bottom: 0.3rem;
+  }
+
+  .timeline-item.pink .year { background: rgba(236,72,153,0.15); color: var(--accent2); }
+  .timeline-item.amber .year { background: rgba(245,158,11,0.15); color: var(--accent3); }
+
+  .timeline-item .title {
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .timeline-item .desc {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  .quiz-question {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin: 1rem 0;
+  }
+
+  .quiz-question .q {
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    color: #fff;
+  }
+
+  .quiz-option {
+    display: block;
+    width: 100%;
+    padding: 0.7rem 1rem;
+    margin-bottom: 0.5rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    font-size: 0.9rem;
+    font-family: inherit;
+  }
+
+  .quiz-option:hover {
+    background: rgba(168,85,247,0.1);
+    border-color: var(--accent);
+  }
+
+  .quiz-option.correct {
+    background: rgba(236,72,153,0.2);
+    border-color: var(--accent2);
+    color: var(--accent2);
+  }
+
+  .quiz-option.wrong {
+    background: rgba(214,48,49,0.2);
+    border-color: #d63031;
+    color: #d63031;
+  }
+
+  .quiz-feedback {
+    margin-top: 0.8rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .quiz-feedback.show {
+    display: block;
+  }
+
+  .quiz-feedback.correct {
+    background: rgba(236,72,153,0.1);
+    border: 1px solid rgba(236,72,153,0.2);
+    color: var(--accent2);
+  }
+
+  .quiz-feedback.wrong {
+    background: rgba(214,48,49,0.1);
+    border: 1px solid rgba(214,48,49,0.2);
+    color: #d63031;
+  }
+
+  .progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    z-index: 100;
+    background: transparent;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: var(--gradient);
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+    40% { transform: translateX(-50%) translateY(-10px); }
+    60% { transform: translateX(-50%) translateY(-5px); }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  @media (max-width: 600px) {
+    .comparison { grid-template-columns: 1fr; }
+    .comparison .left { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .section { padding: 1.2rem; }
+    .flashcard-container { grid-template-columns: 1fr; }
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 0.3rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .tag-purple { background: rgba(168,85,247,0.15); color: var(--accent); }
+  .tag-pink { background: rgba(236,72,153,0.15); color: var(--accent2); }
+  .tag-amber { background: rgba(245,158,11,0.15); color: var(--accent3); }
+
+  .formula-box {
+    background: rgba(168,85,247,0.06);
+    border: 1px solid rgba(168,85,247,0.15);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+  }
+
+  .sector-bar {
+    display: flex;
+    height: 2rem;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 0.5rem 0;
+  }
+
+  .sector-bar .agriculture { background: #a855f7; }
+  .sector-bar .industry { background: #ec4899; }
+  .sector-bar .services { background: #f59e0b; }
+
+  .sector-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 0.2rem;
+  }
+
+  .sector-legend {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    margin: 0.5rem 0 1rem;
+    font-size: 0.85rem;
+    flex-wrap: wrap;
+  }
+
+  .sector-legend span {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .sector-legend .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .stat-number {
+    font-size: 1.8rem;
+    font-weight: 800;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-container">
+  <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<canvas id="particles"></canvas>
+
+<section class="hero">
+  <div class="hero-badge">Lesson 12</div>
+  <h1>Sri Lankan Economy<br>Since Independence</h1>
+  <p>Exploring the transformation from plantation exports to a modern service-driven economy since 1948.</p>
+  <div class="hero-scroll">&#x2193;</div>
+</section>
+
+<div class="container">
+
+  <!-- 1. Overview -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F30D;</div>
+    <h2>Overview <span class="underline"></span></h2>
+    <p>Since gaining independence from Britain in <span class="highlight">1948</span>, Sri Lanka's economy has undergone dramatic transformations &mdash; from a colonial plantation-based export economy to a closed import-substituting regime, and then to a liberalized export-oriented economy, and most recently a services-driven post-war economy facing new challenges.</p>
+    <div class="card-grid">
+      <div class="info-card">
+        <div class="emoji">&#x1F4C5;</div>
+        <div class="label">Independence</div>
+        <div class="desc">1948 &mdash; Dominion status, plantation economy</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F3ED;</div>
+        <div class="label">Current Status</div>
+        <div class="desc">Lower-middle income, services-dominated</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F4B1;</div>
+        <div class="label">Key Exports</div>
+        <div class="desc">Textiles, tea, rubber, coconut, tourism</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x26A0;&#xFE0F;</div>
+        <div class="label">Challenges</div>
+        <div class="desc">Debt crisis, inflation, IMF programs</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Timeline -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4C8;</div>
+    <h2>Timeline of Economic Policy <span class="underline"></span></h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="year">1948 &ndash; 1960</div>
+        <div class="title">&#x1F30D; Open Economy &middot; Plantation Exports</div>
+        <div class="desc">Continued colonial trade patterns. Tea, rubber, coconut dominated exports. Minimal state intervention. Relatively open trade regime.</div>
+      </div>
+      <div class="timeline-item pink">
+        <div class="year">1960 &ndash; 1977</div>
+        <div class="title">&#x1F512; Closed Economy &middot; Import Substitution</div>
+        <div class="desc">Nationalization of key industries (banks, insurance, plantations). High tariffs, import controls. State-led industrialization. ISI strategy adopted.</div>
+      </div>
+      <div class="timeline-item amber">
+        <div class="year">1977 &ndash; 2009</div>
+        <div class="title">&#x1F4B0; Liberalization &middot; Export Orientation</div>
+        <div class="desc">1977 economic reforms under J.R. Jayewardene. Removed import controls, floated currency, privatized state enterprises. EPZs established. Garment industry boom.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="year">2009 &ndash; 2019</div>
+        <div class="title">&#x1F3D7;&#xFE0F; Post-War Development Boom</div>
+        <div class="desc">End of civil war (2009). Infrastructure boom: highways, ports, airports. Tourism surge. Construction-driven growth. Rising debt.</div>
+      </div>
+      <div class="timeline-item pink">
+        <div class="year">2020 &ndash; Present</div>
+        <div class="title">&#x26A0;&#xFE0F; Debt Crisis &middot; IMF &middot; Recovery</div>
+        <div class="desc">COVID-19 hit tourism. 2022 economic crisis: sovereign default, inflation, shortages. IMF bailout program (2023). Ongoing restructuring.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Import Substitution Industrialization -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F512;</div>
+    <h2>Import Substitution Industrialization <span class="underline"></span></h2>
+    <p><span class="highlight">ISI</span> was the dominant strategy from the 1960s to 1977, aimed at reducing dependence on imported manufactured goods by promoting domestic industries behind protective barriers.</p>
+
+    <h3>Characteristics of ISI in Sri Lanka</h3>
+    <ul>
+      <li><strong>Protectionist policies:</strong> High tariffs and quantitative import controls</li>
+      <li><strong>State-led industrialization:</strong> Public sector dominated manufacturing</li>
+      <li><strong>Nationalization:</strong> Banks, insurance, plantations, petroleum, transport</li>
+      <li><strong>Overvalued currency:</strong> Made imports cheaper, exports costlier</li>
+      <li><strong>Licensing system:</strong> Strict import licensing and foreign exchange controls</li>
+    </ul>
+
+    <h3>Rationale for ISI</h3>
+    <div class="card-grid">
+      <div class="info-card">
+        <div class="emoji">&#x1F9F1;</div>
+        <div class="label">Infant Industry</div>
+        <div class="desc">Protect young domestic industries until competitive</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F4B0;</div>
+        <div class="label">Save Foreign Exchange</div>
+        <div class="desc">Reduce import bill by producing locally</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F3E2;</div>
+        <div class="label">Industrialization</div>
+        <div class="desc">Shift from colonial plantation mono-economy</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F465;</div>
+        <div class="label">Self-Sufficiency</div>
+        <div class="desc">Reduce dependence on former colonial powers</div>
+      </div>
+    </div>
+
+    <div class="formula-box" style="font-size: 0.95rem;">
+      Effective Rate of Protection (ERP) = (Value Added in World Prices &minus; Value Added in Domestic Prices) &divide; Value Added in World Prices &times; 100
+    </div>
+  </div>
+
+  <!-- 4. Export-Oriented Industrial Policy -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4B0;</div>
+    <h2>Export-Oriented Industrial Policy <span class="underline"></span></h2>
+    <p>The landmark <span class="highlight">1977 reforms</span> shifted Sri Lanka from ISI to an <span class="highlight-pink">export-oriented</span> strategy, opening the economy to global markets.</p>
+
+    <h3>Key Reforms of 1977</h3>
+    <ul>
+      <li>Unified and floated the exchange rate</li>
+      <li>Abolished most import controls and reduced tariffs</li>
+      <li>Removed price controls</li>
+      <li>Privatization of state-owned enterprises</li>
+      <li>Established <strong>Export Processing Zones (EPZs)</strong> &mdash; Katunayake, Biyagama, Koggala</li>
+      <li>Liberalized foreign direct investment (FDI)</li>
+    </ul>
+
+    <h3>Major Export Sectors</h3>
+    <div class="card-grid">
+      <div class="info-card">
+        <div class="emoji">&#x1F455;</div>
+        <div class="label">Textiles &amp; Garments</div>
+        <div class="desc">Largest export earner since 1990s</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F375;</div>
+        <div class="label">Tea</div>
+        <div class="desc">Ceylon Tea &mdash; world-renowned brand</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F332;</div>
+        <div class="label">Rubber</div>
+        <div class="desc">Tires, industrial products</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F965;</div>
+        <div class="label">Coconut</div>
+        <div class="desc">Desiccated, oil, coir products</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x2708;&#xFE0F;</div>
+        <div class="label">Tourism</div>
+        <div class="desc">Major foreign exchange earner (pre-COVID)</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F4E1;</div>
+        <div class="label">IT &amp; BPO</div>
+        <div class="desc">Emerging services export sector</div>
+      </div>
+    </div>
+
+    <h3>Export Processing Zones</h3>
+    <ul>
+      <li><strong>Katunayake EPZ</strong> (1978) &mdash; first and largest, near airport</li>
+      <li><strong>Biyagama EPZ</strong> &mdash; near Colombo</li>
+      <li><strong>Koggala EPZ</strong> &mdash; southern Sri Lanka</li>
+      <li><strong>BOI</strong> (Board of Investment) &mdash; facilitates FDI with tax incentives</li>
+    </ul>
+  </div>
+
+  <!-- 5. Comparison: ISI vs Export-Oriented -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x2696;&#xFE0F;</div>
+    <h2>ISI vs Export-Oriented Strategy <span class="underline"></span></h2>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F512; Import Substitution</div>
+        <ul>
+          <li>Protect domestic industries via tariffs</li>
+          <li>State-owned enterprises dominate</li>
+          <li>Overvalued currency</li>
+          <li>Import licensing &amp; exchange controls</li>
+          <li>Limited foreign investment</li>
+          <li>Focus on domestic market</li>
+          <li>Result: inefficiency, high costs, foreign exchange shortages</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F4B0; Export-Oriented</div>
+        <ul>
+          <li>Remove trade barriers, open markets</li>
+          <li>Private sector-led growth</li>
+          <li>Market-determined exchange rate</li>
+          <li>Liberalized trade and capital flows</li>
+          <li>FDI encouraged via BOI incentives</li>
+          <li>Focus on global competitiveness</li>
+          <li>Result: rapid export growth, but import dependence</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Comparison: Pre-1977 vs Post-1977 -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4C5;</div>
+    <h2>Pre-1977 vs Post-1977 Economy <span class="underline"></span></h2>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F4BA; Pre-1977</div>
+        <ul>
+          <li><strong>Trade:</strong> Closed, protectionist</li>
+          <li><strong>Exchange rate:</strong> Overvalued, fixed</li>
+          <li><strong>State role:</strong> Dominant, nationalized industries</li>
+          <li><strong>Industry:</strong> Infant, inefficient, high-cost</li>
+          <li><strong>Agriculture:</strong> Plantations + subsistence</li>
+          <li><strong>Growth:</strong> Slow (&lt; 3% average)</li>
+          <li><strong>Inflation:</strong> Suppressed via controls</li>
+          <li><strong>FDI:</strong> Heavily restricted</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F4C8; Post-1977</div>
+        <ul>
+          <li><strong>Trade:</strong> Open, liberalized</li>
+          <li><strong>Exchange rate:</strong> Floating, market-determined</li>
+          <li><strong>State role:</strong> Reduced, privatization</li>
+          <li><strong>Industry:</strong> Competitive, export-oriented</li>
+          <li><strong>Agriculture:</strong> Commercialization + diversification</li>
+          <li><strong>Growth:</strong> Faster (5&ndash;6% pre-war)</li>
+          <li><strong>Inflation:</strong> Market-driven, periodic spikes</li>
+          <li><strong>FDI:</strong> Encouraged via BOI incentives</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Structural Changes -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F3DB;&#xFE0F;</div>
+    <h2>Structural Changes in the Economy <span class="underline"></span></h2>
+    <p>Sri Lanka has undergone a major structural transformation from an <span class="highlight">agriculture-based</span> economy to a <span class="highlight-pink">services-dominated</span> economy over the post-independence period.</p>
+
+    <h3>Sectoral Composition of GDP (Approximate)</h3>
+
+    <h4>1960 &mdash; Agriculture Dominant</h4>
+    <div class="sector-bar">
+      <div class="agriculture" style="width: 38%;"></div>
+      <div class="industry" style="width: 20%;"></div>
+      <div class="services" style="width: 42%;"></div>
+    </div>
+    <div class="sector-label">
+      <span>&#x1F33E; Agriculture 38%</span>
+      <span>&#x1F3ED; Industry 20%</span>
+      <span>&#x1F3E2; Services 42%</span>
+    </div>
+
+    <h4>1980 &mdash; Industry Rising</h4>
+    <div class="sector-bar">
+      <div class="agriculture" style="width: 28%;"></div>
+      <div class="industry" style="width: 30%;"></div>
+      <div class="services" style="width: 42%;"></div>
+    </div>
+    <div class="sector-label">
+      <span>&#x1F33E; Agriculture 28%</span>
+      <span>&#x1F3ED; Industry 30%</span>
+      <span>&#x1F3E2; Services 42%</span>
+    </div>
+
+    <h4>2020 &mdash; Services Dominant</h4>
+    <div class="sector-bar">
+      <div class="agriculture" style="width: 8%;"></div>
+      <div class="industry" style="width: 27%;"></div>
+      <div class="services" style="width: 65%;"></div>
+    </div>
+    <div class="sector-label">
+      <span>&#x1F33E; Agriculture ~8%</span>
+      <span>&#x1F3ED; Industry ~27%</span>
+      <span>&#x1F3E2; Services ~65%</span>
+    </div>
+
+    <div class="sector-legend">
+      <span><span class="dot" style="background:#a855f7;"></span> Agriculture</span>
+      <span><span class="dot" style="background:#ec4899;"></span> Industry</span>
+      <span><span class="dot" style="background:#f59e0b;"></span> Services</span>
+    </div>
+
+    <h3>Key Structural Changes</h3>
+    <ul>
+      <li><strong>Agriculture &rarr; Services:</strong> Agriculture's share fell from ~38% (1960) to ~8% (2020)</li>
+      <li><strong>Industry:</strong> Rose to ~30% after liberalization, then stabilized at ~27%</li>
+      <li><strong>Services:</strong> Expanded from ~42% to ~65%, driven by finance, telecom, tourism, IT</li>
+      <li><strong>Urbanization:</strong> Western Province (Colombo) dominates economic activity</li>
+      <li><strong>Labour force:</strong> Shift from agriculture to industry and services; remittance-driven migration</li>
+    </ul>
+
+    <div class="formula-box" style="font-size: 0.95rem;">
+      Structural Transformation Index = Change in Share of Non-Agriculture GDP over Time
+    </div>
+  </div>
+
+  <!-- 8. Flashcards -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F9E9;</div>
+    <h2>Key Terms <span class="underline"></span></h2>
+    <div class="flashcard-container">
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F512; Import Substitution Industrialization
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Protectionist strategy replacing imports with domestic production. Used in Sri Lanka 1960&ndash;1977.
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F4B0; Export-Oriented Industrialization
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Strategy focusing on producing goods for export markets. Adopted in Sri Lanka post-1977.
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F4C6; Liberalization
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            1977 economic reforms: removed trade barriers, floated currency, privatized SOEs, opened to FDI.
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F3DB;&#xFE0F; EPZ / BOI
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Export Processing Zones &amp; Board of Investment. Tax-incentivized zones for export-oriented FDI.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. Key Policy Phases Overview -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4CA;</div>
+    <h2>Policy Phases at a Glance <span class="underline"></span></h2>
+    <div style="overflow-x:auto;">
+      <table style="width:100%; border-collapse: collapse; font-size: 0.9rem;">
+        <thead>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+            <th style="padding:0.75rem; text-align:left; color:var(--accent);">Period</th>
+            <th style="padding:0.75rem; text-align:left; color:var(--accent2);">Regime</th>
+            <th style="padding:0.75rem; text-align:left; color:var(--accent3);">Key Features</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+            <td style="padding:0.75rem; font-weight:600;">1948&ndash;1960</td>
+            <td style="padding:0.75rem;">Open Economy</td>
+            <td style="padding:0.75rem; color:var(--text-muted);">Plantation exports, minimal state intervention, free trade</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+            <td style="padding:0.75rem; font-weight:600;">1960&ndash;1977</td>
+            <td style="padding:0.75rem;">Closed / ISI</td>
+            <td style="padding:0.75rem; color:var(--text-muted);">Nationalization, tariffs, import controls, state-led industry</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+            <td style="padding:0.75rem; font-weight:600;">1977&ndash;2009</td>
+            <td style="padding:0.75rem;">Liberalization</td>
+            <td style="padding:0.75rem; color:var(--text-muted);">Export promotion, privatization, EPZs, garment boom</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+            <td style="padding:0.75rem; font-weight:600;">2009&ndash;2019</td>
+            <td style="padding:0.75rem;">Post-War Boom</td>
+            <td style="padding:0.75rem; color:var(--text-muted);">Infrastructure, tourism, construction, rising debt</td>
+          </tr>
+          <tr>
+            <td style="padding:0.75rem; font-weight:600;">2020&ndash;Now</td>
+            <td style="padding:0.75rem;">Crisis &amp; IMF</td>
+            <td style="padding:0.75rem; color:var(--text-muted);">Sovereign default, inflation, IMF program (2023), restructuring</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 10. Current Challenges -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x26A0;&#xFE0F;</div>
+    <h2>Recent Challenges <span class="underline"></span></h2>
+
+    <div class="card-grid">
+      <div class="info-card">
+        <div class="emoji">&#x1F4B5;</div>
+        <div class="label">Debt Crisis</div>
+        <div class="desc">Sovereign default in 2022. External debt ~$50B. Restructuring underway with IMF.</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F4C8;</div>
+        <div class="label">Inflation</div>
+        <div class="desc">Peaked at ~70% in 2022. Caused by money printing, supply shocks, currency collapse.</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F3DB;&#xFE0F;</div>
+        <div class="label">IMF Program</div>
+        <div class="desc">$3B Extended Fund Facility (2023). Conditions: tax reforms, SOE reform, fiscal discipline.</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F30D;</div>
+        <div class="label">External Sector</div>
+        <div class="desc">Remittances down, tourism recovery slow, terms of trade deterioration.</div>
+      </div>
+    </div>
+
+    <h3>Root Causes of 2022 Crisis</h3>
+    <ul>
+      <li><strong>Tax cuts:</strong> Large tax cuts in 2019 reduced government revenue sharply</li>
+      <li><strong>Money printing:</strong> Central bank financed fiscal deficits, triggering inflation</li>
+      <li><strong>Foreign exchange shortage:</strong> Tourism collapse (COVID) + remittance drop + import bill</li>
+      <li><strong>Debt unsustainability:</strong> High borrowing for infrastructure with low returns</li>
+      <li><strong>Organic farming ban:</strong> 2021 chemical fertilizer ban devastated tea/rubber yields</li>
+    </ul>
+  </div>
+
+  <!-- 11. Interactive Quiz -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F9F0;</div>
+    <h2>Test Your Knowledge <span class="underline"></span></h2>
+
+    <div class="quiz-question" data-q="1">
+      <div class="q">1. In which year did Sri Lanka gain independence from Britain?</div>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">1948</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">1947</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">1950</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">1972</button>
+      <div class="quiz-feedback" data-feedback="1"></div>
+    </div>
+
+    <div class="quiz-question" data-q="2">
+      <div class="q">2. Which policy did Sri Lanka follow during 1960&ndash;1977?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Export-Oriented Industrialization</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Free Trade</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Import Substitution Industrialization</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Structural Adjustment</button>
+      <div class="quiz-feedback" data-feedback="2"></div>
+    </div>
+
+    <div class="quiz-question" data-q="3">
+      <div class="q">3. What landmark economic reforms occurred in 1977?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Nationalization of banks</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Introduction of import controls</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Liberalization &amp; export orientation</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Adoption of central planning</button>
+      <div class="quiz-feedback" data-feedback="3"></div>
+    </div>
+
+    <div class="quiz-question" data-q="4">
+      <div class="q">4. Which sector contributes the largest share to Sri Lanka's GDP (2020)?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Agriculture</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Industry</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Manufacturing</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Services</button>
+      <div class="quiz-feedback" data-feedback="4"></div>
+    </div>
+
+    <div class="quiz-question" data-q="5">
+      <div class="q">5. What was a key feature of the ISI period in Sri Lanka?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Floating exchange rate</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">High tariffs and import controls</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Export processing zones</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Privatization of state enterprises</button>
+      <div class="quiz-feedback" data-feedback="5"></div>
+    </div>
+
+    <div class="quiz-question" data-q="6">
+      <div class="q">6. Which institution facilitated foreign investment in Sri Lanka post-1977?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">IMF</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">World Bank</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Board of Investment (BOI)</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Central Bank</button>
+      <div class="quiz-feedback" data-feedback="6"></div>
+    </div>
+
+    <div class="quiz-question" data-q="7">
+      <div class="q">7. What was a major cause of Sri Lanka's 2022 economic crisis?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Excessive exports</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Trade surplus</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Tax cuts and money printing</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Too much foreign investment</button>
+      <div class="quiz-feedback" data-feedback="7"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  class Particle {
+    constructor() {
+      this.reset();
+    }
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 2 + 0.5;
+      this.speedX = (Math.random() - 0.5) * 0.5;
+      this.speedY = (Math.random() - 0.5) * 0.5;
+      this.opacity = Math.random() * 0.5 + 0.1;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(168, 85, 247, ${this.opacity})`;
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+  function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
+
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 150) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(168, 85, 247, ${0.06 * (1 - dist / 150)})`;
+          ctx.lineWidth = 0.5;
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(animateParticles);
+  }
+  animateParticles();
+
+  const sections = document.querySelectorAll('[data-section]');
+
+  function revealSections() {
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 80) {
+        section.classList.add('visible');
+      }
+    });
+  }
+  window.addEventListener('scroll', revealSections);
+  revealSections();
+
+  const progressBar = document.getElementById('progressBar');
+
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / docHeight) * 100;
+    progressBar.style.width = progress + '%';
+  });
+
+  function checkAnswer(btn, isCorrect) {
+    const question = btn.closest('.quiz-question');
+    const options = question.querySelectorAll('.quiz-option');
+    const feedback = question.querySelector('.quiz-feedback');
+
+    options.forEach(opt => {
+      opt.disabled = true;
+      opt.style.cursor = 'not-allowed';
+      if (opt.dataset.correct === 'true') opt.classList.add('correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.textContent = '\u2705 Correct!';
+      feedback.className = 'quiz-feedback show correct';
+    } else {
+      btn.classList.add('wrong');
+      const correctBtn = question.querySelector('[data-correct="true"]');
+      feedback.textContent = '\u274C Incorrect. The answer was: ' + correctBtn.textContent;
+      feedback.className = 'quiz-feedback show wrong';
+    }
+  }
+</script>
+
+</body>
+</html>

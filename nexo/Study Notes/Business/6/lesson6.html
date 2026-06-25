@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 6 – Money and Financial Institutions</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #051005;
+    --surface: rgba(255,255,255,0.04);
+    --surface-hover: rgba(255,255,255,0.08);
+    --border: rgba(255,255,255,0.06);
+    --text: #d1fae5;
+    --text-dim: #6ee7b7;
+    --accent: #10b981;
+    --accent2: #f59e0b;
+    --accent3: #3b82f6;
+    --radius: 16px;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+  #particles-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  .ambient-glow {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 0;
+    animation: floatGlow 20s ease-in-out infinite alternate;
+  }
+  .ambient-glow:nth-child(1) {
+    width: 600px; height: 600px;
+    background: rgba(16,185,129,0.08);
+    top: -10%; left: -10%;
+  }
+  .ambient-glow:nth-child(2) {
+    width: 500px; height: 500px;
+    background: rgba(245,158,11,0.06);
+    bottom: -10%; right: -10%;
+    animation-delay: -7s;
+  }
+  .ambient-glow:nth-child(3) {
+    width: 400px; height: 400px;
+    background: rgba(59,130,246,0.04);
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    animation-delay: -14s;
+  }
+  @keyframes floatGlow {
+    0% { transform: translate(0,0) scale(1); }
+    33% { transform: translate(60px,-40px) scale(1.1); }
+    66% { transform: translate(-30px,50px) scale(0.9); }
+    100% { transform: translate(40px,20px) scale(1.05); }
+  }
+  .content { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 40px 24px 120px; }
+  header {
+    text-align: center;
+    padding: 100px 0 60px;
+    opacity: 0;
+    transform: translateY(40px);
+    animation: fadeUp 1s ease forwards;
+  }
+  header .badge {
+    display: inline-block;
+    padding: 6px 18px;
+    border-radius: 100px;
+    background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(245,158,11,0.15));
+    border: 1px solid rgba(16,185,129,0.2);
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    margin-bottom: 24px;
+  }
+  header h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.2;
+    background: linear-gradient(135deg, #d1fae5 0%, var(--accent) 40%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  header p {
+    color: var(--text-dim);
+    font-size: 1.1rem;
+    margin-top: 16px;
+    max-width: 600px;
+    margin-inline: auto;
+  }
+  .toc {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin: 0 0 60px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.3s forwards;
+  }
+  .toc a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px;
+    border-radius: var(--radius);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  .toc a:hover {
+    background: var(--surface-hover);
+    border-color: rgba(16,185,129,0.3);
+    color: var(--text);
+    transform: translateY(-2px);
+  }
+  .toc a .num {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(16,185,129,0.2), rgba(245,158,11,0.2));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .section { margin: 40px 0; opacity: 0; transform: translateY(30px); transition: all 0.6s ease; }
+  .section.visible { opacity: 1; transform: translateY(0); }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 36px 32px;
+    backdrop-filter: blur(20px);
+    transition: all 0.4s ease;
+  }
+  .card:hover { border-color: rgba(16,185,129,0.15); box-shadow: 0 8px 40px rgba(0,0,0,0.3); }
+  .card h2 {
+    font-size: 1.5rem; font-weight: 700; margin-bottom: 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .card h2 .icon {
+    width: 40px; height: 40px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; flex-shrink: 0;
+  }
+  .card .subtitle { color: var(--text-dim); font-size: 14px; margin-bottom: 20px; }
+  .def-box {
+    background: linear-gradient(135deg, rgba(16,185,129,0.06), rgba(245,158,11,0.06));
+    border-left: 3px solid var(--accent);
+    padding: 20px 24px; border-radius: 0 12px 12px 0;
+    margin: 16px 0; font-style: italic; color: var(--text-dim);
+  }
+  ul.features, ul.list {
+    list-style: none; display: flex; flex-direction: column; gap: 8px; margin: 16px 0;
+  }
+  ul.features li, ul.list li {
+    padding: 10px 16px 10px 36px; border-radius: 10px;
+    background: var(--surface); border: 1px solid var(--border);
+    position: relative; transition: all 0.3s ease; font-size: 15px;
+  }
+  ul.features li:hover, ul.list li:hover { background: var(--surface-hover); transform: translateX(4px); }
+  ul.features li::before { content: "\2713"; position: absolute; left: 12px; color: var(--accent); font-weight: 700; }
+  ul.list li::before { content: "\2022"; position: absolute; left: 14px; color: var(--accent2); font-weight: 700; }
+  .comparison-table {
+    width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px;
+  }
+  .comparison-table th, .comparison-table td {
+    padding: 14px 18px; text-align: left; border-bottom: 1px solid var(--border);
+  }
+  .comparison-table th {
+    background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(245,158,11,0.1));
+    font-weight: 600; color: var(--accent);
+  }
+  .comparison-table th:first-child { border-radius: 12px 0 0 0; }
+  .comparison-table th:last-child { border-radius: 0 12px 0 0; }
+  .comparison-table tr:hover td { background: var(--surface-hover); }
+  .step-list { counter-reset: step; list-style: none; margin: 16px 0; }
+  .step-list li {
+    counter-increment: step; padding: 12px 16px 12px 48px;
+    position: relative; border-left: 2px solid var(--border); margin-left: 12px;
+    transition: all 0.3s ease;
+  }
+  .step-list li:hover { border-left-color: var(--accent); }
+  .step-list li::before {
+    content: counter(step); position: absolute; left: -14px; top: 10px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: #fff;
+  }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+  @media (max-width: 640px) { .grid-2 { grid-template-columns: 1fr; } }
+  .grid-item {
+    padding: 20px; border-radius: 12px;
+    background: var(--surface); border: 1px solid var(--border);
+  }
+  .grid-item h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--accent); }
+  .grid-item ul { list-style: none; }
+  .grid-item ul li { padding: 4px 0 4px 16px; position: relative; font-size: 14px; color: var(--text-dim); }
+  .grid-item ul li::before { content: "\2192"; position: absolute; left: 0; color: var(--accent2); }
+  .progress-bar {
+    position: fixed; top: 0; left: 0; width: 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+    z-index: 100; transition: width 0.1s ease;
+  }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .toggle-btn {
+    background: none; border: 1px solid var(--border); color: var(--text-dim);
+    padding: 8px 16px; border-radius: 8px; cursor: pointer;
+    font-size: 13px; font-family: inherit; transition: all 0.3s ease; margin: 8px 0;
+  }
+  .toggle-btn:hover { border-color: var(--accent); color: var(--accent); }
+  footer { text-align: center; padding: 40px 0; color: var(--text-dim); font-size: 13px; border-top: 1px solid var(--border); margin-top: 60px; }
+  ::selection { background: rgba(16,185,129,0.3); color: #fff; }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+</style>
+</head>
+<body>
+<div class="ambient-glow"></div>
+<div class="ambient-glow"></div>
+<div class="ambient-glow"></div>
+<canvas id="particles-canvas"></canvas>
+<div class="progress-bar" id="progress-bar"></div>
+<div class="content">
+  <header>
+    <div class="badge">Business Studies &mdash; Lesson 6</div>
+    <h1>Money and Financial Institutions</h1>
+    <p>Functions and types of money, financial institutions, central bank, commercial banks, cheques, and electronic money.</p>
+  </header>
+  <nav class="toc">
+    <a href="#sec-money"><span class="num">1</span> Money</a>
+    <a href="#sec-functions"><span class="num">2</span> Functions</a>
+    <a href="#sec-categories"><span class="num">3</span> Categories</a>
+    <a href="#sec-institutions"><span class="num">4</span> Institutions</a>
+    <a href="#sec-cbsl"><span class="num">5</span> Central Bank</a>
+    <a href="#sec-commercial"><span class="num">6</span> Commercial Banks</a>
+    <a href="#sec-cheque"><span class="num">7</span> Cheques</a>
+    <a href="#sec-emoney"><span class="num">8</span> E-Money</a>
+  </nav>
+
+  <div class="section" id="sec-money">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(245,158,11,0.2));">&#9730;</span> What is Money?</h2>
+      <div class="def-box">Anything that is generally accepted in exchange for goods and services is considered as <strong>money</strong>.</div>
+      <p style="color:var(--text-dim);font-size:15px;">Before money, the barter system was used — direct exchange of goods — which had many difficulties. Money emerged as a common medium of exchange acceptable to all.</p>
+    </div>
+  </div>
+
+  <div class="section" id="sec-functions">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(16,185,129,0.2));">&#9881;</span> Functions of Money</h2>
+      <ul class="features">
+        <li><strong>Medium of exchange</strong> &mdash; Intermediary in exchange of goods/services (e.g. buying a phone for Rs. 30,000)</li>
+        <li><strong>Standard of value</strong> &mdash; Measuring the value of goods and services (e.g. price of shoes Rs. 1,999.90)</li>
+        <li><strong>Store of value</strong> &mdash; Can be stored for future use without getting outdated (e.g. saving Rs. 10,000)</li>
+        <li><strong>Deferred payment</strong> &mdash; Agreement for future payment (e.g. buy goods in Jan, pay in March)</li>
+      </ul>
+      <button class="toggle-btn" onclick="toggleSection('good-currency')">&#9660; Characteristics of a Good Currency</button>
+      <div id="good-currency" style="display:none;">
+        <ul class="features">
+          <li>Having general recognition</li>
+          <li>Durability</li>
+          <li>Difficulty in imitation</li>
+          <li>Easy movability</li>
+          <li>Easy identifiability / homogeneity</li>
+          <li>Ability to divide into small units (divisibility)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-categories">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(59,130,246,0.2),rgba(16,185,129,0.2));">&#9850;</span> Categories of Money</h2>
+      <div class="grid-2">
+        <div class="grid-item">
+          <h4>Currency</h4>
+          <ul><li>Notes &amp; coins issued on orders of financial authority</li><li>100% liquidity</li></ul>
+        </div>
+        <div class="grid-item">
+          <h4>Bank Money</h4>
+          <ul><li>Balances in demand/current accounts</li><li>Payments made via cheques</li><li>High liquidity (not 100%)</li></ul>
+        </div>
+        <div class="grid-item">
+          <h4>Near Money</h4>
+          <ul><li>Assets that function as a store of value</li><li>Can be converted to cash easily</li><li>Time deposits, savings deposits, Treasury bills</li></ul>
+        </div>
+        <div class="grid-item">
+          <h4>E-Money</h4>
+          <ul><li>Money from digital technology</li><li>Used in inland &amp; international transactions</li><li>Debit cards, credit cards, pre-paid cards</li></ul>
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSection('card-facilities')">&#9660; Card Payment Facilities</button>
+      <div id="card-facilities" style="display:none;">
+        <ul class="features">
+          <li>Automatic Teller Machine (ATM)</li>
+          <li>Automatic Deposits Machine (ADM)</li>
+          <li>Cheques Deposits Machines (CDM)</li>
+          <li>Electronic Funds Transfer point of sales</li>
+          <li>Telebanking, Internet banking, Television banking</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-institutions">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(59,130,246,0.2));">&#9855;</span> Financial Institutions in Sri Lanka</h2>
+      <button class="toggle-btn" onclick="toggleSection('fi-detail')">&#9660; Categories &amp; Details</button>
+      <div id="fi-detail" style="display:none;">
+        <table class="comparison-table">
+          <tr><th>Category</th><th>Examples</th></tr>
+          <tr><td><strong>Banking Sector</strong><br>Central Bank, Licensed commercial banks, Licensed specialized banks</td><td>BOC, People&rsquo;s Bank, Sampath, HNB, Seylan, NSB, Regional Development Bank</td></tr>
+          <tr><td><strong>Deposit-taking Institutions</strong><br>Licensed finance companies, Co-operative Rural Banks, SANASA</td><td>LB Finance, Singer Finance, Maharagama CRB, Nelumkulama Sanasa</td></tr>
+          <tr><td><strong>Specialized Institutions</strong><br>Leasing companies, Primary dealers, Share brokers, Unit trusts</td><td>Asset Line Leasing, Capital Alliance, Asha Securities</td></tr>
+          <tr><td><strong>Contracted Savings</strong><br>Insurance companies, EPF, ETF, Pension funds</td><td>SL Insurance, Ceylinco Insurance</td></tr>
+        </table>
+      </div>
+      <button class="toggle-btn" onclick="toggleSection('fi-contribution')">&#9660; How They Support Businesses</button>
+      <div id="fi-contribution" style="display:none;">
+        <ul class="features">
+          <li>Accepting time and savings deposits</li>
+          <li>Providing loan facilities to entrepreneurs</li>
+          <li>Underwriting of company shares</li>
+          <li>Providing leasing facilities</li>
+          <li>Providing management advisory services</li>
+          <li>Hire-purchase facilities</li>
+          <li>Pawning activities</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-cbsl">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(59,130,246,0.2),rgba(16,185,129,0.2));">&#9879;</span> Central Bank of Sri Lanka</h2>
+      <div class="def-box">Established on <strong>28th August 1950</strong> under the Monetary Act No. 58 of 1949. Founder Governor: Mr. John Exter.</div>
+      <p style="margin:12px 0;font-weight:600;color:var(--accent);">Two Main Objectives</p>
+      <ul class="features">
+        <li><strong>Maintain economic and price stability</strong> &mdash; Protect domestic currency value, avoid inflation/deflation</li>
+        <li><strong>Maintain stability of the financial system</strong> &mdash; Create security, identify and minimize threats</li>
+      </ul>
+      <button class="toggle-btn" onclick="toggleSection('cbsl-activities')">&#9660; Key Activities</button>
+      <div id="cbsl-activities" style="display:none;">
+        <ul class="features">
+          <li>Manipulation of finance policies</li>
+          <li>Manipulation of exchange ratio policies</li>
+          <li>Management of official foreign reserves</li>
+          <li>Issuing and distribution of currency</li>
+          <li>Supervisor of banks and non-banking institutions</li>
+          <li>Financial agent, banker and economic advisor of the government</li>
+          <li>Settlement accounts for commercial banks and primary traders</li>
+        </ul>
+      </div>
+      <button class="toggle-btn" onclick="toggleSection('cbsl-systems')">&#9660; Payment Systems</button>
+      <div id="cbsl-systems" style="display:none;">
+        <ul class="list">
+          <li><strong>SLIPS</strong> &mdash; Inter-bank payment system (now Lanka Clear Pvt Ltd, brand: LankaPay)</li>
+          <li><strong>SWIFT</strong> &mdash; Universal Interbank Financial Electronic Communication Network</li>
+          <li><strong>RTGS</strong> &mdash; Real Time Gross Settlement for high-value transfers</li>
+          <li><strong>SSDS (LankaSecure)</strong> &mdash; Paperless securities depository system</li>
+          <li><strong>Lanka Settle System</strong> &mdash; RTGS + SSDS combined</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-commercial">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(59,130,246,0.2));">&#9776;</span> Commercial Banks</h2>
+      <button class="toggle-btn" onclick="toggleSection('cb-deposits')">&#9660; Deposit Services</button>
+      <div id="cb-deposits" style="display:none;">
+        <table class="comparison-table">
+          <tr><th>Account Type</th><th>Features</th></tr>
+          <tr><td><strong>Current Account</strong></td><td>Cheque transactions, no interest, overdraft facility</td></tr>
+          <tr><td><strong>Savings Account</strong></td><td>Interest on balance, flexible deposits/withdrawals</td></tr>
+          <tr><td><strong>Fixed Deposit</strong></td><td>Fixed sum for fixed period, higher interest rate</td></tr>
+        </table>
+        <p style="margin:12px 0;color:var(--text-dim);font-size:14px;">Benefits: payments via cheques, remittance, standing orders, overdraft, bank statements</p>
+      </div>
+      <button class="toggle-btn" onclick="toggleSection('cb-loans')">&#9660; Lending Services</button>
+      <div id="cb-loans" style="display:none;">
+        <div class="grid-2">
+          <div class="grid-item">
+            <h4>Overdraft</h4>
+            <ul><li>Approval to issue cheques above balance</li><li>Temporary or permanent</li><li>Higher interest rate</li><li>Permanent requires security</li></ul>
+          </div>
+          <div class="grid-item">
+            <h4>Loans</h4>
+            <ul><li><strong>Business loans</strong> &mdash; short/medium/long term for business needs</li><li><strong>Consumer loans</strong> &mdash; for purchasing assets or emergency needs</li></ul>
+          </div>
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSection('cb-other')">&#9660; Other Services</button>
+      <div id="cb-other" style="display:none;">
+        <ul class="features">
+          <li>Agency services (purchase/sale of securities, standing orders, bill payments, leasing)</li>
+          <li>E-Banking (home banking, tele banking)</li>
+          <li>Pawning services (emergency loans against jewelry)</li>
+          <li>Safety locker facilities</li>
+          <li>Purchase and sale of foreign exchange</li>
+          <li>Credit card services (Visa, Master, Amex)</li>
+          <li>Money remittance activities</li>
+          <li>Traveler&rsquo;s cheques</li>
+          <li>Automatic banking services (ATM, cash/cheque deposit)</li>
+          <li>Letters of credit</li>
+          <li>Insurance services, medical services (e-Channeling)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-cheque">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(239,68,68,0.2));">&#9998;</span> Cheques</h2>
+      <div class="def-box">A cheque is a written order issued by a bank current account holder (<strong>drawer</strong>) to the commercial bank (<strong>drawee</strong>) to pay the amount stated to the person named (<strong>payee</strong>) or bearer.</div>
+      <button class="toggle-btn" onclick="toggleSection('cheque-types')">&#9660; Types of Cheques</button>
+      <div id="cheque-types" style="display:none;">
+        <div class="grid-2">
+          <div class="grid-item">
+            <h4>Bearer Cheque</h4>
+            <ul><li>"Or Bearer" not cancelled</li><li>Can be transferred by handing over</li><li>Like using currency notes</li></ul>
+          </div>
+          <div class="grid-item">
+            <h4>Order Cheque</h4>
+            <ul><li>"Or Bearer" struck off, "Order" written</li><li>Requires endorsement to transfer</li><li>Higher safety level</li></ul>
+          </div>
+        </div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSection('cheque-crossing')">&#9660; Crossing &amp; Dishonoring</button>
+      <div id="cheque-crossing" style="display:none;">
+        <p style="margin:12px 0;color:var(--accent);font-weight:500;">Crossing (drawing two parallel lines on the cheque) adds safety.</p>
+        <ul class="list">
+          <li><strong>General Crossing</strong> &mdash; Two parallel lines with or without statements</li>
+          <li><strong>Special Crossing</strong> &mdash; Name of a commercial bank stated; must be deposited in that bank</li>
+          <li>"Not Negotiable" &mdash; Transferee has no greater right than transferor</li>
+          <li>"Account Payee Only" &mdash; Must be deposited in payee&rsquo;s account</li>
+        </ul>
+        <p style="margin:12px 0;color:var(--accent);font-weight:500;">Dishonoring occurs when the bank rejects payment.</p>
+        <ul class="list">
+          <li>Insufficient funds</li>
+          <li>Drawer stops payment (countermanded)</li>
+          <li>Drawer bankrupt or deceased</li>
+          <li>Garnishee order (court order)</li>
+          <li>Errors in writing, account closed</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-emoney">
+    <div class="card">
+      <h2><span class="icon" style="background:linear-gradient(135deg,rgba(99,102,241,0.2),rgba(16,185,129,0.2));">&#9851;</span> Electronic Money</h2>
+      <div class="def-box">The electronic exchange of cash or cash exchanged through a computer network is known as <strong>e-money</strong>.</div>
+      <button class="toggle-btn" onclick="toggleSection('emoney-types')">&#9660; Types</button>
+      <div id="emoney-types" style="display:none;">
+        <table class="comparison-table">
+          <tr><th>Type</th><th>Description</th></tr>
+          <tr><td><strong>Credit Card</strong></td><td>Buy goods/services up to a limit; interest-free loan period; cash from ATM</td></tr>
+          <tr><td><strong>Debit Card</strong></td><td>Use money from account; no interest; ATM withdrawals</td></tr>
+          <tr><td><strong>Pre-Paid Card</strong></td><td>Pay in advance; no account needed; e.g. phone cards, travel passes</td></tr>
+          <tr><td><strong>Smart Card</strong></td><td>Embedded chip with money value; reloadable; acts as e-purse</td></tr>
+          <tr><td><strong>Micro Chips</strong></td><td>Integrated circuit for transactions</td></tr>
+        </table>
+      </div>
+      <button class="toggle-btn" onclick="toggleSection('emoney-proscons')">&#9660; Pros &amp; Cons</button>
+      <div id="emoney-proscons" style="display:none;">
+        <div class="grid-2">
+          <div class="grid-item">
+            <h4>Advantages</h4>
+            <ul><li>Minimized transaction costs</li><li>Safety of cash</li><li>24/7 transactions</li><li>Convenient payments</li><li>Various benefits &amp; discounts</li><li>Overseas usability</li></ul>
+          </div>
+          <div class="grid-item">
+            <h4>Disadvantages</h4>
+            <ul><li>Interest, penalties on late payments</li><li>Fraud risk</li><li>Addiction to unnecessary consumption</li><li>Technical interruptions</li><li>Lack of knowledge for some users</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Business Studies &mdash; Lesson 6 &bull; Money and Financial Institutions &bull; Based on original lesson notes</p>
+  </footer>
+</div>
+<script>
+  const canvas = document.getElementById('particles-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles=[];let mouseX=-1000,mouseY=-1000;
+  function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+  resize();window.addEventListener('resize',resize);
+  class Particle{constructor(){this.reset();}reset(){this.x=Math.random()*canvas.width;this.y=Math.random()*canvas.height;this.size=Math.random()*2+0.5;this.speedX=(Math.random()-0.5)*0.3;this.speedY=(Math.random()-0.5)*0.3;this.opacity=Math.random()*0.5+0.1;}update(){this.x+=this.speedX;this.y+=this.speedY;if(this.x<0||this.x>canvas.width)this.speedX*=-1;if(this.y<0||this.y>canvas.height)this.speedY*=-1;const dx=this.x-mouseX,dy=this.y-mouseY,dist=Math.sqrt(dx*dx+dy*dy);if(dist<120){const force=(120-dist)/120;this.x+=dx*force*0.008;this.y+=dy*force*0.008;}}draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);ctx.fillStyle=`rgba(110,231,183,${this.opacity})`;ctx.fill();}}
+  for(let i=0;i<120;i++)particles.push(new Particle());
+  function animateParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw();});for(let i=0;i<particles.length;i++){for(let j=i+1;j<particles.length;j++){const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y,dist=Math.sqrt(dx*dx+dy*dy);if(dist<140){ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle=`rgba(110,231,183,${0.06*(1-dist/140)})`;ctx.lineWidth=0.5;ctx.stroke();}}}requestAnimationFrame(animateParticles);}
+  animateParticles();
+  document.addEventListener('mousemove',e=>{mouseX=e.clientX;mouseY=e.clientY;});
+  window.addEventListener('scroll',()=>{const s=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-document.documentElement.clientHeight;document.getElementById('progress-bar').style.width=(s/h*100)+'%';});
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1});
+  document.querySelectorAll('.section').forEach(s=>observer.observe(s));
+  function toggleSection(id){const el=document.getElementById(id);if(el.style.display==='none'){el.style.display='block';el.style.animation='fadeUp 0.4s ease forwards';}else{el.style.display='none';}}
+</script>
+</body>
+</html>

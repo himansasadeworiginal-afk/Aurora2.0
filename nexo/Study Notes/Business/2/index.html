@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Studies Lesson 2 - Social Responsibility & Business Ethics</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #080c08;
+    --card: #0e160e;
+    --accent: #10b981;
+    --accent2: #34d399;
+    --accent3: #fbbf24;
+    --text: #e0e0e0;
+    --text-muted: #8a9a8a;
+    --gradient: linear-gradient(135deg, #10b981, #34d399, #fbbf24);
+    --border: rgba(16, 185, 129, 0.15);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+
+  #particles {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 2rem;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    animation: fadeInDown 1s ease;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    font-weight: 800;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    animation: fadeInUp 1s ease 0.2s both;
+  }
+
+  .hero p {
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: var(--text-muted);
+    max-width: 650px;
+    animation: fadeInUp 1s ease 0.4s both;
+  }
+
+  .hero-scroll {
+    position: absolute; bottom: 2rem;
+    left: 50%; transform: translateX(-50%);
+    animation: float 3s ease-in-out infinite;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+  }
+
+  .container {
+    position: relative; z-index: 1;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem;
+  }
+
+  .section {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+    opacity: 0; transform: translateY(40px) scale(0.97);
+  }
+
+  .section.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition: opacity 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .section:hover {
+    transform: translateY(-4px) scale(1.005);
+    box-shadow: 0 24px 72px rgba(16, 185, 129, 0.06);
+  }
+
+  .section-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    display: inline-block;
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  .section h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section h2 .underline {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+
+  .section h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1.5rem 0 0.8rem;
+  }
+
+  .section h4 {
+    color: var(--accent2);
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 1rem 0 0.5rem;
+  }
+
+  .section ul, .section ol { padding-left: 1.5rem; }
+  .section li { margin-bottom: 0.4rem; color: var(--text); }
+  .section p { margin-bottom: 0.8rem; color: var(--text); }
+
+  .highlight {
+    display: inline-block;
+    padding: 0.1rem 0.5rem;
+    background: rgba(16, 185, 129, 0.12);
+    border-radius: 4px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .highlight-green { background: rgba(52, 211, 153, 0.12); color: var(--accent2); }
+  .highlight-amber { background: rgba(251, 191, 36, 0.12); color: var(--accent3); }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .info-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 1.2rem;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: default;
+  }
+
+  .info-card:hover {
+    background: rgba(16, 185, 129, 0.06);
+    border-color: rgba(16, 185, 129, 0.18);
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 12px 32px rgba(16, 185, 129, 0.08);
+  }
+
+  .info-card .emoji { font-size: 2rem; margin-bottom: 0.5rem; }
+  .info-card .label { font-weight: 600; color: #fff; margin-bottom: 0.3rem; }
+  .info-card .desc { font-size: 0.85rem; color: var(--text-muted); }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin: 1rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .comparison > div { padding: 1.2rem; }
+  .comparison .left { background: rgba(16, 185, 129, 0.06); border-right: 1px solid var(--border); }
+  .comparison .right { background: rgba(52, 211, 153, 0.06); }
+  .comparison .header {
+    font-weight: 700; font-size: 1.1rem;
+    text-align: center; padding: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .comparison .left .header { color: var(--accent); }
+  .comparison .right .header { color: var(--accent2); }
+  .comparison ul { list-style: none; padding: 0; }
+  .comparison li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.9rem;
+  }
+  .comparison li:last-child { border-bottom: none; }
+
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    margin: 1rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .three-col > div { padding: 1rem; }
+  .three-col .col1 { background: rgba(16, 185, 129, 0.06); }
+  .three-col .col2 { background: rgba(52, 211, 153, 0.06); }
+  .three-col .col3 { background: rgba(251, 191, 36, 0.06); }
+  .three-col .header { font-weight: 700; text-align: center; padding: 0.7rem; border-bottom: 1px solid var(--border); }
+  .three-col .col1 .header { color: var(--accent); }
+  .three-col .col2 .header { color: var(--accent2); }
+  .three-col .col3 .header { color: var(--accent3); }
+  .three-col ul { list-style: none; padding: 0; }
+  .three-col li { padding: 0.4rem 0; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 0.85rem; }
+
+  .four-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 0;
+    margin: 1rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .four-col > div { padding: 0.8rem; }
+  .four-col .col1 { background: rgba(16, 185, 129, 0.06); }
+  .four-col .col2 { background: rgba(52, 211, 153, 0.06); }
+  .four-col .col3 { background: rgba(251, 191, 36, 0.06); }
+  .four-col .col4 { background: rgba(16, 185, 129, 0.03); }
+  .four-col .header { font-weight: 700; text-align: center; padding: 0.6rem; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+  .four-col .col1 .header { color: var(--accent); }
+  .four-col .col2 .header { color: var(--accent2); }
+  .four-col .col3 .header { color: var(--accent3); }
+  .four-col .col4 .header { color: var(--accent); }
+  .four-col ul { list-style: none; padding: 0; }
+  .four-col li { padding: 0.35rem 0; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 0.82rem; }
+
+  .flashcard-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .flashcard {
+    perspective: 1000px;
+    height: 170px;
+    cursor: pointer;
+  }
+
+  .flashcard-inner {
+    position: relative;
+    width: 100%; height: 100%;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+  }
+
+  .flashcard.flipped .flashcard-inner {
+    transform: rotateY(180deg);
+  }
+
+  .flashcard-front, .flashcard-back {
+    position: absolute;
+    width: 100%; height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+
+  .flashcard-front {
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.18);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .flashcard-back {
+    background: rgba(52, 211, 153, 0.1);
+    border: 1px solid rgba(52, 211, 153, 0.18);
+    color: var(--accent2);
+    transform: rotateY(180deg);
+    font-size: 0.82rem;
+  }
+
+  .flashcard-hint {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin: 1rem 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2), var(--accent3));
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2.35rem; top: 0.5rem;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+
+  .timeline-item .title { font-weight: 600; color: #fff; }
+  .timeline-item .desc { font-size: 0.9rem; color: var(--text-muted); }
+
+  .quiz-question {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin: 1rem 0;
+  }
+  .quiz-question .q { font-weight: 600; margin-bottom: 0.8rem; color: #fff; }
+
+  .quiz-option {
+    display: block; width: 100%;
+    padding: 0.7rem 1rem; margin-bottom: 0.5rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    color: var(--text); cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left; font-size: 0.9rem;
+    font-family: inherit;
+  }
+
+  .quiz-option:hover {
+    background: rgba(16, 185, 129, 0.08);
+    border-color: var(--accent);
+  }
+
+  .quiz-option.correct {
+    background: rgba(16, 185, 129, 0.18);
+    border-color: var(--accent); color: var(--accent2);
+  }
+
+  .quiz-option.wrong {
+    background: rgba(239, 68, 68, 0.18);
+    border-color: #ef4444; color: #ef4444;
+  }
+
+  .quiz-feedback {
+    margin-top: 0.8rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    display: none;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct { background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.18); color: var(--accent2); }
+  .quiz-feedback.wrong { background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.18); color: #ef4444; }
+
+  .progress-container {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 3px; z-index: 100;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: var(--gradient);
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes shimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-12px); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.1); }
+  }
+
+  @media (max-width: 600px) {
+    .comparison { grid-template-columns: 1fr; }
+    .comparison .left { border-right: none; border-bottom: 1px solid var(--border); }
+    .three-col { grid-template-columns: 1fr; }
+    .four-col { grid-template-columns: 1fr 1fr; }
+    .section { padding: 1.2rem; }
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin: 0.2rem;
+  }
+  .tag-green { background: rgba(16, 185, 129, 0.12); color: var(--accent); }
+  .tag-light { background: rgba(52, 211, 153, 0.12); color: var(--accent2); }
+  .tag-amber { background: rgba(251, 191, 36, 0.12); color: var(--accent3); }
+
+  .quote-box {
+    background: rgba(251, 191, 36, 0.04);
+    border-left: 3px solid var(--accent3);
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    font-style: italic;
+    color: var(--text-muted);
+  }
+  .quote-box .author {
+    display: block;
+    margin-top: 0.5rem;
+    font-style: normal;
+    font-weight: 600;
+    color: var(--accent3);
+    font-size: 0.85rem;
+  }
+
+  .pill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0.8rem 0;
+  }
+  .pill-list .pill {
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.12);
+    border-radius: 50px;
+    padding: 0.3rem 0.9rem;
+    font-size: 0.82rem;
+    color: var(--accent2);
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
+
+<canvas id="particles"></canvas>
+
+<section class="hero">
+  <div class="hero-badge">Lesson 2</div>
+  <h1>Social Responsibility<br>&amp; Business Ethics</h1>
+  <p>Understanding how businesses balance profit with accountability to stakeholders, society, and the environment.</p>
+  <div class="hero-scroll">&#x2193;</div>
+</section>
+
+<div class="container">
+
+  <!-- Social Responsibility -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F91D;</div>
+    <h2>Social Responsibility <span class="underline"></span></h2>
+    <p>The obligation of a business to perform its activities in an unbiased way and act favorably toward all stakeholders &mdash; <span class="highlight">social responsibility</span> goes beyond legal obligations to include ethical and discretionary expectations.</p>
+
+    <h3>Key Definitions</h3>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F30D;</div><div class="label">World Business Council</div><div class="desc">"The commitment of a business to contribute to sustainable economic development, working with employees, their families, and the local community."</div></div>
+      <div class="info-card"><div class="emoji">&#x1F9EC;</div><div class="label">Mallen Baker</div><div class="desc">"Companies treat stakeholders ethically &amp; responsibly beyond legal requirements."</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4DA;</div><div class="label">Narayan Moorthy</div><div class="desc">"Social responsibility is the intelligent &amp; objective concern for the welfare of society that restrains individual/group behavior from destructive activities."</div></div>
+    </div>
+
+    <h3>Country Perspectives</h3>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F1FA;&#x1F1F8; USA</div>
+        <ul>
+          <li>Personal responsibility approach</li>
+          <li>Individuals and firms focus on profitability first</li>
+          <li>Legal compliance as baseline</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F1F5;&#x1F1ED; Philippines</div>
+        <ul>
+          <li>Giving back to community</li>
+          <li>Strong tradition of helping others</li>
+          <li>CSR embedded in culture</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Developing Forces</h3>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F3C6;</div><div class="label">Competition</div><div class="desc">Firms differentiate through ethical practices</div></div>
+      <div class="info-card"><div class="emoji">&#x1F310;</div><div class="label">Globalization</div><div class="desc">Cross-border expectations for responsible conduct</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4BB;</div><div class="label">E-Business</div><div class="desc">Transparency demands from digital transactions</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3D8;&#xFE0F;</div><div class="label">Environmental Pollution</div><div class="desc">Pressure for eco-friendly operations</div></div>
+    </div>
+  </div>
+
+  <!-- Parties to Whom Business Has Social Responsibility -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F465;</div>
+    <h2>Parties with Social Responsibility Claims <span class="underline"></span></h2>
+    <p>A business has social responsibilities toward four key stakeholder groups:</p>
+
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F9CD;</div><div class="label">Customers</div><div class="desc">Quality products at reasonable price, harmless goods, accurate information</div></div>
+      <div class="info-card"><div class="emoji">&#x1F9D1;&#x200D;&#x1F4BC;</div><div class="label">Employees</div><div class="desc">Job rights, fair wages, safe facilities, growth opportunities</div></div>
+      <div class="info-card"><div class="emoji">&#x1F464;</div><div class="label">Owners</div><div class="desc">Reasonable earnings &amp; profit, transparent reporting</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3E0;</div><div class="label">Society</div><div class="desc">Eco-friendly operations, community development, ethical practices</div></div>
+    </div>
+
+    <h3>Responsibilities Explained</h3>
+    <div class="three-col">
+      <div class="col1">
+        <div class="header">&#x1F9CD; Customers</div>
+        <ul>
+          <li>Fair pricing</li>
+          <li>Safe, quality goods</li>
+          <li>Honest advertising</li>
+          <li>After-sales service</li>
+        </ul>
+      </div>
+      <div class="col2">
+        <div class="header">&#x1F9D1;&#x200D;&#x1F4BC; Employees</div>
+        <ul>
+          <li>Job security</li>
+          <li>Safe workplace</li>
+          <li>Fair compensation</li>
+          <li>Training &amp; growth</li>
+        </ul>
+      </div>
+      <div class="col3">
+        <div class="header">&#x1F3E0; Society</div>
+        <ul>
+          <li>Pollution control</li>
+          <li>Waste management</li>
+          <li>Community welfare</li>
+          <li>Ethical governance</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Benefits of Fulfilling Social Responsibility -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x2728;</div>
+    <h2>Benefits of Fulfilling Social Responsibility <span class="underline"></span></h2>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F3ED;</div><div class="label">Ensure Business Existence</div><div class="desc">Long-term viability through stakeholder trust</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4B0;</div><div class="label">Develop Goodwill &amp; Image</div><div class="desc">Positive public perception &amp; brand reputation</div></div>
+      <div class="info-card"><div class="emoji">&#x1F91D;</div><div class="label">Ensure Trust</div><div class="desc">Builds confidence among all stakeholders</div></div>
+      <div class="info-card"><div class="emoji">&#x1F9CD;</div><div class="label">Satisfy Customers</div><div class="desc">Loyal customer base through ethical practices</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3AF;</div><div class="label">Achieve Objectives</div><div class="desc">Aligns profit goals with social good</div></div>
+    </div>
+  </div>
+
+  <!-- Sustainable Development -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F33F;</div>
+    <h2>Sustainable Development <span class="underline"></span></h2>
+    <p><span class="highlight">Sustainable development</span> is development that meets the needs of the present without compromising the ability of future generations to meet their own needs.</p>
+
+    <div class="quote-box">
+      "When the last tree is cut, the last river poisoned, and the last fish dead, we will discover that we cannot eat money."
+      <span class="author">&mdash; Seattle, Red Indian Leader</span>
+    </div>
+
+    <h3>Three Core Pillars</h3>
+    <div class="three-col">
+      <div class="col1">
+        <div class="header">&#x1F4B0; Economic</div>
+        <ul>
+          <li>Improve human welfare</li>
+          <li>Reduce resource consumption</li>
+          <li>Eco-friendly affordable products</li>
+          <li>Sustainable growth</li>
+        </ul>
+      </div>
+      <div class="col2">
+        <div class="header">&#x1F33F; Environmental</div>
+        <ul>
+          <li>Limited resources</li>
+          <li>Clean air &amp; water</li>
+          <li>Protect biodiversity</li>
+          <li>Combat global warming</li>
+          <li>Stop deforestation</li>
+        </ul>
+      </div>
+      <div class="col3">
+        <div class="header">&#x1F465; Social</div>
+        <ul>
+          <li>Equality &amp; equity</li>
+          <li>Social capital</li>
+          <li>Human rights</li>
+          <li>Social justice</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Business Contributions to Sustainability -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F3D7;&#xFE0F;</div>
+    <h2>Business Contributions to Sustainability <span class="underline"></span></h2>
+
+    <h3>Economic Contributions</h3>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F9D1;&#x200D;&#x1F3EB;</div><div class="label">Job Designing</div><div class="desc">Create meaningful, efficient roles</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4A1;</div><div class="label">Empowering Skills</div><div class="desc">Training &amp; capability building</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3ED;</div><div class="label">Efficient Resource Use</div><div class="desc">Optimize capital &amp; resource utilization</div></div>
+      <div class="info-card"><div class="emoji">&#x26A0;&#xFE0F;</div><div class="label">Risk Management</div><div class="desc">Mitigate financial &amp; operational risks</div></div>
+      <div class="info-card"><div class="emoji">&#x1F52C;</div><div class="label">Innovation &amp; Tech</div><div class="desc">R&amp;D for sustainable solutions</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3D7;&#xFE0F;</div><div class="label">Infrastructure</div><div class="desc">Build community &amp; industrial infrastructure</div></div>
+      <div class="info-card"><div class="emoji">&#x2764;&#xFE0F;</div><div class="label">Employee Welfare</div><div class="desc">Health, safety &amp; well-being programs</div></div>
+    </div>
+
+    <h3>Environmental Contributions</h3>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F33F;</div><div class="label">Eco-Friendly Products</div><div class="desc">Green design &amp; sustainable materials</div></div>
+      <div class="info-card"><div class="emoji">&#x267B;&#xFE0F;</div><div class="label">3R / 4R / 5R</div><div class="desc">Reduce, Reuse, Recycle framework</div></div>
+      <div class="info-card"><div class="emoji">&#x2600;&#xFE0F;</div><div class="label">Renewable Energy</div><div class="desc">Solar, wind, hydro power adoption</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3D8;&#xFE0F;</div><div class="label">Pollution Minimization</div><div class="desc">Emission controls &amp; waste treatment</div></div>
+      <div class="info-card"><div class="emoji">&#x1F98C;</div><div class="label">Biodiversity Protection</div><div class="desc">Conserve ecosystems &amp; wildlife</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4DC;</div><div class="label">Environmental Regulations</div><div class="desc">Compliance with environmental laws</div></div>
+    </div>
+
+    <h3>Social &amp; Cultural Contributions</h3>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F3E0;</div><div class="label">Standard of Living</div><div class="desc">Improve quality of life</div></div>
+      <div class="info-card"><div class="emoji">&#x2696;&#xFE0F;</div><div class="label">Equal Opportunities</div><div class="desc">Fair hiring &amp; promotion practices</div></div>
+      <div class="info-card"><div class="emoji">&#x1F91D;</div><div class="label">Social Integrity</div><div class="desc">Honest, transparent business conduct</div></div>
+      <div class="info-card"><div class="emoji">&#x1F9D1;&#x200D;&#x1F393;</div><div class="label">Human Capital</div><div class="desc">Education &amp; skill development</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3EE;</div><div class="label">Local Traditions</div><div class="desc">Preserve cultural heritage</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4B8;</div><div class="label">Poverty Reduction</div><div class="desc">Economic inclusion &amp; fair wages</div></div>
+      <div class="info-card"><div class="emoji">&#x1F30D;</div><div class="label">Human Rights</div><div class="desc">Respect fundamental freedoms</div></div>
+    </div>
+  </div>
+
+  <!-- 4R Concept -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x267B;&#xFE0F;</div>
+    <h2>4R Concept for Sustainability <span class="underline"></span></h2>
+    <p>The <span class="highlight">4R framework</span> guides businesses in minimizing environmental impact through waste management and resource conservation.</p>
+
+    <div class="four-col">
+      <div class="col1">
+        <div class="header">&#x267B;&#xFE0F; Recycle</div>
+        <ul>
+          <li>Waste &rarr; new materials</li>
+          <li><strong>Upcycle:</strong> hay &rarr; paper</li>
+          <li><strong>Low cycle:</strong> vehicles &rarr; iron</li>
+          <li>Reduces landfill waste</li>
+        </ul>
+      </div>
+      <div class="col2">
+        <div class="header">&#x1F504; Reuse</div>
+        <ul>
+          <li>Using products repeatedly</li>
+          <li>Lunch boxes instead of sheets</li>
+          <li>Refillable containers</li>
+          <li>Extends product lifecycle</li>
+        </ul>
+      </div>
+      <div class="col3">
+        <div class="header">&#x2796; Reduce</div>
+        <ul>
+          <li>Minimizing waste generation</li>
+          <li>No non-degradable polythene</li>
+          <li>No plastic bottles</li>
+          <li>Lower resource consumption</li>
+        </ul>
+      </div>
+      <div class="col4">
+        <div class="header">&#x1F504; Replace</div>
+        <ul>
+          <li>Replacing consumed resources</li>
+          <li>Reforestation</li>
+          <li>Fish farming</li>
+          <li>Renewable resource regeneration</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Adverse Effects of Business Activities -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x26A0;&#xFE0F;</div>
+    <h2>Adverse Effects of Business Activities <span class="underline"></span></h2>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F4E2;</div><div class="label">Low Quality Imports</div><div class="desc">Inferior goods harm local industries &amp; consumers</div></div>
+      <div class="info-card"><div class="emoji">&#x1F6A7;</div><div class="label">Misleading Customers</div><div class="desc">False advertising &amp; deceptive practices</div></div>
+      <div class="info-card"><div class="emoji">&#x1F9D1;&#x200D;&#x1F4BC;</div><div class="label">Poor Employee Welfare</div><div class="desc">Unfair wages, unsafe conditions, exploitation</div></div>
+      <div class="info-card"><div class="emoji">&#x1F5D1;&#xFE0F;</div><div class="label">Resource Waste</div><div class="desc">Overconsumption of natural &amp; material resources</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3D8;&#xFE0F;</div><div class="label">Pollution</div><div class="desc">Air, water, land &amp; noise pollution</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3AC;</div><div class="label">Inappropriate Ads &amp; Culture</div><div class="desc">Harmful stereotypes &amp; cultural erosion</div></div>
+    </div>
+  </div>
+
+  <!-- Business Ethics & Code of Ethics -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x2696;&#xFE0F;</div>
+    <h2>Business Ethics &amp; Code of Ethics <span class="underline"></span></h2>
+    <p><span class="highlight">Business ethics</span> refers to acting favorably toward all parties by acknowledging what is good and bad in business conduct. It provides a moral framework for decision-making.</p>
+
+    <h3>Examples of Business Ethics</h3>
+    <ul>
+      <li><span class="tag tag-green">Quality Goods</span> Building trust through consistent product standards</li>
+      <li><span class="tag tag-light">Ethical Accounting</span> Transparent financial reporting prevents misconduct</li>
+      <li><span class="tag tag-amber">Fair HR Management</span> Equitable hiring, promotion, and compensation</li>
+    </ul>
+
+    <h3>Key Factors for a Code of Ethics</h3>
+    <div class="pill-list">
+      <span class="pill">&#x1F3ED; Nature of Business</span>
+      <span class="pill">&#x1F9CD; Customers</span>
+      <span class="pill">&#x1F9D1;&#x200D;&#x1F4BC; Employees</span>
+      <span class="pill">&#x1F91B; Competition</span>
+      <span class="pill">&#x1F30D; Socio-Culture</span>
+      <span class="pill">&#x1F3E2; Organizational Culture</span>
+      <span class="pill">&#x2705; Practicableness</span>
+    </div>
+  </div>
+
+  <!-- Flashcards -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4A0;</div>
+    <h2>Key Terms <span class="underline"></span></h2>
+    <p>Click each card to reveal the definition.</p>
+
+    <div class="flashcard-container">
+      <div class="flashcard" onclick="flipCard(this)">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            Social Responsibility
+            <div class="flashcard-hint">tap to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Performing business activities in an unbiased way to all stakeholders, going beyond legal requirements.
+          </div>
+        </div>
+      </div>
+
+      <div class="flashcard" onclick="flipCard(this)">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            Sustainable Development
+            <div class="flashcard-hint">tap to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Meeting present needs without compromising the ability of future generations to meet their own needs.
+          </div>
+        </div>
+      </div>
+
+      <div class="flashcard" onclick="flipCard(this)">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            4R Concept
+            <div class="flashcard-hint">tap to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Recycle, Reuse, Reduce, Replace &mdash; a framework for waste management and resource conservation.
+          </div>
+        </div>
+      </div>
+
+      <div class="flashcard" onclick="flipCard(this)">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            Code of Ethics
+            <div class="flashcard-hint">tap to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            A formal document outlining acceptable conduct, shaped by business nature, customers, employees, competition, socio-culture, and organizational culture.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comparison Tables -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4CA;</div>
+    <h2>Comparison Tables <span class="underline"></span></h2>
+
+    <h3>Sustainability Pillars</h3>
+    <div class="three-col">
+      <div class="col1">
+        <div class="header">&#x1F4B0; Economic</div>
+        <ul>
+          <li>Improve human welfare</li>
+          <li>Reduce resource consumption</li>
+          <li>Eco-friendly affordable products</li>
+          <li>Focus: growth &amp; efficiency</li>
+        </ul>
+      </div>
+      <div class="col2">
+        <div class="header">&#x1F33F; Environmental</div>
+        <ul>
+          <li>Clean air &amp; water</li>
+          <li>Biodiversity protection</li>
+          <li>Combat global warming</li>
+          <li>Focus: planet preservation</li>
+        </ul>
+      </div>
+      <div class="col3">
+        <div class="header">&#x1F465; Social</div>
+        <ul>
+          <li>Equality &amp; human rights</li>
+          <li>Social capital &amp; justice</li>
+          <li>Community well-being</li>
+          <li>Focus: people &amp; equity</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>4R Comparison</h3>
+    <div class="four-col">
+      <div class="col1">
+        <div class="header">&#x267B;&#xFE0F; Recycle</div>
+        <ul>
+          <li>Process waste into new</li>
+          <li>Upcycle &amp; low cycle</li>
+          <li>Requires processing</li>
+        </ul>
+      </div>
+      <div class="col2">
+        <div class="header">&#x1F504; Reuse</div>
+        <ul>
+          <li>Same product multiple uses</li>
+          <li>Minimal processing</li>
+          <li>Extends product life</li>
+        </ul>
+      </div>
+      <div class="col3">
+        <div class="header">&#x2796; Reduce</div>
+        <ul>
+          <li>Minimize waste at source</li>
+          <li>Preventive approach</li>
+          <li>Most effective</li>
+        </ul>
+      </div>
+      <div class="col4">
+        <div class="header">&#x1F504; Replace</div>
+        <ul>
+          <li>Regenerate consumed resources</li>
+          <li>Restorative action</li>
+          <li>Reforestation, fish farming</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quiz -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F9F0;</div>
+    <h2>Test Your Knowledge <span class="underline"></span></h2>
+
+    <div class="quiz-question" data-q="1">
+      <div class="q">1. Which of the following best defines social responsibility?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Maximizing profit at all costs</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Performing business activities in an unbiased way to all stakeholders</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Following only legal requirements</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Reducing employee wages to save costs</button>
+      <div class="quiz-feedback" data-feedback="1"></div>
+    </div>
+
+    <div class="quiz-question" data-q="2">
+      <div class="q">2. According to the World Commission, sustainable development means:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Using all resources as quickly as possible</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Focusing only on economic growth</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Meeting present needs without compromising future generations</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Prioritizing business profit over environment</button>
+      <div class="quiz-feedback" data-feedback="2"></div>
+    </div>
+
+    <div class="quiz-question" data-q="3">
+      <div class="q">3. Which "R" involves processing waste materials into new products?</div>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Recycle</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Reuse</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Reduce</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Replace</button>
+      <div class="quiz-feedback" data-feedback="3"></div>
+    </div>
+
+    <div class="quiz-question" data-q="4">
+      <div class="q">4. To which party does a business have the responsibility of providing quality products at reasonable prices?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Employees</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Owners</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Customers</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Society</button>
+      <div class="quiz-feedback" data-feedback="4"></div>
+    </div>
+
+    <div class="quiz-question" data-q="5">
+      <div class="q">5. Who said, "When the last tree is cut, the last river poisoned, and the last fish dead, we will discover that we cannot eat money"?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">World Business Council</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Narayan Moorthy</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Seattle - Red Indian Leader</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Mallen Baker</button>
+      <div class="quiz-feedback" data-feedback="5"></div>
+    </div>
+
+    <div class="quiz-question" data-q="6">
+      <div class="q">6. Which is NOT one of the three core pillars of sustainable development?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Economic</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Environmental</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Social</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Political</button>
+      <div class="quiz-feedback" data-feedback="6"></div>
+    </div>
+
+    <div class="quiz-question" data-q="7">
+      <div class="q">7. Business ethics primarily deals with:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Maximizing shareholder returns</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Acting favorably to all parties by acknowledging good and bad conduct</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Following government regulations only</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Reducing operational costs</button>
+      <div class="quiz-feedback" data-feedback="7"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  class Particle {
+    constructor() { this.reset(); }
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 2.5 + 0.5;
+      this.speedX = (Math.random() - 0.5) * 0.4;
+      this.speedY = (Math.random() - 0.5) * 0.4;
+      this.opacity = Math.random() * 0.4 + 0.08;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(16, 185, 129, ${this.opacity})`;
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+  function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
+
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 150) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(16, 185, 129, ${0.05 * (1 - dist / 150)})`;
+          ctx.lineWidth = 0.5;
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(animateParticles);
+  }
+  animateParticles();
+
+  const sections = document.querySelectorAll('[data-section]');
+
+  function revealSections() {
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 80) {
+        section.classList.add('visible');
+      }
+    });
+  }
+  window.addEventListener('scroll', revealSections);
+  revealSections();
+
+  const progressBar = document.getElementById('progressBar');
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    progressBar.style.width = (scrollTop / docHeight) * 100 + '%';
+  });
+
+  function flipCard(card) {
+    card.classList.toggle('flipped');
+  }
+
+  function checkAnswer(btn, isCorrect) {
+    const question = btn.closest('.quiz-question');
+    const options = question.querySelectorAll('.quiz-option');
+    const feedback = question.querySelector('.quiz-feedback');
+
+    options.forEach(opt => {
+      opt.disabled = true;
+      opt.style.cursor = 'not-allowed';
+      if (opt.dataset.correct === 'true') opt.classList.add('correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.textContent = '✅ Correct!';
+      feedback.className = 'quiz-feedback show correct';
+    } else {
+      btn.classList.add('wrong');
+      const correctBtn = question.querySelector('[data-correct="true"]');
+      feedback.textContent = '❌ Incorrect. The answer was: ' + correctBtn.textContent;
+      feedback.className = 'quiz-feedback show wrong';
+    }
+  }
+</script>
+
+</body>
+</html>

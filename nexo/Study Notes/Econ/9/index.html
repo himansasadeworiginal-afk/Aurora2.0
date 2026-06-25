@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Economics Lesson 9 - Protectionism & Foreign Investments</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --accent: #a855f7;
+    --accent2: #ec4899;
+    --accent3: #f59e0b;
+    --bg: #0a0a0f;
+    --card: #15101a;
+    --text: #e0e0e0;
+    --text-muted: #888;
+    --gradient: linear-gradient(135deg, #a855f7, #ec4899, #f59e0b);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+
+  #particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background: rgba(168, 85, 247, 0.15);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    animation: fadeInDown 1s ease;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    font-weight: 800;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    animation: fadeInUp 1s ease 0.2s both;
+  }
+
+  .hero p {
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: var(--text-muted);
+    max-width: 600px;
+    animation: fadeInUp 1s ease 0.4s both;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: bounce 2s infinite;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem;
+  }
+
+  .section {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .section.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .section:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 60px rgba(168, 85, 247, 0.08);
+  }
+
+  .section-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .section h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section h2 .underline {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+
+  .section h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1.5rem 0 0.8rem;
+  }
+
+  .section h4 {
+    color: var(--accent2);
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 1rem 0 0.5rem;
+  }
+
+  .section ul, .section ol {
+    padding-left: 1.5rem;
+  }
+
+  .section li {
+    margin-bottom: 0.4rem;
+    color: var(--text);
+  }
+
+  .section p {
+    margin-bottom: 0.8rem;
+    color: var(--text);
+  }
+
+  .highlight {
+    display: inline-block;
+    padding: 0.1rem 0.5rem;
+    background: rgba(168, 85, 247, 0.15);
+    border-radius: 4px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .highlight-pink {
+    background: rgba(236, 72, 153, 0.15);
+    color: var(--accent2);
+  }
+
+  .highlight-amber {
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--accent3);
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .info-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: default;
+  }
+
+  .info-card:hover {
+    background: rgba(168,85,247,0.08);
+    border-color: rgba(168,85,247,0.2);
+    transform: translateY(-5px);
+  }
+
+  .info-card .emoji {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .info-card .label {
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.3rem;
+  }
+
+  .info-card .desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin: 1rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .comparison > div {
+    padding: 1.2rem;
+  }
+
+  .comparison .left {
+    background: rgba(168,85,247,0.08);
+    border-right: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .comparison .right {
+    background: rgba(236,72,153,0.08);
+  }
+
+  .comparison .header {
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-align: center;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .comparison .left .header { color: var(--accent); }
+  .comparison .right .header { color: var(--accent2); }
+
+  .comparison ul { list-style: none; padding: 0; }
+  .comparison li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.9rem;
+  }
+  .comparison li:last-child { border-bottom: none; }
+
+  .flashcard-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .flashcard {
+    perspective: 1000px;
+    height: 180px;
+    cursor: pointer;
+  }
+
+  .flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+  }
+
+  .flashcard.flipped .flashcard-inner {
+    transform: rotateY(180deg);
+  }
+
+  .flashcard-front, .flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+
+  .flashcard-front {
+    background: rgba(168,85,247,0.1);
+    border: 1px solid rgba(168,85,247,0.2);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .flashcard-back {
+    background: rgba(236,72,153,0.15);
+    border: 1px solid rgba(236,72,153,0.2);
+    color: var(--accent2);
+    transform: rotateY(180deg);
+  }
+
+  .flashcard-hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+  }
+
+  .quiz-question {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin: 1rem 0;
+  }
+
+  .quiz-question .q {
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    color: #fff;
+  }
+
+  .quiz-option {
+    display: block;
+    width: 100%;
+    padding: 0.7rem 1rem;
+    margin-bottom: 0.5rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    font-size: 0.9rem;
+    font-family: inherit;
+  }
+
+  .quiz-option:hover {
+    background: rgba(168,85,247,0.1);
+    border-color: var(--accent);
+  }
+
+  .quiz-option.correct {
+    background: rgba(236,72,153,0.2);
+    border-color: var(--accent2);
+    color: var(--accent2);
+  }
+
+  .quiz-option.wrong {
+    background: rgba(214,48,49,0.2);
+    border-color: #d63031;
+    color: #d63031;
+  }
+
+  .quiz-feedback {
+    margin-top: 0.8rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .quiz-feedback.show {
+    display: block;
+  }
+
+  .quiz-feedback.correct {
+    background: rgba(236,72,153,0.1);
+    border: 1px solid rgba(236,72,153,0.2);
+    color: var(--accent2);
+  }
+
+  .quiz-feedback.wrong {
+    background: rgba(214,48,49,0.1);
+    border: 1px solid rgba(214,48,49,0.2);
+    color: #d63031;
+  }
+
+  .progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    z-index: 100;
+    background: transparent;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: var(--gradient);
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 0.3rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .tag-purple { background: rgba(168,85,247,0.15); color: var(--accent); }
+  .tag-pink { background: rgba(236,72,153,0.15); color: var(--accent2); }
+  .tag-amber { background: rgba(245,158,11,0.15); color: var(--accent3); }
+
+  .formula-box {
+    background: rgba(168,85,247,0.06);
+    border: 1px solid rgba(168,85,247,0.15);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+  }
+
+  .formula-box.pink {
+    background: rgba(236,72,153,0.06);
+    border-color: rgba(236,72,153,0.15);
+    color: var(--accent2);
+  }
+
+  .example-box {
+    background: rgba(245,158,11,0.06);
+    border: 1px solid rgba(245,158,11,0.15);
+    border-radius: 10px;
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+
+  .example-box .label {
+    font-weight: 600;
+    color: var(--accent3);
+    margin-bottom: 0.5rem;
+  }
+
+  .example-box p {
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .example-box .math {
+    font-family: 'Courier New', monospace;
+    color: #fff;
+    font-size: 1rem;
+  }
+
+  .calc-box {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+  }
+
+  .calc-box label {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 0.3rem;
+    margin-top: 1rem;
+  }
+
+  .calc-box label:first-child { margin-top: 0; }
+
+  .calc-box input {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1rem;
+    font-family: inherit;
+  }
+
+  .calc-box input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .calc-box .result {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    background: rgba(168,85,247,0.1);
+    border: 1px solid rgba(168,85,247,0.2);
+    color: var(--accent);
+    min-height: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .calc-box .result.pink {
+    background: rgba(236,72,153,0.1);
+    border-color: rgba(236,72,153,0.2);
+    color: var(--accent2);
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.6rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: var(--gradient);
+    color: #fff;
+    margin-top: 1rem;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(168,85,247,0.3);
+  }
+
+  .workflow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0;
+    align-items: center;
+  }
+
+  .workflow .step {
+    background: rgba(168,85,247,0.1);
+    border: 1px solid rgba(168,85,247,0.15);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    color: var(--accent);
+  }
+
+  .workflow .arrow {
+    color: var(--text-muted);
+    font-size: 1.2rem;
+  }
+
+  .note {
+    padding: 0.8rem;
+    border-left: 3px solid var(--accent3);
+    background: rgba(245,158,11,0.06);
+    border-radius: 0 8px 8px 0;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 0.8rem;
+    margin: 1rem 0;
+  }
+
+  .mini-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .mini-card .emoji {
+    font-size: 1.8rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .mini-card .title {
+    font-weight: 600;
+    color: var(--accent);
+    font-size: 0.85rem;
+  }
+
+  .mini-card .desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.2rem;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+    40% { transform: translateX(-50%) translateY(-10px); }
+    60% { transform: translateX(-50%) translateY(-5px); }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @media (max-width: 600px) {
+    .comparison { grid-template-columns: 1fr; }
+    .comparison .left { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .section { padding: 1.2rem; }
+    .flashcard-container { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-container">
+  <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<canvas id="particles"></canvas>
+
+<section class="hero">
+  <div class="hero-badge">Lesson 9</div>
+  <h1>Protectionism &amp;<br>Foreign Investments</h1>
+  <p>Government trade restrictions, tariff and non-tariff barriers, and the role of foreign capital in economic development.</p>
+  <div class="hero-scroll">&#x2193;</div>
+</section>
+
+<div class="container">
+
+  <!-- 1. Protectionism -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F6E1;&#xFE0F;</div>
+    <h2>Protectionism <span class="underline"></span></h2>
+    <p><strong>Protectionism</strong> refers to government policies that restrict international trade in order to protect domestic industries from foreign competition.</p>
+    <div class="card-grid">
+      <div class="info-card">
+        <div class="emoji">&#x1F4DC;</div>
+        <div class="label">Definition</div>
+        <div class="desc">Government policies restricting international trade to help domestic industries</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F3ED;</div>
+        <div class="label">Goal</div>
+        <div class="desc">Protect domestic producers from foreign competition</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x2696;&#xFE0F;</div>
+        <div class="label">Two Types</div>
+        <div class="desc">Tariff Protectionism &amp; Non-Tariff Barriers</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Tariff Protectionism -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4B3;</div>
+    <h2>Tariff Protectionism <span class="underline"></span></h2>
+    <p>Tariff protectionism involves imposing <strong>tariffs (taxes)</strong> on imports and exports. The main objective is to protect domestic producers from foreign competition by making imported goods more expensive.</p>
+
+    <div class="workflow">
+      <span class="step">Foreign goods cheaper</span>
+      <span class="arrow">&#x2192;</span>
+      <span class="step">Govt imposes tariff</span>
+      <span class="arrow">&#x2192;</span>
+      <span class="step">Imported price increases</span>
+      <span class="arrow">&#x2192;</span>
+      <span class="step">Domestic goods relatively cheaper</span>
+    </div>
+
+    <h3>Example</h3>
+    <div class="example-box">
+      <div class="label">&#x1F4B0; How Tariffs Make Domestic Products Cheaper Relative to Imports</div>
+      <p><span class="tag tag-purple">Before Tariff</span></p>
+      <p>Domestic Product: <strong>LKR 3,000</strong> | Foreign Product: <strong>LKR 2,500</strong> &#x2192; Foreign is cheaper</p>
+      <p style="margin-top:0.5rem;"><span class="tag tag-pink">After Tariff</span></p>
+      <p>Tariff on foreign product: <strong>+LKR 2,000</strong></p>
+      <p>Foreign Product becomes: <strong>LKR 4,500</strong></p>
+      <p style="margin-top:0.5rem; color: var(--accent2); font-weight:600;">&#x27A1; Now domestic (LKR 3,000) is cheaper than foreign (LKR 4,500)</p>
+    </div>
+
+    <div class="note">
+      Tariffs can be imposed on both imports <em>and</em> exports, though import tariffs are far more common for protectionist purposes.
+    </div>
+  </div>
+
+  <!-- 3. Nominal Rate of Protection -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F522;</div>
+    <h2>Nominal Rate of Protection <span class="underline"></span></h2>
+    <p>The <strong>nominal rate of protection</strong> is the percentage tariff imposed on a product as it enters the country. It reflects the tariff rate applied to the final product without considering imported inputs.</p>
+
+    <div class="formula-box">
+      Nominal Rate = (Tariff &divide; Original Price) &times; 100
+    </div>
+
+    <div class="example-box">
+      <div class="label">&#x1F4CD; Example</div>
+      <p><span class="tag tag-amber">20% tariff on clothing</span></p>
+      <p>A 20% tariff on imported clothing means the nominal rate of protection is <strong>20%</strong>.</p>
+      <p style="font-size:0.9rem; color:var(--text-muted); margin-top:0.3rem;">However, this does <em>not</em> show the actual protection received by the domestic producer, because the producer may use imported inputs/intermediate goods that are also subject to tariffs.</p>
+    </div>
+
+    <div class="note">
+      &#x26A0;&#xFE0F; <strong>Limitation:</strong> The nominal rate ignores the effect of tariffs on imported inputs used in domestic production. This is where the <strong>Effective Rate of Protection (ERP)</strong> becomes useful.
+    </div>
+  </div>
+
+  <!-- 4. Effective Rate of Protection -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4CA;</div>
+    <h2>Effective Rate of Protection <span class="underline"></span></h2>
+    <p>The <strong>Effective Rate of Protection (ERP)</strong> measures the actual protection received by the domestic producer by considering tariffs on <em>both</em> the final product and imported inputs.</p>
+
+    <div class="formula-box">
+      ERP = (Vi - Vo) / Vo &times; 100
+    </div>
+
+    <div class="card-grid">
+      <div class="info-card">
+        <div class="emoji">Vi</div>
+        <div class="label">Value Added After Tariff</div>
+        <div class="desc">Value added when tariffs are applied to final product and inputs</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">Vo</div>
+        <div class="label">Value Added Before Tariff</div>
+        <div class="desc">Value added under free trade (no tariffs)</div>
+      </div>
+    </div>
+
+    <h3>Worked Example 1: Tariff on Final Product Only</h3>
+    <div class="example-box">
+      <p><span class="tag tag-purple">Given</span></p>
+      <p>Price of Shoes = <strong>Rs. 5,000</strong></p>
+      <p>Cost of Inputs = <strong>Rs. 3,000</strong></p>
+      <p>Value Added (Vo) = Rs. 5,000 - Rs. 3,000 = <strong>Rs. 2,000</strong></p>
+      <p style="margin-top:0.5rem;"><span class="tag tag-pink">After 10% Tariff on Final Product</span></p>
+      <p>New Imported Price = Rs. 5,000 + 10% = <strong>Rs. 5,500</strong></p>
+      <p>New Value Added (Vi) = Rs. 5,500 - Rs. 3,000 = <strong>Rs. 2,500</strong></p>
+      <p style="margin-top:0.5rem;"><span class="tag tag-amber">ERP Calculation</span></p>
+      <p class="math">ERP = (2,500 - 2,000) / 2,000 &times; 100 = <strong>25%</strong></p>
+    </div>
+
+    <h3>Worked Example 2: Tariff on Both Final Product and Inputs</h3>
+    <div class="example-box">
+      <p><span class="tag tag-purple">Same as above + 5% tariff on inputs</span></p>
+      <p>Input cost after 5% tariff = Rs. 3,000 + 5% = <strong>Rs. 3,150</strong></p>
+      <p>New Value Added (Vi) = Rs. 5,500 - Rs. 3,150 = <strong>Rs. 2,350</strong></p>
+      <p style="margin-top:0.5rem;"><span class="tag tag-amber">ERP Calculation</span></p>
+      <p class="math">ERP = (2,350 - 2,000) / 2,000 &times; 100 = <strong>17.5%</strong></p>
+    </div>
+
+    <h4>Key Determinants of ERP</h4>
+    <div class="card-grid">
+      <div class="info-card">
+        <div class="emoji">&#x2197;&#xFE0F;</div>
+        <div class="label">Higher ERP when</div>
+        <div class="desc">Higher nominal tariff on final product</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x2198;&#xFE0F;</div>
+        <div class="label">Higher ERP when</div>
+        <div class="desc">Lower tariff on imported inputs</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x25B2;</div>
+        <div class="label">Higher ERP when</div>
+        <div class="desc">Higher % of imported inputs in production</div>
+      </div>
+    </div>
+
+    <h3>&#x1F9EE; Interactive ERP Calculator</h3>
+    <div class="calc-box">
+      <label>Final Product Price (Rs.)</label>
+      <input type="number" id="erp-final-price" value="5000" step="100">
+      <label>Cost of Imported Inputs (Rs.)</label>
+      <input type="number" id="erp-input-cost" value="3000" step="100">
+      <label>Tariff on Final Product (%)</label>
+      <input type="number" id="erp-final-tariff" value="10" step="0.5">
+      <label>Tariff on Imported Inputs (%)</label>
+      <input type="number" id="erp-input-tariff" value="0" step="0.5">
+      <button class="btn" onclick="calcERP()">Calculate ERP</button>
+      <div class="result" id="erp-result">ERP = 25.00%</div>
+    </div>
+
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F522; Nominal Rate</div>
+        <ul>
+          <li>Tariff % on final product only</li>
+          <li>Ignores imported inputs</li>
+          <li>Simple tariff rate</li>
+          <li>Less accurate measure of protection</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F4CA; Effective Rate (ERP)</div>
+        <ul>
+          <li>Considers tariffs on final product + inputs</li>
+          <li>Accounts for imported inputs</li>
+          <li>Measures actual value added change</li>
+          <li>More accurate measure of protection</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Non-Tariff Barriers -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F6A7;</div>
+    <h2>Non-Tariff Barriers <span class="underline"></span></h2>
+    <p>Non-tariff barriers are trade restrictions <em>other than</em> tariffs used to restrict imports and protect domestic industries.</p>
+
+    <div class="grid-3">
+      <div class="mini-card">
+        <div class="emoji">&#x1F39B;&#xFE0F;</div>
+        <div class="title">Quotas</div>
+        <div class="desc">Quantitative limits on imports</div>
+      </div>
+      <div class="mini-card">
+        <div class="emoji">&#x1F4B0;</div>
+        <div class="title">Subsidies / Incentives</div>
+        <div class="desc">Financial support to domestic producers</div>
+      </div>
+      <div class="mini-card">
+        <div class="emoji">&#x1F4A9;</div>
+        <div class="title">Dumping</div>
+        <div class="desc">Selling goods below cost abroad</div>
+      </div>
+      <div class="mini-card">
+        <div class="emoji">&#x1F6AB;</div>
+        <div class="title">Voluntary Export Restraints</div>
+        <div class="desc">Exporter "voluntarily" limits exports</div>
+      </div>
+      <div class="mini-card">
+        <div class="emoji">&#x1F4B1;</div>
+        <div class="title">Foreign Exchange Controls</div>
+        <div class="desc">Limiting access to foreign currency</div>
+      </div>
+      <div class="mini-card">
+        <div class="emoji">&#x1F969;</div>
+        <div class="title">Rationing</div>
+        <div class="desc">Limiting quantity available to consumers</div>
+      </div>
+      <div class="mini-card">
+        <div class="emoji">&#x26D4;</div>
+        <div class="title">Trade Embargoes</div>
+        <div class="desc">Complete ban on trade with a country</div>
+      </div>
+      <div class="mini-card">
+        <div class="emoji">&#x1F4CB;</div>
+        <div class="title">Administrative / Technical Standards</div>
+        <div class="desc">Complex regulations, inspections, certifications</div>
+      </div>
+    </div>
+
+    <h3>Comparison: Tariff vs Non-Tariff Barriers</h3>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F4B3; Tariff Barriers</div>
+        <ul>
+          <li>Taxes on imports/exports</li>
+          <li>Generates government revenue</li>
+          <li>Transparent and measurable</li>
+          <li>Price-based restriction</li>
+          <li>Easier to negotiate/reduce in trade agreements</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F6A7; Non-Tariff Barriers</div>
+        <ul>
+          <li>Quantity/regulation-based restrictions</li>
+          <li>No direct revenue generation</li>
+          <li>Often opaque and complex</li>
+          <li>Quantity/standard-based restriction</li>
+          <li>Harder to quantify and negotiate</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Foreign Investments -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F30D;</div>
+    <h2>Foreign Investments <span class="underline"></span></h2>
+    <p>Foreign investment refers to the flow of capital from one country to another for productive or financial purposes.</p>
+
+    <h3>Types of Foreign Investments</h3>
+
+    <div class="card-grid">
+      <div class="info-card">
+        <div class="emoji">&#x1F3ED;</div>
+        <div class="label">FDI (Foreign Direct Investment)</div>
+        <div class="desc">Acquiring productive real assets with controlling ownership &amp; management involvement</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F4C8;</div>
+        <div class="label">Portfolio Investments</div>
+        <div class="desc">Purchasing financial assets (shares, securities, commercial papers) without control/management</div>
+      </div>
+    </div>
+
+    <h3>Comparison: FDI vs Portfolio Investment</h3>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F3ED; FDI</div>
+        <ul>
+          <li>Long-term investment</li>
+          <li>Involves control &amp; management</li>
+          <li>Acquires real/physical assets</li>
+          <li>Less liquid</li>
+          <li>Transfers technology &amp; management skills</li>
+          <li>Creates employment directly</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F4C8; Portfolio Investment</div>
+        <ul>
+          <li>Short- to medium-term investment</li>
+          <li>No control or management</li>
+          <li>Acquires financial assets</li>
+          <li>Highly liquid</li>
+          <li>No technology transfer</li>
+          <li>No direct employment creation</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Recent FDI Trends in Sri Lanka</h3>
+    <div class="note">
+      Sri Lanka has attracted FDI in sectors such as <strong>telecommunications, apparel, tourism, ports, and infrastructure</strong>. Key sources include China, India, Singapore, and the UK. The government has established the <strong>Board of Investment (BOI)</strong> to facilitate and promote FDI.
+    </div>
+
+    <h3>Effects of FDI</h3>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x2705; Favourable Effects</div>
+        <ul>
+          <li>Improves resource allocation efficiency</li>
+          <li>Fills the resource gap (savings-investment gap)</li>
+          <li>Fills the foreign exchange gap</li>
+          <li>Helps solve BOP problems</li>
+          <li>Does not increase national debt</li>
+          <li>Brings new technology &amp; management techniques</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x274C; Unfavourable Effects</div>
+        <ul>
+          <li>Outflow of dividends, interest &amp; profits</li>
+          <li>May harm domestic economic activities</li>
+          <li>Loss of employment in domestic firms</li>
+          <li>Overconsumption of natural resources</li>
+          <li>Collapse of domestic industries due to competition</li>
+          <li>Tax revenue issues (transfer pricing)</li>
+          <li>Outflow of funds for domestic investors</li>
+          <li>Brain drain of skilled workers</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Flashcards -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4A1;</div>
+    <h2>Key Terms <span class="underline"></span></h2>
+    <p>Click each card to reveal the definition.</p>
+
+    <div class="flashcard-container">
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F6E1;&#xFE0F; Protectionism
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Govt policies that restrict international trade to protect domestic industries from foreign competition
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F4B3; Tariff
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            A tax imposed on imported (or exported) goods to make them more expensive relative to domestic products
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F522; Nominal Rate of Protection
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Percentage tariff rate on a final product as it enters the country; ignores tariffs on imported inputs
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F4CA; Effective Rate of Protection
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Measures actual protection considering tariffs on both the final product and imported inputs: ERP = (Vi - Vo) / Vo
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F6A7; Non-Tariff Barriers
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Trade restrictions other than tariffs: quotas, subsidies, dumping, embargoes, standards, etc.
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F3ED; Foreign Direct Investment
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Acquiring productive real assets with controlling ownership and management involvement in another country
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F4C8; Portfolio Investment
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Purchasing financial assets (shares, securities) in another country without control or management
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F4A9; Dumping
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Selling goods in a foreign market at a price below their cost of production or below domestic price
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. Quiz -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F9F0;</div>
+    <h2>Test Your Knowledge <span class="underline"></span></h2>
+
+    <div class="quiz-question" data-q="1">
+      <div class="q">1. What is the main objective of protectionism?</div>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Protect domestic industries from foreign competition</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Increase foreign exchange reserves</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Promote free trade between nations</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Reduce government spending</button>
+      <div class="quiz-feedback" data-feedback="1"></div>
+    </div>
+
+    <div class="quiz-question" data-q="2">
+      <div class="q">2. A domestic product costs LKR 3,000 and a foreign product costs LKR 2,500. After a tariff of LKR 2,000, what is the new price of the foreign product?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">LKR 2,500</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">LKR 3,000</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">LKR 4,500</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">LKR 5,000</button>
+      <div class="quiz-feedback" data-feedback="2"></div>
+    </div>
+
+    <div class="quiz-question" data-q="3">
+      <div class="q">3. Which formula correctly represents the Effective Rate of Protection (ERP)?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">ERP = (Price - Cost) / Price &times; 100</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">ERP = (Vi - Vo) / Vo &times; 100</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">ERP = (Exports - Imports) / Total Trade &times; 100</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">ERP = Tariff / Original Price &times; 100</button>
+      <div class="quiz-feedback" data-feedback="3"></div>
+    </div>
+
+    <div class="quiz-question" data-q="4">
+      <div class="q">4. The nominal rate of protection on shoes is 20% if:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">The ERP on shoes is 20%</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">A 20% tariff is imposed on imported shoes</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Inputs used for shoe production have a 20% tariff</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Shoe production increased by 20%</button>
+      <div class="quiz-feedback" data-feedback="4"></div>
+    </div>
+
+    <div class="quiz-question" data-q="5">
+      <div class="q">5. Which of the following is a NON-tariff barrier?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Import tax</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Export duty</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Quota</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Customs tariff</button>
+      <div class="quiz-feedback" data-feedback="5"></div>
+    </div>
+
+    <div class="quiz-question" data-q="6">
+      <div class="q">6. Which statement about FDI is TRUE?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">FDI involves only financial assets</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">FDI is highly liquid</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">FDI involves control and management of real assets</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">FDI does not create employment</button>
+      <div class="quiz-feedback" data-feedback="6"></div>
+    </div>
+
+    <div class="quiz-question" data-q="7">
+      <div class="q">7. Shoes: Price = Rs. 5,000, Inputs = Rs. 3,000. A 10% tariff on final product and 5% on inputs. What is the ERP?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">25.0%</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">10.0%</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">20.0%</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">17.5%</button>
+      <div class="quiz-feedback" data-feedback="7"></div>
+    </div>
+
+    <div class="quiz-question" data-q="8">
+      <div class="q">8. Which is an UNFAVOURABLE effect of FDI?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">New technology transfer</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Fills resource gap</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Outflow of dividends and profits</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Improves BOP position</button>
+      <div class="quiz-feedback" data-feedback="8"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  class Particle {
+    constructor() {
+      this.reset();
+    }
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 2 + 0.5;
+      this.speedX = (Math.random() - 0.5) * 0.5;
+      this.speedY = (Math.random() - 0.5) * 0.5;
+      this.opacity = Math.random() * 0.5 + 0.1;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(168, 85, 247, ${this.opacity})`;
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+  function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 150) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(168, 85, 247, ${0.06 * (1 - dist / 150)})`;
+          ctx.lineWidth = 0.5;
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(animateParticles);
+  }
+  animateParticles();
+
+  const sections = document.querySelectorAll('[data-section]');
+  function revealSections() {
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 80) {
+        section.classList.add('visible');
+      }
+    });
+  }
+  window.addEventListener('scroll', revealSections);
+  revealSections();
+
+  const progressBar = document.getElementById('progressBar');
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    progressBar.style.width = (scrollTop / docHeight) * 100 + '%';
+  });
+
+  function checkAnswer(btn, isCorrect) {
+    const question = btn.closest('.quiz-question');
+    const options = question.querySelectorAll('.quiz-option');
+    const feedback = question.querySelector('.quiz-feedback');
+    options.forEach(opt => {
+      opt.disabled = true;
+      opt.style.cursor = 'not-allowed';
+      if (opt.dataset.correct === 'true') opt.classList.add('correct');
+    });
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.textContent = '\u2705 Correct!';
+      feedback.className = 'quiz-feedback show correct';
+    } else {
+      btn.classList.add('wrong');
+      const correctBtn = question.querySelector('[data-correct="true"]');
+      feedback.textContent = '\u274C Incorrect. The answer was: ' + correctBtn.textContent;
+      feedback.className = 'quiz-feedback show wrong';
+    }
+  }
+
+  function calcERP() {
+    const finalPrice = parseFloat(document.getElementById('erp-final-price').value) || 0;
+    const inputCost = parseFloat(document.getElementById('erp-input-cost').value) || 0;
+    const finalTariff = parseFloat(document.getElementById('erp-final-tariff').value) || 0;
+    const inputTariff = parseFloat(document.getElementById('erp-input-tariff').value) || 0;
+
+    const newFinalPrice = finalPrice * (1 + finalTariff / 100);
+    const newInputCost = inputCost * (1 + inputTariff / 100);
+
+    const Vo = finalPrice - inputCost;
+    const Vi = newFinalPrice - newInputCost;
+
+    const resultEl = document.getElementById('erp-result');
+
+    if (Vo === 0) {
+      resultEl.textContent = 'Error: Value added is zero (final price = input cost)';
+      return;
+    }
+
+    const erp = ((Vi - Vo) / Vo) * 100;
+    resultEl.innerHTML = `ERP = <strong>${erp.toFixed(2)}%</strong><br><small style="font-size:0.8rem;color:var(--text-muted);font-weight:400;">Vo = Rs. ${Vo.toFixed(2)}, Vi = Rs. ${Vi.toFixed(2)}</small>`;
+  }
+</script>
+
+</body>
+</html>

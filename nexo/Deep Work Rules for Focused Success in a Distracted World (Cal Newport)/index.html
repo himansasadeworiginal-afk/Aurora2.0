@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deep Work - Rules for Focused Success</title>
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a2e;--card:#16162a;
+    --text:#e0e0f0;--muted:#8888aa;--accent:#6c63ff;--accent2:#ff6b6b;
+    --green:#4ecdc4;--gold:#ffd93d;--border:#2a2a4a;
+    --glow:0 0 30px rgba(108,99,255,.3);
+  }
+  html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:var(--accent) var(--bg)}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
+  
+  /* Scrollbar */
+  ::-webkit-scrollbar{width:8px}
+  ::-webkit-scrollbar-track{background:var(--bg)}
+  ::-webkit-scrollbar-thumb{background:var(--accent);border-radius:4px}
+
+  /* Progress bar */
+  #progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--green),var(--gold));z-index:9999;transition:width .1s;width:0%}
+
+  /* Canvas background */
+  #bgCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.4}
+
+  /* Navigation */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(20px);background:rgba(10,10,15,.8);border-bottom:1px solid var(--border);transform:translateY(-100%);transition:transform .3s}
+  nav.visible{transform:translateY(0)}
+  nav .logo{font-size:1.2rem;font-weight:700;color:var(--accent)}
+  nav ul{list-style:none;display:flex;gap:1.5rem}
+  nav a{color:var(--muted);text-decoration:none;font-size:.85rem;transition:color .3s;text-transform:uppercase;letter-spacing:1px}
+  nav a:hover{color:var(--accent)}
+
+  /* Hero */
+  .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;position:relative;z-index:1;padding:2rem}
+  .hero-badge{display:inline-block;padding:.4rem 1.2rem;border:1px solid var(--accent);border-radius:50px;color:var(--accent);font-size:.8rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:2rem;opacity:0;animation:fadeUp .8s .2s forwards}
+  .hero h1{font-size:clamp(3rem,8vw,7rem);font-weight:800;line-height:1.1;margin-bottom:1rem;opacity:0;animation:fadeUp .8s .4s forwards}
+  .hero h1 span{background:linear-gradient(135deg,var(--accent),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .hero .subtitle{font-size:clamp(1rem,2.5vw,1.4rem);color:var(--muted);max-width:600px;margin-bottom:2rem;opacity:0;animation:fadeUp .8s .6s forwards}
+  .hero .author{color:var(--gold);font-size:1rem;font-style:italic;opacity:0;animation:fadeUp .8s .8s forwards}
+  .scroll-hint{position:absolute;bottom:2rem;opacity:0;animation:fadeUp .8s 1.2s forwards}
+  .scroll-hint span{display:block;width:24px;height:40px;border:2px solid var(--muted);border-radius:12px;position:relative}
+  .scroll-hint span::after{content:'';width:4px;height:8px;background:var(--accent);border-radius:2px;position:absolute;top:6px;left:50%;transform:translateX(-50%);animation:bounce 2s infinite}
+
+  /* Sections */
+  section{position:relative;z-index:1;padding:6rem 2rem}
+  .container{max-width:1100px;margin:0 auto}
+  .section-label{display:inline-block;color:var(--accent);font-size:.75rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:.5rem}
+  .section-title{font-size:clamp(2rem,4vw,3rem);font-weight:700;margin-bottom:1rem}
+  .section-desc{color:var(--muted);font-size:1.1rem;max-width:700px;margin-bottom:3rem}
+
+  /* Reveal animations */
+  .reveal{opacity:0;transform:translateY(40px);transition:opacity .7s,transform .7s}
+  .reveal.visible{opacity:1;transform:translateY(0)}
+  .reveal-delay-1{transition-delay:.1s}
+  .reveal-delay-2{transition-delay:.2s}
+  .reveal-delay-3{transition-delay:.3s}
+
+  /* Definitions */
+  .def-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-top:2rem}
+  .def-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem;cursor:pointer;transition:all .4s;position:relative;overflow:hidden}
+  .def-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--green));transform:scaleX(0);transition:transform .4s;transform-origin:left}
+  .def-card:hover::before{transform:scaleX(1)}
+  .def-card:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:var(--glow)}
+  .def-card .icon{font-size:2rem;margin-bottom:1rem}
+  .def-card h3{font-size:1.3rem;margin-bottom:.5rem}
+  .def-card p{color:var(--muted);font-size:.95rem}
+  .def-card .expanded{max-height:0;overflow:hidden;transition:max-height .5s,margin .5s}
+  .def-card.open .expanded{max-height:200px;margin-top:1rem}
+  .def-card .toggle{color:var(--accent);font-size:.8rem;margin-top:.5rem;display:inline-block;transition:transform .3s}
+  .def-card.open .toggle{transform:rotate(180deg)}
+
+  /* Formula */
+  .formula-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:3rem;text-align:center;margin:3rem 0;position:relative;overflow:hidden}
+  .formula-box::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(108,99,255,.05) 0%,transparent 70%);animation:pulse 4s infinite}
+  .formula{font-size:clamp(1.2rem,3vw,2rem);font-weight:600;color:var(--gold);position:relative;z-index:1}
+  .formula-label{color:var(--muted);margin-top:.5rem;font-size:.9rem}
+
+  /* Chapters */
+  .chapter{margin-bottom:4rem}
+  .chapter-num{font-size:5rem;font-weight:900;color:var(--bg3);line-height:1;margin-bottom:-1rem}
+  .chapter h3{font-size:1.8rem;margin-bottom:1rem;color:var(--accent)}
+  .chapter p{color:var(--muted);margin-bottom:1rem;max-width:800px}
+  .chapter ul{list-style:none;padding:0}
+  .chapter ul li{padding:.5rem 0 .5rem 1.5rem;position:relative;color:var(--muted)}
+  .chapter ul li::before{content:'';position:absolute;left:0;top:1rem;width:8px;height:8px;background:var(--accent);border-radius:50%}
+
+  /* Philosophy cards */
+  .phil-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;margin-top:2rem}
+  .phil-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem;cursor:pointer;transition:all .4s;text-align:center;position:relative}
+  .phil-card:hover{transform:translateY(-6px);border-color:var(--accent);box-shadow:var(--glow)}
+  .phil-card .phil-icon{font-size:3rem;margin-bottom:1rem}
+  .phil-card h4{font-size:1.1rem;margin-bottom:.5rem}
+  .phil-card p{color:var(--muted);font-size:.85rem}
+  .phil-card .phil-detail{max-height:0;overflow:hidden;transition:max-height .5s,margin .5s,opacity .5s;opacity:0}
+  .phil-card.open .phil-detail{max-height:200px;margin-top:1rem;opacity:1}
+  .phil-card .click-hint{color:var(--accent);font-size:.75rem;margin-top:.5rem}
+
+  /* Rules */
+  .rule{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:3rem;margin-bottom:2rem;transition:all .4s}
+  .rule:hover{border-color:var(--accent)}
+  .rule-header{display:flex;align-items:center;gap:1.5rem;margin-bottom:1.5rem;cursor:pointer}
+  .rule-num{font-size:3rem;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;min-width:80px}
+  .rule h3{font-size:1.5rem}
+  .rule-body{max-height:0;overflow:hidden;transition:max-height .6s}
+  .rule.open .rule-body{max-height:2000px}
+  .rule-body p{color:var(--muted);margin-bottom:1rem}
+  .rule-body ul{list-style:none;padding:0}
+  .rule-body ul li{padding:.6rem 0 .6rem 2rem;position:relative;color:var(--muted);border-bottom:1px solid var(--border)}
+  .rule-body ul li:last-child{border:none}
+  .rule-body ul li::before{content:'';position:absolute;left:0;top:1.1rem;width:10px;height:2px;background:var(--accent)}
+  .expand-btn{color:var(--accent);font-size:.85rem;cursor:pointer;margin-top:1rem;display:inline-block;transition:transform .3s}
+  .rule.open .expand-btn{transform:rotate(180deg)}
+
+  /* Focus Timer */
+  .timer-section{text-align:center}
+  .timer-display{font-size:clamp(4rem,10vw,8rem);font-weight:800;font-variant-numeric:tabular-nums;margin:2rem 0;color:var(--text)}
+  .timer-controls{display:flex;justify-content:center;gap:1rem;margin-bottom:2rem}
+  .timer-btn{padding:.8rem 2rem;border:2px solid var(--accent);background:transparent;color:var(--accent);border-radius:50px;font-size:1rem;cursor:pointer;transition:all .3s;font-weight:600}
+  .timer-btn:hover{background:var(--accent);color:var(--bg)}
+  .timer-btn.active{background:var(--accent);color:var(--bg)}
+  .timer-btn.reset{border-color:var(--accent2);color:var(--accent2)}
+  .timer-btn.reset:hover{background:var(--accent2);color:var(--bg)}
+  .timer-modes{display:flex;justify-content:center;gap:.5rem;margin-bottom:1rem}
+  .timer-mode{padding:.5rem 1rem;border:1px solid var(--border);background:transparent;color:var(--muted);border-radius:8px;cursor:pointer;font-size:.85rem;transition:all .3s}
+  .timer-mode.active{border-color:var(--accent);color:var(--accent);background:rgba(108,99,255,.1)}
+  .timer-ring{width:300px;height:300px;margin:0 auto;position:relative}
+  .timer-ring svg{transform:rotate(-90deg)}
+  .timer-ring circle{fill:none;stroke-width:4}
+  .timer-ring .bg{stroke:var(--border)}
+  .timer-ring .progress{stroke:var(--accent);stroke-linecap:round;transition:stroke-dashoffset 1s linear}
+
+  /* Takeaways */
+  .takeaway-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:2rem}
+  .takeaway{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;transition:all .4s;position:relative;overflow:hidden}
+  .takeaway:hover{transform:translateY(-4px);border-color:var(--green)}
+  .takeaway .num{position:absolute;top:-10px;right:10px;font-size:4rem;font-weight:900;color:var(--bg3);line-height:1}
+  .takeaway p{color:var(--muted);position:relative;z-index:1}
+
+  /* Footer */
+  footer{text-align:center;padding:4rem 2rem;border-top:1px solid var(--border);color:var(--muted);position:relative;z-index:1}
+  footer .quote{font-size:1.5rem;font-style:italic;color:var(--text);max-width:700px;margin:0 auto 1rem}
+  footer .quote-author{color:var(--gold)}
+
+  /* Part divider */
+  .part-divider{text-align:center;padding:4rem 2rem;position:relative;z-index:1}
+  .part-divider .line{width:1px;height:60px;background:linear-gradient(to bottom,transparent,var(--accent),transparent);margin:0 auto 2rem}
+  .part-divider h2{font-size:clamp(1.5rem,3vw,2.5rem);color:var(--accent)}
+  .part-divider p{color:var(--muted);margin-top:.5rem}
+
+  /* Animations */
+  @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes bounce{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,12px)}}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  @keyframes glow{0%,100%{box-shadow:0 0 20px rgba(108,99,255,.2)}50%{box-shadow:0 0 40px rgba(108,99,255,.4)}}
+  .floating{animation:float 3s ease-in-out infinite}
+  .glowing{animation:glow 3s ease-in-out infinite}
+
+  /* Deep vs Shallow interactive */
+  .comparison{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin:2rem 0}
+  .comp-side{padding:2rem;border-radius:16px;cursor:pointer;transition:all .4s}
+  .comp-side.deep{background:linear-gradient(135deg,rgba(108,99,255,.1),rgba(78,205,196,.05));border:1px solid var(--accent)}
+  .comp-side.shallow{background:linear-gradient(135deg,rgba(255,107,107,.05),rgba(255,107,107,.02));border:1px solid var(--accent2)}
+  .comp-side:hover{transform:scale(1.02)}
+  .comp-side h4{margin-bottom:1rem;font-size:1.2rem}
+  .comp-side.deep h4{color:var(--accent)}
+  .comp-side.shallow h4{color:var(--accent2)}
+  .comp-side ul{list-style:none}
+  .comp-side ul li{padding:.3rem 0;color:var(--muted);font-size:.9rem}
+  .comp-side ul li::before{content:'\2192  ';color:inherit}
+
+  /* Responsive */
+  @media(max-width:768px){
+    nav ul{display:none}
+    .comparison{grid-template-columns:1fr}
+    .phil-grid{grid-template-columns:1fr 1fr}
+    section{padding:4rem 1.5rem}
+  }
+  @media(max-width:480px){
+    .phil-grid{grid-template-columns:1fr}
+    .takeaway-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<canvas id="bgCanvas"></canvas>
+
+<nav id="nav">
+  <div class="logo">DEEP WORK</div>
+  <ul>
+    <li><a href="#thesis">Thesis</a></li>
+    <li><a href="#part1">The Idea</a></li>
+    <li><a href="#part2">The Rules</a></li>
+    <li><a href="#timer">Timer</a></li>
+    <li><a href="#takeaways">Takeaways</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">Book Summary</div>
+  <h1><span>Deep</span> Work</h1>
+  <p class="subtitle">Rules for Focused Success in a Distracted World</p>
+  <p class="author">by Cal Newport</p>
+  <div class="scroll-hint"><span></span></div>
+</section>
+
+<!-- DEFINITIONS -->
+<section id="thesis">
+  <div class="container">
+    <div class="reveal"><span class="section-label">Core Concepts</span>
+    <h2 class="section-title">The Deep Work Hypothesis</h2>
+    <p class="section-desc">The ability to perform deep work is becoming increasingly rare at exactly the same time it is becoming increasingly valuable.</p></div>
+    
+    <div class="def-grid">
+      <div class="def-card reveal" onclick="toggleDef(this)">
+        <div class="icon">&#x1F3AF;</div>
+        <h3>Deep Work</h3>
+        <p>Professional activities performed in a state of distraction-free concentration that push your cognitive capabilities to their limit.</p>
+        <div class="expanded"><p>These efforts create new value, improve your skill, and are hard to replicate. This is where elite performance lives.</p></div>
+        <span class="toggle">Click to expand &#x25BC;</span>
+      </div>
+      <div class="def-card reveal reveal-delay-1" onclick="toggleDef(this)">
+        <div class="icon">&#x1F30A;</div>
+        <h3>Shallow Work</h3>
+        <p>Non-cognitively demanding, logistical-style tasks, often performed while distracted.</p>
+        <div class="expanded"><p>These efforts tend not to create much new value in the world and are easy to replicate. Email, meetings, social media.</p></div>
+        <span class="toggle">Click to expand &#x25BC;</span>
+      </div>
+    </div>
+
+    <div class="formula-box reveal">
+      <div class="formula">High-Quality Work = Time Spent &times; Intensity of Focus</div>
+      <div class="formula-label">The fundamental equation of deep work</div>
+    </div>
+
+    <div class="comparison reveal">
+      <div class="comp-side deep">
+        <h4>&#x2728; Deep Work</h4>
+        <ul><li>Creates new value</li><li>Improves skills</li><li>Hard to replicate</li><li>Requires full concentration</li><li>Leads to flow states</li></ul>
+      </div>
+      <div class="comp-side shallow">
+        <h4>&#x1F44E; Shallow Work</h4>
+        <ul><li>Logistical tasks</li><li>Done while distracted</li><li>Easily replicated</li><li>Low cognitive demand</li><li>Creates illusion of productivity</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="part-divider">
+  <div class="line"></div>
+  <h2>Part 1: The Idea</h2>
+  <p>Why deep work matters</p>
+</div>
+
+<!-- PART 1 -->
+<section id="part1">
+  <div class="container">
+    <div class="chapter reveal">
+      <div class="chapter-num">01</div>
+      <h3>Deep Work Is Valuable</h3>
+      <p>Three groups will thrive in the new economy:</p>
+      <ul>
+        <li><strong style="color:var(--text)">High-Skilled Workers</strong> &mdash; Those who can work intelligently with sophisticated technology and produce at an elite level</li>
+        <li><strong style="color:var(--text)">The Superstars</strong> &mdash; The absolute best at what they do, now accessible globally</li>
+        <li><strong style="color:var(--text)">The Owners</strong> &mdash; Those with capital to invest in emerging technologies</li>
+      </ul>
+      <p>To join the first two groups you need two abilities: <strong style="color:var(--accent)">quickly master hard things</strong> and <strong style="color:var(--accent)">produce at an elite level</strong>. Both depend entirely on deep work.</p>
+    </div>
+
+    <div class="chapter reveal">
+      <div class="chapter-num">02</div>
+      <h3>Deep Work Is Rare</h3>
+      <p>Despite its value, deep work is declining due to:</p>
+      <ul>
+        <li>Open office plans that destroy concentration</li>
+        <li>Instant messaging and real-time collaboration tools</li>
+        <li>Social media presence expectations</li>
+        <li>Constant email responsiveness culture</li>
+      </ul>
+      <p>Two forces drive this: <strong style="color:var(--text)">The Principle of Least Resistance</strong> (default to easiest behavior) and <strong style="color:var(--text)">Busyness as Proxy for Productivity</strong> (visible busyness = demonstrated productivity).</p>
+    </div>
+
+    <div class="chapter reveal">
+      <div class="chapter-num">03</div>
+      <h3>Deep Work Is Meaningful</h3>
+      <p>Beyond economics, deep work is psychologically fulfilling. Drawing on Csikszentmihalyi's <em>flow</em> research:</p>
+      <ul>
+        <li>A deep life is a good life &mdash; our best experiences come from intense, focused engagement</li>
+        <li>Freeing your mind from shallow obligations brings purpose and satisfaction</li>
+        <li>Depth and attention to any craft generates meaning</li>
+      </ul>
+      <p style="color:var(--gold);font-style:italic;margin-top:1rem">"Your world is shaped by what you pay attention to."</p>
+    </div>
+  </div>
+</section>
+
+<div class="part-divider">
+  <div class="line"></div>
+  <h2>Part 2: The Rules</h2>
+  <p>How to practice deep work</p>
+</div>
+
+<!-- PART 2 -->
+<section id="part2">
+  <div class="container">
+    <div class="reveal"><span class="section-label">Rule #1</span>
+    <div class="rule" onclick="toggleRule(this)">
+      <div class="rule-header">
+        <div class="rule-num">01</div>
+        <div><h3>Work Deeply</h3></div>
+      </div>
+      <div class="rule-body">
+        <p>You need a philosophy and rituals. Choose your scheduling approach:</p>
+        <div class="phil-grid">
+          <div class="phil-card" onclick="event.stopPropagation();togglePhil(this)">
+            <div class="phil-icon">&#x1F3DB;</div>
+            <h4>Monastic</h4>
+            <p>Eliminate shallow obligations entirely</p>
+            <div class="phil-detail"><p>Go completely off the grid. Donald Knuth only checks email a few times a year. Best for those with clear, individual goals.</p></div>
+            <div class="click-hint">tap for details</div>
+          </div>
+          <div class="phil-card" onclick="event.stopPropagation();togglePhil(this)">
+            <div class="phil-icon">&#x1F317;</div>
+            <h4>Bimodal</h4>
+            <p>Split time between deep &amp; shallow</p>
+            <div class="phil-detail"><p>Defined stretches of deep pursuit (at least 1 full day) and shallow everything else. Carl Jung at his Bollingen Tower.</p></div>
+            <div class="click-hint">tap for details</div>
+          </div>
+          <div class="phil-card" onclick="event.stopPropagation();togglePhil(this)">
+            <div class="phil-icon">&#x1F501;</div>
+            <h4>Rhythmic</h4>
+            <p>Fixed daily deep work habit</p>
+            <div class="phil-detail"><p>Same time every day, like writing 500 words every morning. Use the chain method: don't break the streak.</p></div>
+            <div class="click-hint">tap for details</div>
+          </div>
+          <div class="phil-card" onclick="event.stopPropagation();togglePhil(this)">
+            <div class="phil-icon">&#x1F4F0;</div>
+            <h4>Journalistic</h4>
+            <p>Fit deep work anywhere</p>
+            <div class="phil-detail"><p>Switch into deep mode in any available slot. Requires practice. Best for unpredictable schedules.</p></div>
+            <div class="click-hint">tap for details</div>
+          </div>
+        </div>
+        <ul style="margin-top:2rem">
+          <li>Decide WHERE you'll work and for HOW LONG</li>
+          <li>Define STRUCTURE: rules, goals, and metrics</li>
+          <li>Support your work: food, coffee, exercise, walks</li>
+          <li>4 Disciplines: Focus on the wildly important, act on lead measures, keep a scoreboard, create accountability</li>
+          <li>Execute a grand gesture to signal importance (J.K. Rowling at the Balmoral Hotel)</li>
+          <li>Routines &gt; willpower</li>
+        </ul>
+      </div>
+      <span class="expand-btn">Click to expand &#x25BC;</span>
+    </div></div>
+
+    <div class="reveal reveal-delay-1"><span class="section-label">Rule #2</span>
+    <div class="rule" onclick="toggleRule(this)">
+      <div class="rule-header">
+        <div class="rule-num">02</div>
+        <div><h3>Embrace Boredom</h3></div>
+      </div>
+      <div class="rule-body">
+        <p>Concentration is a muscle that must be trained. If you don't practice resisting distraction, you'll lack the mental stamina when you need it.</p>
+        <ul>
+          <li>Don't take breaks from distraction &mdash; take breaks from FOCUS. Schedule internet time; avoid it completely outside those windows</li>
+          <li>Productive meditation: during walks or drives, focus intensely on one problem. When your mind wanders, bring it back</li>
+          <li>Memorization exercises strengthen concentration</li>
+          <li>Evaluate tools by whether positives substantially outweigh negatives</li>
+        </ul>
+      </div>
+      <span class="expand-btn">Click to expand &#x25BC;</span>
+    </div></div>
+
+    <div class="reveal reveal-delay-2"><span class="section-label">Rule #3</span>
+    <div class="rule" onclick="toggleRule(this)">
+      <div class="rule-header">
+        <div class="rule-num">03</div>
+        <div><h3>Quit Social Media</h3></div>
+      </div>
+      <div class="rule-body">
+        <p>Apply the craftsman approach to network tools. Reject the "any-benefit" mindset. Use the law of the vital few.</p>
+        <ul>
+          <li>Ask: Do the positives substantially outweigh the negatives?</li>
+          <li>The Craftsman Test: Does this tool help achieve my most important professional goals?</li>
+          <li>Try a 30-day break from all optional online activities, then ask: Would the month have been better with it? Did people care?</li>
+          <li>Don't use the internet to entertain between tasks &mdash; let boredom teach focus</li>
+          <li>Become hard to reach: use sender filters, make people do more work before contacting you</li>
+        </ul>
+      </div>
+      <span class="expand-btn">Click to expand &#x25BC;</span>
+    </div></div>
+
+    <div class="reveal reveal-delay-3"><span class="section-label">Rule #4</span>
+    <div class="rule" onclick="toggleRule(this)">
+      <div class="rule-header">
+        <div class="rule-num">04</div>
+        <div><h3>Drain the Shallows</h3></div>
+      </div>
+      <div class="rule-body">
+        <p>Shallow work is inevitable but should be contained. Keep it to a bare minimum.</p>
+        <ul>
+          <li>Schedule every minute of your day (time-blocking) to confront shallow time and protect deep blocks</li>
+          <li>Quantify depth: How long to train a smart college grad to do this task?</li>
+          <li>Set fixed-schedule productivity: finish work at a set time to force ruthless prioritization</li>
+          <li>Process-oriented email: "Does this need a response?" "Who's the right person?"</li>
+          <li>Shallow work creates no new value and is easily replicated</li>
+        </ul>
+      </div>
+      <span class="expand-btn">Click to expand &#x25BC;</span>
+    </div></div>
+  </div>
+</section>
+
+<!-- FOCUS TIMER -->
+<section id="timer" class="timer-section">
+  <div class="container">
+    <div class="reveal"><span class="section-label">Practice</span>
+    <h2 class="section-title">Deep Work Timer</h2>
+    <p class="section-desc" style="margin:0 auto 2rem">Put the philosophy into practice. Choose your session length and start.</p></div>
+    
+    <div class="reveal">
+      <div class="timer-modes">
+        <button class="timer-mode active" onclick="setTimer(25,this)">25 min</button>
+        <button class="timer-mode" onclick="setTimer(50,this)">50 min</button>
+        <button class="timer-mode" onclick="setTimer(90,this)">90 min</button>
+        <button class="timer-mode" onclick="setTimer(120,this)">2 hrs</button>
+      </div>
+      <div class="timer-ring">
+        <svg width="300" height="300">
+          <circle class="bg" cx="150" cy="150" r="140"/>
+          <circle class="progress" id="ringProgress" cx="150" cy="150" r="140" stroke-dasharray="879.6" stroke-dashoffset="0"/>
+        </svg>
+        <div class="timer-display" id="timerDisplay" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">25:00</div>
+      </div>
+      <div class="timer-controls">
+        <button class="timer-btn" id="startBtn" onclick="toggleTimer()">Start</button>
+        <button class="timer-btn reset" onclick="resetTimer()">Reset</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TAKEAWAYS -->
+<section id="takeaways">
+  <div class="container">
+    <div class="reveal"><span class="section-label">Remember</span>
+    <h2 class="section-title">Key Takeaways</h2></div>
+    <div class="takeaway-grid">
+      <div class="takeaway reveal"><div class="num">1</div><p>Deep work is a <strong style="color:var(--text)">superpower</strong> in our distracted economy &mdash; learn it, practice it, prioritize it.</p></div>
+      <div class="takeaway reveal reveal-delay-1"><div class="num">2</div><p>Depth is both <strong style="color:var(--text)">economically valuable</strong> and <strong style="color:var(--text)">personally fulfilling</strong>.</p></div>
+      <div class="takeaway reveal reveal-delay-1"><div class="num">3</div><p>Concentration is a <strong style="color:var(--text)">muscle</strong> &mdash; train it through deliberate practice and resistance to distraction.</p></div>
+      <div class="takeaway reveal reveal-delay-2"><div class="num">4</div><p>Have a <strong style="color:var(--text)">clear philosophy</strong> for deep work. Don't rely on willpower alone &mdash; build rituals.</p></div>
+      <div class="takeaway reveal reveal-delay-2"><div class="num">5</div><p>Be <strong style="color:var(--text)">ruthless</strong> about eliminating shallow obligations. Not every email deserves a response.</p></div>
+      <div class="takeaway reveal reveal-delay-3"><div class="num">6</div><p><strong style="color:var(--text)">Quit or restrict</strong> social media and network tools that fragment your attention.</p></div>
+      <div class="takeaway reveal reveal-delay-3"><div class="num">7</div><p><strong style="color:var(--text)">Schedule deliberately</strong>. Time-block your day and protect deep sessions fiercely.</p></div>
+      <div class="takeaway reveal reveal-delay-3"><div class="num">8</div><p>The goal is a <strong style="color:var(--text)">meaningful, focused life</strong> where attention goes to what matters most.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p class="quote">"A commitment to deep work is not a moral stance &mdash; it is instead a pragmatic recognition that the ability to concentrate is a skill that gets valuable things done."</p>
+  <p class="quote-author">&mdash; Cal Newport</p>
+</footer>
+
+<script>
+// Particle background
+const canvas=document.getElementById('bgCanvas'),ctx=canvas.getContext('2d');
+let particles=[];
+function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
+resize();window.addEventListener('resize',resize);
+class Particle{constructor(){this.reset()}reset(){this.x=Math.random()*canvas.width;this.y=Math.random()*canvas.height;this.vx=(Math.random()-.5)*.3;this.vy=(Math.random()-.5)*.3;this.r=Math.random()*2+.5;this.a=Math.random()*.5+.1}update(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>canvas.width)this.vx*=-1;if(this.y<0||this.y>canvas.height)this.vy*=-1}draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fillStyle=`rgba(108,99,255,${this.a})`;ctx.fill()}}
+for(let i=0;i<80;i++)particles.push(new Particle());
+function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw()});for(let i=0;i<particles.length;i++)for(let j=i+1;j<particles.length;j++){const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<120){ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle=`rgba(108,99,255,${.08*(1-d/120)})`;ctx.stroke()}}requestAnimationFrame(animate)}animate();
+
+// Scroll progress
+window.addEventListener('scroll',()=>{const s=window.scrollY/(document.body.scrollHeight-window.innerHeight)*100;document.getElementById('progress').style.width=s+'%';document.getElementById('nav').classList.toggle('visible',window.scrollY>300)});
+
+// Reveal on scroll
+const observer=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}})},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// Toggle functions
+function toggleDef(el){el.classList.toggle('open')}
+function toggleRule(el){el.classList.toggle('open')}
+function togglePhil(el){el.classList.toggle('open')}
+
+// Timer
+let timerDuration=25*60,timerRemaining=25*60,timerInterval=null,timerRunning=false;
+const circumference=2*Math.PI*140;
+function setTimer(min,btn){document.querySelectorAll('.timer-mode').forEach(b=>b.classList.remove('active'));btn.classList.add('active');if(timerRunning){clearInterval(timerInterval);timerRunning=false}timerDuration=min*60;timerRemaining=min*60;updateDisplay();document.getElementById('ringProgress').style.strokeDashoffset=0;document.getElementById('startBtn').textContent='Start';document.getElementById('startBtn').classList.remove('active')}
+function toggleTimer(){if(timerRunning){clearInterval(timerInterval);timerRunning=false;document.getElementById('startBtn').textContent='Resume';document.getElementById('startBtn').classList.remove('active')}else{timerRunning=true;document.getElementById('startBtn').textContent='Pause';document.getElementById('startBtn').classList.add('active');timerInterval=setInterval(()=>{timerRemaining--;if(timerRemaining<=0){clearInterval(timerInterval);timerRunning=false;timerRemaining=0;document.getElementById('startBtn').textContent='Done!';document.getElementById('startBtn').classList.remove('active');try{new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgipGJdl5NRG+Xs412YkhBapOuj3dfTUNqkK2Nd19OQ2mQrI13X09EaI+sjXhgUERqjauNeWFRRGuMqox4YlBEaoyojHljT0Rpi6eLd2FORGiKpot3Yk5FaIqnindhTUNni6aLd2JPQ2eKpot3Yk9DZoqmi3diT0NmiqaLd2JPQ2aKpot3Yk9DZoqmi3diT0NmiqaLd2JPQ2aKpot3Yk9DZoqmi3diT0NniqaLd2JPQ2aKpot3Yk9DZoqmi3diT0NniqaLd2JPQ2aKpot3Yk9DZoqmi3diT0NniqaLd2JPQ2aKpot3Yk9DZoqmi3diT0NniqaLd2JPQw==')}catch(e){}};updateDisplay()},1000)}}
+function resetTimer(){clearInterval(timerInterval);timerRunning=false;timerRemaining=timerDuration;updateDisplay();document.getElementById('ringProgress').style.strokeDashoffset=0;document.getElementById('startBtn').textContent='Start';document.getElementById('startBtn').classList.remove('active')}
+function updateDisplay(){const m=Math.floor(timerRemaining/60),s=timerRemaining%60;document.getElementById('timerDisplay').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;const progress=(timerDuration-timerRemaining)/timerDuration;document.getElementById('ringProgress').style.strokeDashoffset=circumference*(1-progress)}
+</script>
+</body>
+</html>

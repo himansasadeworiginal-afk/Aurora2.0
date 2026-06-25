@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Economics Lesson 6 - Macroeconomic Concepts</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --primary: #2d3436;
+    --accent: #0984e3;
+    --accent2: #00b894;
+    --accent3: #fdcb6e;
+    --bg: #0a0a0f;
+    --card: #14141f;
+    --text: #e0e0e0;
+    --text-muted: #888;
+    --gradient: linear-gradient(135deg, #0984e3, #00b894, #fdcb6e);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+
+  #particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background: rgba(9, 132, 227, 0.15);
+    border: 1px solid rgba(9, 132, 227, 0.3);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    animation: fadeInDown 1s ease;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    font-weight: 800;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    animation: fadeInUp 1s ease 0.2s both;
+  }
+
+  .hero p {
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: var(--text-muted);
+    max-width: 600px;
+    animation: fadeInUp 1s ease 0.4s both;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: bounce 2s infinite;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem;
+  }
+
+  .section {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .section.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .section:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 60px rgba(9, 132, 227, 0.08);
+  }
+
+  .section-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .section h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section h2 .underline {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+
+  .section h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1.5rem 0 0.8rem;
+  }
+
+  .section h4 {
+    color: var(--accent2);
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 1rem 0 0.5rem;
+  }
+
+  .section ul, .section ol {
+    padding-left: 1.5rem;
+  }
+
+  .section li {
+    margin-bottom: 0.4rem;
+    color: var(--text);
+  }
+
+  .section p {
+    margin-bottom: 0.8rem;
+    color: var(--text);
+  }
+
+  .highlight {
+    display: inline-block;
+    padding: 0.1rem 0.5rem;
+    background: rgba(9, 132, 227, 0.15);
+    border-radius: 4px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .highlight-green {
+    background: rgba(0, 184, 148, 0.15);
+    color: var(--accent2);
+  }
+
+  .highlight-yellow {
+    background: rgba(253, 203, 110, 0.15);
+    color: var(--accent3);
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .info-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: default;
+  }
+
+  .info-card:hover {
+    background: rgba(9,132,227,0.08);
+    border-color: rgba(9,132,227,0.2);
+    transform: translateY(-5px);
+  }
+
+  .info-card .emoji {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .info-card .label {
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.3rem;
+  }
+
+  .info-card .desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin: 1rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .comparison > div {
+    padding: 1.2rem;
+  }
+
+  .comparison .left {
+    background: rgba(9,132,227,0.08);
+    border-right: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .comparison .right {
+    background: rgba(0,184,148,0.08);
+  }
+
+  .comparison .header {
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-align: center;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .comparison .left .header { color: var(--accent); }
+  .comparison .right .header { color: var(--accent2); }
+
+  .comparison ul { list-style: none; padding: 0; }
+  .comparison li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.9rem;
+  }
+  .comparison li:last-child { border-bottom: none; }
+
+  .comparison.three-col {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .comparison.three-col .col3 {
+    background: rgba(253,203,110,0.08);
+  }
+  .comparison.three-col .col3 .header { color: var(--accent3); }
+
+  .flashcard-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .flashcard {
+    perspective: 1000px;
+    height: 180px;
+    cursor: pointer;
+  }
+
+  .flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+  }
+
+  .flashcard.flipped .flashcard-inner {
+    transform: rotateY(180deg);
+  }
+
+  .flashcard-front, .flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+
+  .flashcard-front {
+    background: rgba(9,132,227,0.1);
+    border: 1px solid rgba(9,132,227,0.2);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .flashcard-back {
+    background: rgba(0,184,148,0.15);
+    border: 1px solid rgba(0,184,148,0.2);
+    color: var(--accent2);
+    transform: rotateY(180deg);
+  }
+
+  .flashcard-hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin: 1rem 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2));
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2.35rem;
+    top: 0.5rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+
+  .timeline-item .title {
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .timeline-item .desc {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  .quiz-question {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin: 1rem 0;
+  }
+
+  .quiz-question .q {
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    color: #fff;
+  }
+
+  .quiz-option {
+    display: block;
+    width: 100%;
+    padding: 0.7rem 1rem;
+    margin-bottom: 0.5rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    font-size: 0.9rem;
+    font-family: inherit;
+  }
+
+  .quiz-option:hover {
+    background: rgba(9,132,227,0.1);
+    border-color: var(--accent);
+  }
+
+  .quiz-option.correct {
+    background: rgba(0,184,148,0.2);
+    border-color: var(--accent2);
+    color: var(--accent2);
+  }
+
+  .quiz-option.wrong {
+    background: rgba(214,48,49,0.2);
+    border-color: #d63031;
+    color: #d63031;
+  }
+
+  .quiz-feedback {
+    margin-top: 0.8rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .quiz-feedback.show {
+    display: block;
+  }
+
+  .quiz-feedback.correct {
+    background: rgba(0,184,148,0.1);
+    border: 1px solid rgba(0,184,148,0.2);
+    color: var(--accent2);
+  }
+
+  .quiz-feedback.wrong {
+    background: rgba(214,48,49,0.1);
+    border: 1px solid rgba(214,48,49,0.2);
+    color: #d63031;
+  }
+
+  .progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    z-index: 100;
+    background: transparent;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: var(--gradient);
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+    40% { transform: translateX(-50%) translateY(-10px); }
+    60% { transform: translateX(-50%) translateY(-5px); }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  @media (max-width: 600px) {
+    .comparison { grid-template-columns: 1fr; }
+    .comparison .left { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .comparison.three-col { grid-template-columns: 1fr; }
+    .section { padding: 1.2rem; }
+    .flashcard-container { grid-template-columns: 1fr; }
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 0.3rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .tag-blue { background: rgba(9,132,227,0.15); color: var(--accent); }
+  .tag-green { background: rgba(0,184,148,0.15); color: var(--accent2); }
+  .tag-yellow { background: rgba(253,203,110,0.15); color: var(--accent3); }
+  .tag-red { background: rgba(214,48,49,0.15); color: #d63031; }
+
+  .formula-box {
+    background: rgba(9,132,227,0.06);
+    border: 1px solid rgba(9,132,227,0.15);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+  }
+
+  .formula-box.green {
+    border-color: rgba(0,184,148,0.2);
+    color: var(--accent2);
+    background: rgba(0,184,148,0.06);
+  }
+
+  .formula-box.yellow {
+    border-color: rgba(253,203,110,0.2);
+    color: var(--accent3);
+    background: rgba(253,203,110,0.06);
+  }
+
+  .diagram-box {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    text-align: center;
+    overflow-x: auto;
+  }
+
+  .diagram-box pre {
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: var(--accent2);
+  }
+
+  /* Multiplier Calculator */
+  .calc-container {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+  }
+
+  .calc-container label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .calc-container input[type="range"] {
+    width: 100%;
+    height: 6px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(9,132,227,0.2);
+    border-radius: 3px;
+    outline: none;
+    margin: 0.5rem 0;
+  }
+
+  .calc-container input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: 2px solid var(--bg);
+  }
+
+  .calc-result {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .calc-result .stat {
+    background: rgba(9,132,227,0.08);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .calc-result .stat .value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent);
+  }
+
+  .calc-result .stat .value.green {
+    color: var(--accent2);
+  }
+
+  .calc-result .stat .value.yellow {
+    color: var(--accent3);
+  }
+
+  .calc-result .stat .label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+  }
+
+  /* Business Cycle Diagram (SVG) */
+  .cycle-svg {
+    width: 100%;
+    max-width: 700px;
+    margin: 1rem auto;
+    display: block;
+  }
+
+  .cycle-svg text {
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* Phase tags */
+  .phase-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0;
+    justify-content: center;
+  }
+
+  .phase-tag {
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+  }
+
+  .phase-tag.active {
+    transform: scale(1.05);
+  }
+
+  .phase-tag.peak { background: rgba(253,203,110,0.15); color: var(--accent3); border-color: rgba(253,203,110,0.3); }
+  .phase-tag.recession { background: rgba(214,48,49,0.15); color: #d63031; border-color: rgba(214,48,49,0.3); }
+  .phase-tag.trough { background: rgba(9,132,227,0.15); color: var(--accent); border-color: rgba(9,132,227,0.3); }
+  .phase-tag.expansion { background: rgba(0,184,148,0.15); color: var(--accent2); border-color: rgba(0,184,148,0.3); }
+
+  .phase-detail {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin: 1rem 0;
+    min-height: 100px;
+  }
+
+  .phase-detail .phase-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .phase-detail .phase-desc {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  .phase-detail .phase-chars {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.5rem;
+    margin-top: 0.8rem;
+  }
+
+  .phase-detail .phase-chars .char-item {
+    background: rgba(255,255,255,0.03);
+    border-radius: 6px;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    text-align: center;
+  }
+
+  .phase-detail .phase-chars .char-item .char-label {
+    color: var(--text-muted);
+    font-size: 0.7rem;
+  }
+
+  .phase-detail .phase-chars .char-item .char-value {
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-container">
+  <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<canvas id="particles"></canvas>
+
+<section class="hero">
+  <div class="hero-badge">Lesson 6</div>
+  <h1>Macroeconomic<br>Concepts</h1>
+  <p>Aggregate variables, business cycles, equilibrium, and the multiplier effect in macroeconomics.</p>
+  <div class="hero-scroll">&#x2193;</div>
+</section>
+
+<div class="container">
+
+  <!-- 1. Macroeconomic Variables & Objectives -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4CA;</div>
+    <h2>Macroeconomic Variables &amp; Objectives <span class="underline"></span></h2>
+    <p>Macroeconomics studies the economy as a whole through aggregate variables and aims to achieve key national objectives.</p>
+
+    <h3>&#x1F4C8; Key Macroeconomic Variables</h3>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F4B5;</div><div class="label">Aggregate Output</div><div class="desc">Total value of all goods &amp; services produced</div></div>
+      <div class="info-card"><div class="emoji">&#x1F91D;</div><div class="label">Employment</div><div class="desc">Number of people employed in the economy</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4B4;</div><div class="label">General Price Level</div><div class="desc">Average level of prices across the economy</div></div>
+      <div class="info-card"><div class="emoji">&#x1F30D;</div><div class="label">Exchange Rate</div><div class="desc">Value of domestic currency in foreign currency</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4C9;</div><div class="label">Interest Rate</div><div class="desc">Cost of borrowing &amp; return on savings</div></div>
+      <div class="info-card"><div class="emoji">&#x2696;&#xFE0F;</div><div class="label">Balance of Payments</div><div class="desc">Record of all international transactions</div></div>
+    </div>
+
+    <h3>&#x1F3AF; Macroeconomic Objectives</h3>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F4BC;</div><div class="label">Full Employment</div><div class="desc">All willing &amp; able individuals have jobs</div></div>
+      <div class="info-card"><div class="emoji">&#x2696;&#xFE0F;</div><div class="label">Economic Stability</div><div class="desc">Stable prices &amp; steady growth</div></div>
+      <div class="info-card"><div class="emoji">&#x1F91D;</div><div class="label">Equity</div><div class="desc">Fair distribution of income &amp; wealth</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4C8;</div><div class="label">Economic Growth</div><div class="desc">Increase in national output over time</div></div>
+      <div class="info-card"><div class="emoji">&#x267B;&#xFE0F;</div><div class="label">Sustainable Development</div><div class="desc">Growth that meets present needs without compromising future</div></div>
+    </div>
+
+    <h3>&#x26A0;&#xFE0F; Macroeconomic Problems &amp; Policies</h3>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F4A5; Problems</div>
+        <ul>
+          <li>&#x1F4C9; <strong>Recessions</strong> &mdash; decline in economic activity</li>
+          <li>&#x1F9D1;&#x200D;&#x1F37B; <strong>Unemployment</strong> &mdash; people without work</li>
+          <li>&#x1F4B0; <strong>Inflation</strong> &mdash; sustained rise in price level</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F527; Policies</div>
+        <ul>
+          <li>&#x1F4B5; <strong>Monetary</strong> &mdash; money supply &amp; interest rates</li>
+          <li>&#x1F4B0; <strong>Fiscal</strong> &mdash; government spending &amp; taxes</li>
+          <li>&#x1F3ED; <strong>Supply-side</strong> &mdash; boosting productivity</li>
+          <li>&#x1F4B4; <strong>Income</strong> &mdash; wage &amp; price controls</li>
+          <li>&#x1F4CB; <strong>Direct Control</strong> &mdash; regulations &amp; quotas</li>
+          <li>&#x1F30D; <strong>Foreign Trade</strong> &mdash; tariffs, exchange rates</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Business Cycle -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F504;</div>
+    <h2>The Business Cycle <span class="underline"></span></h2>
+    <p>Fluctuations in GDP around the natural growth rate. The economy moves through phases of expansion and contraction.</p>
+
+    <svg class="cycle-svg" viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="cycleGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#0984e3" stop-opacity="0.15"/>
+          <stop offset="100%" stop-color="#00b894" stop-opacity="0.15"/>
+        </linearGradient>
+        <linearGradient id="trendGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#fdcb6e" stop-opacity="0.5"/>
+          <stop offset="100%" stop-color="#fdcb6e" stop-opacity="0.5"/>
+        </linearGradient>
+      </defs>
+      <!-- Grid lines -->
+      <line x1="50" y1="50" x2="50" y2="250" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+      <line x1="50" y1="150" x2="650" y2="150" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="4,4"/>
+      <!-- Trend line -->
+      <line x1="50" y1="180" x2="650" y2="120" stroke="#fdcb6e" stroke-width="1.5" stroke-dasharray="6,3" opacity="0.4"/>
+      <!-- Cycle curve -->
+      <path d="M 50 190 
+               Q 120 180, 180 150 
+               Q 240 110, 310 130 
+               Q 380 150, 440 110 
+               Q 500 60, 540 80
+               Q 580 100, 650 130" 
+            fill="none" stroke="url(#cycleGrad)" stroke-width="3" stroke-linecap="round"/>
+      <path d="M 50 190 
+               Q 120 180, 180 150 
+               Q 240 110, 310 130 
+               Q 380 150, 440 110 
+               Q 500 60, 540 80
+               Q 580 100, 650 130" 
+            fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+      <!-- Labels -->
+      <text x="140" y="100" fill="#fdcb6e" font-size="13" font-weight="700" text-anchor="middle">PEAK</text>
+      <text x="400" y="60" fill="#fdcb6e" font-size="13" font-weight="700" text-anchor="middle">PEAK</text>
+      <text x="60" y="210" fill="#0984e3" font-size="13" font-weight="700" text-anchor="middle">TROUGH</text>
+      <text x="290" y="155" fill="#0984e3" font-size="13" font-weight="700" text-anchor="middle">TROUGH</text>
+      <!-- Phase arrows -->
+      <text x="210" y="220" fill="#d63031" font-size="11" font-weight="600" text-anchor="middle">Recession</text>
+      <text x="500" y="200" fill="#00b894" font-size="11" font-weight="600" text-anchor="middle">Expansion</text>
+      <text x="100" y="175" fill="#00b894" font-size="11" font-weight="600" text-anchor="middle">Expansion</text>
+      <text x="345" y="175" fill="#d63031" font-size="11" font-weight="600" text-anchor="middle">Recession</text>
+      <!-- Arrows -->
+      <defs>
+        <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6" fill="#00b894"/>
+        </marker>
+        <marker id="arrowRed" markerWidth="8" markerHeight="6" refX="0" refY="3" orient="auto">
+          <path d="M8,0 L0,3 L8,6" fill="#d63031"/>
+        </marker>
+      </defs>
+      <text x="650" y="145" fill="#fdcb6e" font-size="10" text-anchor="end">Natural Growth</text>
+      <text x="650" y="160" fill="#0984e3" font-size="10" text-anchor="end">Actual Output</text>
+      <text x="50" y="20" fill="var(--text-muted)" font-size="10">Real GDP</text>
+      <text x="660" y="260" fill="var(--text-muted)" font-size="10">Time</text>
+      <!-- Dot markers on peaks/troughs -->
+      <circle cx="140" cy="100" r="5" fill="#fdcb6e" opacity="0.8"/>
+      <circle cx="400" cy="60" r="5" fill="#fdcb6e" opacity="0.8"/>
+      <circle cx="60" cy="190" r="5" fill="#0984e3" opacity="0.8"/>
+      <circle cx="290" cy="138" r="5" fill="#0984e3" opacity="0.8"/>
+    </svg>
+
+    <h3>&#x1F3AF; Potential Output vs Actual Output</h3>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F4C8; Potential Output</div>
+        <ul>
+          <li>Maximum sustainable output at full employment</li>
+          <li>Grows at the natural growth rate</li>
+          <li>Represents long-run trend</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F4C9; Actual Output</div>
+        <ul>
+          <li>Real GDP observed in the economy</li>
+          <li>Fluctuates around potential output</li>
+          <li>Above = inflationary pressure, Below = recessionary gap</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>&#x1F9D0; Business Cycle Phases &mdash; Click to Explore</h3>
+    <div class="phase-tags">
+      <div class="phase-tag peak" data-phase="0" onclick="selectPhase(0)">&#x26A1; Peak</div>
+      <div class="phase-tag recession" data-phase="1" onclick="selectPhase(1)">&#x1F4C9; Recession</div>
+      <div class="phase-tag trough" data-phase="2" onclick="selectPhase(2)">&#x1F4CD; Trough</div>
+      <div class="phase-tag expansion" data-phase="3" onclick="selectPhase(3)">&#x1F4C8; Expansion</div>
+    </div>
+    <div class="phase-detail" id="phaseDetail">
+      <div class="phase-title" style="color: var(--accent3);">&#x26A1; Peak</div>
+      <div class="phase-desc">The highest point of economic activity. GDP is at maximum, employment is high, and inflationary pressures build.</div>
+      <div class="phase-chars">
+        <div class="char-item"><div class="char-label">GDP</div><div class="char-value" style="color:var(--accent3);">Maximum</div></div>
+        <div class="char-item"><div class="char-label">Employment</div><div class="char-value" style="color:var(--accent3);">Full</div></div>
+        <div class="char-item"><div class="char-label">Unemployment</div><div class="char-value" style="color:#d63031;">Lowest</div></div>
+        <div class="char-item"><div class="char-label">Aggregate Demand</div><div class="char-value" style="color:var(--accent3);">High</div></div>
+        <div class="char-item"><div class="char-label">Econ. Growth</div><div class="char-value" style="color:#d63031;">Slowing</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Macroeconomic Equilibrium -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x2696;&#xFE0F;</div>
+    <h2>Macroeconomic Equilibrium <span class="underline"></span></h2>
+    <p>Equilibrium occurs when aggregate demand equals aggregate supply &mdash; no tendency for change.</p>
+
+    <h3>&#x1F3E1; The Four Sectors</h3>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F3E0;</div><div class="label">Household</div><div class="desc">Consumers, suppliers of labour</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3ED;</div><div class="label">Business</div><div class="desc">Firms producing goods &amp; services</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3DB;&#xFE0F;</div><div class="label">Government</div><div class="desc">Public spending &amp; taxation</div></div>
+      <div class="info-card"><div class="emoji">&#x1F30D;</div><div class="label">Foreign</div><div class="desc">International trade &amp; capital flows</div></div>
+    </div>
+
+    <h3>&#x1F4CA; Three Approaches to Equilibrium</h3>
+    <div class="formula-box">AD = AS</div>
+    <div class="formula-box green">Y = E &nbsp;&nbsp;&nbsp;(Output = Aggregate Expenditure)</div>
+    <div class="formula-box yellow">W = J &nbsp;&nbsp;&nbsp;(Withdrawals = Injections)</div>
+
+    <h4>Aggregate Demand (AD)</h4>
+    <p>The total quantity of goods and services demanded in the economy at a given price level.</p>
+
+    <h4>Aggregate Supply (AS)</h4>
+    <p>The total quantity of goods and services that firms are willing to produce at a given price level.</p>
+  </div>
+
+  <!-- 4. Aggregate Expenditure Components -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4B0;</div>
+    <h2>Aggregate Expenditure Components <span class="underline"></span></h2>
+    <p>Total spending in the economy is the sum of four components:</p>
+    <div class="formula-box" style="font-size: 1.3rem;">AE = C + I + G + (X &minus; M)</div>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F6CD;&#xFE0F;</div><div class="label">Consumption (C)</div><div class="desc">Household spending on goods &amp; services</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3ED;</div><div class="label">Investment (I)</div><div class="desc">Business spending on capital goods</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3DB;&#xFE0F;</div><div class="label">Government (G)</div><div class="desc">Government expenditure on goods &amp; services</div></div>
+      <div class="info-card"><div class="emoji">&#x1F30D;</div><div class="label">Net Exports (X&minus;M)</div><div class="desc">Exports minus Imports</div></div>
+    </div>
+  </div>
+
+  <!-- 5. Consumption Function -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4C8;</div>
+    <h2>The Consumption Function <span class="underline"></span></h2>
+    <p>The relationship between disposable income and consumption spending.</p>
+
+    <div class="formula-box" style="font-size: 1.3rem;">C = a + bY<sub>d</sub></div>
+
+    <div class="card-grid">
+      <div class="info-card">
+        <div class="emoji">&#x1F4B5;</div>
+        <div class="label"><em>a</em> = Autonomous Consumption</div>
+        <div class="desc">Consumption when income is zero &#x2192; C = a (dissaving)</div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F4C8;</div>
+        <div class="label"><em>b</em> = MPC</div>
+        <div class="desc">Marginal Propensity to Consume = &#x394;C / &#x394;Y</div>
+      </div>
+    </div>
+
+    <h3>&#x1F4CB; Marginal Propensity to Consume (MPC)</h3>
+    <div class="formula-box green">MPC = &#x394;C / &#x394;Y</div>
+    <p>The fraction of an additional unit of income that is spent on consumption. <span class="highlight">0 &lt; MPC &lt; 1</span></p>
+
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F4B0; High MPC</div>
+        <ul>
+          <li>Consumers spend most of additional income</li>
+          <li>Large multiplier effect</li>
+          <li>Often in developing economies</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F4B1; Low MPC</div>
+        <ul>
+          <li>Consumers save most of additional income</li>
+          <li>Small multiplier effect</li>
+          <li>Often in developed economies</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Savings Function -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4B1;</div>
+    <h2>The Savings Function <span class="underline"></span></h2>
+    <p>Savings is the part of income not consumed.</p>
+
+    <div class="formula-box" style="font-size: 1.3rem;">S = Y &minus; C</div>
+
+    <p>Deriving the savings function from the consumption function:</p>
+    <div class="formula-box green">S = &minus;a + (1&minus;b)Y</div>
+
+    <h3>&#x1F4CB; MPS &mdash; Marginal Propensity to Save</h3>
+    <div class="formula-box yellow">MPS = 1 &minus; MPC</div>
+    <p>The fraction of additional income that is saved. <span class="highlight">MPC + MPS = 1</span></p>
+
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F4B5;</div><div class="label">Autonomous Savings</div><div class="desc">&minus;a &mdash; dissaving at zero income</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4C8;</div><div class="label">Induced Savings</div><div class="desc">(1&minus;b)Y &mdash; savings that depend on income</div></div>
+    </div>
+  </div>
+
+  <!-- 7. Closed Economy Equilibrium -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F3E0;</div>
+    <h2>Closed Economy Equilibrium <span class="underline"></span></h2>
+    <p>A closed economy has no foreign sector. Equilibrium is achieved when:</p>
+
+    <div class="formula-box" style="font-size: 1.3rem;">Y = C + I + G</div>
+    <div class="formula-box green">S + T &minus; R = I + G &nbsp;&nbsp;<span style="font-weight:400;font-size:0.9rem;color:var(--text-muted)">(W = J approach)</span></div>
+
+    <h3>&#x1F4CB; Worked Example</h3>
+    <div class="diagram-box">
+      <pre>
+Given: C = 100 + 0.75Y<sub>d</sub>, &nbsp; I = 50, &nbsp; G = 200
+
+In equilibrium: Y = C + I + G
+Y = 100 + 0.75Y + 50 + 200
+Y &minus; 0.75Y = 350
+0.25Y = 350
+<b>Y = 1400</b>
+      </pre>
+    </div>
+  </div>
+
+  <!-- 8. Open Economy Equilibrium -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F30D;</div>
+    <h2>Open Economy Equilibrium <span class="underline"></span></h2>
+    <p>An open economy includes international trade. Equilibrium condition:</p>
+
+    <div class="formula-box" style="font-size: 1.3rem;">Y = C + I + G + (X &minus; M)</div>
+
+    <h3>&#x1F4CB; Worked Example</h3>
+    <div class="diagram-box">
+      <pre>
+Given: C = 200 + 0.8Y<sub>d</sub>, &nbsp; I = 100, &nbsp; G = 200, &nbsp; Net Exports = &minus;100
+
+In equilibrium: Y = C + I + G + (X &minus; M)
+Y = 200 + 0.8Y + 100 + 200 + (&minus;100)
+Y &minus; 0.8Y = 400
+0.2Y = 400
+<b>Y = 2000</b>
+      </pre>
+    </div>
+
+    <h3>&#x1F4C8; Effect of an Increase in Investment</h3>
+    <p>If investment increases by &#x394;I, the equilibrium output changes by the multiplier times the change in investment.</p>
+    <div class="formula-box green">&#x394;Y = k &times; &#x394;I</div>
+  </div>
+
+  <!-- 9. Comparison: Closed vs Open Economy -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x2696;&#xFE0F;</div>
+    <h2>Closed vs Open Economy <span class="underline"></span></h2>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F3E0; Closed Economy</div>
+        <ul>
+          <li>No international trade</li>
+          <li>Y = C + I + G</li>
+          <li>W = S + T &minus; R</li>
+          <li>J = I + G</li>
+          <li>Unaffected by global shocks</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F30D; Open Economy</div>
+        <ul>
+          <li>Includes exports &amp; imports</li>
+          <li>Y = C + I + G + (X&minus;M)</li>
+          <li>W = S + T &minus; R + M</li>
+          <li>J = I + G + X</li>
+          <li>Exposed to global economic conditions</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. The Multiplier -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4B0;</div>
+    <h2>The Multiplier <span class="underline"></span></h2>
+    <p>The multiplier measures the magnified effect of a change in autonomous expenditure on equilibrium output.</p>
+
+    <div class="formula-box" style="font-size: 1.3rem;">k = 1 / (1 &minus; MPC) = 1 / MPS</div>
+    <div class="formula-box green">&#x394;Y = k &times; &#x394;E</div>
+
+    <h3>&#x1F4CB; Examples</h3>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F4C8;</div><div class="label">MPC = 0.8</div><div class="desc">k = 1 / (1 &minus; 0.8) = <strong>5</strong></div></div>
+      <div class="info-card"><div class="emoji">&#x1F4C8;</div><div class="label">MPC = 0.9</div><div class="desc">k = 1 / (1 &minus; 0.9) = <strong>10</strong></div></div>
+      <div class="info-card"><div class="emoji">&#x1F4C8;</div><div class="label">MPC = 0.75</div><div class="desc">k = 1 / (1 &minus; 0.75) = <strong>4</strong></div></div>
+    </div>
+
+    <h3>&#x1F9E9; Interactive Multiplier Calculator</h3>
+    <div class="calc-container">
+      <label for="mpcSlider">Marginal Propensity to Consume (MPC): <span id="mpcValue" style="color:var(--accent);font-weight:800;">0.75</span></label>
+      <input type="range" id="mpcSlider" min="0" max="0.99" step="0.01" value="0.75" oninput="calcMultiplier()">
+      <div class="calc-result">
+        <div class="stat">
+          <div class="value" id="multiplierValue">4.00</div>
+          <div class="label">Multiplier (k)</div>
+        </div>
+        <div class="stat">
+          <div class="value green" id="mpsValue">0.25</div>
+          <div class="label">MPS</div>
+        </div>
+      </div>
+      <div style="font-size:0.85rem;color:var(--text-muted);text-align:center;">
+        If autonomous expenditure increases by <span class="highlight">100</span>, output will rise by <span class="highlight-green" id="deltaYExample">400</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11. Macroeconomic Policies Comparison -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F527;</div>
+    <h2>Macroeconomic Policies <span class="underline"></span></h2>
+    <div class="comparison three-col">
+      <div class="left">
+        <div class="header">&#x1F4B5; Monetary</div>
+        <ul>
+          <li>Central bank controls money supply</li>
+          <li>Interest rate adjustments</li>
+          <li>Open market operations</li>
+          <li>Affects borrowing &amp; spending</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F4B0; Fiscal</div>
+        <ul>
+          <li>Government spending decisions</li>
+          <li>Taxation policy</li>
+          <li>Budget deficits / surpluses</li>
+          <li>Direct demand management</li>
+        </ul>
+      </div>
+      <div class="col3">
+        <div class="header">&#x1F3ED; Supply-side</div>
+        <ul>
+          <li>Deregulation &amp; privatization</li>
+          <li>Tax reforms to boost work</li>
+          <li>Investment in infrastructure</li>
+          <li>Labor market reforms</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 12. Flashcards -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4A1;</div>
+    <h2>Key Terms <span class="underline"></span></h2>
+    <div class="flashcard-container">
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F4B5; MPC
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Marginal Propensity to Consume<br>
+            <small>&#x394;C / &#x394;Y<br>The fraction of extra income spent</small>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F4B1; MPS
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Marginal Propensity to Save<br>
+            <small>1 &minus; MPC<br>The fraction of extra income saved</small>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F4B0; Multiplier
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            k = 1/(1&minus;MPC) = 1/MPS<br>
+            <small>Measures the magnified change in output from a change in autonomous expenditure</small>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F4C8; Autonomous Consumption
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Consumption at zero income<br>
+            <small>C = a + bY<sub>d</sub> &#x2192; a = autonomous<br>Funded by dissaving or borrowing</small>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x1F504; Business Cycle
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Fluctuations in GDP<br>
+            <small>Peak &#x2192; Recession &#x2192; Trough &#x2192; Expansion</small>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            &#x2696;&#xFE0F; Macro Equilibrium
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            AD = AS, Y = E, W = J<br>
+            <small>No tendency for change in the economy</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 13. Quiz -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F9F0;</div>
+    <h2>Test Your Knowledge <span class="underline"></span></h2>
+
+    <div class="quiz-question" data-q="1">
+      <div class="q">1. What is the formula for the multiplier?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">k = 1 / MPC</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">k = 1 + MPS</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">k = 1 / (1 &minus; MPC)</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">k = MPC / MPS</button>
+      <div class="quiz-feedback" data-feedback="1"></div>
+    </div>
+
+    <div class="quiz-question" data-q="2">
+      <div class="q">2. In a closed economy, the equilibrium condition is:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Y = C + I</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Y = C + I + G</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Y = C + I + G + (X &minus; M)</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Y = C + S + T</button>
+      <div class="quiz-feedback" data-feedback="2"></div>
+    </div>
+
+    <div class="quiz-question" data-q="3">
+      <div class="q">3. If MPC = 0.9, what is the value of the multiplier?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">5</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">4</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">1</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">10</button>
+      <div class="quiz-feedback" data-feedback="3"></div>
+    </div>
+
+    <div class="quiz-question" data-q="4">
+      <div class="q">4. Which of the following is NOT a macroeconomic objective?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Full employment</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Economic stability</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Profit maximization</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Sustainable development</button>
+      <div class="quiz-feedback" data-feedback="4"></div>
+    </div>
+
+    <div class="quiz-question" data-q="5">
+      <div class="q">5. In the business cycle, the lowest point of economic activity is called:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Peak</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Recession</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Trough</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Expansion</button>
+      <div class="quiz-feedback" data-feedback="5"></div>
+    </div>
+
+    <div class="quiz-question" data-q="6">
+      <div class="q">6. What does MPS equal?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">MPC &minus; 1</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">MPC + 1</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">1 &minus; MPC</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">1 / MPC</button>
+      <div class="quiz-feedback" data-feedback="6"></div>
+    </div>
+
+    <div class="quiz-question" data-q="7">
+      <div class="q">7. If autonomous consumption is 200 and MPC is 0.8, the savings function is:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">S = 200 + 0.8Y</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">S = &minus;200 + 0.8Y</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">S = &minus;200 + 0.2Y</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">S = 200 + 0.2Y</button>
+      <div class="quiz-feedback" data-feedback="7"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  class Particle {
+    constructor() {
+      this.reset();
+    }
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 2 + 0.5;
+      this.speedX = (Math.random() - 0.5) * 0.5;
+      this.speedY = (Math.random() - 0.5) * 0.5;
+      this.opacity = Math.random() * 0.5 + 0.1;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(9, 132, 227, ${this.opacity})`;
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+  function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
+
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 150) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(9, 132, 227, ${0.06 * (1 - dist / 150)})`;
+          ctx.lineWidth = 0.5;
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(animateParticles);
+  }
+  animateParticles();
+
+  const sections = document.querySelectorAll('[data-section]');
+
+  function revealSections() {
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 80) {
+        section.classList.add('visible');
+      }
+    });
+  }
+  window.addEventListener('scroll', revealSections);
+  revealSections();
+
+  const progressBar = document.getElementById('progressBar');
+
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / docHeight) * 100;
+    progressBar.style.width = progress + '%';
+  });
+
+  // Quiz
+  function checkAnswer(btn, isCorrect) {
+    const question = btn.closest('.quiz-question');
+    const options = question.querySelectorAll('.quiz-option');
+    const feedback = question.querySelector('.quiz-feedback');
+
+    options.forEach(opt => {
+      opt.disabled = true;
+      opt.style.cursor = 'not-allowed';
+      if (opt.dataset.correct === 'true') opt.classList.add('correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.textContent = '&#x2705; Correct!';
+      feedback.className = 'quiz-feedback show correct';
+    } else {
+      btn.classList.add('wrong');
+      const correctBtn = question.querySelector('[data-correct="true"]');
+      feedback.textContent = '&#x274C; Incorrect. The answer was: ' + correctBtn.textContent;
+      feedback.className = 'quiz-feedback show wrong';
+    }
+  }
+
+  // Multiplier Calculator
+  function calcMultiplier() {
+    const slider = document.getElementById('mpcSlider');
+    const mpc = parseFloat(slider.value);
+    const mps = 1 - mpc;
+    const k = mps > 0 ? 1 / mps : Infinity;
+
+    document.getElementById('mpcValue').textContent = mpc.toFixed(2);
+    document.getElementById('multiplierValue').textContent = k === Infinity ? '&#x221E;' : k.toFixed(2);
+    document.getElementById('mpsValue').textContent = mps.toFixed(2);
+    document.getElementById('deltaYExample').textContent = k === Infinity ? '&#x221E;' : (k * 100).toFixed(0);
+  }
+
+  // Business Cycle Phase Selector
+  const phases = [
+    {
+      title: '&#x26A1; Peak',
+      color: 'var(--accent3)',
+      desc: 'The highest point of economic activity. GDP is at maximum, employment is high, and inflationary pressures build.',
+      chars: [
+        { label: 'GDP', value: 'Maximum', color: 'var(--accent3)' },
+        { label: 'Employment', value: 'Full', color: 'var(--accent3)' },
+        { label: 'Unemployment', value: 'Lowest', color: '#d63031' },
+        { label: 'Aggregate Demand', value: 'High', color: 'var(--accent3)' },
+        { label: 'Econ. Growth', value: 'Slowing', color: '#d63031' },
+      ]
+    },
+    {
+      title: '&#x1F4C9; Recession',
+      color: '#d63031',
+      desc: 'A period of declining economic activity. GDP falls, unemployment rises, and aggregate demand weakens.',
+      chars: [
+        { label: 'GDP', value: 'Falling', color: '#d63031' },
+        { label: 'Employment', value: 'Decreasing', color: '#d63031' },
+        { label: 'Unemployment', value: 'Rising', color: '#d63031' },
+        { label: 'Aggregate Demand', value: 'Low', color: '#d63031' },
+        { label: 'Econ. Growth', value: 'Negative', color: '#d63031' },
+      ]
+    },
+    {
+      title: '&#x1F4CD; Trough',
+      color: 'var(--accent)',
+      desc: 'The lowest point of the business cycle. GDP stops falling, unemployment is at its peak, and the economy bottoms out before recovery.',
+      chars: [
+        { label: 'GDP', value: 'Minimum', color: 'var(--accent)' },
+        { label: 'Employment', value: 'Low', color: '#d63031' },
+        { label: 'Unemployment', value: 'Highest', color: '#d63031' },
+        { label: 'Aggregate Demand', value: 'Lowest', color: 'var(--accent)' },
+        { label: 'Econ. Growth', value: 'About to rise', color: 'var(--accent2)' },
+      ]
+    },
+    {
+      title: '&#x1F4C8; Expansion',
+      color: 'var(--accent2)',
+      desc: 'A period of economic growth. GDP rises, employment increases, unemployment falls, and consumer confidence returns.',
+      chars: [
+        { label: 'GDP', value: 'Rising', color: 'var(--accent2)' },
+        { label: 'Employment', value: 'Increasing', color: 'var(--accent2)' },
+        { label: 'Unemployment', value: 'Falling', color: 'var(--accent2)' },
+        { label: 'Aggregate Demand', value: 'Growing', color: 'var(--accent2)' },
+        { label: 'Econ. Growth', value: 'Positive', color: 'var(--accent2)' },
+      ]
+    }
+  ];
+
+  function selectPhase(index) {
+    const tags = document.querySelectorAll('.phase-tag');
+    tags.forEach((t, i) => t.classList.toggle('active', i === index));
+
+    const p = phases[index];
+    const detail = document.getElementById('phaseDetail');
+    detail.innerHTML = `
+      <div class="phase-title" style="color: ${p.color};">${p.title}</div>
+      <div class="phase-desc">${p.desc}</div>
+      <div class="phase-chars">
+        ${p.chars.map(c => `<div class="char-item"><div class="char-label">${c.label}</div><div class="char-value" style="color:${c.color};">${c.value}</div></div>`).join('')}
+      </div>
+    `;
+  }
+</script>
+
+</body>
+</html>

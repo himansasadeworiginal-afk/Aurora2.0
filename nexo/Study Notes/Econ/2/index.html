@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Economics Lesson 2 - Demand, Supply & Market Equilibrium</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --primary: #2d3436;
+    --accent: #0984e3;
+    --accent2: #00b894;
+    --accent3: #fdcb6e;
+    --bg: #0a0a0f;
+    --card: #14141f;
+    --text: #e0e0e0;
+    --text-muted: #888;
+    --gradient: linear-gradient(135deg, #0984e3, #00b894, #fdcb6e);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+
+  #particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background: rgba(9, 132, 227, 0.15);
+    border: 1px solid rgba(9, 132, 227, 0.3);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    animation: fadeInDown 1s ease;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    font-weight: 800;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    animation: fadeInUp 1s ease 0.2s both;
+  }
+
+  .hero p {
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: var(--text-muted);
+    max-width: 600px;
+    animation: fadeInUp 1s ease 0.4s both;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: bounce 2s infinite;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem;
+  }
+
+  .section {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .section.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .section:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 60px rgba(9, 132, 227, 0.08);
+  }
+
+  .section-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .section h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section h2 .underline {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+
+  .section h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1.5rem 0 0.8rem;
+  }
+
+  .section h4 {
+    color: var(--accent2);
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 1rem 0 0.5rem;
+  }
+
+  .section ul, .section ol {
+    padding-left: 1.5rem;
+  }
+
+  .section li {
+    margin-bottom: 0.4rem;
+    color: var(--text);
+  }
+
+  .section p {
+    margin-bottom: 0.8rem;
+    color: var(--text);
+  }
+
+  .highlight {
+    display: inline-block;
+    padding: 0.1rem 0.5rem;
+    background: rgba(9, 132, 227, 0.15);
+    border-radius: 4px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .highlight-green {
+    background: rgba(0, 184, 148, 0.15);
+    color: var(--accent2);
+  }
+
+  .highlight-yellow {
+    background: rgba(253, 203, 110, 0.15);
+    color: var(--accent3);
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .info-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: default;
+  }
+
+  .info-card:hover {
+    background: rgba(9,132,227,0.08);
+    border-color: rgba(9,132,227,0.2);
+    transform: translateY(-5px);
+  }
+
+  .info-card .emoji {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .info-card .label {
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.3rem;
+  }
+
+  .info-card .desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin: 1rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .comparison > div {
+    padding: 1.2rem;
+  }
+
+  .comparison .left {
+    background: rgba(9,132,227,0.08);
+    border-right: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .comparison .right {
+    background: rgba(0,184,148,0.08);
+  }
+
+  .comparison .header {
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-align: center;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .comparison .left .header { color: var(--accent); }
+  .comparison .right .header { color: var(--accent2); }
+
+  .comparison ul { list-style: none; padding: 0; }
+  .comparison li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.9rem;
+  }
+  .comparison li:last-child { border-bottom: none; }
+
+  .flashcard-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .flashcard {
+    perspective: 1000px;
+    height: 180px;
+    cursor: pointer;
+  }
+
+  .flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+  }
+
+  .flashcard.flipped .flashcard-inner {
+    transform: rotateY(180deg);
+  }
+
+  .flashcard-front, .flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+
+  .flashcard-front {
+    background: rgba(9,132,227,0.1);
+    border: 1px solid rgba(9,132,227,0.2);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .flashcard-back {
+    background: rgba(0,184,148,0.15);
+    border: 1px solid rgba(0,184,148,0.2);
+    color: var(--accent2);
+    transform: rotateY(180deg);
+  }
+
+  .flashcard-hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin: 1rem 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2));
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2.35rem;
+    top: 0.5rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+
+  .timeline-item .title {
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .timeline-item .desc {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  .quiz-question {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin: 1rem 0;
+  }
+
+  .quiz-question .q {
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    color: #fff;
+  }
+
+  .quiz-option {
+    display: block;
+    width: 100%;
+    padding: 0.7rem 1rem;
+    margin-bottom: 0.5rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    font-size: 0.9rem;
+    font-family: inherit;
+  }
+
+  .quiz-option:hover {
+    background: rgba(9,132,227,0.1);
+    border-color: var(--accent);
+  }
+
+  .quiz-option.correct {
+    background: rgba(0,184,148,0.2);
+    border-color: var(--accent2);
+    color: var(--accent2);
+  }
+
+  .quiz-option.wrong {
+    background: rgba(214,48,49,0.2);
+    border-color: #d63031;
+    color: #d63031;
+  }
+
+  .quiz-feedback {
+    margin-top: 0.8rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  .quiz-feedback.show {
+    display: block;
+  }
+
+  .quiz-feedback.correct {
+    background: rgba(0,184,148,0.1);
+    border: 1px solid rgba(0,184,148,0.2);
+    color: var(--accent2);
+  }
+
+  .quiz-feedback.wrong {
+    background: rgba(214,48,49,0.1);
+    border: 1px solid rgba(214,48,49,0.2);
+    color: #d63031;
+  }
+
+  .progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    z-index: 100;
+    background: transparent;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: var(--gradient);
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+    40% { transform: translateX(-50%) translateY(-10px); }
+    60% { transform: translateX(-50%) translateY(-5px); }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @media (max-width: 600px) {
+    .comparison { grid-template-columns: 1fr; }
+    .comparison .left { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .section { padding: 1.2rem; }
+    .flashcard-container { grid-template-columns: 1fr; }
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 0.3rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .tag-blue { background: rgba(9,132,227,0.15); color: var(--accent); }
+  .tag-green { background: rgba(0,184,148,0.15); color: var(--accent2); }
+  .tag-yellow { background: rgba(253,203,110,0.15); color: var(--accent3); }
+  .tag-red { background: rgba(214,48,49,0.15); color: #d63031; }
+
+  .formula-box {
+    background: rgba(9,132,227,0.06);
+    border: 1px solid rgba(9,132,227,0.15);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+  }
+
+  .diagram-box {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    text-align: center;
+    overflow-x: auto;
+  }
+
+  .diagram-box pre {
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: var(--accent2);
+  }
+
+  .step-list {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+  }
+
+  .step-list li {
+    counter-increment: step;
+    padding: 0.6rem 0 0.6rem 2.5rem;
+    position: relative;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .step-list li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 0.6rem;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(9,132,227,0.15);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .tab-btn {
+    padding: 0.5rem 1.2rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.03);
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+  }
+
+  .tab-btn:hover {
+    background: rgba(9,132,227,0.1);
+    border-color: var(--accent);
+  }
+
+  .tab-btn.active {
+    background: rgba(9,132,227,0.15);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+</style>
+</head>
+<body>
+
+<div class="progress-container">
+  <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<canvas id="particles"></canvas>
+
+<section class="hero">
+  <div class="hero-badge">Lesson 2</div>
+  <h1>Demand, Supply &amp;<br>Market Equilibrium</h1>
+  <p>Understanding how buyers and sellers interact to determine prices and quantities in a market economy.</p>
+  <div class="hero-scroll">&#x2193;</div>
+</section>
+
+<div class="container">
+
+  <!-- 1. Demand -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4C9;</div>
+    <h2>Demand <span class="underline"></span></h2>
+    <p><strong>Demand</strong> refers to the various quantities of a good or service that buyers are <strong>ready to purchase</strong> at alternative prices during a given time period.</p>
+
+    <h3>Individual vs Market Demand</h3>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F9D1; Individual Demand</div>
+        <ul>
+          <li>Quantity demanded by a <strong>single consumer</strong></li>
+          <li>Determinants: P, P<sub>n</sub>, Y, T, Ex, O</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F465; Market Demand</div>
+        <ul>
+          <li>Sum of all individual demands</li>
+          <li>Determinants: P, P<sub>n</sub>, Y, T, Ex, <strong>N</strong>, O</li>
+          <li>N = Number of consumers</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Determinants of Demand</h3>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F4B5;</div><div class="label">P &mdash; Price</div><div class="desc">Price of the good itself</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4B2;</div><div class="label">P<sub>n</sub> &mdash; Related Goods</div><div class="desc">Substitutes &amp; complements</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4B0;</div><div class="label">Y &mdash; Income</div><div class="desc">Consumer purchasing power</div></div>
+      <div class="info-card"><div class="emoji">&#x1F3E0;</div><div class="label">T &mdash; Tastes</div><div class="desc">Preferences &amp; fashions</div></div>
+      <div class="info-card"><div class="emoji">&#x1F30D;</div><div class="label">Ex &mdash; Expectations</div><div class="desc">Future price expectations</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4CA;</div><div class="label">O &mdash; Other</div><div class="desc">Weather, ads, population etc.</div></div>
+      <div class="info-card"><div class="emoji">&#x1F465;</div><div class="label">N &mdash; Population</div><div class="desc">Only for market demand</div></div>
+    </div>
+
+    <h3>Law of Demand</h3>
+    <div class="info-card">
+      <div class="emoji">&#x2193;</div>
+      <div class="label">Inverse Relationship</div>
+      <div class="desc">As price &#x2191;, quantity demanded &#x2193; and vice versa (ceteris paribus)</div>
+    </div>
+
+    <h4>Reasons for the Law</h4>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F4B8;</div><div class="label">Substitution Effect</div><div class="desc">When P &#x2191;, consumers switch to cheaper substitutes</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4B6;</div><div class="label">Income Effect</div><div class="desc">When P &#x2191;, real income &#x2193;, purchasing power &#x2193;</div></div>
+    </div>
+
+    <h3>Change in Quantity Demanded vs Change in Demand</h3>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x2195; Change in Q<sub>d</sub></div>
+        <ul>
+          <li>Movement <strong>along</strong> the demand curve</li>
+          <li>Caused by change in <strong>own price</strong> (P)</li>
+          <li>Extension: P &#x2193; &rarr; Q<sub>d</sub> &#x2191;</li>
+          <li>Contraction: P &#x2191; &rarr; Q<sub>d</sub> &#x2193;</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x2194; Change in Demand</div>
+        <ul>
+          <li><strong>Shift</strong> of the entire demand curve</li>
+          <li>Caused by non-price factors (P<sub>n</sub>, Y, T, Ex, O, N)</li>
+          <li>Increase: curve shifts <strong>right</strong></li>
+          <li>Decrease: curve shifts <strong>left</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="diagram-box">
+      <pre>
+Demand Curve (Law of Demand)
+Price
+  |
+P1 |    o--- D
+  |   /|
+  |  / |
+P2 | /  o--- D
+  |/
+  +------------------ Quantity
+     Q1    Q2
+
+D slopes downward: inverse relationship
+      </pre>
+    </div>
+  </div>
+
+  <!-- 2. Supply -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4C8;</div>
+    <h2>Supply <span class="underline"></span></h2>
+    <p><strong>Supply</strong> refers to the various quantities of a good or service that producers are <strong>willing to supply</strong> at alternative prices during a given time period.</p>
+
+    <h3>Institutional vs Market Supply</h3>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F3ED; Institutional Supply</div>
+        <ul>
+          <li>Quantity supplied by a <strong>single firm</strong></li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F465; Market Supply</div>
+        <ul>
+          <li>Sum of all institutional supplies</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Law of Supply</h3>
+    <div class="info-card">
+      <div class="emoji">&#x2191;</div>
+      <div class="label">Positive Relationship</div>
+      <div class="desc">As price &#x2191;, quantity supplied &#x2191; and vice versa (ceteris paribus)</div>
+    </div>
+
+    <h4>Reasons for the Law</h4>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F4B0;</div><div class="label">Profit Concept</div><div class="desc">Higher price &rarr; higher profit incentive to produce more</div></div>
+      <div class="info-card"><div class="emoji">&#x2197;&#xFE0F;</div><div class="label">Law of Increasing Opportunity Cost</div><div class="desc">Higher output requires higher price to cover rising marginal costs</div></div>
+    </div>
+
+    <div class="diagram-box">
+      <pre>
+Supply Curve (Law of Supply)
+Price
+  |
+  |    / S
+  |   /
+P2 |  o---
+  | / |
+P1 |/  o---
+  +------------------ Quantity
+     Q1    Q2
+
+S slopes upward: positive relationship
+      </pre>
+    </div>
+  </div>
+
+  <!-- 3. Market Equilibrium -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x2696;&#xFE0F;</div>
+    <h2>Market Equilibrium <span class="underline"></span></h2>
+    <p>At equilibrium, the quantity demanded <strong>equals</strong> the quantity supplied at a particular price where buyers and producers mutually agree.</p>
+
+    <h3>Conditions for Equilibrium</h3>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F4B5;</div><div class="label">Demand Price = Supply Price</div><div class="desc">Buyers and sellers agree on price</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4CA;</div><div class="label">Q<sub>d</sub> = Q<sub>s</sub></div><div class="desc">Quantity demanded = Quantity supplied</div></div>
+      <div class="info-card"><div class="emoji">&#x274C;</div><div class="label">Excess Demand = 0</div><div class="desc">No shortage</div></div>
+      <div class="info-card"><div class="emoji">&#x274C;</div><div class="label">Excess Supply = 0</div><div class="desc">No surplus</div></div>
+    </div>
+
+    <h3>Excess Demand &amp; Excess Supply</h3>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F4C8; Excess Demand (Shortage)</div>
+        <ul>
+          <li>Price is <strong>below</strong> equilibrium</li>
+          <li>Q<sub>d</sub> &gt; Q<sub>s</sub></li>
+          <li>Market pressure: Price &#x2191;</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F4C9; Excess Supply (Surplus)</div>
+        <ul>
+          <li>Price is <strong>above</strong> equilibrium</li>
+          <li>Q<sub>s</sub> &gt; Q<sub>d</sub></li>
+          <li>Market pressure: Price &#x2193;</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="diagram-box">
+      <pre>
+Market Equilibrium
+Price
+  |
+  |        S
+  |       /
+  |      /   Equilibrium Point (E)
+P* |-----X-------
+  |    /|   \
+  |   / |    \  D
+  |  /  |     \
+  +------------------ Quantity
+     Q*
+     
+At P*: Qd = Qs = Q*
+Above P*: Surplus (Qs > Qd)
+Below P*: Shortage (Qd > Qs)
+      </pre>
+    </div>
+
+    <h3>Finding Equilibrium from Equations</h3>
+    <h4>Example 1</h4>
+    <div class="formula-box" style="font-size: 0.95rem;">
+      Q<sub>d</sub> = 4250 &minus; 25P &nbsp;&nbsp; Q<sub>s</sub> = 2000 + 50P
+    </div>
+    <ol class="step-list">
+      <li>Set Q<sub>d</sub> = Q<sub>s</sub>: 4250 &minus; 25P = 2000 + 50P</li>
+      <li>4250 &minus; 2000 = 50P + 25P &rarr; 2250 = 75P</li>
+      <li><strong>P* = 30</strong></li>
+      <li>Substitute: Q<sub>d</sub> = 4250 &minus; 25(30) = 4250 &minus; 750</li>
+      <li><strong>Q* = 3500</strong></li>
+    </ol>
+
+    <h4>Example 2</h4>
+    <div class="formula-box" style="font-size: 0.95rem;">
+      Q<sub>d</sub> = 30 &minus; 2P &nbsp;&nbsp; Q<sub>s</sub> = &minus;6 + 2P
+    </div>
+    <ol class="step-list">
+      <li>Set Q<sub>d</sub> = Q<sub>s</sub>: 30 &minus; 2P = &minus;6 + 2P</li>
+      <li>30 + 6 = 2P + 2P &rarr; 36 = 4P</li>
+      <li><strong>P* = 9</strong></li>
+      <li>Substitute: Q<sub>d</sub> = 30 &minus; 2(9) = 30 &minus; 18</li>
+      <li><strong>Q* = 12</strong></li>
+    </ol>
+
+    <div class="info-card">
+      <div class="emoji">&#x1F4A1;</div>
+      <div class="label">Check: Excess = Q<sub>d</sub> &minus; Q<sub>s</sub></div>
+      <div class="desc">If P &lt; P* &rarr; Excess Demand (positive) &rarr; Price &#x2191;<br>If P &gt; P* &rarr; Excess Supply (negative) &rarr; Price &#x2193;</div>
+    </div>
+  </div>
+
+  <!-- 4. Consumer & Producer Surplus -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4B0;</div>
+    <h2>Consumer &amp; Producer Surplus <span class="underline"></span></h2>
+
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F9D1; Consumer Surplus</div>
+        <ul>
+          <li>Difference between <strong>maximum price</strong> a consumer is willing to pay and the <strong>equilibrium price</strong></li>
+          <li>Area <strong>below</strong> the demand curve and <strong>above</strong> the price</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F3ED; Producer Surplus</div>
+        <ul>
+          <li>Difference between the <strong>equilibrium price</strong> and the <strong>minimum supply price</strong></li>
+          <li>Area <strong>above</strong> the supply curve and <strong>below</strong> the price</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="formula-box">
+      Economic Surplus = Consumer Surplus + Producer Surplus
+    </div>
+
+    <div class="diagram-box">
+      <pre>
+Consumer & Producer Surplus
+Price
+  |
+  |    S
+  |   / \
+  |  /   \
+P* |-/-----X-------
+  |/ CS |PS \
+  +-----+----\---- Quantity
+        Q*
+
+CS = area between demand & price (above P*)
+PS = area between supply & price (below P*)
+      </pre>
+    </div>
+  </div>
+
+  <!-- 5. Elasticity of Demand -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x2194;&#xFE0F;</div>
+    <h2>Elasticity of Demand <span class="underline"></span></h2>
+    <p>Elasticity measures the <strong>responsiveness</strong> of quantity demanded to changes in its determinants.</p>
+
+    <h3>Price Elasticity of Demand (PED)</h3>
+    <div class="formula-box">
+      PED = %&#x0394;Q<sub>d</sub> / %&#x0394;P
+    </div>
+
+    <h4>Point Elasticity Formula</h4>
+    <div class="formula-box">
+      E<sub>d</sub> = (&#x0394;Q<sub>d</sub>/&#x0394;P) &times; (P/Q<sub>d</sub>)
+    </div>
+
+    <h3>Types of Elasticity</h3>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x221E;</div><div class="label">Perfectly Elastic (E = &#x221E;)</div><div class="desc">Horizontal demand curve; infinite response to price change</div></div>
+      <div class="info-card"><div class="emoji">&#x2191;</div><div class="label">Elastic (|E| &gt; 1)</div><div class="desc">%&#x0394;Q<sub>d</sub> &gt; %&#x0394;P; luxury goods</div></div>
+      <div class="info-card"><div class="emoji">&#x2194;</div><div class="label">Unit Elastic (|E| = 1)</div><div class="desc">%&#x0394;Q<sub>d</sub> = %&#x0394;P</div></div>
+      <div class="info-card"><div class="emoji">&#x2193;</div><div class="label">Inelastic (|E| &lt; 1)</div><div class="desc">%&#x0394;Q<sub>d</sub> &lt; %&#x0394;P; necessities</div></div>
+      <div class="info-card"><div class="emoji">0</div><div class="label">Perfectly Inelastic (E = 0)</div><div class="desc">Vertical demand curve; no response to price change</div></div>
+    </div>
+
+    <h3>Cross Price Elasticity of Demand (XED)</h3>
+    <div class="formula-box">
+      XED = %&#x0394;Q<sub>d</sub> of Good X / %&#x0394;P of Good Y
+    </div>
+    <ul>
+      <li><strong>Positive XED</strong> &rarr; Substitutes (tea &amp; coffee)</li>
+      <li><strong>Negative XED</strong> &rarr; Complements (cars &amp; petrol)</li>
+      <li><strong>Zero XED</strong> &rarr; Unrelated goods</li>
+    </ul>
+
+    <h3>Income Elasticity of Demand (YED)</h3>
+    <div class="formula-box">
+      YED = %&#x0394;Q<sub>d</sub> / %&#x0394;Y
+    </div>
+    <ul>
+      <li><strong>Positive YED</strong> &rarr; Normal goods (Y &#x2191; &rarr; Q<sub>d</sub> &#x2191;)</li>
+      <li><strong>Negative YED</strong> &rarr; Inferior goods (Y &#x2191; &rarr; Q<sub>d</sub> &#x2193;)</li>
+      <li>YED &gt; 1 &rarr; Luxury goods; 0 &lt; YED &lt; 1 &rarr; Necessities</li>
+    </ul>
+
+    <h3>Determinants of Price Elasticity of Demand</h3>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x1F504;</div><div class="label">Availability of Substitutes</div><div class="desc">More substitutes = more elastic</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4B5;</div><div class="label">Proportion of Income</div><div class="desc">Higher proportion = more elastic</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4C5;</div><div class="label">Time Period</div><div class="desc">Longer time = more elastic</div></div>
+      <div class="info-card"><div class="emoji">&#x1F514;</div><div class="label">Necessity vs Luxury</div><div class="desc">Necessities = inelastic; Luxuries = elastic</div></div>
+      <div class="info-card"><div class="emoji">&#x1FA99;</div><div class="label">Nature of Good</div><div class="desc">Addictive goods = inelastic</div></div>
+      <div class="info-card"><div class="emoji">&#x1F4E6;</div><div class="label">Narrowness of Market</div><div class="desc">Narrower definition = more elastic</div></div>
+    </div>
+
+    <h3>Practical Importance of Price Elasticity</h3>
+    <div class="timeline">
+      <div class="timeline-item"><div class="title">&#x1F4B0; Pricing Decisions</div><div class="desc">Firms set prices based on elasticity to maximize revenue</div></div>
+      <div class="timeline-item"><div class="title">&#x1F3DB;&#xFE0F; Government Policy</div><div class="desc">Taxation: inelastic goods generate more tax revenue</div></div>
+      <div class="timeline-item"><div class="title">&#x1F30D; International Trade</div><div class="desc">Exchange rate changes affect export/import demand</div></div>
+      <div class="timeline-item"><div class="title">&#x1F465; Consumer Behavior</div><div class="desc">Understanding how consumers respond to price changes</div></div>
+    </div>
+  </div>
+
+  <!-- 6. Price Elasticity of Supply -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4C4;</div>
+    <h2>Price Elasticity of Supply <span class="underline"></span></h2>
+    <p>Measures the responsiveness of quantity supplied to a change in price.</p>
+
+    <div class="formula-box">
+      PES = %&#x0394;Q<sub>s</sub> / %&#x0394;P
+    </div>
+
+    <h3>Types of Supply Elasticity</h3>
+    <div class="card-grid">
+      <div class="info-card"><div class="emoji">&#x221E;</div><div class="label">Perfectly Elastic (PES = &#x221E;)</div><div class="desc">Horizontal supply curve</div></div>
+      <div class="info-card"><div class="emoji">&#x2191;</div><div class="label">Elastic (PES &gt; 1)</div><div class="desc">%&#x0394;Q<sub>s</sub> &gt; %&#x0394;P</div></div>
+      <div class="info-card"><div class="emoji">&#x2194;</div><div class="label">Unit Elastic (PES = 1)</div><div class="desc">%&#x0394;Q<sub>s</sub> = %&#x0394;P</div></div>
+      <div class="info-card"><div class="emoji">&#x2193;</div><div class="label">Inelastic (PES &lt; 1)</div><div class="desc">%&#x0394;Q<sub>s</sub> &lt; %&#x0394;P</div></div>
+      <div class="info-card"><div class="emoji">0</div><div class="label">Perfectly Inelastic (PES = 0)</div><div class="desc">Vertical supply curve; fixed supply (land, unique art)</div></div>
+    </div>
+
+    <div class="diagram-box">
+      <pre>
+Price Elasticity of Supply
+Price
+  |
+  |   S3  S2  S1
+  |    \   \   \
+  |     \   \   \
+P1|------\---\---\---
+  |       \   \   \
+  +------------------ Quantity
+         
+S1: Elastic (PES > 1)   - flatter
+S2: Unit Elastic (PES=1)
+S3: Inelastic (PES < 1) - steeper
+      </pre>
+    </div>
+  </div>
+
+  <!-- 7. Flashcards -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4DA;</div>
+    <h2>Key Concepts Flashcards <span class="underline"></span></h2>
+
+    <div class="flashcard-container">
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            Law of Demand
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Inverse relationship between price and quantity demanded<br>
+            <small>P &#x2191; &rarr; Q<sub>d</sub> &#x2193; (ceteris paribus)</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            Law of Supply
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Positive relationship between price and quantity supplied<br>
+            <small>P &#x2191; &rarr; Q<sub>s</sub> &#x2191; (ceteris paribus)</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            Market Equilibrium
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Q<sub>d</sub> = Q<sub>s</sub><br>
+            <small>No excess demand or supply</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            Consumer Surplus
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            Max price willing to pay &minus; equilibrium price<br>
+            <small>Benefit to consumers</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            Price Elasticity of Demand
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            %&#x0394;Q<sub>d</sub> / %&#x0394;P<br>
+            <small>Responsiveness of demand to price</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            Cross Price Elasticity
+            <div class="flashcard-hint">Click to reveal</div>
+          </div>
+          <div class="flashcard-back">
+            %&#x0394;Q<sub>dX</sub> / %&#x0394;P<sub>Y</sub><br>
+            <small>Substitutes (+) / Complements (&minus;)</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. Quick Comparison Tables -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4CA;</div>
+    <h2>Comparison Tables <span class="underline"></span></h2>
+
+    <h3>Demand vs Supply</h3>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F4C9; Demand</div>
+        <ul>
+          <li>Buyers / Consumers</li>
+          <li>Inverse relationship with price</li>
+          <li>Downward-sloping curve</li>
+          <li>Determinants: P, P<sub>n</sub>, Y, T, Ex, O</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F4C8; Supply</div>
+        <ul>
+          <li>Sellers / Producers</li>
+          <li>Positive relationship with price</li>
+          <li>Upward-sloping curve</li>
+          <li>Profit concept &amp; increasing opportunity cost</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Change in Quantity Demanded vs Change in Demand</h3>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x2195; Change in Q<sub>d</sub></div>
+        <ul>
+          <li>Movement along curve</li>
+          <li>Caused by price change</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x2194; Change in Demand</div>
+        <ul>
+          <li>Shift of entire curve</li>
+          <li>Caused by non-price factors</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Types of Goods by Income Elasticity</h3>
+    <div class="comparison">
+      <div class="left">
+        <div class="header">&#x1F4B0; Normal Goods</div>
+        <ul>
+          <li>YED &gt; 0</li>
+          <li>Demand increases with income</li>
+          <li>Necessities: 0 &lt; YED &lt; 1</li>
+          <li>Luxuries: YED &gt; 1</li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="header">&#x1F4C9; Inferior Goods</div>
+        <ul>
+          <li>YED &lt; 0</li>
+          <li>Demand decreases as income rises</li>
+          <li>Ex: public transport, instant noodles</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. Elasticity Formulas Summary -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F4CF;</div>
+    <h2>Elasticity Formulas Summary <span class="underline"></span></h2>
+
+    <div class="card-grid">
+      <div class="info-card">
+        <div class="emoji">&#x1F4B5;</div>
+        <div class="label">Price Elasticity of Demand</div>
+        <div class="desc" style="font-family: 'Courier New', monospace; font-size: 0.9rem;">
+          Ed = %&#x0394;Qd / %&#x0394;P<br>
+          = (&#x0394;Q/&#x0394;P) &times; (P/Q)
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F504;</div>
+        <div class="label">Cross Price Elasticity</div>
+        <div class="desc" style="font-family: 'Courier New', monospace; font-size: 0.9rem;">
+          XED = %&#x0394;QdX / %&#x0394;PY
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F4B0;</div>
+        <div class="label">Income Elasticity</div>
+        <div class="desc" style="font-family: 'Courier New', monospace; font-size: 0.9rem;">
+          YED = %&#x0394;Qd / %&#x0394;Y
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="emoji">&#x1F4C4;</div>
+        <div class="label">Price Elasticity of Supply</div>
+        <div class="desc" style="font-family: 'Courier New', monospace; font-size: 0.9rem;">
+          PES = %&#x0394;Qs / %&#x0394;P
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. Interactive Quiz -->
+  <div class="section" data-section>
+    <div class="section-icon">&#x1F9F0;</div>
+    <h2>Test Your Knowledge <span class="underline"></span></h2>
+
+    <div class="quiz-question" data-q="1">
+      <div class="q">1. According to the Law of Demand, when price increases:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Quantity supplied increases</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Quantity demanded decreases</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Demand shifts right</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Supply shifts left</button>
+      <div class="quiz-feedback" data-feedback="1"></div>
+    </div>
+
+    <div class="quiz-question" data-q="2">
+      <div class="q">2. Which of the following causes a change in demand (shift of the curve)?</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">A decrease in the price of the good</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">An increase in consumer income</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">An increase in the price of the good</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">All of the above</button>
+      <div class="quiz-feedback" data-feedback="2"></div>
+    </div>
+
+    <div class="quiz-question" data-q="3">
+      <div class="q">3. At market equilibrium:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Price is always high</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">There is excess demand</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">There is excess supply</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Quantity demanded equals quantity supplied</button>
+      <div class="quiz-feedback" data-feedback="3"></div>
+    </div>
+
+    <div class="quiz-question" data-q="4">
+      <div class="q">4. If Qd = 30 &minus; 2P and Qs = &minus;6 + 2P, the equilibrium price is:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">6</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">9</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">12</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">36</button>
+      <div class="quiz-feedback" data-feedback="4"></div>
+    </div>
+
+    <div class="quiz-question" data-q="5">
+      <div class="q">5. Consumer surplus is the difference between:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Price and cost</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Maximum willingness to pay and equilibrium price</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Equilibrium price and minimum supply price</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Total revenue and total cost</button>
+      <div class="quiz-feedback" data-feedback="5"></div>
+    </div>
+
+    <div class="quiz-question" data-q="6">
+      <div class="q">6. If a good has many close substitutes, its price elasticity is likely to be:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Inelastic</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Elastic</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Unit elastic</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Perfectly inelastic</button>
+      <div class="quiz-feedback" data-feedback="6"></div>
+    </div>
+
+    <div class="quiz-question" data-q="7">
+      <div class="q">7. Cross price elasticity between substitutes is:</div>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Positive</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Negative</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Zero</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Infinite</button>
+      <div class="quiz-feedback" data-feedback="7"></div>
+    </div>
+
+    <div class="quiz-question" data-q="8">
+      <div class="q">8. The Law of Supply states there is a:</div>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Inverse relationship between price and quantity supplied</button>
+      <button class="quiz-option" data-correct="true" onclick="checkAnswer(this, true)">Positive relationship between price and quantity supplied</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">No relationship between price and quantity supplied</button>
+      <button class="quiz-option" onclick="checkAnswer(this, false)">Constant relationship between price and quantity supplied</button>
+      <div class="quiz-feedback" data-feedback="8"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  class Particle {
+    constructor() {
+      this.reset();
+    }
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 2 + 0.5;
+      this.speedX = (Math.random() - 0.5) * 0.5;
+      this.speedY = (Math.random() - 0.5) * 0.5;
+      this.opacity = Math.random() * 0.5 + 0.1;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(9, 132, 227, ${this.opacity})`;
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+  function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
+
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 150) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(9, 132, 227, ${0.06 * (1 - dist / 150)})`;
+          ctx.lineWidth = 0.5;
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(animateParticles);
+  }
+  animateParticles();
+
+  const sections = document.querySelectorAll('[data-section]');
+
+  function revealSections() {
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 80) {
+        section.classList.add('visible');
+      }
+    });
+  }
+  window.addEventListener('scroll', revealSections);
+  revealSections();
+
+  const progressBar = document.getElementById('progressBar');
+
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / docHeight) * 100;
+    progressBar.style.width = progress + '%';
+  });
+
+  function checkAnswer(btn, isCorrect) {
+    const question = btn.closest('.quiz-question');
+    const options = question.querySelectorAll('.quiz-option');
+    const feedback = question.querySelector('.quiz-feedback');
+
+    options.forEach(opt => {
+      opt.disabled = true;
+      opt.style.cursor = 'not-allowed';
+      if (opt.dataset.correct === 'true') opt.classList.add('correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      feedback.textContent = '&#x2705; Correct!';
+      feedback.className = 'quiz-feedback show correct';
+    } else {
+      btn.classList.add('wrong');
+      const correctBtn = question.querySelector('[data-correct="true"]');
+      feedback.textContent = '&#x274C; Incorrect. The answer was: ' + correctBtn.textContent;
+      feedback.className = 'quiz-feedback show wrong';
+    }
+  }
+</script>
+
+</body>
+</html>

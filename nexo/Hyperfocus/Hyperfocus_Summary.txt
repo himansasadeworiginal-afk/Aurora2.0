@@ -1,0 +1,92 @@
+Summary of "Hyperfocus" by Chris Bailey
+=========================================
+
+Overview:
+"Hyperfocus" is a practical guide to managing your attention - the most
+valuable resource you have. Bailey argues that attention is finite and
+how we direct it determines our productivity, creativity, and happiness.
+The book is split into two parts: Hyperfocus (deliberate, concentrated
+attention) and Scatterfocus (purposeful mind-wandering).
+
+Part 1: Hyperfocus
+-------------------
+
+Key Concepts:
+- Attentional Space: Your mental RAM - can hold ~4 chunks of info at once.
+  From 11 million bits of sensory input per second, you consciously
+  process only ~40 bits.
+- Autopilot Mode: ~40% of our actions are habits. We often manage
+  attention on autopilot, reacting to whatever is most stimulating.
+- The Four Task Types: Necessary (productive, unattractive), Purposeful
+  (productive, attractive - the sweet spot), Distracting (unproductive,
+  attractive), Unnecessary (unproductive, unattractive).
+- Attention Residue: After switching tasks, part of your brain continues
+  processing the previous task. Switching can make work take 50% longer.
+
+The Four Stages of Hyperfocus:
+1. Choose one object of attention (set an intention)
+2. Eliminate distractions ahead of time
+3. Focus on that one task until completion
+4. Notice when your mind wanders and bring it back
+
+Taming Distractions:
+- We work only ~40 seconds on average before interruption
+- It takes ~25 minutes to fully resume after an interruption
+- Four types: controllable/annoying, controllable/fun,
+  uncontrollable/annoying, uncontrollable/fun
+- Use "distraction-free mode" for deep work and "reduced-distraction
+  mode" for regular work
+
+Making Hyperfocus a Habit:
+- Meditation is the most validated technique for expanding attentional
+  space (can increase it by 30%+)
+- Make tasks harder/complex enough to fully engage your attention
+- Capture "open loops" (unresolved tasks) externally
+- Practice mindfulness to train meta-awareness
+
+Part 2: Scatterfocus
+---------------------
+
+Scatterfocus is intentionally letting your mind wander. While hyperfocus
+drives productivity, scatterfocus drives creativity.
+
+Three Styles:
+1. Capture Mode: Let mind roam freely, capture whatever arises
+2. Problem-Crunching Mode: Hold a problem loosely while mind wanders
+3. Habitual Mode: Do a simple task while mind wanders (most powerful)
+
+Where the Mind Wanders:
+- Past (12%): Learning from mistakes
+- Present (28%): Reflecting on current approach
+- Future (48%): Planning and setting intentions (most beneficial)
+
+Connecting Dots:
+- Creativity emerges from connecting existing ideas ("dots")
+- Insight triggers: external cues that spark new connections
+- Ways to enhance: richer environments, writing out problems, sleeping
+  on problems, leaving tasks unfinished, consuming valuable information
+
+Recharging Attention:
+- After ~2 hours of hyperfocus, take a break for scatterfocus
+- Willpower is limited and drains throughout the day
+- Match tasks to energy levels (creative work when energetic, routine
+  tasks when depleted)
+- Happiness broadens attention; negative emotions narrow it
+
+Practical Tactics:
+- Set 3 daily intentions each morning
+- Use hourly awareness chimes to check attentional space
+- Keep a distractions list
+- Leave your phone in another room
+- Schedule focus rituals weekly
+- Use caffeine strategically for hyperfocus, alcohol sparingly for
+  creativity (if at all)
+- Match your office environment to the type of work you do
+
+Core Takeaways:
+1. Attention is your most valuable asset - manage it deliberately
+2. Hyperfocus on one important thing at a time for maximum productivity
+3. Schedule scatterfocus time for creativity, planning, and recharging
+4. Eliminate distractions BEFORE they tempt you
+5. Expand your attentional space through meditation
+6. We are what we pay attention to
