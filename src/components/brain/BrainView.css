@@ -1,0 +1,148 @@
+/* Brain view chrome — redesigned. Scoped under .brain-v2 (a display:contents
+   wrapper, so the absolutely-positioned overlays keep their viewport reference)
+   so token-based rules win over the legacy styles in App.css by specificity.
+   Positioning (top/left/transform/z-index) is preserved; only the visual
+   treatment of the toolbars, badges, hover bar, and float actions is refined.
+   The 3D scene and the workflow panels/sidebars keep their existing styling. */
+
+.brain-v2 { display: contents; }
+
+/* ---- Decorative sweep bar ------------------------------------------------- */
+.brain-v2 .decorative-bar { background: color-mix(in srgb, var(--accent) 10%, transparent); }
+
+/* ---- Primary CODE toolbar ------------------------------------------------- */
+.brain-v2 .phase3-toolbar {
+  gap: 2px;
+  padding: 4px;
+  border-radius: var(--r-lg);
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: blur(18px) saturate(1.1);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-2);
+}
+.brain-v2 .phase3-toolbar-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  border: none;
+  border-radius: var(--r-sm);
+  background: none;
+  color: var(--text-muted);
+  font-family: var(--font);
+  font-size: var(--fs-xs);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+}
+.brain-v2 .phase3-toolbar-btn:hover { color: var(--text); background: var(--surface); }
+.brain-v2 .phase3-toolbar-btn.active {
+  color: var(--red-light);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  text-shadow: var(--glow-sm);
+}
+.brain-v2 .phase3-toolbar-sep {
+  width: 1px;
+  height: 18px;
+  margin: auto var(--sp-1);
+  background: var(--border-strong);
+}
+
+/* ---- AI / review sub-bar -------------------------------------------------- */
+.brain-v2 .phase6-subbar {
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: blur(18px) saturate(1.1);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-1);
+}
+.brain-v2 .p6-btn {
+  padding: var(--sp-1) var(--sp-3);
+  border: none;
+  border-radius: var(--r-sm);
+  background: none;
+  color: var(--text-muted);
+  font-family: var(--font);
+  font-size: var(--fs-xs);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+}
+.brain-v2 .p6-btn:hover { color: var(--text); background: var(--surface); }
+.brain-v2 .p6-btn.active {
+  color: #88aaff;
+  background: rgba(68, 136, 255, 0.12);
+  text-shadow: 0 0 8px rgba(68, 136, 255, 0.3);
+}
+.brain-v2 .p6-sep { width: 1px; height: 14px; margin: auto var(--sp-1); background: var(--border-strong); }
+
+/* ---- PARA filter badge ---------------------------------------------------- */
+.brain-v2 .para-filter-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-1) var(--sp-4);
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  backdrop-filter: blur(16px);
+  border: 1px solid;
+  font-size: var(--fs-xs);
+  color: #fff;
+  text-transform: capitalize;
+  letter-spacing: var(--tracking-wide);
+}
+.brain-v2 .para-filter-dot { width: 7px; height: 7px; border-radius: 50%; box-shadow: 0 0 6px currentColor; }
+.brain-v2 .para-filter-clear {
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: var(--r-pill);
+  padding: 2px var(--sp-2);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-out);
+}
+.brain-v2 .para-filter-clear:hover { background: var(--surface-hover); color: var(--red-light); }
+
+/* ---- Hover bar (node preview) -------------------------------------------- */
+.brain-v2 .hover-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  backdrop-filter: blur(18px);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-2);
+  pointer-events: none;
+}
+.brain-v2 .hover-dot { width: 7px; height: 7px; border-radius: 50%; box-shadow: 0 0 6px currentColor; }
+.brain-v2 .hover-title { font-size: var(--fs-sm); font-weight: var(--fw-medium); color: var(--text); white-space: nowrap; }
+.brain-v2 .hover-desc { font-size: var(--fs-xs); color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 320px; }
+
+/* ---- Floating actions ----------------------------------------------------- */
+.brain-v2 .float-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: blur(18px);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-family: var(--font);
+  font-size: var(--fs-xs);
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-out);
+}
+.brain-v2 .float-btn:hover {
+  color: var(--red-light);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 28%, transparent);
+}

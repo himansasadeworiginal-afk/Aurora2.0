@@ -12,6 +12,7 @@ import ExportDialog from '../ExportDialog'
 import BrainToolbar from './BrainToolbar'
 import BrainPanels from './BrainPanels'
 import { ideas, tests } from '../../data/ideas'
+import './BrainView.css'
 
 // The Second Brain workspace: 3D scene + CODE/AI toolbars + workflow panels.
 // A single `panel` map holds at most one open workflow panel (the original
@@ -98,7 +99,7 @@ export default function BrainView({ captureSignal = 0 }) {
   }, [])
 
   return (
-    <>
+    <div className="brain-v2">
       <AuroraTitle
         onToggleList={() => setShowList(s => !s)}
         showList={showList}
@@ -175,6 +176,6 @@ export default function BrainView({ captureSignal = 0 }) {
           Scope
         </button>
       </div>
-    </>
+    </div>
   )
 }
