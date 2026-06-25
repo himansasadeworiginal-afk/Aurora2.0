@@ -3,7 +3,9 @@ import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const DESMOND_DIR = join(__dirname, '..', 'Desmond')
+// AURORA_DESMOND_DIR lets the Electron packaged build point at the bundled
+// Desmond/ under process.resourcesPath; falls back to the sibling dir in dev.
+const DESMOND_DIR = process.env.AURORA_DESMOND_DIR || join(__dirname, '..', 'Desmond')
 const PYTHON = join(DESMOND_DIR, 'venv', 'bin', 'python')
 const SCRIPT = join(DESMOND_DIR, 'main.py')
 

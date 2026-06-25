@@ -3,6 +3,7 @@
   "private": true,
   "version": "5.0.0",
   "type": "module",
+  "main": "electron/main.cjs",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -10,7 +11,47 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "vault:import": "node src/data/cli-import.js",
-    "postinstall": "node src/data/cli-import.js"
+    "postinstall": "node src/data/cli-import.js",
+    "electron:dev": "npm run build && electron .",
+    "electron:build": "npm run build && electron-builder"
+  },
+  "build": {
+    "appId": "com.wolf.aurora",
+    "productName": "Aurora 5.0",
+    "asar": false,
+    "files": [
+      "electron/**",
+      "server.js",
+      "desmond-launcher.js",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "dist",
+        "to": "dist"
+      },
+      {
+        "from": "nexo",
+        "to": "nexo"
+      },
+      {
+        "from": "../Desmond",
+        "to": "Desmond",
+        "filter": [
+          "**/*",
+          "!venv",
+          "!venv/**",
+          "!**/__pycache__/**",
+          "!**/*.pyc"
+        ]
+      }
+    ],
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Utility"
+    }
   },
   "dependencies": {
     "@react-three/drei": "^9.114.3",
@@ -28,6 +69,8 @@
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
+    "electron": "^42.5.0",
+    "electron-builder": "^26.15.3",
     "jsdom": "^25.0.1",
     "vite": "^6.0.3",
     "vitest": "^2.1.8"

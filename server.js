@@ -5,8 +5,6 @@ import { fileURLToPath } from 'url'
 import { startDesmond, stopDesmond, getDesmondStatus } from './desmond-launcher.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const PORT = 8080
-const DIST = join(__dirname, 'dist')
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',
@@ -27,7 +25,19 @@ const MIME = {
   '.map': 'application/json',
 }
 
-createServer((req, res) => {
+// Start the Aurora HTTP server. Paths are configurable so the Electron build
+// can point at the bundled dist/ and nexo/ under process.resourcesPath while
+// the standalone systemd path uses the defaults relative to this file.
+export function startServer({
+  port = 8080,
+  host = undefined,
+  dist = join(__dirname, 'dist'),
+  nexoRoot = __dirname,
+  autoStartDesmond = true,
+} = {}) {
+  const DIST = dist
+
+  const server = createServer((req, res) => {
   const url = req.url.split('?')[0]
   const method = req.method
 
@@ -55,7 +65,7 @@ createServer((req, res) => {
   }
 
   if (url.startsWith('/nexo/')) {
-    const nexoPath = join(__dirname, url)
+    const nexoPath = join(nexoRoot, url)
     if (!existsSync(nexoPath) || statSync(nexoPath).isDirectory()) {
       res.writeHead(404, { 'Content-Type': 'text/plain' })
       res.end('Not Found')
@@ -96,12 +106,22 @@ createServer((req, res) => {
     res.writeHead(500)
     res.end('Internal Server Error')
   }
-}).listen(PORT, () => {
-  console.log(`Aurora 5.0 running at http://localhost:${PORT}`)
-})
+  })
 
-startDesmond()
+  server.listen(port, host, () => {
+    console.log(`Aurora 5.0 running at http://${host || 'localhost'}:${port}`)
+  })
 
-process.on('SIGINT', () => { stopDesmond(); process.exit(0) })
-process.on('SIGTERM', () => { stopDesmond(); process.exit(0) })
-process.on('exit', stopDesmond)
+  if (autoStartDesmond) startDesmond()
+
+  return server
+}
+
+// Run directly (systemd / `node server.js`) — preserve the original behavior.
+const invokedDirectly = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]
+if (invokedDirectly) {
+  startServer()
+  process.on('SIGINT', () => { stopDesmond(); process.exit(0) })
+  process.on('SIGTERM', () => { stopDesmond(); process.exit(0) })
+  process.on('exit', stopDesmond)
+}
