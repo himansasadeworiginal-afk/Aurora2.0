@@ -1,0 +1,47 @@
+/* NExo — redesigned. Scoped under .nexo-v2 so token-based rules win over the
+   legacy .nexo-* styles in App.css by specificity. Markup/logic unchanged. */
+
+.nexo-v2.nexo-page {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.nexo-v2 .nexo-header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-shrink: 0;
+  padding: var(--sp-4) var(--sp-6);
+  z-index: 2;
+  color: var(--text);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--tracking-wide);
+  background: linear-gradient(90deg, var(--bg), var(--panel));
+  border-bottom: 1px solid var(--border);
+}
+.nexo-v2 .nexo-header svg { color: var(--red-light); filter: drop-shadow(0 0 6px color-mix(in srgb, var(--accent) 50%, transparent)); }
+
+.nexo-v2 .nexo-close-btn {
+  margin-left: auto;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--r-sm);
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-out);
+}
+.nexo-v2 .nexo-close-btn:hover { color: var(--text); border-color: var(--border-strong); background: var(--surface-hover); }
+
+.nexo-v2 .nexo-iframe {
+  flex: 1;
+  width: 100%;
+  border: none;
+  background: var(--bg);
+}

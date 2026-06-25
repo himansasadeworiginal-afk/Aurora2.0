@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import './DesmondView.css'
 
 export default function DesmondView({ onClose }) {
   const [status, setStatus] = useState('loading')
@@ -69,7 +70,7 @@ export default function DesmondView({ onClose }) {
     'desmond-status-off'
 
   return (
-    <div className="desmond-page">
+    <div className="dsm-v2 desmond-page">
       <div className="desmond-header">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="10" cy="6" r="3" />

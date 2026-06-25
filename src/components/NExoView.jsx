@@ -1,8 +1,9 @@
 import React from 'react';
+import './NExoView.css';
 
 export default function NExoView({ onClose }) {
   return (
-    <div className="nexo-page">
+    <div className="nexo-v2 nexo-page">
       <div className="nexo-header">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
           <path d="M4 3h12a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V4a1 1 0 011-1z" />
