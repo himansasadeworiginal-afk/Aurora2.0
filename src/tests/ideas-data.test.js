@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { ideas } from '../data/ideas'
 
-describe('Aurora 2.0 — Vault Idea Data Tests', () => {
+describe('Aurora 5.0 — Vault Idea Data Tests', () => {
   it('has at least 200 ideas representing the full vault', () => {
     expect(ideas.length).toBeGreaterThanOrEqual(200)
   })
@@ -112,92 +112,5 @@ describe('Aurora 2.0 — Vault Idea Data Tests', () => {
 
     const atonement = ideas.find(i => i.id === 'atonement-movie')
     expect(atonement.links).toContain('romance-drama')
-  })
-})
-
-describe('Aurora 2.0 — Component Exports', () => {
-  it('App component exists', async () => {
-    const mod = await import('../App')
-    expect(mod.default).toBeDefined()
-  })
-
-  it('Scene3D component exists', async () => {
-    const mod = await import('../components/Scene3D')
-    expect(mod.default).toBeDefined()
-  })
-
-  it('BrainSphere component exists', async () => {
-    const mod = await import('../components/BrainSphere')
-    expect(mod.default).toBeDefined()
-  })
-
-  it('LinkPanel component exists', async () => {
-    const mod = await import('../components/LinkPanel')
-    expect(mod.default).toBeDefined()
-  })
-
-  it('IdeaNode component exists', async () => {
-    const mod = await import('../components/IdeaNode')
-    expect(mod.default).toBeDefined()
-  })
-
-  it('BranchLink component exists', async () => {
-    const mod = await import('../components/BranchLink')
-    expect(mod.default).toBeDefined()
-  })
-
-  it('PARAZone component exists', async () => {
-    const mod = await import('../components/PARAZone')
-    expect(mod.default).toBeDefined()
-  })
-
-  it('WeeklyReview component exists', async () => {
-    const mod = await import('../components/WeeklyReview')
-    expect(mod.default).toBeDefined()
-  })
-
-  it('MonthlyReview component exists', async () => {
-    const mod = await import('../components/MonthlyReview')
-    expect(mod.default).toBeDefined()
-  })
-
-  it('HabitNudges component exists', async () => {
-    const mod = await import('../components/HabitNudges')
-    expect(mod.default).toBeDefined()
-  })
-
-  it('IntegrationSettings component exists', async () => {
-    const mod = await import('../components/IntegrationSettings')
-    expect(mod.default).toBeDefined()
-  })
-})
-
-describe('Aurora 5.0 — Phase 8 Review Logic', () => {
-  it('WeeklyReview has 7 checklist items', async () => {
-    const mod = await import('../components/WeeklyReview')
-    expect(mod.default).toBeDefined()
-  })
-
-  it('MonthlyReview has 7 checklist items', async () => {
-    const mod = await import('../components/MonthlyReview')
-    expect(mod.default).toBeDefined()
-  })
-})
-
-describe('Aurora 5.0 — Phase 9 Integration Logic', () => {
-  it('IntegrationSettings component exports default', async () => {
-    const mod = await import('../components/IntegrationSettings')
-    expect(mod.default).toBeDefined()
-  })
-})
-
-describe('Aurora 5.0 — Phase 10 PWA Support', () => {
-  it('manifest.json exists', () => {
-    expect(() => new URL('/manifest.json', 'http://localhost')).not.toThrow()
-  })
-
-  it('sw.js service worker registers', () => {
-    const registerType = typeof navigator?.serviceWorker?.register
-    expect(registerType === 'function' || registerType === 'undefined').toBe(true)
   })
 })

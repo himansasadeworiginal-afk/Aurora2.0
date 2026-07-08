@@ -4,3 +4,4 @@ release/
 *.AppImage
 dist-electron/
 .write-test
+.impeccable/
