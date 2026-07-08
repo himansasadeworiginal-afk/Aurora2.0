@@ -34,6 +34,10 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci --ignore-scripts
+      # See ci.yml for why this is needed on top of --ignore-scripts: it also
+      # skips better-sqlite3's native build, and vite.config.js needs it just
+      # to load (imports sync-store.js at the top level).
+      - run: npm rebuild better-sqlite3
       - run: npm run build
         env:
           GITHUB_PAGES: true

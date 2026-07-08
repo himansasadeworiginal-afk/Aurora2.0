@@ -14,5 +14,12 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci --ignore-scripts
+      # --ignore-scripts (needed above so cli-import.js's postinstall, which
+      # hard process.exit(1)s without the maintainer's local Obsidian vault,
+      # doesn't fail npm ci) also skips better-sqlite3's own native-binding
+      # build step. vite.config.js imports sync-store.js at the top level,
+      # so even `vitest run` can't start without that binding — rebuild just
+      # this one package explicitly.
+      - run: npm rebuild better-sqlite3
       - run: npm run lint
       - run: npm test
