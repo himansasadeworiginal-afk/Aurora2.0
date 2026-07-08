@@ -1,0 +1,53 @@
+name: Deploy static demo to GitHub Pages
+
+# Static-only build: the frontend + local browser IndexedDB, no backend.
+# AI features, multi-device sync, and the Desmond bridge all require
+# server.js and are NOT part of this deployment — every visitor gets their
+# own empty local copy, not the maintainer's real data. See CLAUDE.md for
+# why a full backend deployment isn't done here (no auth in front of the
+# personal-data/API-proxy routes).
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run build
+        env:
+          GITHUB_PAGES: true
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

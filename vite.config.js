@@ -37,7 +37,11 @@ const MIME = {
 }
 
 export default defineConfig({
-  base: '',
+  // Electron/systemd/dev all serve the app at their own root, so base stays
+  // '' for those. Only the GitHub Pages static-demo build (see
+  // .github/workflows/pages.yml) needs a /<repo-name>/ prefix, since it's
+  // served as a project page, not at the domain root.
+  base: process.env.GITHUB_PAGES ? '/Aurora2.0/' : '',
   plugins: [react(), {
     name: 'nexo-static',
     configureServer(server) {
