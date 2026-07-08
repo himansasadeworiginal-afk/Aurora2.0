@@ -3,10 +3,10 @@ import db from '../data/db'
 import { ideas as fallbackIdeas } from '../data/ideas'
 
 const PARA_CONFIG = {
-  projects: { label: 'Projects', color: '#ff4444', icon: '◆' },
-  areas: { label: 'Areas', color: '#ff8833', icon: '●' },
-  resources: { label: 'Resources', color: '#4488ff', icon: '▬' },
-  archives: { label: 'Archives', color: '#888888', icon: '▼' },
+  projects: { label: 'Projects', color: '#2DD4BF', icon: '◆' },
+  areas: { label: 'Areas', color: '#8B7CF6', icon: '●' },
+  resources: { label: 'Resources', color: '#56C6E8', icon: '▬' },
+  archives: { label: 'Archives', color: '#7A7A88', icon: '▼' },
 }
 
 const TAB_ORDER = ['projects', 'areas', 'resources', 'archives']

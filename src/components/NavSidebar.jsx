@@ -39,6 +39,24 @@ const ICONS = {
       <circle cx="9" cy="9" r="1.5" fill="currentColor" stroke="none" />
     </svg>
   ),
+  todos: (
+    <svg width="18" height="18" viewBox="0 0 18 18" {...S}>
+      <path d="M3 5l1.5 1.5L7 4" />
+      <path d="M3 11l1.5 1.5L7 9" />
+      <line x1="9.5" y1="5" x2="15" y2="5" />
+      <line x1="9.5" y1="11" x2="15" y2="11" />
+    </svg>
+  ),
+  relations: (
+    <svg width="18" height="18" viewBox="0 0 18 18" {...S}>
+      <circle cx="9" cy="6" r="2.2" />
+      <path d="M4.5 14.5c0-2.2 2-3.6 4.5-3.6s4.5 1.4 4.5 3.6" />
+      <circle cx="3" cy="8" r="1.3" />
+      <circle cx="15" cy="8" r="1.3" />
+      <line x1="6.9" y1="6.6" x2="4.1" y2="7.6" />
+      <line x1="11.1" y1="6.6" x2="13.9" y2="7.6" />
+    </svg>
+  ),
   nexo: (
     <svg width="18" height="18" viewBox="0 0 18 18" {...S}>
       <path d="M3 3h12v12H3z" />
@@ -55,6 +73,13 @@ const ICONS = {
       <line x1="4" y1="14" x2="14" y2="14" />
     </svg>
   ),
+  diary: (
+    <svg width="18" height="18" viewBox="0 0 18 18" {...S}>
+      <path d="M4 3h8a1 1 0 011 1v11l-3-1.5L7 15V4a1 1 0 00-1-1z" />
+      <path d="M4 3a1 1 0 00-1 1v10a1 1 0 001 1h3" />
+      <line x1="9" y1="6" x2="11" y2="6" />
+    </svg>
+  ),
 }
 
 const NAV_ITEMS = [
@@ -63,14 +88,30 @@ const NAV_ITEMS = [
   { id: 'agenda', icon: ICONS.agenda, label: 'Agenda' },
   { id: 'calendar', icon: ICONS.calendar, label: 'Calendar' },
   { id: 'trackers', icon: ICONS.trackers, label: 'Trackers' },
+  { id: 'todos', icon: ICONS.todos, label: 'To-Do' },
   { id: 'nexo', icon: ICONS.nexo, label: 'NExo' },
   { id: 'desmond', icon: ICONS.desmond, label: 'Desmond' },
+  { id: 'relations', icon: ICONS.relations, label: 'Relations' },
+  { id: 'diary', icon: ICONS.diary, label: 'Diary' },
 ];
 
 export default function NavSidebar({ section, onNavigate, pendingReminders }) {
   return (
     <aside className="nav-sidebar">
-      <div className="nav-logo" />
+      <div className="nav-brand">
+        <div className="nav-brand-mark" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="9" cy="5" r="2" />
+            <circle cx="4.5" cy="13" r="2" />
+            <circle cx="13.5" cy="13" r="2" />
+            <line x1="7.6" y1="6.6" x2="5.6" y2="11.2" />
+            <line x1="10.4" y1="6.6" x2="12.4" y2="11.2" />
+            <line x1="6.3" y1="13" x2="11.7" y2="13" />
+          </svg>
+        </div>
+        <span className="nav-brand-text">Aurora</span>
+      </div>
+
       <nav>
         {NAV_ITEMS.map((item) => (
           <button
@@ -81,24 +122,23 @@ export default function NavSidebar({ section, onNavigate, pendingReminders }) {
           >
             <span className="nav-btn-icon">{item.icon}</span>
             <span className="nav-btn-label">{item.label}</span>
+            {item.id === 'agenda' && pendingReminders > 0 && (
+              <span className="nav-btn-badge">{pendingReminders}</span>
+            )}
           </button>
         ))}
       </nav>
-      {pendingReminders > 0 && (
-        <button
-          className="nav-bell-btn"
-          onClick={() => onNavigate('agenda')}
-          title={pendingReminders + ' pending task' + (pendingReminders > 1 ? 's' : '')}
-        >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M8 2v1" />
-            <path d="M12.5 11l.5 1H3l.5-1 .5-.5V7a4 4 0 018 0v3l.5.5z" />
-            <circle cx="8" cy="13.5" r="0.8" />
-          </svg>
-          <span className="nav-bell-badge">{pendingReminders}</span>
-        </button>
-      )}
-      <div className="nav-version">5.0</div>
+
+      <div className="nav-foot">
+        <div className="nav-user">
+          <div className="nav-user-avatar" aria-hidden="true">W</div>
+          <div className="nav-user-meta">
+            <span className="nav-user-name">Wolf</span>
+            <span className="nav-user-role">Power User</span>
+          </div>
+        </div>
+        <div className="nav-version">Aurora · 5.0</div>
+      </div>
     </aside>
   );
 }

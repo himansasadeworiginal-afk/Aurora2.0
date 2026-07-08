@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
 import db from '../data/db'
+import { reindexNote } from '../data/embeddings'
 
 export default function WebClipper({ onClip, onClose }) {
   const [url, setUrl] = useState('')
@@ -12,7 +13,7 @@ export default function WebClipper({ onClip, onClose }) {
     setLoading(true)
     setError('')
     try {
-      const res = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(url.trim())}`)
+      const res = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(url.trim())}`, { signal: AbortSignal.timeout(8000) })
       const data = await res.json()
       if (data?.data) {
         setMetadata({
@@ -25,8 +26,8 @@ export default function WebClipper({ onClip, onClose }) {
       } else {
         setMetadata({ title: url.trim(), description: '', image: '', url: url.trim(), domain: new URL(url.trim()).hostname })
       }
-    } catch {
-      setError('Could not fetch metadata for this URL')
+    } catch (err) {
+      setError(err?.name === 'TimeoutError' ? 'Request timed out' : 'Could not fetch metadata for this URL')
       setMetadata(null)
     }
     setLoading(false)
@@ -44,6 +45,7 @@ export default function WebClipper({ onClip, onClose }) {
       source: metadata.url,
     }
     const id = await db.notes.add(note)
+    reindexNote({ ...note, id }) // index for search (+ AI concepts when available); fire-and-forget
     onClip?.({ ...note, id })
     setUrl('')
     setMetadata(null)

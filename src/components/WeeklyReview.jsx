@@ -52,7 +52,7 @@ export default function WeeklyReview({ onClose }) {
         </div>
         <div className="review-complete">
           <div className="review-complete-icon">✓</div>
-          <p>Great work! You've completed your weekly review.</p>
+          <p>Great work! You&apos;ve completed your weekly review.</p>
           <p className="review-hint">Come back next week to stay on track.</p>
         </div>
         {history.length > 1 && (

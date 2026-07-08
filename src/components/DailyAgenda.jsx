@@ -1,405 +1,350 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import db from '../data/db'
-import TimeWheelPicker from './TimeWheelPicker'
 import './DailyAgenda.css'
 
 function getToday() {
   return new Date().toISOString().slice(0, 10)
 }
 
-function getTodayName() {
-  return new Date().toLocaleDateString('en-US', { weekday: 'long' })
-}
-
 function getFormattedDate() {
   return new Date().toLocaleDateString('en-US', {
-    weekday: 'long', month: 'long', day: 'numeric'
+    weekday: 'long', month: 'long', day: 'numeric', year: 'numeric',
   })
 }
 
-function getGreeting() {
-  const h = new Date().getHours()
-  if (h < 12) return 'Good morning'
-  if (h < 17) return 'Good afternoon'
-  return 'Good evening'
-}
-
 function dayMatches(reminder, today) {
-  if (!reminder.recurring || reminder.recurring === 'none') {
-    return reminder.date === today
-  }
+  if (!reminder.recurring || reminder.recurring === 'none') return reminder.date === today
   const todayDate = new Date(today + 'T00:00:00')
   const todayDow = todayDate.getDay()
   const reminderDate = new Date(reminder.date + 'T00:00:00')
-  const dayOfMonth = todayDate.getDate()
-
   if (reminder.recurring === 'daily') return true
   if (reminder.recurring === 'weekdays') return todayDow >= 1 && todayDow <= 5
   if (reminder.recurring === 'weekends') return todayDow === 0 || todayDow === 6
-  if (reminder.recurring === 'weekly') {
-    return todayDow === reminderDate.getDay()
-  }
-  if (reminder.recurring === 'monthly') {
-    return dayOfMonth === reminderDate.getDate()
-  }
+  if (reminder.recurring === 'weekly') return todayDow === reminderDate.getDay()
+  if (reminder.recurring === 'monthly') return todayDate.getDate() === reminderDate.getDate()
   return false
 }
 
-const S = { stroke: 'currentColor', fill: 'none', strokeWidth: 1.5, strokeLinecap: 'round', strokeLinejoin: 'round' }
+// ---- Inline icons (no icon font — offline) --------------------------------
+const Ico = {
+  search: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>,
+  bell: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>,
+  gear: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.6 1.6 0 00-2.7.7 1.6 1.6 0 01-3.2 0 1.6 1.6 0 00-2.7-.7l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.6 1.6 0 00.3-1.8 1.6 1.6 0 00-1.5-1H4a2 2 0 010-4h.1A1.6 1.6 0 005.6 8a1.6 1.6 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.6 1.6 0 001.8.3H12a1.6 1.6 0 001-1.5V2a2 2 0 014 0v.1a1.6 1.6 0 001 1.5 1.6 1.6 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.6 1.6 0 00-.3 1.8V12a1.6 1.6 0 001.5 1h.1a2 2 0 010 4h-.1a1.6 1.6 0 00-1.5 1z"/></svg>,
+  bolt: <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4.5 13.5H11l-1 8.5L19.5 10H13z"/></svg>,
+  addCircle: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8.5" x2="12" y2="15.5"/><line x1="8.5" y1="12" x2="15.5" y2="12"/></svg>,
+  label: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M3 7a2 2 0 012-2h9l6 7-6 7H5a2 2 0 01-2-2z"/><circle cx="8" cy="12" r="1.2" fill="currentColor" stroke="none"/></svg>,
+  clock: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 2"/></svg>,
+  flag: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/></svg>,
+  check: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12l4 4 10-11"/></svg>,
+  category: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>,
+  more: <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg>,
+  trash: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M4 7h16"/><path d="M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2"/><path d="M6 7l1 13a1 1 0 001 1h8a1 1 0 001-1l1-13"/></svg>,
+  timer: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 13V9"/><path d="M9 2h6"/></svg>,
+  play: <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg>,
+  pause: <svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>,
+  refresh: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12a8 8 0 108-8"/><path d="M4 4v5h5"/></svg>,
+  doneAll: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M2 13l3.5 3.5L13 8"/><path d="M9 16.5L11 18l8-9"/></svg>,
+}
 
-const CheckIcon = () => (
-  <svg width="9" height="9" viewBox="0 0 9 9" {...S}>
-    <path d="M1.5 4.5l2 2 4-4" />
-  </svg>
-)
+const PRIORITY = {
+  high:   { label: 'High',   color: '#ddb7ff' },
+  medium: { label: 'Medium', color: '#4cd7f6' },
+  low:    { label: 'Low',    color: '#ffb690' },
+}
+const PRIORITY_CYCLE = ['medium', 'high', 'low']
+const CATEGORIES = ['General', 'Work', 'Development', 'Personal', 'Health', 'Meetings']
+const FILTERS = ['All Tasks', 'High Priority', 'Development', 'Personal']
 
-const CloseIcon = () => (
-  <svg width="11" height="11" viewBox="0 0 11 11" {...S}>
-    <line x1="2" y1="2" x2="9" y2="9" />
-    <line x1="9" y1="2" x2="2" y2="9" />
-  </svg>
-)
+function fmtCountdown(sec) {
+  const m = Math.floor(sec / 60)
+  const s = sec % 60
+  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+}
 
-const EditIcon = () => (
-  <svg width="11" height="11" viewBox="0 0 11 11" {...S}>
-    <path d="M8 1.5l1.5 1.5-6 6-2 .5.5-2 6-6z" />
-  </svg>
-)
-
-const PlusIcon = () => (
-  <svg width="12" height="12" viewBox="0 0 12 12" {...S}>
-    <line x1="6" y1="1.5" x2="6" y2="10.5" />
-    <line x1="1.5" y1="6" x2="10.5" y2="6" />
-  </svg>
-)
-
-const NoteIcon = () => (
-  <svg width="12" height="12" viewBox="0 0 12 12" {...S}>
-    <rect x="1.5" y="1.5" width="9" height="9" rx="1" />
-    <line x1="4" y1="5" x2="8" y2="5" />
-    <line x1="4" y1="7" x2="7" y2="7" />
-  </svg>
-)
-
-const BellIcon = () => (
-  <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M5.5 1.5v.5" />
-    <path d="M8.5 7.5l.5 1H2l.5-1 .5-.5V5a3 3 0 016 0v2l.5.5z" />
-    <circle cx="5.5" cy="9.5" r="0.5" />
-  </svg>
-)
-
-const BellFilledIcon = () => (
-  <svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M5.5 1.5v.5" />
-    <path d="M8.5 7.5l.5 1H2l.5-1 .5-.5V5a3 3 0 016 0v2l.5.5z" />
-    <circle cx="5.5" cy="9.5" r="0.5" />
-  </svg>
-)
-
-export default function DailyAgenda({ onClose, autoOpen }) {
+export default function DailyAgenda({ onClose }) {
   const [reminders, setReminders] = useState([])
   const [loading, setLoading] = useState(true)
-  const [showForm, setShowForm] = useState(false)
-  const [title, setTitle] = useState('')
-  const [priority, setPriority] = useState('medium')
-  const [category, setCategory] = useState('general')
-  const [recurring, setRecurring] = useState('none')
-  const [notificationTime, setNotificationTime] = useState('')
-  const [editingId, setEditingId] = useState(null)
-  const [collapsed, setCollapsed] = useState(false)
-  const [newCount, setNewCount] = useState(0)
+  const [draft, setDraft] = useState('')
+  const [draftPriority, setDraftPriority] = useState('medium')
+  const [draftCat, setDraftCat] = useState('General')
+  const [draftTime, setDraftTime] = useState('')
+  const [showTime, setShowTime] = useState(false)
+  const [filter, setFilter] = useState('All Tasks')
+  const [search, setSearch] = useState('')
+
+  // Deep Focus timer (self-contained Pomodoro)
+  const [secs, setSecs] = useState(25 * 60)
+  const [running, setRunning] = useState(false)
+  const tickRef = useRef(null)
 
   const today = getToday()
 
-  const loadReminders = useCallback(async () => {
-    setLoading(true)
+  const load = useCallback(async () => {
     try {
       const all = await db.reminders.toArray()
-      const todayItems = all.filter(r => dayMatches(r, today))
-      todayItems.sort((a, b) => {
-        const pa = { high: 0, medium: 1, low: 2 }[a.priority] || 1
-        const pb = { high: 0, medium: 1, low: 2 }[b.priority] || 1
+      const items = all.filter(r => dayMatches(r, today))
+      items.sort((a, b) => {
+        const p = { high: 0, medium: 1, low: 2 }
+        const pa = p[a.priority] ?? 1, pb = p[b.priority] ?? 1
         if (pa !== pb) return pa - pb
         return (b.createdAt || 0) - (a.createdAt || 0)
       })
-      setReminders(todayItems)
-      setNewCount(todayItems.filter(r => !r.completed).length)
+      setReminders(items)
     } catch {}
     setLoading(false)
   }, [today])
 
-  useEffect(() => { loadReminders() }, [loadReminders])
+  useEffect(() => { load() }, [load])
+  useEffect(() => {
+    const h = () => load()
+    window.addEventListener('aurora-data-changed', h)
+    return () => window.removeEventListener('aurora-data-changed', h)
+  }, [load])
 
-  const toggleComplete = useCallback(async (reminder) => {
-    await db.reminders.update(reminder.id, {
-      completed: !reminder.completed,
-      updatedAt: new Date().toISOString()
-    })
-    loadReminders()
-  }, [loadReminders])
-
-  const deleteReminder = useCallback(async (id) => {
-    await db.reminders.delete(id)
-    loadReminders()
-  }, [loadReminders])
-
-  const handleSubmit = useCallback(async () => {
-    if (!title.trim()) return
-    const now = new Date().toISOString()
-    if (editingId) {
-      await db.reminders.update(editingId, {
-        title: title.trim(),
-        priority,
-        category,
-        recurring,
-        notificationTime: notificationTime || null,
-        updatedAt: now
-      })
-    } else {
-      await db.reminders.add({
-        title: title.trim(),
-        date: today,
-        priority,
-        category,
-        recurring,
-        notificationTime: notificationTime || null,
-        completed: false,
-        createdAt: now,
-        updatedAt: now
-      })
+  // Timer loop
+  useEffect(() => {
+    if (running) {
+      tickRef.current = setInterval(() => {
+        setSecs(s => {
+          if (s <= 1) { setRunning(false); return 0 }
+          return s - 1
+        })
+      }, 1000)
     }
-    setTitle('')
-    setPriority('medium')
-    setCategory('general')
-    setRecurring('none')
-    setNotificationTime('')
-    setEditingId(null)
-    setShowForm(false)
-    loadReminders()
-  }, [title, priority, category, recurring, notificationTime, editingId, today, loadReminders])
+    return () => clearInterval(tickRef.current)
+  }, [running])
 
-  const startEdit = useCallback((r) => {
-    setTitle(r.title)
-    setPriority(r.priority || 'medium')
-    setCategory(r.category || 'general')
-    setRecurring(r.recurring || 'none')
-    setNotificationTime(r.notificationTime || '')
-    setEditingId(r.id)
-    setShowForm(true)
-  }, [])
+  const addTask = useCallback(async () => {
+    const t = draft.trim()
+    if (!t) return
+    const now = new Date().toISOString()
+    await db.reminders.add({
+      title: t,
+      date: today,
+      priority: draftPriority,
+      category: draftCat.toLowerCase(),
+      recurring: 'none',
+      notificationTime: draftTime || null,
+      alarm: false,
+      completed: false,
+      createdAt: now,
+      updatedAt: now,
+    })
+    setDraft(''); setDraftTime(''); setShowTime(false); setDraftPriority('medium'); setDraftCat('General')
+    load()
+  }, [draft, draftPriority, draftCat, draftTime, today, load])
 
-  const cancelForm = useCallback(() => {
-    setTitle('')
-    setPriority('medium')
-    setCategory('general')
-    setRecurring('none')
-    setNotificationTime('')
-    setEditingId(null)
-    setShowForm(false)
-  }, [])
+  const toggle = useCallback(async (r) => {
+    await db.reminders.update(r.id, { completed: !r.completed, updatedAt: new Date().toISOString() })
+    load()
+  }, [load])
 
-  const priorityColors = { high: '#ff3333', medium: '#ffaa33', low: '#66aaff' }
-  const categoryLabels = {
-    general: 'General', work: 'Work', study: 'Study',
-    personal: 'Personal', health: 'Health', errands: 'Errands'
-  }
-  const categoryIcons = {
-    general: <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"><rect x="1.5" y="1.5" width="9" height="9" rx="1"/><line x1="4" y1="5" x2="8" y2="5"/><line x1="4" y1="7" x2="7" y2="7"/></svg>,
-    work: <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"><rect x="1" y="4.5" width="10" height="6.5" rx="1"/><path d="M4 4.5v-2a1 1 0 011-1h2a1 1 0 011 1v2"/></svg>,
-    study: <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"><path d="M2 3.5l4-2 4 2v5.5l-4 2-4-2V3.5z"/><line x1="6" y1="1.5" x2="6" y2="8.5"/><path d="M2 5v4"/><path d="M10 5v4"/></svg>,
-    personal: <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"><circle cx="6" cy="4.5" r="2.5"/><path d="M2 11c0-2.5 1.8-4 4-4s4 1.5 4 4"/></svg>,
-    health: <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"><path d="M6 2v8M2 6h8"/><circle cx="6" cy="6" r="5"/></svg>,
-    errands: <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"><circle cx="4" cy="10" r="1"/><circle cx="9" cy="10" r="1"/><path d="M2 2h1.5l1.5 6h5l1-3.5H6.5"/></svg>,
-  }
+  const remove = useCallback(async (id) => { await db.reminders.delete(id); load() }, [load])
 
-  const completed = reminders.filter(r => r.completed).length
+  const cyclePriority = () => setDraftPriority(p => PRIORITY_CYCLE[(PRIORITY_CYCLE.indexOf(p) + 1) % PRIORITY_CYCLE.length])
+  const cycleCat = () => setDraftCat(c => CATEGORIES[(CATEGORIES.indexOf(c) + 1) % CATEGORIES.length])
+
   const total = reminders.length
+  const done = reminders.filter(r => r.completed).length
+  const remaining = total - done
+  const pct = total ? Math.round((done / total) * 100) : 0
 
-  if (loading) {
-    return (
-      <div className="agenda-v2 agenda-modal">
-        <div className="agenda-loading">Loading agenda...</div>
-      </div>
-    )
-  }
+  const visible = reminders.filter(r => {
+    if (search && !r.title.toLowerCase().includes(search.toLowerCase())) return false
+    if (filter === 'High Priority') return r.priority === 'high'
+    if (filter === 'Development') return (r.category || '') === 'development'
+    if (filter === 'Personal') return (r.category || '') === 'personal'
+    return true
+  })
+
+  const schedule = reminders
+    .filter(r => r.notificationTime)
+    .sort((a, b) => (a.notificationTime || '').localeCompare(b.notificationTime || ''))
+  const nowHM = new Date().toTimeString().slice(0, 5)
+  const currentIdx = schedule.findIndex(r => (r.notificationTime || '') >= nowHM)
 
   return (
-    <div className={`agenda-v2 agenda-modal ${collapsed ? 'agenda-collapsed' : ''}`}>
-      <div className="agenda-header">
-        <div className="agenda-header-left">
-          <div className="agenda-greeting">{getGreeting()}</div>
-          <div className="agenda-date">{getFormattedDate()}</div>
+    <div className="ag">
+      {/* Top bar */}
+      <div className="ag-topbar">
+        <div className="ag-search">
+          <span className="ag-search-ico">{Ico.search}</span>
+          <input placeholder="Search tasks..." value={search} onChange={e => setSearch(e.target.value)} />
         </div>
-        <div className="agenda-header-actions">
-          <span className="agenda-count-badge">
-            {newCount} {newCount === 1 ? 'task' : 'tasks'}
-          </span>
-          <button className="agenda-close-btn" onClick={onClose} title="Close agenda">
-            <CloseIcon />
+        <div className="ag-topbar-actions">
+          <button className="ag-icon-btn ag-has-dot" title="Notifications">{Ico.bell}</button>
+          <button className="ag-icon-btn" title="Settings">{Ico.gear}</button>
+          <button className="ag-icon-btn ag-close" onClick={onClose} title="Back to dashboard">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
           </button>
         </div>
       </div>
 
-      {autoOpen && (
-        <div className="agenda-auto-hint">
-          Your daily agenda — ready for the day ahead
-        </div>
-      )}
-
-      {total > 0 && (
-        <div className="agenda-progress-bar">
-          <div
-            className="agenda-progress-fill"
-            style={{ width: `${Math.round((completed / total) * 100)}%` }}
-          />
-        </div>
-      )}
-
-      <div className="agenda-body">
-        {total === 0 ? (
-          <div className="agenda-empty">
-            <div className="agenda-empty-icon">
-              <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="#884444" strokeWidth="1.5" strokeLinecap="round">
-                <circle cx="18" cy="18" r="5" fill="#884444" fillOpacity="0.15"/>
-                <line x1="18" y1="2" x2="18" y2="6"/>
-                <line x1="18" y1="30" x2="18" y2="34"/>
-                <line x1="2" y1="18" x2="6" y2="18"/>
-                <line x1="30" y1="18" x2="34" y2="18"/>
-                <line x1="7" y1="7" x2="10" y2="10"/>
-                <line x1="26" y1="26" x2="29" y2="29"/>
-                <line x1="7" y1="29" x2="10" y2="26"/>
-                <line x1="26" y1="10" x2="29" y2="7"/>
-              </svg>
-            </div>
-            <div className="agenda-empty-title">No tasks for today</div>
-            <div className="agenda-empty-sub">Add a reminder to start your day</div>
+      <div className="ag-main">
+        {/* Header */}
+        <header className="ag-header">
+          <div>
+            <h1 className="ag-title">Daily Agenda</h1>
+            <p className="ag-subtitle">
+              <span className="ag-sub-ico">{Ico.category}</span>
+              {getFormattedDate()} — <span className="ag-sub-accent">{remaining} {remaining === 1 ? 'task' : 'tasks'} remaining</span>
+            </p>
           </div>
-        ) : (
-          <div className="agenda-list">
-            {reminders.map(r => (
-              <div
-                key={r.id}
-                className={`agenda-item ${r.completed ? 'done' : ''}`}
-              >
-                <button
-                  className={`agenda-check ${r.completed ? 'checked' : ''}`}
-                  onClick={() => toggleComplete(r)}
-                  style={{ borderColor: r.completed ? 'var(--accent)' : priorityColors[r.priority] || '#884444' }}
-                >
-                  {r.completed && <CheckIcon />}
-                </button>
-                <div className="agenda-item-body">
-                  <div className="agenda-item-title">
-                    <span className="agenda-cat-icon">{categoryIcons[r.category] || <NoteIcon />}</span>
-                    {r.title}
-                  </div>
-                  <div className="agenda-item-meta">
-                    <span className="agenda-priority" style={{ color: priorityColors[r.priority] }}>
-                      {r.priority}
-                    </span>
-                    <span className="agenda-category">{categoryLabels[r.category]}</span>
-                    {r.recurring && r.recurring !== 'none' && (
-                      <span className="agenda-recurring">{r.recurring}</span>
-                    )}
-                    {r.notificationTime && (
-                      <span className="agenda-notify-time"><BellFilledIcon /> {r.notificationTime}</span>
-                    )}
-                  </div>
-                </div>
-                <div className="agenda-item-actions">
-                  <button className="agenda-item-btn" onClick={() => startEdit(r)} title="Edit">
-                    <EditIcon />
-                  </button>
-                  <button className="agenda-item-btn del" onClick={() => deleteReminder(r.id)} title="Delete">
-                    <CloseIcon />
-                  </button>
-                </div>
+          <div className="ag-header-right">
+            <div className="ag-progress">
+              <span className="ag-progress-bolt">{Ico.bolt}</span>
+              <div className="ag-progress-mid">
+                <span className="ag-progress-cap">Progress</span>
+                <div className="ag-progress-track"><span style={{ width: `${pct}%` }} /></div>
               </div>
-            ))}
-          </div>
-        )}
-
-        {total > 0 && completed === total && (
-          <div className="agenda-all-done">
-            <div className="agenda-all-done-icon">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#e60000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <polygon points="9,1 11.5,6.5 17.5,7.5 13,12 14,18 9,15 4,18 5,12 0.5,7.5 6.5,6.5"/>
-              </svg>
+              <span className="ag-progress-pct">{pct}%</span>
             </div>
-            <div className="agenda-all-done-text">All tasks completed!</div>
+            <button className="ag-newtask" onClick={() => document.getElementById('ag-quick-input')?.focus()}>New Task</button>
           </div>
-        )}
-      </div>
+        </header>
 
-      <div className="agenda-footer">
-        {showForm ? (
-          <div className="agenda-form">
-            <div className="agenda-form-row">
+        {/* Bento */}
+        <div className="ag-grid">
+          <div className="ag-col-left">
+            {/* Quick entry */}
+            <div className="ag-quick">
+              <button className="ag-quick-add" onClick={addTask} title="Add task">{Ico.addCircle}</button>
               <input
-                className="agenda-input"
-                placeholder="What do you need to do?"
-                value={title}
-                onChange={e => setTitle(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && handleSubmit()}
-                autoFocus
+                id="ag-quick-input"
+                className="ag-quick-input"
+                placeholder="I want to achieve..."
+                value={draft}
+                onChange={e => setDraft(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && addTask()}
               />
-            </div>
-            <div className="agenda-form-row opts">
-              <select className="agenda-select" value={priority} onChange={e => setPriority(e.target.value)}>
-                <option value="high">High</option>
-                <option value="medium">Medium</option>
-                <option value="low">Low</option>
-              </select>
-              <select className="agenda-select" value={category} onChange={e => setCategory(e.target.value)}>
-                <option value="general">General</option>
-                <option value="work">Work</option>
-                <option value="study">Study</option>
-                <option value="personal">Personal</option>
-                <option value="health">Health</option>
-                <option value="errands">Errands</option>
-              </select>
-              <select className="agenda-select" value={recurring} onChange={e => setRecurring(e.target.value)}>
-                <option value="none">Once</option>
-                <option value="daily">Daily</option>
-                <option value="weekdays">Weekdays</option>
-                <option value="weekends">Weekends</option>
-                <option value="weekly">Weekly</option>
-                <option value="monthly">Monthly</option>
-              </select>
-            </div>
-            <div className="agenda-notify-section">
-              <div className="agenda-notify-header">
-                <BellIcon />
-                <span>Notify me</span>
+              <div className="ag-quick-tools">
                 <button
-                  className={'agenda-notify-toggle' + (notificationTime ? ' active' : '')}
-                  onClick={() => setNotificationTime(notificationTime ? '' : '09:00')}
-                >
-                  {notificationTime ? 'ON' : 'OFF'}
-                </button>
+                  className={'ag-quick-tool' + (draftCat !== 'General' ? ' on' : '')}
+                  onClick={cycleCat}
+                  title={`Category: ${draftCat}`}
+                >{Ico.label}</button>
+                <button
+                  className={'ag-quick-tool' + (showTime || draftTime ? ' on' : '')}
+                  onClick={() => setShowTime(v => !v)}
+                  title="Set a time"
+                >{Ico.clock}</button>
+                <button
+                  className="ag-quick-tool ag-quick-flag"
+                  onClick={cyclePriority}
+                  style={{ color: PRIORITY[draftPriority].color }}
+                  title={`Priority: ${PRIORITY[draftPriority].label}`}
+                >{Ico.flag}</button>
               </div>
-              {notificationTime && (
-                <div className="agenda-notify-picker">
-                  <TimeWheelPicker
-                    value={notificationTime}
-                    onChange={setNotificationTime}
-                  />
+            </div>
+            {showTime && (
+              <div className="ag-timerow">
+                <span>Remind at</span>
+                <input type="time" value={draftTime} onChange={e => setDraftTime(e.target.value)} />
+                <span className="ag-timerow-cat">· {draftCat} · <b style={{ color: PRIORITY[draftPriority].color }}>{PRIORITY[draftPriority].label}</b></span>
+              </div>
+            )}
+
+            {/* Filters */}
+            <div className="ag-filters">
+              {FILTERS.map(f => (
+                <button key={f} className={'ag-filter' + (filter === f ? ' active' : '')} onClick={() => setFilter(f)}>{f}</button>
+              ))}
+            </div>
+
+            {/* Task list */}
+            <div className="ag-tasks">
+              {loading ? (
+                <div className="ag-empty">Loading…</div>
+              ) : visible.length === 0 ? (
+                <div className="ag-empty">
+                  <div className="ag-empty-title">{total === 0 ? 'No tasks for today' : 'Nothing matches this filter'}</div>
+                  <div className="ag-empty-sub">Type above and hit Enter to add your first task</div>
+                </div>
+              ) : visible.map(r => {
+                const p = PRIORITY[r.priority] || PRIORITY.medium
+                return (
+                  <div key={r.id} className={'ag-task' + (r.completed ? ' done' : '')} style={{ '--pcolor': p.color }}>
+                    <div className="ag-task-main">
+                      <button className={'ag-check' + (r.completed ? ' checked' : '')} onClick={() => toggle(r)}>
+                        {r.completed && Ico.check}
+                      </button>
+                      <div className="ag-task-body">
+                        <h4 className="ag-task-title">{r.title}</h4>
+                        <div className="ag-task-meta">
+                          {r.completed ? (
+                            <span className="ag-badge ag-badge-done">Done</span>
+                          ) : (
+                            <span className="ag-badge" style={{ color: p.color, background: `color-mix(in srgb, ${p.color} 14%, transparent)` }}>{p.label}</span>
+                          )}
+                          {r.category && !r.completed && (
+                            <span className="ag-task-cat"><span className="ag-task-cat-ico">{Ico.category}</span>{r.category.charAt(0).toUpperCase() + r.category.slice(1)}</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="ag-task-right">
+                      {r.notificationTime && <span className="ag-task-time">{r.notificationTime}</span>}
+                      {r.completed
+                        ? <span className="ag-task-doneall">{Ico.doneAll}</span>
+                        : (
+                          <div className="ag-task-actions">
+                            <button className="ag-task-act" title="Focus 25 min" onClick={() => { setSecs(25 * 60); setRunning(true) }}>{Ico.timer}</button>
+                            <button className="ag-task-act ag-task-del" title="Delete" onClick={() => remove(r.id)}>{Ico.trash}</button>
+                          </div>
+                        )}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Right column */}
+          <div className="ag-col-right">
+            {/* Deep Focus */}
+            <div className="ag-focus">
+              <div className="ag-focus-timerico">{Ico.timer}</div>
+              <h3 className="ag-focus-cap">Deep Focus</h3>
+              <div className="ag-focus-clock">{fmtCountdown(secs)}</div>
+              <div className="ag-focus-btns">
+                <button className="ag-focus-play" onClick={() => { if (secs === 0) setSecs(25 * 60); setRunning(r => !r) }}>
+                  {running ? Ico.pause : Ico.play}
+                </button>
+                <button className="ag-focus-reset" onClick={() => { setRunning(false); setSecs(25 * 60) }}>{Ico.refresh}</button>
+              </div>
+              <p className="ag-focus-hint">Next up: 5 min short break</p>
+            </div>
+
+            {/* Schedule */}
+            <div className="ag-schedule">
+              <h3 className="ag-focus-cap ag-schedule-cap">Schedule</h3>
+              {schedule.length === 0 ? (
+                <div className="ag-schedule-empty">No timed tasks today. Add a time to a task to see it here.</div>
+              ) : (
+                <div className="ag-timeline">
+                  <div className="ag-timeline-line" />
+                  {schedule.map((r, i) => {
+                    const isCurrent = i === currentIdx && !r.completed
+                    const past = r.completed || (currentIdx !== -1 && i < currentIdx)
+                    return (
+                      <div key={r.id} className={'ag-tl-item' + (past ? ' past' : '')}>
+                        <div className={'ag-tl-dot' + (isCurrent ? ' current' : '')}>
+                          {isCurrent ? <span className="ag-tl-bolt">{Ico.bolt}</span> : <span className="ag-tl-inner" />}
+                        </div>
+                        <div className="ag-tl-body">
+                          <span className="ag-tl-time">{isCurrent ? `Current — ${r.notificationTime}` : r.notificationTime}</span>
+                          <h5 className="ag-tl-name">{r.title}</h5>
+                          <p className="ag-tl-sub">{(r.category || 'general').charAt(0).toUpperCase() + (r.category || 'general').slice(1)}</p>
+                        </div>
+                      </div>
+                    )
+                  })}
                 </div>
               )}
-            </div>
-            <div className="agenda-form-actions">
-              <button className="agenda-form-btn primary" onClick={handleSubmit}>
-                {editingId ? 'Update' : 'Add'}
-              </button>
-              <button className="agenda-form-btn" onClick={cancelForm}>Cancel</button>
+              <button className="ag-viewcal" onClick={() => (location.hash = 'calendar')}>View Full Calendar</button>
             </div>
           </div>
-        ) : (
-          <button className="agenda-add-btn" onClick={() => setShowForm(true)}>
-            <PlusIcon /> Add Reminder
-          </button>
-        )}
+        </div>
       </div>
     </div>
   )

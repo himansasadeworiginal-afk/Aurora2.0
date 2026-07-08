@@ -3,18 +3,18 @@ import db from '../data/db'
 import { getAllNoteStats, getResonanceScore } from '../data/resonance'
 
 const DEFAULT_PROBLEMS = [
-  { id: 'p1', text: 'How can I build systems that amplify human potential?', color: '#ff003c' },
-  { id: 'p2', text: 'What does it mean to think clearly in a complex world?', color: '#ff4400' },
-  { id: 'p3', text: 'How do we create value that outlasts us?', color: '#ff0066' },
-  { id: 'p4', text: 'What is the relationship between chaos and creativity?', color: '#cc0044' },
-  { id: 'p5', text: 'How can knowledge compound across disciplines?', color: '#dd0055' },
-  { id: 'p6', text: 'What habits separate effective people from the rest?', color: '#ff6622' },
-  { id: 'p7', text: 'How do we balance depth with breadth of knowledge?', color: '#3388ff' },
-  { id: 'p8', text: 'What makes a decision truly good?', color: '#22aa88' },
-  { id: 'p9', text: 'How can technology serve humanity without dominating it?', color: '#8855dd' },
-  { id: 'p10', text: 'What is the art of meaningful connection?', color: '#aa44cc' },
-  { id: 'p11', text: 'How do we navigate uncertainty with grace?', color: '#cc66ee' },
-  { id: 'p12', text: 'What stories shape our reality—and how do we choose them?', color: '#9955bb' },
+  { id: 'p1', text: 'How can I build systems that amplify human potential?', color: '#2DD4BF' },
+  { id: 'p2', text: 'What does it mean to think clearly in a complex world?', color: '#34D6C4' },
+  { id: 'p3', text: 'How do we create value that outlasts us?', color: '#56C6E8' },
+  { id: 'p4', text: 'What is the relationship between chaos and creativity?', color: '#6FB2EC' },
+  { id: 'p5', text: 'How can knowledge compound across disciplines?', color: '#7FA8F0' },
+  { id: 'p6', text: 'What habits separate effective people from the rest?', color: '#8B7CF6' },
+  { id: 'p7', text: 'How do we balance depth with breadth of knowledge?', color: '#A78BFA' },
+  { id: 'p8', text: 'What makes a decision truly good?', color: '#52E3A4' },
+  { id: 'p9', text: 'How can technology serve humanity without dominating it?', color: '#9D8CF8' },
+  { id: 'p10', text: 'What is the art of meaningful connection?', color: '#6FDDB4' },
+  { id: 'p11', text: 'How do we navigate uncertainty with grace?', color: '#46C8D8' },
+  { id: 'p12', text: 'What stories shape our reality—and how do we choose them?', color: '#8B7CF6' },
 ]
 
 export default function ScoredProblems({ onClose }) {
@@ -104,8 +104,8 @@ export default function ScoredProblems({ onClose }) {
           <div className="sp-score-header">
             <strong>Resonance Score</strong>
             <span className="sp-score-badge" style={{
-              background: autoScore.health === 'strong' ? 'rgba(136,204,68,0.15)' : autoScore.health === 'moderate' ? 'rgba(255,170,68,0.15)' : 'rgba(200,0,0,0.15)',
-              color: autoScore.health === 'strong' ? '#88cc44' : autoScore.health === 'moderate' ? '#ffaa44' : '#ff4444',
+              background: autoScore.health === 'strong' ? 'rgba(82,227,164,0.15)' : autoScore.health === 'moderate' ? 'rgba(245,158,11,0.15)' : 'rgba(230,57,74,0.15)',
+              color: autoScore.health === 'strong' ? '#52E3A4' : autoScore.health === 'moderate' ? '#F59E0B' : '#E6394A',
             }}>
               {autoScore.health.toUpperCase()}
             </span>

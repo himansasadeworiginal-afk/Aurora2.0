@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import db from '../data/db'
 
 function getToday() {
@@ -123,10 +123,36 @@ export default function Notifier({ onPendingChange, onNotify }) {
       try {
         const today = getToday()
         const nowMinutes = getCurrentMinutes()
+        const nowMs = Date.now()
         const all = await db.reminders.toArray()
         const todaysReminders = all.filter(r => dayMatches(r, today) && !r.completed)
 
+        const fire = (r) => {
+          if (granted) {
+            sendBrowserNotif(r.title, 'Priority: ' + (r.priority || 'medium') + ' | Category: ' + (r.category || 'general'))
+          }
+          if (onNotify) {
+            onNotify({
+              id: r.id,
+              title: r.title,
+              priority: r.priority || 'medium',
+              category: r.category || 'general',
+              notificationTime: r.notificationTime,
+              alarm: !!r.alarm,
+            })
+          }
+        }
+
         for (const r of todaysReminders) {
+          // Snoozed alarm: re-fire once the snooze window passes, then clear it.
+          if (r.snoozedUntil && nowMs >= r.snoozedUntil) {
+            await db.reminders.update(r.id, { snoozedUntil: null })
+            fire(r)
+            continue
+          }
+          // Suppress the scheduled fire while a snooze is pending.
+          if (r.snoozedUntil && nowMs < r.snoozedUntil) continue
+
           if (!r.notificationTime) continue
           const notifMinutes = timeToMinutes(r.notificationTime)
           if (notifMinutes < 0) continue
@@ -138,19 +164,7 @@ export default function Notifier({ onPendingChange, onNotify }) {
 
           markSent(r.id, r.notificationTime)
           notifiedThisSession.current.add(r.id + '-' + r.notificationTime)
-
-          if (granted) {
-            sendBrowserNotif(r.title, 'Priority: ' + (r.priority || 'medium') + ' | Category: ' + (r.category || 'general'))
-          }
-
-          if (onNotify) {
-            onNotify({
-              title: r.title,
-              priority: r.priority || 'medium',
-              category: r.category || 'general',
-              notificationTime: r.notificationTime,
-            })
-          }
+          fire(r)
         }
 
         if (onPendingChange) {

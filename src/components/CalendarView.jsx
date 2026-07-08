@@ -54,12 +54,11 @@ function eventMatchesDate(dateStr, event) {
   return false
 }
 
-const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 const HOURS = Array.from({ length: 18 }, (_, i) => i + 6)
 
-const COLORS = ['#e60000', '#4488ff', '#66cc88', '#ffaa33', '#cc44cc']
-const PRIORITY_COLORS = { high: '#ff3333', medium: '#ffaa33', low: '#66aaff' }
-const CATEGORY_COLORS = { health: '#88cc44', work: '#4488ff', study: '#ffaa33', personal: '#cc44cc', other: '#888888' }
+const COLORS = ['#2DD4BF', '#56C6E8', '#52E3A4', '#8B7CF6', '#F59E0B']
+const PRIORITY_COLORS = { high: '#F59E0B', medium: '#2DD4BF', low: '#8B7CF6' }
+const CATEGORY_COLORS = { health: '#52E3A4', work: '#2DD4BF', study: '#56C6E8', personal: '#8B7CF6', other: '#9aa0a6' }
 
 const CATEGORIES = [
   { value: 'general', label: 'General' },
@@ -89,6 +88,15 @@ function formatTime(t) {
   return `${h12}:${String(m).padStart(2, '0')} ${ampm}`
 }
 
+// A compact start–end label, or "All day".
+function formatRange(ev) {
+  if (ev.allDay) return 'All day'
+  if (!ev.time) return ''
+  return ev.endTime ? `${formatTime(ev.time)} – ${formatTime(ev.endTime)}` : formatTime(ev.time)
+}
+
+const PinIcon = () => (<svg width="9" height="9" viewBox="0 0 10 10" {...S}><path d="M5 9s3-2.7 3-5a3 3 0 10-6 0c0 2.3 3 5 3 5z" /><circle cx="5" cy="4" r="1" /></svg>)
+
 export default function CalendarView({ onClose }) {
   const today = todayStr()
   const [viewYear, setViewYear] = useState(() => new Date().getFullYear())
@@ -101,12 +109,18 @@ export default function CalendarView({ onClose }) {
   const [showForm, setShowForm] = useState(false)
   const [formTitle, setFormTitle] = useState('')
   const [formTime, setFormTime] = useState('')
+  const [formEndTime, setFormEndTime] = useState('')
+  const [formAllDay, setFormAllDay] = useState(false)
+  const [formLocation, setFormLocation] = useState('')
   const [formColor, setFormColor] = useState(COLORS[0])
   const [formDesc, setFormDesc] = useState('')
   const [formCategory, setFormCategory] = useState('general')
   const [formRecurring, setFormRecurring] = useState('none')
   const [editingId, setEditingId] = useState(null)
   const [viewMode, setViewMode] = useState('month')
+  const [hiddenCats, setHiddenCats] = useState(() => new Set())
+  const [search, setSearch] = useState('')
+  const [detailOpen, setDetailOpen] = useState(false)
 
   const loadAll = useCallback(async () => {
     const [evs, rems, trs, logs] = await Promise.all([
@@ -122,6 +136,12 @@ export default function CalendarView({ onClose }) {
   }, [])
 
   useEffect(() => { loadAll() }, [loadAll])
+
+  useEffect(() => {
+    const h = () => loadAll()
+    window.addEventListener('aurora-data-changed', h)
+    return () => window.removeEventListener('aurora-data-changed', h)
+  }, [loadAll])
 
   const prevMonth = () => {
     if (viewMonth === 0) { setViewYear(y => y - 1); setViewMonth(11) }
@@ -211,6 +231,7 @@ export default function CalendarView({ onClose }) {
     setSelectedDate(date)
     setShowForm(false)
     setEditingId(null)
+    setDetailOpen(true)
     if (otherMonth) {
       const parts = date.split('-').map(Number)
       setViewYear(parts[0])
@@ -249,6 +270,9 @@ export default function CalendarView({ onClose }) {
   const resetForm = () => {
     setFormTitle('')
     setFormTime('')
+    setFormEndTime('')
+    setFormAllDay(false)
+    setFormLocation('')
     setFormColor(COLORS[0])
     setFormDesc('')
     setFormCategory('general')
@@ -260,6 +284,9 @@ export default function CalendarView({ onClose }) {
   const startEdit = useCallback((ev) => {
     setFormTitle(ev.title)
     setFormTime(ev.time || '')
+    setFormEndTime(ev.endTime || '')
+    setFormAllDay(!!ev.allDay)
+    setFormLocation(ev.location || '')
     setFormColor(ev.color || COLORS[0])
     setFormDesc(ev.description || '')
     setFormCategory(ev.category || 'general')
@@ -270,31 +297,26 @@ export default function CalendarView({ onClose }) {
 
   const handleSaveEvent = useCallback(async () => {
     if (!formTitle.trim()) return
+    const payload = {
+      title: formTitle.trim(),
+      date: selectedDate,
+      time: formAllDay ? null : (formTime.trim() || null),
+      endTime: formAllDay ? null : (formEndTime.trim() || null),
+      allDay: formAllDay,
+      location: formLocation.trim() || null,
+      color: formColor,
+      description: formDesc.trim() || null,
+      category: formCategory,
+      recurring: formRecurring === 'none' ? null : formRecurring,
+    }
     if (editingId) {
-      await db.events.update(editingId, {
-        title: formTitle.trim(),
-        date: selectedDate,
-        time: formTime.trim() || null,
-        color: formColor,
-        description: formDesc.trim() || null,
-        category: formCategory,
-        recurring: formRecurring === 'none' ? null : formRecurring,
-      })
+      await db.events.update(editingId, payload)
     } else {
-      await db.events.add({
-        title: formTitle.trim(),
-        date: selectedDate,
-        time: formTime.trim() || null,
-        color: formColor,
-        description: formDesc.trim() || null,
-        category: formCategory,
-        recurring: formRecurring === 'none' ? null : formRecurring,
-        createdAt: new Date().toISOString(),
-      })
+      await db.events.add({ ...payload, createdAt: new Date().toISOString() })
     }
     resetForm()
     loadAll()
-  }, [formTitle, formTime, formColor, formDesc, formCategory, formRecurring, editingId, selectedDate, loadAll])
+  }, [formTitle, formTime, formEndTime, formAllDay, formLocation, formColor, formDesc, formCategory, formRecurring, editingId, selectedDate, loadAll])
 
   const deleteEvent = useCallback(async (id) => {
     await db.events.delete(id)
@@ -310,7 +332,7 @@ export default function CalendarView({ onClose }) {
       hourly[h] = { events: [], reminders: [], trackers: [] }
     }
     for (const ev of evs) {
-      const h = ev.time ? parseInt(ev.time.split(':')[0]) : 12
+      const h = ev.allDay ? 6 : (ev.time ? parseInt(ev.time.split(':')[0]) : 12)
       if (!hourly[h]) hourly[h] = { events: [], reminders: [], trackers: [] }
       hourly[h].events.push(ev)
     }
@@ -370,7 +392,8 @@ export default function CalendarView({ onClose }) {
                   {slot.events.map(ev => (
                     <div key={'e-' + ev.id} className="cal-hour-item cal-hour-event" style={{ borderLeftColor: ev.color || COLORS[0] }}>
                       <span className="cal-hour-item-title">{ev.title}</span>
-                      {ev.time && <span className="cal-hour-time">{formatTime(ev.time)}</span>}
+                      {(ev.allDay || ev.time) && <span className="cal-hour-time">{formatRange(ev)}</span>}
+                      {ev.location && <span className="cal-hour-loc"><PinIcon /></span>}
                       {ev.recurring && <RepeatIcon />}
                     </div>
                   ))}
@@ -428,38 +451,117 @@ export default function CalendarView({ onClose }) {
   )
 
   const renderMonthView = () => (
-    <div className="cal-grid">
-      {WEEKDAYS.map(d => (<div key={d} className="cal-weekday">{d}</div>))}
+    <div className="cal-mgrid">
+      {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
+        <div key={d} className="cal-mgrid-head">{d}</div>
+      ))}
       {cells.map(({ day, date, otherMonth }) => {
-        const { events: evs, reminders: rems, trackers: trs } = getItemsForDate(date)
-        const allCount = evs.length + rems.length + trs.length
+        const { events: evs, reminders: rems } = getItemsForDate(date)
+        const vevs = evs.filter(e => !hiddenCats.has(e.category || 'general') && matchSearch(e.title))
+        const vrems = rems.filter(r => matchSearch(r.title))
+        const pills = [
+          ...vevs.map(e => ({ id: 'e' + e.id, title: e.title, color: e.color || COLORS[0] })),
+          ...vrems.map(r => ({ id: 'r' + r.id, title: r.title, color: PRIORITY_COLORS[r.priority] || COLORS[0], done: r.completed })),
+        ]
         const isToday = date === today
         const isSelected = date === selectedDate
         return (
           <div
             key={date}
-            className={'cal-day' + (isToday ? ' today' : '') + (isSelected ? ' selected' : '') + (allCount > 0 ? ' has-events' : '') + (otherMonth ? ' other-month' : '')}
+            className={'cal-mcell' + (otherMonth ? ' other' : '') + (isSelected ? ' selected' : '')}
             onClick={() => handleDayClick(date, otherMonth)}
           >
-            <span className="cal-day-num">{day}</span>
-            {allCount > 0 && (
-              <div className="cal-day-dots">
-                {trs.filter(t => !t.done).slice(0, 1).map(t => (
-                  <span key={'t-' + t.id} className="cal-day-dot tracker" style={{ backgroundColor: CATEGORY_COLORS[t.category] || '#888' }} />
-                ))}
-                {rems.filter(r => !r.completed).slice(0, 1).map(r => (
-                  <span key={'r-' + r.id} className="cal-day-dot task" style={{ backgroundColor: PRIORITY_COLORS[r.priority] || '#884444' }} />
-                ))}
-                {evs.slice(0, 2).map(ev => (
-                  <span key={'e-' + ev.id} className="cal-day-dot" style={{ backgroundColor: ev.color || COLORS[0] }} />
-                ))}
-              </div>
-            )}
+            <span className={'cal-mcell-num' + (isToday ? ' today' : '')}>{day}</span>
+            {isToday && <span className="cal-mcell-today">Today</span>}
+            <div className="cal-mcell-pills">
+              {pills.slice(0, 3).map(p => (
+                <div key={p.id} className={'cal-pill' + (p.done ? ' done' : '')}
+                  style={{ color: p.color, background: `color-mix(in srgb, ${p.color} 16%, transparent)`, borderColor: `color-mix(in srgb, ${p.color} 30%, transparent)` }}>
+                  {p.title}
+                </div>
+              ))}
+              {pills.length > 3 && <div className="cal-pill cal-pill-more">+{pills.length - 3} more</div>}
+            </div>
           </div>
         )
       })}
     </div>
   )
+
+  const matchSearch = (t) => !search || (t || '').toLowerCase().includes(search.toLowerCase())
+
+  // Category filters derived from the events actually present
+  const catList = useMemo(() => {
+    const map = new Map()
+    for (const e of events) {
+      const k = e.category || 'general'
+      if (!map.has(k)) map.set(k, e.color || COLORS[0])
+    }
+    if (map.size === 0) {
+      map.set('meeting', '#4cd7f6'); map.set('deadline', '#ddb7ff'); map.set('appointment', '#ffb690')
+    }
+    return [...map.entries()].map(([key, color]) => ({ key, color }))
+  }, [events])
+
+  const toggleCat = (key) => setHiddenCats(prev => {
+    const n = new Set(prev)
+    n.has(key) ? n.delete(key) : n.add(key)
+    return n
+  })
+
+  const renderMiniCal = () => {
+    const mDays = new Date(viewYear, viewMonth + 1, 0).getDate()
+    const fDow = new Date(viewYear, viewMonth, 1).getDay()
+    const blanks = Array.from({ length: fDow }, (_, i) => i)
+    return (
+      <div className="cal-mini">
+        <div className="cal-mini-head">
+          <span className="cal-mini-title">{monthLabel}</span>
+          <div className="cal-mini-navs">
+            <button onClick={prevMonth}><ChevronLeft /></button>
+            <button onClick={nextMonth}><ChevronRight /></button>
+          </div>
+        </div>
+        <div className="cal-mini-grid">
+          {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => <span key={i} className="cal-mini-dow">{d}</span>)}
+          {blanks.map(b => <span key={'b' + b} />)}
+          {Array.from({ length: mDays }, (_, i) => i + 1).map(d => {
+            const ds = toDateStr(viewYear, viewMonth, d)
+            const isT = ds === today
+            const isSel = ds === selectedDate
+            return (
+              <button key={d} className={'cal-mini-day' + (isT ? ' today' : '') + (isSel ? ' sel' : '')} onClick={() => setSelectedDate(ds)}>{d}</button>
+            )
+          })}
+        </div>
+      </div>
+    )
+  }
+
+  const renderNextUp = () => {
+    const { events: evs, reminders: rems } = selectedItems
+    const items = [
+      ...evs.map(e => ({ id: 'e' + e.id, title: e.title, sub: formatRange(e) || 'Event', color: e.color || COLORS[0], done: false })),
+      ...rems.map(r => ({ id: 'r' + r.id, title: r.title, sub: r.notificationTime || r.priority, color: PRIORITY_COLORS[r.priority] || COLORS[0], done: r.completed })),
+    ]
+    return (
+      <div className="cal-nextup">
+        <div className="cal-rail-cap">{selectedDate === today ? 'Next Up Today' : 'On This Day'}</div>
+        {items.length === 0 ? (
+          <div className="cal-nextup-empty">Nothing scheduled.</div>
+        ) : (
+          <div className="cal-nextup-list">
+            {items.map(it => (
+              <div key={it.id} className={'cal-nextup-item' + (it.done ? ' done' : '')} style={{ '--c': it.color }}>
+                <p className="cal-nextup-title">{it.title}</p>
+                <p className="cal-nextup-sub">{it.done ? 'Completed' : it.sub}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    )
+  }
 
   const catLabel = (v) => {
     const c = CATEGORIES.find(c => c.value === v)
@@ -481,11 +583,25 @@ export default function CalendarView({ onClose }) {
           <div className="cal-form">
             <input className="cal-input" placeholder="Event title" value={formTitle} onChange={e => setFormTitle(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleSaveEvent()} autoFocus />
             <div className="cal-form-row">
-              <input className="cal-input cal-input-sm" placeholder="Time" type="time" value={formTime} onChange={e => setFormTime(e.target.value)} />
+              <button
+                type="button"
+                className={'cal-allday-toggle' + (formAllDay ? ' active' : '')}
+                onClick={() => setFormAllDay(a => !a)}
+              >
+                {formAllDay ? '● All day' : '○ All day'}
+              </button>
               <select className="cal-select" value={formCategory} onChange={e => setFormCategory(e.target.value)}>
                 {CATEGORIES.map(c => (<option key={c.value} value={c.value}>{c.label}</option>))}
               </select>
             </div>
+            {!formAllDay && (
+              <div className="cal-form-row">
+                <input className="cal-input cal-input-sm" aria-label="Start time" type="time" value={formTime} onChange={e => setFormTime(e.target.value)} />
+                <span className="cal-time-dash">–</span>
+                <input className="cal-input cal-input-sm" aria-label="End time" type="time" value={formEndTime} onChange={e => setFormEndTime(e.target.value)} />
+              </div>
+            )}
+            <input className="cal-input" placeholder="Location (optional)" value={formLocation} onChange={e => setFormLocation(e.target.value)} />
             <div className="cal-form-row">
               <div className="cal-color-picker">
                 {COLORS.map(c => (<span key={c} className={'cal-color-opt' + (formColor === c ? ' active' : '')} style={{ backgroundColor: c }} onClick={() => setFormColor(c)} />))}
@@ -561,11 +677,12 @@ export default function CalendarView({ onClose }) {
                 <span className="cal-event-color" style={{ backgroundColor: ev.color || COLORS[0] }} />
                 <div className="cal-event-info">
                   <div className="cal-event-info-top">
-                    {ev.time && <span className="cal-event-time">{formatTime(ev.time)}</span>}
+                    {(ev.allDay || ev.time) && <span className="cal-event-time">{formatRange(ev)}</span>}
                     {ev.recurring && <RepeatIcon />}
                     {ev.category && ev.category !== 'general' && <span className="cal-event-category">{catLabel(ev.category)}</span>}
                   </div>
                   <span className="cal-event-title">{ev.title}</span>
+                  {ev.location && <span className="cal-event-location"><PinIcon /> {ev.location}</span>}
                   {ev.description && <span className="cal-event-desc">{ev.description.slice(0, 60)}{ev.description.length > 60 ? '...' : ''}</span>}
                 </div>
                 <div className="cal-event-actions">
@@ -586,31 +703,99 @@ export default function CalendarView({ onClose }) {
     )
   }
 
+  const openNewEvent = () => {
+    setEditingId(null); setFormTitle(''); setFormTime(''); setFormEndTime('')
+    setFormAllDay(false); setFormLocation(''); setFormColor(COLORS[0]); setFormDesc('')
+    setFormCategory('general'); setFormRecurring('none'); setShowForm(true); setDetailOpen(true)
+  }
+
   return (
-    <div className="cal-v2 calendar-section">
-      {onClose && (
-        <button className="cal-close-btn" onClick={onClose} title="Close"><CloseIcon /></button>
-      )}
-      <div className="cal-nav">
-        <button className="cal-nav-btn" onClick={prevMonth}><ChevronLeft /></button>
-        <span className="cal-nav-title">{monthLabel}</span>
-        <button className="cal-nav-btn" onClick={nextMonth}><ChevronRight /></button>
-        <button className="cal-today-btn" onClick={goToday}>Today</button>
-      </div>
-
-      <div className="cal-toolbar">
-        <div className="cal-view-toggle">
-          <button className={'cal-view-btn' + (viewMode === 'day' ? ' active' : '')} onClick={() => setViewMode('day')} title="Day view">Day</button>
-          <button className={'cal-view-btn' + (viewMode === 'week' ? ' active' : '')} onClick={() => setViewMode('week')} title="Week view">Week</button>
-          <button className={'cal-view-btn' + (viewMode === 'month' ? ' active' : '')} onClick={() => setViewMode('month')} title="Month view">Month</button>
+    <div className="cal cal-v2">
+      {/* Top bar */}
+      <div className="cal-topbar">
+        <div className="cal-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+          <input placeholder="Search events..." value={search} onChange={e => setSearch(e.target.value)} />
         </div>
+        {onClose && <button className="cal-icon-btn" onClick={onClose} title="Back to dashboard"><CloseIcon /></button>}
       </div>
 
-      {viewMode === 'day' && renderDayView()}
-      {viewMode === 'week' && renderWeekView()}
-      {viewMode === 'month' && renderMonthView()}
+      <div className="cal-body">
+        {/* Left rail */}
+        <aside className="cal-rail">
+          {renderMiniCal()}
+          <div className="cal-cats">
+            <div className="cal-cats-head">
+              <span className="cal-rail-cap">Categories</span>
+              <button className="cal-cats-add" onClick={openNewEvent} title="New event"><PlusIcon /></button>
+            </div>
+            <div className="cal-cats-list">
+              {catList.map(c => (
+                <label key={c.key} className="cal-cat">
+                  <input type="checkbox" checked={!hiddenCats.has(c.key)} onChange={() => toggleCat(c.key)} />
+                  <span className="cal-cat-dot" style={{ background: c.color, boxShadow: `0 0 8px ${c.color}` }} />
+                  <span className="cal-cat-name">{catLabel(c.key)}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+          {renderNextUp()}
+        </aside>
 
-      {renderSidebar()}
+        {/* Main canvas */}
+        <main className="cal-canvas">
+          <div className="cal-controls">
+            <div className="cal-controls-left">
+              <h2 className="cal-month-title">{monthLabel}</h2>
+              <div className="cal-tabs">
+                {['day', 'week', 'month', 'year'].map(m => (
+                  <button key={m} className={'cal-tab' + (viewMode === m ? ' active' : '')} onClick={() => setViewMode(m)}>
+                    {m.charAt(0).toUpperCase() + m.slice(1)}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="cal-controls-right">
+              <button className="cal-today-pill" onClick={goToday}>Today</button>
+              <button className="cal-newevent" onClick={openNewEvent}>
+                <PlusIcon /> New Event
+              </button>
+            </div>
+          </div>
+
+          <div className="cal-viewport">
+            {viewMode === 'day' && renderDayView()}
+            {viewMode === 'week' && renderWeekView()}
+            {viewMode === 'month' && renderMonthView()}
+            {viewMode === 'year' && (
+              <div className="cal-year">
+                {Array.from({ length: 12 }, (_, m) => {
+                  const count = events.filter(e => { const d = new Date(e.date + 'T00:00:00'); return d.getFullYear() === viewYear && d.getMonth() === m }).length
+                  return (
+                    <button key={m} className={'cal-year-cell' + (m === viewMonth ? ' active' : '')} onClick={() => { setViewMonth(m); setViewMode('month') }}>
+                      <span className="cal-year-name">{new Date(viewYear, m).toLocaleDateString('en-US', { month: 'long' })}</span>
+                      <span className="cal-year-count">{count} event{count === 1 ? '' : 's'}</span>
+                    </button>
+                  )
+                })}
+              </div>
+            )}
+          </div>
+        </main>
+      </div>
+
+      {/* Event form modal + day detail */}
+      {detailOpen && (
+        <div className="cal-detail-overlay" onClick={(e) => { if (e.target.classList.contains('cal-detail-overlay')) { setDetailOpen(false); setShowForm(false) } }}>
+          <div className="cal-detail">
+            <div className="cal-detail-head">
+              <span className="cal-detail-date">{new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</span>
+              <button className="cal-icon-btn" onClick={() => { setDetailOpen(false); setShowForm(false) }}><CloseIcon /></button>
+            </div>
+            {renderSidebar()}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

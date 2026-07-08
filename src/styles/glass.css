@@ -1,0 +1,100 @@
+/* ============================================================================
+   Aurora — Glass component layer  ·  Glassmorphism overhaul
+   Loaded LAST so it wins cascade ties. Holds the reusable glass classes from
+   the redesign spec plus a few targeted frosted-glass upgrades to existing
+   signature chrome. Purely visual — no markup/logic changes.
+   ============================================================================ */
+
+/* ---- The signature glass card (reusable) -------------------------------- */
+.glass-card {
+  background: var(--grad-glass);
+  backdrop-filter: var(--blur-md);
+  -webkit-backdrop-filter: var(--blur-md);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-card);
+  position: relative;
+  overflow: hidden;
+  transition: border-color var(--dur-normal) var(--ease-smooth), box-shadow var(--dur-normal) var(--ease-smooth), transform var(--dur-normal) var(--ease-smooth);
+}
+.glass-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+  pointer-events: none;
+}
+.glass-card::after {
+  content: '';
+  position: absolute; top: 0; left: 0; width: 60%; height: 60%;
+  background: var(--grad-card-shine);
+  pointer-events: none;
+  border-radius: inherit;
+}
+.glass-card:hover {
+  border-color: var(--glass-border-bright);
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-1px);
+}
+.glass-card.accent-red     { border-top: 2px solid var(--red-core);        box-shadow: var(--shadow-card), 0 -2px 12px var(--red-glow); }
+.glass-card.accent-violet  { border-top: 2px solid var(--accent-violet);   box-shadow: var(--shadow-card), 0 -2px 12px var(--accent-violet-glow); }
+.glass-card.accent-cyan    { border-top: 2px solid var(--accent-cyan);     box-shadow: var(--shadow-card), 0 -2px 12px var(--accent-cyan-glow); }
+.glass-card.accent-amber   { border-top: 2px solid var(--accent-amber);    box-shadow: var(--shadow-card), 0 -2px 12px var(--accent-amber-glow); }
+.glass-card.accent-emerald { border-top: 2px solid var(--accent-emerald);  box-shadow: var(--shadow-card), 0 -2px 12px var(--accent-emerald-glow); }
+
+/* ---- Frosted-glass upgrade to the signature NavSidebar ------------------ */
+/* It already blurs; swap its opaque fill for the translucent glass so it reads
+   as a real pane of frosted glass floating over the void. */
+.nav-sidebar {
+  background: var(--glass-bg) !important;
+  border-right: 1px solid var(--glass-border-bright);
+}
+
+/* ---- Badges (reusable) -------------------------------------------------- */
+.badge {
+  display: inline-flex; align-items: center;
+  padding: 2px var(--sp-2);
+  border-radius: var(--r-full);
+  font-size: var(--fs-xs); font-weight: var(--fw-semibold); letter-spacing: 0.3px;
+}
+.badge-red     { background: var(--red-ghost);             color: var(--red-core);        border: 1px solid var(--red-dim); }
+.badge-violet  { background: rgba(124, 58, 237, 0.12);     color: var(--accent-violet);   border: 1px solid rgba(124, 58, 237, 0.25); }
+.badge-cyan    { background: rgba(6, 182, 212, 0.12);      color: var(--accent-cyan);     border: 1px solid rgba(6, 182, 212, 0.25); }
+.badge-amber   { background: rgba(245, 158, 11, 0.12);     color: var(--accent-amber);    border: 1px solid rgba(245, 158, 11, 0.25); }
+.badge-emerald { background: rgba(16, 185, 129, 0.12);     color: var(--accent-emerald);  border: 1px solid rgba(16, 185, 129, 0.25); }
+
+/* ---- Skill tag (reusable) ---------------------------------------------- */
+.skill-tag {
+  display: inline-flex; align-items: center; gap: var(--sp-1);
+  padding: var(--sp-1) var(--sp-3);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-full);
+  font-size: var(--fs-xs); color: var(--text-secondary);
+  transition: border-color var(--dur-fast) var(--ease-smooth), color var(--dur-fast) var(--ease-smooth), background var(--dur-fast) var(--ease-smooth);
+}
+.skill-tag:hover { border-color: var(--red-core); color: var(--text-primary); background: var(--red-ghost); }
+
+/* ---- Icon button (reusable) -------------------------------------------- */
+.btn-icon {
+  width: 36px; height: 36px;
+  border-radius: var(--r-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-smooth), color var(--dur-fast) var(--ease-smooth), border-color var(--dur-fast) var(--ease-smooth);
+}
+.btn-icon:hover { background: var(--glass-bg-hover); color: var(--text-primary); border-color: var(--glass-border-bright); }
+
+/* ---- Progress (reusable) ----------------------------------------------- */
+.progress-ring { transform: rotate(-90deg); }
+.progress-ring-track { fill: none; stroke: var(--glass-border); stroke-width: 3; }
+.progress-ring-fill  { fill: none; stroke-width: 3; stroke-linecap: round; transition: stroke-dashoffset var(--dur-slow) var(--ease-smooth); }
+.progress-bar { height: 4px; background: var(--glass-border); border-radius: var(--r-full); overflow: hidden; }
+/* Fill scales horizontally (transform, not width) to avoid layout thrash —
+   consumers set `transform: scaleX(<fraction>)`. */
+.progress-bar-fill { height: 100%; width: 100%; transform-origin: left; border-radius: var(--r-full); transition: transform var(--dur-slow) var(--ease-smooth); }
+
+/* Section entrance helper (opt-in) */
+.section-enter { animation: slideIn var(--dur-slow) var(--ease-out); }

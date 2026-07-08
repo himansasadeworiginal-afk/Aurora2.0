@@ -1,123 +1,289 @@
 /* ============================================================================
-   Aurora — Design Tokens
-   Refined red/black neon identity. Loaded AFTER App.css so these values win;
-   every legacy variable name from App.css's :root is preserved here so the
-   existing stylesheet keeps working untouched during the staged rebuild.
+   Aurora — Design Tokens  ·  Glassmorphism overhaul
+   A high-end holographic command center: black-void backgrounds, electric red
+   as the soul, glass surfaces, and vivid accent hues for data encoding.
+
+   Loaded AFTER App.css so these values win. Every LEGACY variable name is
+   preserved and re-pointed onto the new palette, so the entire existing app
+   (App.css + all *-v2 stylesheets) adopts the redesign with no markup changes.
+   The new void, glass and accent name families are added for new glass classes.
    ============================================================================ */
 
 :root {
-  /* ---- Core surfaces ------------------------------------------------------ */
-  --bg:            #070101;   /* near-black base */
-  --bg-raise:      #0d0303;   /* raised panels on the page bg */
-  --surface:       rgba(220, 20, 20, 0.06);
-  --surface-hover: rgba(220, 20, 20, 0.12);
-  --surface-2:     rgba(220, 20, 20, 0.10);
-  --panel:         linear-gradient(160deg, rgba(20, 4, 4, 0.92), rgba(10, 2, 2, 0.96));
-  --panel-glass:   rgba(14, 3, 3, 0.72);
+  /* ======================================================================
+     NEW palette — the source of truth for the overhaul
+     ====================================================================== */
 
-  /* ---- Accent (red) ------------------------------------------------------- */
-  --accent:    #e60000;
-  --accent2:   #ff2a2a;
-  --red:       #e60000;
-  --red-light: #ff3b3b;
-  --red-dim:   #6a1010;
-  --red-deep:  #3a0808;
+  /* VOID — backgrounds */
+  --void-deepest: #030305;
+  --void-deep:    #0a0a0f;
+  --void-mid:     #111118;
+  --void-surface: #16161f;
 
-  /* ---- Secondary hues (PARA / category coding) --------------------------- */
-  --amber:      #e0ad4a;
-  --amber-dim:  #7a5a1a;
-  --purple:     #9d6bd6;
-  --purple-dim: #5a2a8a;
-  --teal:       #34c3a0;
-  --teal-dim:   #1a6a55;
+  /* GLASS — glassmorphism layers */
+  --glass-bg:            rgba(255, 255, 255, 0.04);
+  --glass-bg-hover:      rgba(255, 255, 255, 0.07);
+  --glass-bg-active:     rgba(255, 255, 255, 0.10);
+  --glass-border:        rgba(255, 255, 255, 0.08);
+  --glass-border-bright: rgba(255, 255, 255, 0.15);
+  --glass-shine:         rgba(255, 255, 255, 0.03);
 
-  /* ---- Text --------------------------------------------------------------- */
-  --text:       #ffe0e0;  /* primary */
-  --text-dim:   #d59494;  /* secondary */
-  --text-muted: #9a5555;  /* tertiary / captions */
-  --text-faint: #6e3a3a;  /* disabled / hints */
-  --text-on-accent: #fff5f5;
+  /* RED — DEMOTED. Re-pointed to aurora so no stray red survives; genuine
+     alerts use --alert-red (defined in the redesign block below). */
+  --red-core:         var(--aurora-teal);
+  --red-glow:         rgba(221, 183, 255, 0.35);
+  --red-glow-intense: rgba(221, 183, 255, 0.6);
+  --red-ghost:        rgba(221, 183, 255, 0.12);
 
-  /* ---- Borders ------------------------------------------------------------ */
-  --border:        rgba(220, 20, 20, 0.12);
-  --border-hover:  rgba(220, 20, 20, 0.26);
-  --border-strong: rgba(220, 20, 20, 0.4);
+  /* ACCENT colours — data encoding / widget highlights */
+  --accent-violet: #7c3aed;  --accent-violet-glow: rgba(124, 58, 237, 0.3);
+  --accent-cyan:   #06b6d4;  --accent-cyan-glow:   rgba(6, 182, 212, 0.3);
+  --accent-amber:  #f59e0b;  --accent-amber-glow:  rgba(245, 158, 11, 0.3);
+  --accent-emerald:#10b981;  --accent-emerald-glow:rgba(16, 185, 129, 0.3);
+  --accent-rose:   #f43f5e;  --accent-rose-glow:   rgba(244, 63, 94, 0.3);
 
-  /* ---- Spacing scale (4px base) ------------------------------------------ */
-  --sp-1: 4px;
-  --sp-2: 8px;
-  --sp-3: 12px;
-  --sp-4: 16px;
-  --sp-5: 20px;
-  --sp-6: 24px;
-  --sp-8: 32px;
-  --sp-10: 40px;
-  --sp-12: 48px;
-  --sp-16: 64px;
+  /* Glass blur */
+  --blur-sm: blur(8px);
+  --blur-md: blur(16px);
+  --blur-lg: blur(24px);
+  --blur-xl: blur(40px);
 
-  /* ---- Radii -------------------------------------------------------------- */
-  --r-sm:   6px;
-  --r-md:   10px;   /* legacy --radius */
-  --radius: 10px;   /* legacy alias */
+  /* New named text levels — aurora ramp */
+  --text-primary:   #F2F2F5;
+  --text-secondary: #A6A6B3;
+  --text-tertiary:  #6E6E7A;
+  --text-accent:    var(--aurora-teal);
+  --text-inverse:   #0A0A0F;
+
+  /* ======================================================================
+     LEGACY names — re-pointed onto the new palette (do not rename; the app
+     consumes these everywhere)
+     ====================================================================== */
+
+  /* ---- Core surfaces (aurora void) ---- */
+  --bg:            var(--bg-base);
+  --bg-raise:      var(--bg-surface-1);
+  --surface:       var(--bg-surface-1);
+  --surface-hover: #1c1c26;
+  --surface-2:     var(--bg-surface-2);
+  /* Panels/modals are flat, quiet elevated surfaces. */
+  --panel:         linear-gradient(160deg, #191922, #121218);
+  --panel-glass:   rgba(18, 18, 24, 0.82);
+
+  /* ---- Accent (aurora — red demoted to --alert-red only) ---- */
+  --accent:    var(--aurora-teal);
+  --accent2:   var(--aurora-violet);
+  --red:       var(--aurora-teal);
+  --red-light: var(--aurora-green);
+  --red-dim:   #1c6b5f;
+  --red-deep:  #14524a;
+
+  /* ---- Secondary hues (PARA / category coding) — aurora family ---- */
+  --amber:      var(--aurora-green);
+  --amber-dim:  #2c6b4f;
+  --purple:     var(--aurora-violet);
+  --purple-dim: #5b21b6;
+  --teal:       var(--aurora-teal);
+  --teal-dim:   #1a6a5f;
+
+  /* ---- Text ---- */
+  --text:       var(--text-primary);
+  --text-dim:   var(--text-secondary);
+  --text-muted: var(--text-tertiary);
+  --text-faint: rgba(255, 255, 255, 0.16);
+  --text-on-accent: #0A0A0F;
+
+  /* ---- Borders ---- */
+  --border:        var(--border-hairline);
+  --border-hover:  var(--border-strong-next);
+  --border-strong: var(--border-strong-next);
+
+  /* ---- Spacing scale (4px base) ---- */
+  --sp-1: 4px;   --sp-2: 8px;   --sp-3: 12px;  --sp-4: 16px;
+  --sp-5: 20px;  --sp-6: 24px;  --sp-8: 32px;  --sp-10: 40px;
+  --sp-12: 48px; --sp-16: 64px;
+
+  /* ---- Fibonacci rhythm — organic, golden-ratio spacing for hero surfaces.
+     Each step ≈ 1.618× the last, so layouts breathe instead of marching. ---- */
+  --fib-2:  8px;
+  --fib-3:  13px;
+  --fib-4:  21px;
+  --fib-5:  34px;
+  --fib-6:  55px;
+  --fib-7:  89px;
+  --fib-8:  144px;
+
+  /* ---- Radii ---- */
+  --r-sm:   8px;
+  --r-md:   12px;
+  --radius: 12px;   /* legacy alias */
   --r-lg:   16px;
-  --r-xl:   22px;
-  --r-pill: 999px;
+  --r-xl:   20px;
+  --r-2xl:  28px;
+  --r-full: 9999px;
+  --r-pill: 9999px; /* legacy alias */
 
-  /* ---- Typography --------------------------------------------------------- */
-  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* ---- Typography ---- */
+  --font:         'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Sora', 'Inter', system-ui, sans-serif;
+  --font-heading: 'Sora', 'Inter', system-ui, sans-serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
   --fs-xs:   0.72rem;
   --fs-sm:   0.82rem;
   --fs-base: 0.94rem;
   --fs-md:   1.05rem;
   --fs-lg:   1.25rem;
-  --fs-xl:   1.6rem;
-  --fs-2xl:  2.1rem;
-  --fs-3xl:  2.8rem;
+  --fs-xl:   1.55rem;
+  --fs-2xl:  2.05rem;
+  --fs-3xl:  2.7rem;
   --fw-light:    300;
   --fw-regular:  400;
   --fw-medium:   500;
   --fw-semibold: 600;
+  --fw-bold:     700;
   --lh-tight: 1.15;
-  --lh-base:  1.5;
+  --lh-base:  1.55;
   --tracking-tight: -0.03em;
   --tracking-wide:  0.08em;
 
-  /* ---- Elevation / shadow ------------------------------------------------- */
+  /* ---- Elevation / shadow ---- */
   --shadow-1: 0 2px 8px rgba(0, 0, 0, 0.4);
   --shadow-2: 0 8px 24px rgba(0, 0, 0, 0.5);
   --shadow-3: 0 18px 48px rgba(0, 0, 0, 0.6);
+  --shadow-card:       0 4px 24px rgba(0, 0, 0, 0.4), 0 1px 0 rgba(255, 255, 255, 0.05) inset;
+  --shadow-card-hover: 0 8px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  --shadow-red-glow:         0 0 20px rgba(221, 183, 255, 0.30), 0 0 60px rgba(139, 124, 246, 0.12);
+  --shadow-red-glow-intense: 0 0 30px rgba(221, 183, 255, 0.5);
+  --shadow-widget: 0 8px 32px rgba(0, 0, 0, 0.5);
 
-  /* ---- Neon glow ---------------------------------------------------------- */
-  --glow:        0 0 20px rgba(220, 20, 20, 0.3);
-  --glow-sm:     0 0 10px rgba(230, 0, 0, 0.35);
-  --glow-md:     0 0 22px rgba(230, 0, 0, 0.4);
-  --glow-lg:     0 0 44px rgba(230, 0, 0, 0.45);
-  --glow-text:   0 0 18px rgba(230, 0, 0, 0.45), 0 0 48px rgba(230, 0, 0, 0.15);
-  --glow-inset:  inset 0 0 22px rgba(230, 0, 0, 0.06);
+  /* ---- Neon glow (red, electric) ---- */
+  --glow:        0 0 20px rgba(221, 183, 255, 0.32);
+  --glow-sm:     0 0 10px rgba(221, 183, 255, 0.30);
+  --glow-md:     0 0 22px rgba(139, 124, 246, 0.34);
+  --glow-lg:     0 0 44px rgba(221, 183, 255, 0.42);
+  --glow-text:   0 0 18px rgba(221, 183, 255, 0.42), 0 0 48px rgba(139, 124, 246, 0.12);
+  --glow-inset:  inset 0 0 22px rgba(221, 183, 255, 0.06);
+  /* Semantic glows for the detection review (new = emerald, changed = amber). */
+  --glow-green:  0 0 0 1px rgba(16, 185, 129, 0.55), 0 0 16px rgba(16, 185, 129, 0.28);
+  --glow-amber:  0 0 0 1px rgba(245, 158, 11, 0.6), 0 0 16px rgba(245, 158, 11, 0.3);
+  --color-green: var(--accent-emerald);
+  --color-amber: var(--accent-amber);
 
-  /* ---- Gradients ---------------------------------------------------------- */
-  --bg-gradient:     radial-gradient(ellipse 120% 80% at 50% -10%, #150404 0%, #0a0202 40%, #050101 100%);
-  --gradient-red:    linear-gradient(135deg, #e60000, #ff3b3b);
-  --gradient-amber:  linear-gradient(135deg, #e0ad4a, #f0cf78);
-  --gradient-purple: linear-gradient(135deg, #9d6bd6, #c193ec);
-  --gradient-teal:   linear-gradient(135deg, #34c3a0, #5fe6c4);
-  --gradient-wide:   linear-gradient(120deg, #e60000, #ff3b3b 45%, #9d6bd6);
+  /* ---- Gradients ---- */
+  --bg-gradient:
+    radial-gradient(ellipse 620px 440px at -140px -120px, rgba(221, 183, 255, 0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 520px 380px at calc(100% + 140px) calc(100% + 140px), rgba(139, 124, 246, 0.07) 0%, transparent 72%),
+    radial-gradient(ellipse 400px 300px at 50% calc(100% + 80px), rgba(82, 227, 164, 0.05) 0%, transparent 70%),
+    var(--bg-base);
+  --grad-red:        var(--aurora-gradient);
+  --grad-red-subtle: linear-gradient(135deg, rgba(221, 183, 255, 0.16) 0%, rgba(139, 124, 246, 0.06) 100%);
+  --grad-glass:      linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+  --grad-card-shine: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+  --grad-violet:     linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+  --grad-cyan:       linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+  --grad-amber:      linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  --grad-emerald:    linear-gradient(135deg, #10b981 0%, #059669 100%);
+  /* Legacy gradient names → new set */
+  --gradient-red:    var(--grad-red);
+  --gradient-amber:  var(--grad-amber);
+  --gradient-purple: var(--grad-violet);
+  --gradient-teal:   var(--grad-emerald);
+  --gradient-wide:   var(--aurora-gradient);
 
-  /* ---- Motion ------------------------------------------------------------- */
-  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);   /* quart-ish, smooth decel */
-  --ease-expo:   cubic-bezier(0.16, 1, 0.3, 1);    /* snappy, no overshoot */
+  /* ---- Motion ---- */
+  --ease-out:    cubic-bezier(0, 0, 0.2, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-expo:   cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-  --ease-spring: cubic-bezier(0.3, 1.2, 0.5, 1);   /* subtle overshoot for check/toggle only */
-  --dur-fast: 0.16s;
-  --dur-base: 0.28s;
-  --dur-slow: 0.5s;
-  --transition: 0.4s cubic-bezier(0.22, 1, 0.36, 1); /* legacy alias */
+  --ease-spring: cubic-bezier(0.34, 1, 0.64, 1); /* lively but smooth (no tacky overshoot) */
+  --dur-fast:   0.15s;
+  --dur-normal: 0.25s;
+  --dur-base:   0.25s;  /* legacy alias of normal */
+  --dur-slow:   0.4s;
+  --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1); /* legacy alias */
 
-  /* ---- Z-index layers ----------------------------------------------------- */
+  /* ---- Z-index layers ---- */
   --z-scene:   0;
   --z-content: 10;
   --z-nav:     40;
   --z-panel:   60;
   --z-modal:   80;
   --z-toast:   100;
+
+  /* ======================================================================
+     AURORA BOREALIS REDESIGN TOKENS  ·  additive (Phase 0)
+     ----------------------------------------------------------------------
+     The new palette for the "aurora at night" direction. Added ALONGSIDE
+     the existing tokens — nothing here is wired into components yet, so the
+     app looks identical until later phases opt in.
+
+     Naming note: a handful of functional token names in the redesign spec
+     (--text-primary/secondary/muted, --border-strong, --dur-fast/base/slow,
+     --ease-out) ALREADY EXIST above with different values and are in active
+     use. Overriding them here would change the app immediately and break the
+     Phase-0 "zero visual change" guarantee (esp. --dur-slow: 0.4s → 2400ms).
+     So those collide-and-differ names are staged with a `-next` suffix and
+     promoted to canonical names during Phase 7 cleanup, once the old red
+     values are purged. New, non-colliding names are defined directly.
+     ====================================================================== */
+
+  /* Backgrounds */
+  --bg-base:        #0A0A0F;
+  --bg-surface-1:   #121218;   /* cards */
+  --bg-surface-2:   #191922;   /* modals, popovers, elevated panels */
+  --border-hairline: rgba(255, 255, 255, 0.08);
+  --border-strong-next: rgba(255, 255, 255, 0.14);
+
+  /* Text (staged — see note above) */
+  --text-primary-next:   #F2F2F5;
+  --text-secondary-next: #A6A6B3;
+  --text-muted-next:     #6E6E7A;
+
+  /* Obsidian Neon accents — primary purple, secondary cyan, tertiary orange.
+     Legacy aurora-* names kept (the whole app reads them); values re-pointed. */
+  --aurora-teal:   #ddb7ff;   /* PRIMARY — electric purple */
+  --aurora-violet: #4cd7f6;   /* SECONDARY — cyan */
+  --aurora-green:  #ffb690;   /* TERTIARY — sunset orange */
+  --aurora-gradient: linear-gradient(120deg, #ddb7ff, #b76dff 55%, #4cd7f6);
+
+  /* Obsidian Neon semantic tokens (used by the reworked shell + hero pages) */
+  --primary:            #ddb7ff;
+  --primary-container:  #b76dff;
+  --on-primary:         #2c0051;
+  --secondary:          #4cd7f6;
+  --tertiary:           #ffb690;
+  --on-surface:         #e4e2e4;
+  --on-surface-variant: #cfc2d6;
+  --surface-1:          #131315;
+  --surface-2:          #1b1b1d;
+  --surface-3:          #1f1f21;
+  --surface-4:          #2a2a2c;
+  --surface-variant:    #353437;
+  --grad-primary:  linear-gradient(135deg, #ddb7ff, #b76dff);
+  --grad-capture:  linear-gradient(120deg, #ddb7ff, #4cd7f6);
+  --glow-primary:  0 0 15px rgba(221, 183, 255, 0.22);
+  --glow-secondary:0 0 15px rgba(76, 215, 246, 0.22);
+
+  /* Alert red — reserved for overdue / ringing / error states ONLY */
+  --alert-red: #E6394A;
+
+  /* Spacing scale (Fibonacci-derived) */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px;
+  --space-4: 20px; --space-5: 32px; --space-6: 52px; --space-7: 84px;
+
+  /* Radius */
+  --radius-sm: 6px; --radius-md: 10px; --radius-lg: 16px;
+
+  /* Motion (staged where colliding) */
+  --dur-fast-next: 120ms;
+  --dur-base-next: 240ms;
+  --dur-slow-next: 2400ms;         /* aurora drift */
+  --dur-aurora-drift: 2400ms;      /* non-colliding convenience name for the drift */
+  --ease-out-next: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Typography */
+  --font-ui: 'Inter', system-ui, sans-serif;      /* all functional UI */
+  --font-display-neon: 'Sora', 'Inter', system-ui, sans-serif; /* Obsidian Neon display */
+  --font-ai: 'Fraunces', Georgia, serif;          /* AI-authored text only */
 }

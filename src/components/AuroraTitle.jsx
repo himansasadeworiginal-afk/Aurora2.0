@@ -20,11 +20,11 @@ export default function AuroraTitle({ onToggleList, showList, ideaCount, testCou
         <div className="aurora-logo">
           <div className="aurora-icon">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <circle cx="10" cy="10" r="8" stroke="#e60000" strokeWidth="1.5" opacity="0.6" />
-              <circle cx="10" cy="10" r="4" fill="#e60000" opacity="0.3" />
-              <circle cx="10" cy="10" r="1.5" fill="#e60000" />
-              <line x1="10" y1="2" x2="10" y2="18" stroke="#e60000" strokeWidth="0.5" opacity="0.2" />
-              <line x1="2" y1="10" x2="18" y2="10" stroke="#e60000" strokeWidth="0.5" opacity="0.2" />
+              <circle cx="10" cy="10" r="8" stroke="#2DD4BF" strokeWidth="1.5" opacity="0.6" />
+              <circle cx="10" cy="10" r="4" fill="#2DD4BF" opacity="0.3" />
+              <circle cx="10" cy="10" r="1.5" fill="#2DD4BF" />
+              <line x1="10" y1="2" x2="10" y2="18" stroke="#2DD4BF" strokeWidth="0.5" opacity="0.2" />
+              <line x1="2" y1="10" x2="18" y2="10" stroke="#2DD4BF" strokeWidth="0.5" opacity="0.2" />
             </svg>
           </div>
           <div className="aurora-title-group">

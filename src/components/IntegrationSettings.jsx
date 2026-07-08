@@ -45,7 +45,6 @@ const INTEGRATIONS = [
 
 export default function IntegrationSettings({ onClose }) {
   const [settings, setSettings] = useState({})
-  const [saving, setSaving] = useState(null)
 
   useEffect(() => {
     loadSettings()

@@ -6,17 +6,17 @@
     <title>Aurora 5.0 — AI Second Brain</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>" />
     <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#050508" />
+    <meta name="theme-color" content="#0A0A0F" />
     <meta name="description" content="Aurora 5.0 — AI-Powered Second Brain with 3D Knowledge Space" />
+    <!-- Self-hosted fonts (Inter + Fraunces) — offline, no CDN. Loaded here so the boot splash gets Inter immediately. -->
+    <link rel="stylesheet" href="/fonts.css" />
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap');
-
       * { margin: 0; padding: 0; box-sizing: border-box; }
 
       body {
         margin: 0;
-        background: #050508;
-        color: #ffd0d0;
+        background: #0A0A0F;
+        color: #A6A6B3;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         overflow: hidden;
         height: 100vh;
@@ -30,7 +30,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        background: #050508;
+        background: #0A0A0F;
         z-index: 9999;
         transition: opacity 0.8s ease, visibility 0.8s ease;
       }
@@ -47,7 +47,7 @@
         width: 320px;
         height: 320px;
         border-radius: 50%;
-        border: 1px solid rgba(200, 0, 0, 0.06);
+        border: 1px solid rgba(221, 183, 255, 0.07);
         animation: ringPulse 3s ease-in-out infinite;
       }
 
@@ -55,14 +55,14 @@
         width: 240px;
         height: 240px;
         animation-delay: 0.6s;
-        border-color: rgba(200, 20, 0, 0.04);
+        border-color: rgba(76, 215, 246, 0.06);
       }
 
       #splash .rings:nth-child(3) {
         width: 160px;
         height: 160px;
         animation-delay: 1.2s;
-        border-color: rgba(180, 0, 0, 0.03);
+        border-color: rgba(255, 182, 144, 0.05);
       }
 
       @keyframes ringPulse {
@@ -90,49 +90,50 @@
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        background: #e60000;
-        box-shadow: 0 0 20px rgba(200, 0, 0, 0.6), 0 0 60px rgba(200, 0, 0, 0.2);
+        background: #ddb7ff;
+        box-shadow: 0 0 20px rgba(221, 183, 255, 0.6), 0 0 60px rgba(76, 215, 246, 0.2);
         animation: dotPulse 2s ease-in-out infinite;
       }
 
       @keyframes dotPulse {
-        0%, 100% { box-shadow: 0 0 20px rgba(200, 0, 0, 0.6), 0 0 60px rgba(200, 0, 0, 0.2); }
-        50% { box-shadow: 0 0 30px rgba(200, 0, 0, 0.8), 0 0 80px rgba(200, 0, 0, 0.3); }
+        0%, 100% { box-shadow: 0 0 20px rgba(221, 183, 255, 0.55), 0 0 60px rgba(76, 215, 246, 0.2); }
+        50% { box-shadow: 0 0 30px rgba(221, 183, 255, 0.8), 0 0 80px rgba(255, 182, 144, 0.3); }
       }
 
       #splash .logo-line {
         width: 40px;
         height: 1px;
-        background: linear-gradient(90deg, transparent, rgba(200, 0, 0, 0.3), transparent);
+        background: linear-gradient(90deg, transparent, rgba(221, 183, 255, 0.35), transparent);
       }
 
       #splash h1 {
+        font-family: 'Sora', 'Inter', sans-serif;
         font-size: 3.8rem;
-        font-weight: 200;
+        font-weight: 700;
         letter-spacing: -0.04em;
         margin: 0;
         line-height: 1;
-        background: linear-gradient(135deg, #fff 0%, #ffd5d5 40%, #e60000 70%, #ff1a1a 100%);
+        background: linear-gradient(120deg, #fff 0%, #ddb7ff 42%, #4cd7f6 70%, #ffb690 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        filter: drop-shadow(0 0 40px rgba(200, 0, 0, 0.15));
+        filter: drop-shadow(0 0 40px rgba(221, 183, 255, 0.16));
         animation: titleFade 1.2s ease-out;
       }
 
       @keyframes titleFade {
-        0% { opacity: 0; transform: translateY(10px); filter: drop-shadow(0 0 0px rgba(200, 0, 0, 0)); }
-        100% { opacity: 1; transform: translateY(0); filter: drop-shadow(0 0 40px rgba(200, 0, 0, 0.15)); }
+        0% { opacity: 0; transform: translateY(10px); filter: drop-shadow(0 0 0px rgba(221, 183, 255, 0)); }
+        100% { opacity: 1; transform: translateY(0); filter: drop-shadow(0 0 40px rgba(221, 183, 255, 0.16)); }
       }
 
       #splash .badge {
         display: inline-block;
         font-size: 0.9rem;
         font-weight: 500;
-        color: #e60000;
-        -webkit-text-fill-color: #e60000;
-        background: rgba(200, 0, 0, 0.1);
-        border: 1px solid rgba(200, 0, 0, 0.2);
+        color: #ddb7ff;
+        -webkit-text-fill-color: #ddb7ff;
+        background: rgba(221, 183, 255, 0.1);
+        border: 1px solid rgba(221, 183, 255, 0.22);
         padding: 2px 12px;
         border-radius: 20px;
         margin-left: 8px;
@@ -143,7 +144,7 @@
       #splash .tagline {
         font-size: 0.9rem;
         font-weight: 300;
-        color: #aa3333;
+        color: #6E6E7A;
         letter-spacing: 0.15em;
         text-transform: uppercase;
         animation: taglineFade 1.2s ease-out 0.3s both;
@@ -158,7 +159,7 @@
         margin-top: 40px;
         width: 160px;
         height: 1px;
-        background: rgba(200, 0, 0, 0.1);
+        background: rgba(255, 255, 255, 0.08);
         border-radius: 1px;
         overflow: hidden;
         animation: progressIn 0.6s ease-out 0.6s both;
@@ -167,7 +168,7 @@
       #splash .progress-bar {
         height: 100%;
         width: 0%;
-        background: linear-gradient(90deg, #ff1a1a, #e60000);
+        background: linear-gradient(90deg, #ddb7ff, #4cd7f6, #ffb690);
         border-radius: 1px;
         animation: progressLoad 2.2s ease-in-out 0.6s infinite;
       }
@@ -188,7 +189,7 @@
         margin-top: 12px;
         font-size: 0.7rem;
         font-weight: 300;
-        color: #aa3333;
+        color: #6E6E7A;
         letter-spacing: 0.1em;
         text-transform: uppercase;
         animation: loadingPulse 2s ease-in-out 0.8s infinite;
@@ -204,7 +205,7 @@
         position: fixed;
         inset: 0;
         z-index: 9998;
-        background: #080101;
+        background: #0a0a0b;
         align-items: center;
         justify-content: center;
         text-align: center;
@@ -212,13 +213,13 @@
       }
 
       .no-3d-fallback h2 {
-        color: #e60000;
+        color: #ddb7ff;
         font-weight: 300;
         font-size: 2rem;
       }
 
       .no-3d-fallback p {
-        color: #aa3333;
+        color: #A6A6B3;
         max-width: 500px;
         line-height: 1.6;
         margin-top: 12px;

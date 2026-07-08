@@ -6,7 +6,7 @@ export default function ParticleField() {
   const ref = useRef()
   const count = 3000
 
-  const [positions, colors, sizes] = useMemo(() => {
+  const [positions, colors] = useMemo(() => {
     const pos = new Float32Array(count * 3)
     const col = new Float32Array(count * 3)
     const siz = new Float32Array(count)

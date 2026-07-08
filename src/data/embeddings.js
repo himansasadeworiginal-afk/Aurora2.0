@@ -1,4 +1,5 @@
 import db from './db'
+import { aiExpandConcepts, aiRerank } from './ai-client'
 
 const STOP_WORDS = new Set('a,an,the,is,was,are,were,be,been,being,have,has,had,do,does,did,will,would,can,could,shall,should,may,might,to,of,in,for,on,with,at,by,from,as,into,through,during,before,after,above,below,between,out,off,over,under,again,further,then,once,here,there,when,where,why,how,all,each,every,both,few,more,most,other,some,such,no,nor,not,only,own,same,so,than,too,very,just,about,up,this,that,these,those,it,its,what,which,who,whom'.split(','))
 
@@ -55,7 +56,16 @@ export async function search(query, limit = 20) {
   const qTokens = tokenize(query)
   if (qTokens.length === 0) return []
 
-  const qVector = buildTokenVector(qTokens)
+  // When AI is available, expand the query into related concepts/synonyms so we
+  // match by meaning, not just exact words. Falls back to the bare query tokens.
+  let matchTokens = qTokens
+  const expanded = await aiExpandConcepts(query)
+  if (expanded.ok && expanded.tokens?.length) {
+    const extra = expanded.tokens.flatMap(tokenize)
+    matchTokens = [...new Set([...qTokens, ...extra])]
+  }
+
+  const qVector = buildTokenVector(matchTokens)
   const allEmbeddings = await db.embeddings.toArray()
   const notes = await db.notes.toArray()
   const noteMap = {}
@@ -75,7 +85,50 @@ export async function search(query, limit = 20) {
   }
 
   results.sort((a, b) => b.score - a.score)
+
+  // Re-rank the top candidates by meaning via Claude. If it's offline or fails,
+  // keep the cosine ordering exactly as before.
+  const top = results.slice(0, Math.max(limit, 12))
+  if (top.length > 1) {
+    const candidates = top
+      .filter(r => r.note)
+      .map(r => ({ id: r.note.id, title: r.note.title, snippet: r.note.content || '' }))
+    const ranked = await aiRerank(query, candidates)
+    if (ranked.ok && ranked.ids?.length) {
+      const byId = new Map(top.map(r => [String(r.note?.id), r]))
+      const reordered = []
+      for (const id of ranked.ids) {
+        const r = byId.get(String(id))
+        if (r) { reordered.push(r); byId.delete(String(id)) }
+      }
+      // Append any candidates Claude dropped, preserving cosine order.
+      for (const r of top) if (byId.has(String(r.note?.id))) reordered.push(r)
+      return reordered.slice(0, limit)
+    }
+  }
+
   return results.slice(0, limit)
+}
+
+// Enrich a single note's embedding with Claude-extracted concept tokens (merged
+// into the keyword tokens) so it can be found by meaning. Call this after a note
+// is created or edited. No-ops gracefully when AI is offline. Incremental by
+// design — we never bulk-call the API for the whole corpus on boot.
+export async function reindexNote(note) {
+  if (!note?.id) return
+  const text = `${note.title || ''} ${note.content || ''} ${(note.tags || []).join(' ')}`
+  const base = tokenize(text)
+  let tokens = base
+  let model = 'keyword-tf'
+  const res = await aiExpandConcepts(text)
+  if (res.ok && res.tokens?.length) {
+    const concepts = res.tokens.flatMap(tokenize)
+    tokens = [...new Set([...base, ...concepts])]
+    model = 'claude-concepts'
+  }
+  const existing = await db.embeddings.where('noteId').equals(note.id).first()
+  if (existing) await db.embeddings.update(existing.id, { tokens, model, dimension: tokens.length })
+  else await db.embeddings.add({ noteId: note.id, model, dimension: tokens.length, tokens, createdAt: new Date() })
 }
 
 export async function findRelated(noteId, limit = 3) {

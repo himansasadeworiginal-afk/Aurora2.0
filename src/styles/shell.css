@@ -1,0 +1,202 @@
+/* ============================================================================
+   Aurora — Shell & global chrome  ·  Obsidian Neon (Stitch) redesign
+   Loaded LAST (after glass.css) so it wins the cascade over both the legacy
+   App.css nav rules and the trailing "Enhanced" App.css patch layer, without
+   editing that 8k-line monolith. Visual only — no logic changes.
+
+   Wide, labelled left rail with the Aurora brand top-left + a user footer,
+   matching the five Stitch screens. Main content is offset by the rail width.
+   ============================================================================ */
+
+:root { --nav-w: 244px; }
+
+/* ---- Wide nav rail ------------------------------------------------------ */
+.nav-sidebar {
+  width: var(--nav-w) !important;
+  align-items: stretch !important;
+  padding: 20px 14px !important;
+  gap: 0 !important;
+  background: linear-gradient(180deg, rgba(19, 19, 21, 0.72), rgba(10, 10, 11, 0.82)) !important;
+  backdrop-filter: blur(22px) !important;
+  -webkit-backdrop-filter: blur(22px) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 0 30px rgba(132, 43, 210, 0.08) !important;
+}
+
+/* Brand */
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 4px 8px 4px;
+  margin-bottom: 26px;
+}
+.nav-brand-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--grad-primary);
+  box-shadow: 0 0 18px rgba(221, 183, 255, 0.35);
+  flex-shrink: 0;
+}
+.nav-brand-text {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--primary);
+  text-shadow: 0 0 22px rgba(221, 183, 255, 0.35);
+}
+
+/* Nav list */
+.nav-sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  width: 100%;
+}
+
+.nav-btn {
+  position: relative;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  justify-content: flex-start !important;
+  gap: 13px;
+  width: 100% !important;
+  height: auto !important;
+  padding: 10px 12px !important;
+  border-radius: 10px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--on-surface-variant);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  font-size: 0.82rem;
+}
+.nav-btn::before, .nav-btn::after { display: none !important; }
+.nav-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--on-surface);
+  border-color: transparent;
+}
+.nav-btn.active {
+  background: var(--primary-container);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 0 16px rgba(221, 183, 255, 0.28);
+}
+
+.nav-btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  flex-shrink: 0;
+}
+.nav-btn.active .nav-btn-icon svg { stroke-width: 1.6; }
+
+/* Label is now inline, not a hover tooltip */
+.nav-btn-label {
+  position: static !important;
+  transform: none !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  font-size: 0.82rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.01em !important;
+  color: inherit !important;
+  white-space: nowrap;
+}
+
+.nav-btn-badge {
+  margin-left: auto;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--secondary);
+  color: #002026;
+  font-size: 0.62rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nav-btn.active .nav-btn-badge { background: #fff; color: var(--primary-container); }
+
+/* Footer */
+.nav-foot {
+  margin-top: 12px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.nav-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 2px 6px;
+}
+.nav-user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #fff;
+  background: var(--grad-capture);
+  box-shadow: 0 0 0 1px rgba(221, 183, 255, 0.3);
+}
+.nav-user-meta { display: flex; flex-direction: column; line-height: 1.2; }
+.nav-user-name { font-size: 0.8rem; font-weight: 600; color: var(--on-surface); }
+.nav-user-role {
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--on-surface-variant);
+  opacity: 0.7;
+}
+.nav-version {
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+  padding-left: 6px;
+  margin: 0 !important;
+  animation: none !important;
+  text-transform: uppercase;
+}
+
+/* ---- Main content offset ------------------------------------------------ */
+.app-main { margin-left: var(--nav-w) !important; }
+
+/* Hero pages use a full-width canvas (their own headers), not the centered
+   600px column the legacy sections used. */
+.section-page {
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  padding: 0 !important;
+}
+.section-page > .section-page-inner { max-width: none; }
+
+@media (max-width: 900px) {
+  :root { --nav-w: 76px; }
+  .nav-brand-text, .nav-btn-label, .nav-user-meta, .nav-version { display: none !important; }
+  .nav-btn { justify-content: center !important; }
+  .nav-brand { justify-content: center; }
+  .nav-user { justify-content: center; }
+}

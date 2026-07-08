@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 
-const PRIORITY_COLORS = { high: '#ff3333', medium: '#ffaa33', low: '#66aaff' }
+const PRIORITY_COLORS = { high: '#F59E0B', medium: '#2DD4BF', low: '#8B7CF6' }
 
 const BellIcon = () => (
   <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">

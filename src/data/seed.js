@@ -1,4 +1,4 @@
-import db from './db.js'
+import db, { withoutSync } from './db.js'
 import { ideas } from './ideas.js'
 import { indexNotes } from './embeddings.js'
 
@@ -36,7 +36,11 @@ export async function seedFromIdeas() {
       links: idea.links || [],
     }))
 
-    await db.notes.bulkAdd(notes)
+    // Static content seeded identically from ideas.js on every device — not
+    // real user data, so it shouldn't flood the sync outbox (confirmed via a
+    // real two-browser-context test: a fresh profile's 220-note reseed
+    // buried the one real todo write it was supposed to be testing).
+    await withoutSync(['notes'], () => db.notes.bulkAdd(notes))
     await indexNotes()
     console.log(`[seed] Seeded ${notes.length} ideas from ideas.js`)
   } catch (err) {
@@ -63,7 +67,9 @@ export async function seedFromVault(vaultEntries) {
       vaultPath: entry.vaultPath || '',
     }))
 
-    await db.notes.bulkAdd(notes)
+    // Same reasoning as seedFromIdeas above — this is a one-time local import
+    // of the Obsidian vault, not a user-authored change to sync elsewhere.
+    await withoutSync(['notes'], () => db.notes.bulkAdd(notes))
     await indexNotes()
     console.log(`[seed] Seeded ${notes.length} vault files`)
   } catch (err) {

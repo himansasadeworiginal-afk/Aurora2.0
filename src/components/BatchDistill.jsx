@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import db from '../data/db'
+import { aiDistill, aiStatus } from '../data/ai-client'
 
 const LAYERS = [
   { key: 'soil', label: 'Soil', color: '#884422' },
@@ -14,6 +15,10 @@ export default function BatchDistill({ onClose }) {
   const [loading, setLoading] = useState(true)
   const [draft, setDraft] = useState('')
   const [completed, setCompleted] = useState(0)
+  const [aiAvail, setAiAvail] = useState(false)
+  const [aiBusy, setAiBusy] = useState(false)
+
+  useEffect(() => { aiStatus().then(s => setAiAvail(!!s.available)) }, [])
 
   const loadQueue = useCallback(async () => {
     setLoading(true)
@@ -82,6 +87,20 @@ export default function BatchDistill({ onClose }) {
     }
     setCurrentIdx(s => s + 1)
   }, [currentIdx, queue])
+
+  const autoDraft = useCallback(async () => {
+    if (!current || aiBusy) return
+    const cl = current.distillationDepth || 0
+    if (cl >= LAYERS.length) return
+    const key = LAYERS[cl].key
+    const prev = cl > 0 ? (current.distillation?.[LAYERS[cl - 1].key] || '') : ''
+    const source = (prev && prev.trim()) ? prev : (current.content || current.distillation?.soil || '')
+    if (!source.trim()) return
+    setAiBusy(true)
+    const res = await aiDistill({ title: current.title, source, layer: key })
+    setAiBusy(false)
+    if (res.ok && res.text) setDraft(res.text)
+  }, [current, aiBusy])
 
   if (loading) {
     return <div className="batch-distill"><div className="zoom-loading">Loading queue...</div></div>
@@ -161,7 +180,14 @@ export default function BatchDistill({ onClose }) {
         )}
         {layer ? (
           <div className="bd-editor">
-            <label className="bd-editor-label">{layer.label} Layer</label>
+            <div className="bd-editor-head">
+              <label className="bd-editor-label">{layer.label} Layer</label>
+              {aiAvail && currentLayer > 0 && (
+                <button className="zoom-ai-btn" onClick={autoDraft} disabled={aiBusy} title="Draft this layer with Claude">
+                  {aiBusy ? 'Drafting…' : '✦ Draft with AI'}
+                </button>
+              )}
+            </div>
             <textarea
               className="zoom-textarea"
               value={draft}

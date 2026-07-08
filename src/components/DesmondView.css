@@ -24,12 +24,13 @@
   background: linear-gradient(90deg, var(--bg), var(--panel));
   border-bottom: 1px solid var(--border);
 }
-.dsm-v2 .desmond-header > svg { color: #22aaff; filter: drop-shadow(0 0 6px rgba(34, 170, 255, 0.45)); }
+.dsm-v2 .desmond-header > svg { color: #ddb7ff; filter: drop-shadow(0 0 6px rgba(221, 183, 255, 0.45)); }
 
 .dsm-v2 .desmond-status-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-.dsm-v2 .desmond-status-ok { background: #44dd66; box-shadow: 0 0 8px rgba(68, 221, 102, 0.6); }
-.dsm-v2 .desmond-status-pending { background: #ffaa33; box-shadow: 0 0 8px rgba(255, 170, 51, 0.6); animation: dsmPulse 1.2s var(--ease-in-out) infinite; }
+.dsm-v2 .desmond-status-ok { background: #52E3A4; box-shadow: 0 0 8px rgba(82, 227, 164, 0.6); }
+.dsm-v2 .desmond-status-pending { background: #ddb7ff; box-shadow: 0 0 8px rgba(221, 183, 255, 0.55); animation: dsmPulse 1.2s var(--ease-in-out) infinite; }
 .dsm-v2 .desmond-status-off { background: var(--text-faint); }
+.dsm-v2 .desmond-status-error { background: var(--alert-red); box-shadow: 0 0 8px rgba(230, 57, 74, 0.6); }
 .dsm-v2 .desmond-status-label { font-size: var(--fs-xs); color: var(--text-muted); }
 
 .dsm-v2 .desmond-close-btn {
@@ -68,8 +69,8 @@
   animation: dsmRise 0.5s var(--ease-out) both;
 }
 .dsm-v2 .desmond-controls > svg {
-  color: #22aaff;
-  filter: drop-shadow(0 0 24px rgba(34, 170, 255, 0.35));
+  color: #ddb7ff;
+  filter: drop-shadow(0 0 24px rgba(221, 183, 255, 0.35));
   animation: dsmFloat 6s var(--ease-in-out) infinite;
 }
 .dsm-v2 .desmond-status-text { font-size: var(--fs-md); color: var(--text-dim); text-align: center; }
@@ -93,15 +94,15 @@
 .dsm-v2 .desmond-btn:disabled { opacity: 0.6; cursor: default; }
 
 .dsm-v2 .desmond-btn-primary {
-  color: #66ccff;
-  background: rgba(34, 170, 255, 0.14);
-  border-color: rgba(34, 170, 255, 0.32);
+  color: #7FE9D8;
+  background: rgba(221, 183, 255, 0.14);
+  border-color: rgba(221, 183, 255, 0.32);
 }
 .dsm-v2 .desmond-btn-primary:hover:not(:disabled) {
-  color: #99ddff;
-  background: rgba(34, 170, 255, 0.24);
-  border-color: rgba(34, 170, 255, 0.5);
-  box-shadow: 0 0 18px rgba(34, 170, 255, 0.3);
+  color: #B8F0E6;
+  background: rgba(221, 183, 255, 0.24);
+  border-color: rgba(221, 183, 255, 0.5);
+  box-shadow: 0 0 18px rgba(221, 183, 255, 0.3);
 }
 .dsm-v2 .desmond-btn-danger {
   color: var(--red-light);

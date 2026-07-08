@@ -1,5 +1,9 @@
 import { useState, useRef, useCallback } from 'react'
 import db from '../data/db'
+import { reindexNote } from '../data/embeddings'
+import { usePersonMentions } from './PersonMention/usePersonMentions'
+import { syncNoteMentions } from './PersonMention/personMentionData'
+import PersonMentionDropdown from './PersonMention/PersonMentionDropdown'
 
 export default function QuickCapture({ onCapture, allTags, onClose }) {
   const [expanded, setExpanded] = useState(false)
@@ -11,9 +15,12 @@ export default function QuickCapture({ onCapture, allTags, onClose }) {
   const recognitionRef = useRef(null)
   const [listening, setListening] = useState(false)
 
+  const mention = usePersonMentions({ textareaRef: inputRef, value: input, setValue: setInput })
+
   const handleInputChange = useCallback((e) => {
     const val = e.target.value
     setInput(val)
+    mention.onValueChange(val, e.target.selectionStart)
     const match = val.match(/#(\w*)$/)
     if (match) {
       const partial = match[1].toLowerCase()
@@ -34,7 +41,7 @@ export default function QuickCapture({ onCapture, allTags, onClose }) {
     const urlMatch = text.match(/(https?:\/\/[^\s]+)/)
     if (!urlMatch) return null
     try {
-      const res = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(urlMatch[0])}`)
+      const res = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(urlMatch[0])}`, { signal: AbortSignal.timeout(8000) })
       const data = await res.json()
       if (data?.data) {
         return {
@@ -62,21 +69,25 @@ export default function QuickCapture({ onCapture, allTags, onClose }) {
       }
     }
 
+    const title = content.split('\n')[0].slice(0, 80) || 'Quick Capture'
     const note = {
-      title: content.split('\n')[0].slice(0, 80) || 'Quick Capture',
+      title,
       content,
       createdAt: new Date(),
       updatedAt: new Date(),
       paraCategory: 'inbox',
       tags,
       source,
+      mentions: mention.mentions,
     }
 
     const id = await db.notes.add(note)
+    if (mention.mentions.length > 0) await syncNoteMentions(id, title, mention.mentions)
+    reindexNote({ ...note, id }) // index for search (+ AI concepts when available); fire-and-forget
     onCapture?.({ ...note, id })
     setInput('')
     setExpanded(false)
-  }, [input, mode, onCapture, extractUrl])
+  }, [input, mode, onCapture, extractUrl, mention.mentions])
 
   const toggleVoice = useCallback(() => {
     if (listening) {
@@ -135,15 +146,29 @@ export default function QuickCapture({ onCapture, allTags, onClose }) {
         </div>
       </div>
       <div className="quick-capture-body">
-        <textarea
-          ref={inputRef}
-          className="quick-capture-input"
-          value={input}
-          onChange={handleInputChange}
-          onKeyDown={e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) handleCapture() }}
-          placeholder={mode === 'url' ? 'Paste a URL to clip...' : 'Capture a thought... (use #tags)'}
-          rows={2}
-        />
+        <div className="pm-anchor">
+          <textarea
+            ref={inputRef}
+            className="quick-capture-input"
+            value={input}
+            onChange={handleInputChange}
+            onKeyDown={e => {
+              if (mention.open) { mention.onKeyDown(e); if (e.defaultPrevented) return }
+              if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) handleCapture()
+            }}
+            placeholder={mode === 'url' ? 'Paste a URL to clip...' : 'Capture a thought... (#tags, @*people)'}
+            rows={2}
+          />
+          {mention.open && (
+            <PersonMentionDropdown
+              query={mention.query}
+              people={mention.people}
+              controlRef={mention.controlRef}
+              onPick={mention.pick}
+              onCreate={mention.create}
+            />
+          )}
+        </div>
         {tagSuggestions.length > 0 && (
           <div className="qc-tag-suggestions">
             {tagSuggestions.map(tag => (

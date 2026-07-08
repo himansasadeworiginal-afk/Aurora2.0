@@ -1,280 +1,281 @@
-/* Daily Agenda — redesigned. Scoped under .agenda-v2 so these token-based
-   rules win over the legacy .agenda-* styles in App.css by specificity,
-   independent of bundle order. Markup/logic unchanged; only a wrapper class. */
+/* ============================================================================
+   Daily Agenda — Obsidian Neon · faithful rebuild of Stitch screen 3
+   Cyan (secondary) is the section accent; priority left-borders in
+   purple / cyan / orange. Glass panels over the void, Fibonacci rhythm.
+   ============================================================================ */
 
-.agenda-v2.agenda-modal {
-  width: min(100%, 640px);
-  margin: clamp(var(--sp-8), 7vh, 80px) auto var(--sp-10);
+.ag {
+  --sec: #4cd7f6;
+  --on-sec: #003640;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  max-height: calc(100vh - 120px);
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: var(--r-xl);
-  box-shadow: var(--shadow-3), var(--glow-inset);
   overflow: hidden;
-  animation: agRise 0.5s var(--ease-out) both;
-}
-.agenda-v2 .agenda-loading {
-  padding: var(--sp-12);
-  text-align: center;
-  color: var(--text-muted);
-  font-size: var(--fs-sm);
+  color: var(--on-surface);
 }
 
-/* ---- Header --------------------------------------------------------------- */
-.agenda-v2 .agenda-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--sp-4);
-  padding: var(--sp-6) var(--sp-6) var(--sp-4);
-}
-.agenda-v2 .agenda-greeting {
-  font-size: var(--fs-xl);
-  font-weight: var(--fw-light);
-  letter-spacing: var(--tracking-tight);
-  color: #fff;
-  text-shadow: var(--glow-text);
-}
-.agenda-v2 .agenda-date {
-  margin-top: var(--sp-1);
-  font-size: var(--fs-xs);
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
-  color: var(--text-muted);
-}
-.agenda-v2 .agenda-header-actions { display: flex; align-items: center; gap: var(--sp-3); }
-.agenda-v2 .agenda-count-badge {
-  padding: var(--sp-1) var(--sp-3);
-  border-radius: var(--r-pill);
-  font-size: var(--fs-xs);
-  font-weight: var(--fw-medium);
-  color: var(--red-light);
-  background: color-mix(in srgb, var(--accent) 14%, transparent);
-  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
-  white-space: nowrap;
-}
-.agenda-v2 .agenda-close-btn {
-  display: grid;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  border-radius: var(--r-sm);
-  color: var(--text-dim);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  cursor: pointer;
-  transition: all var(--dur-fast) var(--ease-out);
-}
-.agenda-v2 .agenda-close-btn:hover { color: var(--text); border-color: var(--border-strong); background: var(--surface-hover); }
-
-.agenda-v2 .agenda-auto-hint {
-  margin: 0 var(--sp-6) var(--sp-3);
-  font-size: var(--fs-sm);
-  color: var(--text-dim);
-}
-
-/* ---- Progress ------------------------------------------------------------- */
-.agenda-v2 .agenda-progress-bar {
-  position: relative;
-  height: 4px;
-  margin: 0 var(--sp-6) var(--sp-4);
-  border-radius: var(--r-pill);
-  background: var(--surface);
-  overflow: hidden;
-}
-.agenda-v2 .agenda-progress-fill {
-  height: 100%;
-  border-radius: var(--r-pill);
-  background: var(--gradient-red);
-  box-shadow: var(--glow-sm);
-  transition: width var(--dur-slow) var(--ease-out);
-}
-
-/* ---- Body / list ---------------------------------------------------------- */
-.agenda-v2 .agenda-body { overflow-y: auto; padding: 0 var(--sp-4) var(--sp-2); }
-.agenda-v2 .agenda-list { display: flex; flex-direction: column; gap: var(--sp-2); }
-
-.agenda-v2 .agenda-item {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-3);
-  padding: var(--sp-3);
-  border-radius: var(--r-md);
-  border: 1px solid transparent;
-  transition: background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
-  animation: agRise 0.4s var(--ease-out) both;
-}
-.agenda-v2 .agenda-item:hover { background: var(--surface); border-color: var(--border); }
-.agenda-v2 .agenda-item.done { opacity: 0.5; }
-.agenda-v2 .agenda-item.done .agenda-item-title { text-decoration: line-through; text-decoration-color: var(--text-faint); }
-
-.agenda-v2 .agenda-check {
+/* ---- Top bar ------------------------------------------------------------ */
+.ag-topbar {
+  height: 68px;
   flex-shrink: 0;
-  display: grid;
-  place-items: center;
-  width: 22px;
-  height: 22px;
-  border-radius: var(--r-pill);
-  border: 2px solid var(--text-faint);
-  background: transparent;
-  color: #fff;
-  cursor: pointer;
-  transition: transform var(--dur-fast) var(--ease-spring), background var(--dur-fast) var(--ease-out);
-}
-.agenda-v2 .agenda-check:hover { transform: scale(1.08); }
-.agenda-v2 .agenda-check.checked { background: var(--accent); border-color: var(--accent) !important; box-shadow: var(--glow-sm); }
-
-.agenda-v2 .agenda-item-body { flex: 1; min-width: 0; }
-.agenda-v2 .agenda-item-title {
   display: flex;
   align-items: center;
-  gap: var(--sp-2);
-  font-size: var(--fs-base);
-  color: var(--text);
+  justify-content: space-between;
+  padding: 0 34px;
+  background: rgba(19, 19, 21, 0.6);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
-.agenda-v2 .agenda-cat-icon { display: inline-flex; color: var(--text-muted); flex-shrink: 0; }
-.agenda-v2 .agenda-item-meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--sp-2);
-  margin-top: var(--sp-1);
-  font-size: var(--fs-xs);
-}
-.agenda-v2 .agenda-priority { text-transform: capitalize; font-weight: var(--fw-medium); }
-.agenda-v2 .agenda-category,
-.agenda-v2 .agenda-recurring,
-.agenda-v2 .agenda-notify-time {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  padding: 1px var(--sp-2);
-  border-radius: var(--r-pill);
-  color: var(--text-muted);
-  background: var(--surface);
-  text-transform: capitalize;
-}
-
-.agenda-v2 .agenda-item-actions { display: flex; gap: var(--sp-1); opacity: 0; transition: opacity var(--dur-fast) var(--ease-out); }
-.agenda-v2 .agenda-item:hover .agenda-item-actions { opacity: 1; }
-.agenda-v2 .agenda-item-btn {
-  display: grid;
-  place-items: center;
-  width: 26px;
-  height: 26px;
-  border-radius: var(--r-sm);
-  color: var(--text-muted);
-  background: transparent;
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: all var(--dur-fast) var(--ease-out);
-}
-.agenda-v2 .agenda-item-btn:hover { color: var(--text); background: var(--surface-hover); }
-.agenda-v2 .agenda-item-btn.del:hover { color: var(--red-light); }
-
-/* ---- Empty / done states -------------------------------------------------- */
-.agenda-v2 .agenda-empty { text-align: center; padding: var(--sp-12) var(--sp-6); }
-.agenda-v2 .agenda-empty-icon { opacity: 0.5; margin-bottom: var(--sp-3); }
-.agenda-v2 .agenda-empty-title { font-size: var(--fs-md); color: var(--text-dim); }
-.agenda-v2 .agenda-empty-sub { font-size: var(--fs-sm); color: var(--text-muted); margin-top: var(--sp-1); }
-.agenda-v2 .agenda-all-done {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--sp-2);
-  padding: var(--sp-4);
-  margin: var(--sp-3) var(--sp-2) 0;
-  border-radius: var(--r-md);
-  background: color-mix(in srgb, var(--accent) 8%, transparent);
-  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
-  color: var(--red-light);
-  font-size: var(--fs-sm);
-  font-weight: var(--fw-medium);
-}
-.agenda-v2 .agenda-all-done-icon { display: inline-flex; }
-
-/* ---- Footer / form -------------------------------------------------------- */
-.agenda-v2 .agenda-footer { padding: var(--sp-4) var(--sp-6) var(--sp-6); border-top: 1px solid var(--border); }
-.agenda-v2 .agenda-add-btn {
-  width: 100%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--sp-2);
-  padding: var(--sp-3);
-  border-radius: var(--r-md);
-  color: var(--red-light);
-  background: color-mix(in srgb, var(--accent) 10%, transparent);
-  border: 1px solid color-mix(in srgb, var(--accent) 26%, transparent);
-  font-size: var(--fs-sm);
-  font-weight: var(--fw-medium);
-  cursor: pointer;
-  transition: all var(--dur-fast) var(--ease-out);
-}
-.agenda-v2 .agenda-add-btn:hover { background: color-mix(in srgb, var(--accent) 18%, transparent); box-shadow: var(--glow-sm); }
-
-.agenda-v2 .agenda-form { display: flex; flex-direction: column; gap: var(--sp-3); }
-.agenda-v2 .agenda-form-row { display: flex; gap: var(--sp-2); }
-.agenda-v2 .agenda-form-row.opts { flex-wrap: wrap; }
-.agenda-v2 .agenda-input,
-.agenda-v2 .agenda-select {
-  flex: 1;
-  min-width: 0;
-  padding: var(--sp-3);
-  border-radius: var(--r-sm);
-  background: var(--bg-raise);
-  border: 1px solid var(--border);
-  color: var(--text);
-  font-family: var(--font);
-  font-size: var(--fs-sm);
+.ag-search { position: relative; display: flex; align-items: center; }
+.ag-search-ico { position: absolute; left: 14px; width: 16px; height: 16px; color: rgba(207, 194, 214, 0.5); pointer-events: none; }
+.ag-search input {
+  width: 280px;
+  padding: 9px 16px 9px 38px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--on-surface);
+  font-family: inherit;
+  font-size: 0.85rem;
+  outline: none;
   transition: border-color var(--dur-fast) var(--ease-out);
 }
-.agenda-v2 .agenda-input::placeholder { color: var(--text-faint); }
-.agenda-v2 .agenda-input:focus,
-.agenda-v2 .agenda-select:focus { outline: none; border-color: var(--border-strong); }
-
-.agenda-v2 .agenda-notify-section {
-  padding: var(--sp-3);
-  border-radius: var(--r-sm);
-  background: var(--surface);
-  border: 1px solid var(--border);
-}
-.agenda-v2 .agenda-notify-header { display: flex; align-items: center; gap: var(--sp-2); font-size: var(--fs-sm); color: var(--text-dim); }
-.agenda-v2 .agenda-notify-toggle {
-  margin-left: auto;
-  padding: 2px var(--sp-3);
-  border-radius: var(--r-pill);
-  font-size: var(--fs-xs);
-  font-weight: var(--fw-semibold);
-  color: var(--text-muted);
-  background: var(--bg-raise);
-  border: 1px solid var(--border);
+.ag-search input:focus { border-color: var(--sec); box-shadow: 0 0 12px rgba(76, 215, 246, 0.25); }
+.ag-topbar-actions { display: flex; align-items: center; gap: 8px; }
+.ag-icon-btn {
+  position: relative;
+  width: 38px; height: 38px;
+  display: grid; place-items: center;
+  border-radius: 10px;
+  border: none; background: transparent;
+  color: var(--on-surface-variant);
   cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+}
+.ag-icon-btn svg { width: 20px; height: 20px; }
+.ag-icon-btn:hover { color: var(--sec); background: rgba(255, 255, 255, 0.05); }
+.ag-has-dot::after { content: ''; position: absolute; top: 8px; right: 9px; width: 7px; height: 7px; border-radius: 50%; background: var(--sec); border: 2px solid #131315; }
+
+/* ---- Main scroll canvas ------------------------------------------------- */
+.ag-main { flex: 1; overflow-y: auto; padding: 34px; }
+.ag-main::-webkit-scrollbar { width: 5px; }
+.ag-main::-webkit-scrollbar-thumb { background: rgba(76, 215, 246, 0.3); border-radius: 10px; }
+
+.ag-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 21px;
+  margin-bottom: 34px;
+  flex-wrap: wrap;
+}
+.ag-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2.2rem, 4vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--sec);
+  text-shadow: 0 0 30px rgba(76, 215, 246, 0.3);
+}
+.ag-subtitle { margin-top: 8px; display: flex; align-items: center; gap: 7px; font-size: 0.92rem; color: var(--on-surface-variant); }
+.ag-sub-ico { width: 15px; height: 15px; color: var(--sec); display: inline-flex; }
+.ag-sub-accent { color: rgba(76, 215, 246, 0.85); }
+
+.ag-header-right { display: flex; align-items: center; gap: 16px; }
+.ag-progress {
+  display: flex; align-items: center; gap: 12px;
+  padding: 9px 16px;
+  border-radius: 14px;
+  background: rgba(30, 30, 32, 0.6);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-top-color: rgba(255, 255, 255, 0.15);
+}
+.ag-progress-bolt { width: 18px; height: 18px; color: var(--sec); }
+.ag-progress-cap { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.14em; font-weight: 700; color: var(--on-surface-variant); }
+.ag-progress-track { width: 128px; height: 6px; margin-top: 5px; border-radius: 3px; background: rgba(255, 255, 255, 0.06); overflow: hidden; }
+.ag-progress-track span { display: block; height: 100%; background: var(--sec); box-shadow: 0 0 15px rgba(76, 215, 246, 0.5); transition: width var(--dur-slow) var(--ease-out); }
+.ag-progress-pct { font-size: 0.78rem; font-weight: 700; color: var(--sec); }
+
+.ag-newtask {
+  padding: 12px 26px;
+  border-radius: 12px;
+  border: none;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--on-sec);
+  background: var(--sec);
+  box-shadow: 0 0 20px rgba(76, 215, 246, 0.4);
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.ag-newtask:active { transform: scale(0.96); }
+
+/* ---- Bento grid --------------------------------------------------------- */
+.ag-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 21px; align-items: start; }
+.ag-col-left { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.ag-col-right { display: flex; flex-direction: column; gap: 21px; }
+
+.glass, .ag-quick, .ag-task, .ag-focus, .ag-schedule {
+  background: rgba(30, 30, 32, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-top-color: rgba(255, 255, 255, 0.15);
+  border-left-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Quick entry */
+.ag-quick {
+  display: flex; align-items: center; gap: 16px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1px solid var(--sec) !important;
+  box-shadow: 0 0 10px rgba(76, 215, 246, 0.2);
+}
+.ag-quick-add { width: 40px; height: 40px; flex-shrink: 0; border-radius: 50%; border: none; display: grid; place-items: center; color: var(--sec); background: rgba(76, 215, 246, 0.1); cursor: pointer; }
+.ag-quick-add svg { width: 24px; height: 24px; }
+.ag-quick-input { flex: 1; min-width: 0; border: none; background: transparent; color: var(--on-surface); font-family: inherit; font-size: 1.1rem; outline: none; }
+.ag-quick-input::placeholder { color: rgba(207, 194, 214, 0.3); }
+.ag-quick-tools { display: flex; align-items: center; gap: 6px; }
+.ag-quick-tool { width: 34px; height: 34px; display: grid; place-items: center; border: none; background: transparent; color: rgba(207, 194, 214, 0.5); cursor: pointer; border-radius: 8px; transition: color var(--dur-fast) var(--ease-out); }
+.ag-quick-tool svg { width: 20px; height: 20px; }
+.ag-quick-tool:hover { color: var(--sec); }
+.ag-quick-tool.on { color: var(--sec); }
+
+.ag-timerow { display: flex; align-items: center; gap: 10px; padding: 4px 4px 0 58px; font-size: 0.78rem; color: var(--on-surface-variant); }
+.ag-timerow input[type="time"] { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--on-surface); border-radius: 8px; padding: 5px 8px; font-family: inherit; outline: none; }
+.ag-timerow-cat { opacity: 0.8; }
+
+/* Filters */
+.ag-filters { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 2px; }
+.ag-filter {
+  padding: 7px 18px; border-radius: 999px; white-space: nowrap;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--on-surface-variant);
+  font-family: inherit; font-size: 0.76rem; font-weight: 600; letter-spacing: 0.03em;
+  cursor: pointer; transition: all var(--dur-fast) var(--ease-out);
+}
+.ag-filter:hover { border-color: rgba(76, 215, 246, 0.4); color: var(--sec); }
+.ag-filter.active { background: rgba(76, 215, 246, 0.2); border-color: rgba(76, 215, 246, 0.4); color: var(--sec); }
+
+/* Task list */
+.ag-tasks { display: flex; flex-direction: column; gap: 13px; }
+.ag-task {
+  padding: 16px 18px;
+  border-radius: 14px;
+  border-left: 4px solid var(--pcolor) !important;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.ag-task:hover { background: rgba(255, 255, 255, 0.05); }
+.ag-task.done { opacity: 0.6; border-left-color: rgba(255,255,255,0.15) !important; }
+.ag-task-main { display: flex; align-items: center; gap: 16px; }
+.ag-task { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.ag-check {
+  width: 26px; height: 26px; flex-shrink: 0;
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  display: grid; place-items: center;
+  cursor: pointer; color: transparent;
   transition: all var(--dur-fast) var(--ease-out);
 }
-.agenda-v2 .agenda-notify-toggle.active { color: var(--red-light); background: color-mix(in srgb, var(--accent) 16%, transparent); border-color: color-mix(in srgb, var(--accent) 32%, transparent); }
-.agenda-v2 .agenda-notify-picker { margin-top: var(--sp-3); }
+.ag-check svg { width: 15px; height: 15px; }
+.ag-task:hover .ag-check { border-color: var(--sec); color: rgba(76, 215, 246, 0.4); }
+.ag-check.checked { background: var(--sec); border-color: var(--sec); color: var(--on-sec); }
+.ag-task-title { font-size: 0.98rem; font-weight: 600; color: var(--on-surface); }
+.ag-task.done .ag-task-title { text-decoration: line-through; color: var(--on-surface-variant); }
+.ag-task-meta { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
+.ag-badge { padding: 2px 9px; border-radius: 6px; font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+.ag-badge-done { background: rgba(255,255,255,0.1); color: var(--on-surface-variant); }
+.ag-task-cat { display: flex; align-items: center; gap: 5px; font-size: 0.68rem; color: var(--on-surface-variant); }
+.ag-task-cat-ico { width: 14px; height: 14px; display: inline-flex; }
+.ag-task-right { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
+.ag-task-time { font-size: 0.76rem; color: var(--on-surface-variant); }
+.ag-task-doneall { width: 20px; height: 20px; color: rgba(207,194,214,0.4); }
+.ag-task-actions { display: flex; gap: 6px; opacity: 0; transition: opacity var(--dur-fast) var(--ease-out); }
+.ag-task:hover .ag-task-actions { opacity: 1; }
+.ag-task-act { width: 30px; height: 30px; display: grid; place-items: center; border: none; background: transparent; color: var(--on-surface-variant); border-radius: 8px; cursor: pointer; }
+.ag-task-act svg { width: 17px; height: 17px; }
+.ag-task-act:hover { color: var(--sec); background: rgba(255,255,255,0.06); }
+.ag-task-del:hover { color: var(--alert-red); }
 
-.agenda-v2 .agenda-form-actions { display: flex; gap: var(--sp-2); }
-.agenda-v2 .agenda-form-btn {
-  flex: 1;
-  padding: var(--sp-3);
-  border-radius: var(--r-sm);
-  color: var(--text-dim);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  font-size: var(--fs-sm);
-  font-weight: var(--fw-medium);
-  cursor: pointer;
+.ag-empty { text-align: center; padding: 48px 20px; }
+.ag-empty-title { font-size: 1rem; color: var(--on-surface-variant); }
+.ag-empty-sub { font-size: 0.82rem; color: var(--text-tertiary); margin-top: 6px; }
+
+/* ---- Deep Focus --------------------------------------------------------- */
+.ag-focus { position: relative; padding: 22px; border-radius: 20px; text-align: center; }
+.ag-focus-timerico { position: absolute; top: 18px; right: 18px; width: 20px; height: 20px; color: var(--sec); animation: agPulse 4s ease-in-out infinite; }
+@keyframes agPulse { 0%,100% { opacity: 0.8; } 50% { opacity: 1; } }
+.ag-focus-cap { font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.16em; color: var(--on-surface-variant); text-align: left; }
+.ag-focus-clock { font-family: var(--font-heading); font-size: 3rem; font-weight: 700; letter-spacing: 0.08em; color: var(--on-surface); margin: 18px 0; }
+.ag-focus-btns { display: flex; align-items: center; justify-content: center; gap: 16px; }
+.ag-focus-play, .ag-focus-reset {
+  width: 50px; height: 50px; border-radius: 50%;
+  display: grid; place-items: center; cursor: pointer;
   transition: all var(--dur-fast) var(--ease-out);
 }
-.agenda-v2 .agenda-form-btn:hover { background: var(--surface-hover); color: var(--text); }
-.agenda-v2 .agenda-form-btn.primary { color: var(--text-on-accent); background: var(--gradient-red); border-color: transparent; }
-.agenda-v2 .agenda-form-btn.primary:hover { box-shadow: var(--glow-md); }
+.ag-focus-play { border: 1px solid rgba(76, 215, 246, 0.5); background: transparent; color: var(--sec); }
+.ag-focus-play svg { width: 22px; height: 22px; }
+.ag-focus-play:hover { background: var(--sec); color: var(--on-sec); box-shadow: 0 0 18px rgba(76,215,246,0.4); }
+.ag-focus-reset { border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--on-surface-variant); }
+.ag-focus-reset svg { width: 20px; height: 20px; }
+.ag-focus-reset:hover { background: rgba(255,255,255,0.1); }
+.ag-focus-hint { margin-top: 18px; font-size: 0.7rem; font-style: italic; color: var(--on-surface-variant); }
 
-@keyframes agRise {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* ---- Schedule timeline -------------------------------------------------- */
+.ag-schedule { padding: 22px; border-radius: 20px; }
+.ag-schedule-cap { margin-bottom: 28px; }
+.ag-schedule-empty { font-size: 0.8rem; color: var(--text-tertiary); line-height: 1.6; }
+.ag-timeline { position: relative; display: flex; flex-direction: column; gap: 28px; }
+.ag-timeline-line { position: absolute; left: 11px; top: 4px; bottom: 4px; width: 2px; background: rgba(255,255,255,0.06); }
+.ag-tl-item { position: relative; padding-left: 34px; }
+.ag-tl-item.past { opacity: 0.4; }
+.ag-tl-dot {
+  position: absolute; left: 0; top: 2px;
+  width: 24px; height: 24px; border-radius: 50%;
+  display: grid; place-items: center; z-index: 1;
+  background: #353437; border: 2px solid rgba(255,255,255,0.2);
+}
+.ag-tl-inner { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.2); }
+.ag-tl-dot.current { background: var(--sec); border-color: var(--sec); box-shadow: 0 0 15px rgba(76,215,246,0.4); }
+.ag-tl-bolt { width: 13px; height: 13px; color: var(--on-sec); }
+.ag-tl-time { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--sec); }
+.ag-tl-item.past .ag-tl-time { color: var(--on-surface-variant); }
+.ag-tl-name { font-size: 0.88rem; font-weight: 600; margin-top: 3px; }
+.ag-tl-sub { font-size: 0.72rem; color: var(--on-surface-variant); opacity: 0.6; margin-top: 2px; }
+.ag-viewcal {
+  width: 100%; margin-top: 28px; padding: 10px;
+  border-radius: 10px; border: 1px solid rgba(255,255,255,0.06);
+  background: transparent; color: var(--on-surface-variant);
+  font-family: inherit; font-size: 0.75rem; cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-out);
+}
+.ag-viewcal:hover { color: var(--sec); border-color: rgba(76,215,246,0.2); }
+
+/* ---- Responsive --------------------------------------------------------- */
+@media (max-width: 1040px) {
+  .ag-grid { grid-template-columns: 1fr; }
+  .ag-col-right { flex-direction: row; }
+  .ag-focus, .ag-schedule { flex: 1; }
+}
+@media (max-width: 720px) {
+  .ag-main { padding: 20px; }
+  .ag-topbar { padding: 0 20px; }
+  .ag-search input { width: 160px; }
+  .ag-col-right { flex-direction: column; }
+}
+@media (max-width: 430px) {
+  .ag-main { padding: 14px; }
+  .ag-topbar { padding: 0 14px; flex-wrap: wrap; gap: 10px; }
+  .ag-search input { width: 100%; }
+  .ag-focus, .ag-schedule { padding: 16px; }
+  /* .ag-header-right itself doesn't wrap its own children (progress pill +
+     New Task button), so at phone width the pair overflowed past the edge
+     even though the parent .ag-header wraps as a whole. */
+  .ag-header-right { flex-wrap: wrap; }
 }

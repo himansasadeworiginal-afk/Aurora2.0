@@ -14,10 +14,29 @@ import BrainPanels from './BrainPanels'
 import { ideas, tests } from '../../data/ideas'
 import './BrainView.css'
 
+// Below this width, don't try to render the orbiting WebGL force-graph — it's
+// not realistically touch-usable at phone size. Matches the nav-collapse
+// breakpoint already used for the same "is this a phone" check in shell.css.
+const MOBILE_BREAKPOINT = 900
+
+function useIsNarrowViewport(breakpoint = MOBILE_BREAKPOINT) {
+  const [isNarrow, setIsNarrow] = useState(() => (
+    typeof window !== 'undefined' && window.matchMedia(`(max-width: ${breakpoint}px)`).matches
+  ))
+  useEffect(() => {
+    const mql = window.matchMedia(`(max-width: ${breakpoint}px)`)
+    const onChange = (e) => setIsNarrow(e.matches)
+    mql.addEventListener('change', onChange)
+    return () => mql.removeEventListener('change', onChange)
+  }, [breakpoint])
+  return isNarrow
+}
+
 // The Second Brain workspace: 3D scene + CODE/AI toolbars + workflow panels.
 // A single `panel` map holds at most one open workflow panel (the original
 // 18 booleans were mutually exclusive — closeAll ran before every open).
-export default function BrainView({ captureSignal = 0 }) {
+export default function BrainView({ captureSignal = 0, openNoteId = null, onOpenedNote }) {
+  const isNarrow = useIsNarrowViewport()
   const [selected, setSelected] = useState(null)
   const [showList, setShowList] = useState(true)
   const [hoveredIdea, setHoveredIdea] = useState(null)
@@ -30,6 +49,7 @@ export default function BrainView({ captureSignal = 0 }) {
   const [paraFilter, setParaFilter] = useState(null)
   const [panel, setPanel] = useState(null)            // active workflow panel name | null
   const [zoomNoteId, setZoomNoteId] = useState(null)
+  const [showPeople, setShowPeople] = useState(true)
   const [archipelagoPacket, setArchipelagoPacket] = useState(null)
 
   const panels = useMemo(() => (panel ? { [panel]: true } : {}), [panel])
@@ -66,6 +86,13 @@ export default function BrainView({ captureSignal = 0 }) {
     if (captureSignal > 0) openPanel('quickCapture', 'capture')
   }, [captureSignal, openPanel])
 
+  // On phone-width viewports there's no 3D scene to fall back to (see below),
+  // so the list is the entire view — keep it forced open rather than letting
+  // a stale "closed" state leave the screen blank.
+  useEffect(() => {
+    if (isNarrow) setShowList(true)
+  }, [isNarrow])
+
   const toolbarActions = useMemo(() => ({
     toggle: togglePanel,
     openAI: () => openPanel('semanticSearch', 'ai'),
@@ -85,6 +112,13 @@ export default function BrainView({ captureSignal = 0 }) {
     setZoomNoteId(note.id || note.ideaId)
     setPanel('zoomEditor')
   }, [])
+
+  // Deep-link from a Relations profile's linked note: open that note's editor.
+  useEffect(() => {
+    if (openNoteId == null) return
+    openZoomEditor({ id: openNoteId })
+    onOpenedNote?.()
+  }, [openNoteId, openZoomEditor, onOpenedNote])
 
   const handleOpenArchipelago = useCallback((packet) => {
     setShowInbox(false)
@@ -130,15 +164,26 @@ export default function BrainView({ captureSignal = 0 }) {
       {showDialDown && <div className="checklist-overlay"><DialDownScope project={null} onClose={() => setShowDialDown(false)} /></div>}
       {showExport && <div className="checklist-overlay"><ExportDialog onClose={() => setShowExport(false)} /></div>}
 
-      <ErrorBoundary>
-        <div className="scene-container">
-          <Scene3D
-            selected={selected} onSelect={handleSelect}
-            onNodeHover={setHoveredIdea} paraFilter={paraFilter}
-            onToggleParaFilter={handleToggleParaFilter}
-          />
-        </div>
-      </ErrorBoundary>
+      {!isNarrow && (
+        <ErrorBoundary>
+          <div className="scene-container">
+            <Scene3D
+              selected={selected} onSelect={handleSelect}
+              onNodeHover={setHoveredIdea} paraFilter={paraFilter}
+              onToggleParaFilter={handleToggleParaFilter}
+              showPeople={showPeople && !paraFilter}
+            />
+            <button
+              className={`brain-people-toggle${showPeople ? ' active' : ''}`}
+              onClick={() => setShowPeople(s => !s)}
+              title={showPeople ? 'Hide people' : 'Show people'}
+            >
+              <span className="brain-people-dot" />
+              People
+            </button>
+          </div>
+        </ErrorBoundary>
+      )}
 
       {activeTab === 'inbox' && showInbox && (
         <div className="inbox-container">

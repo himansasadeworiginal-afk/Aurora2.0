@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import AuroraPulse from './AuroraPulse'
 import './DesmondView.css'
 
 export default function DesmondView({ onClose }) {
@@ -67,6 +68,7 @@ export default function DesmondView({ onClose }) {
   const statusClass =
     status === 'running' ? 'desmond-status-ok' :
     status === 'starting' || status === 'stopping' ? 'desmond-status-pending' :
+    status === 'error' ? 'desmond-status-error' :
     'desmond-status-off'
 
   return (
@@ -93,14 +95,19 @@ export default function DesmondView({ onClose }) {
 
       <div className="desmond-body">
         <div className="desmond-controls">
-          <svg width="80" height="80" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round" opacity="0.4">
-            <circle cx="10" cy="6" r="3" />
-            <circle cx="4.5" cy="15" r="3" />
-            <circle cx="15.5" cy="15" r="3" />
-            <line x1="8" y1="8.5" x2="6" y2="12.5" />
-            <line x1="12" y1="8.5" x2="14" y2="12.5" />
-            <line x1="4.5" y1="15" x2="15.5" y2="15" />
-          </svg>
+          {status === 'running' ? (
+            // Actively listening/processing → the aurora superbrain pulse.
+            <AuroraPulse size={92} variant="orb" active />
+          ) : (
+            <svg width="80" height="80" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round" opacity="0.4">
+              <circle cx="10" cy="6" r="3" />
+              <circle cx="4.5" cy="15" r="3" />
+              <circle cx="15.5" cy="15" r="3" />
+              <line x1="8" y1="8.5" x2="6" y2="12.5" />
+              <line x1="12" y1="8.5" x2="14" y2="12.5" />
+              <line x1="4.5" y1="15" x2="15.5" y2="15" />
+            </svg>
+          )}
 
           <div className="desmond-status-text">{statusText}</div>
 

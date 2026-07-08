@@ -7,7 +7,7 @@ export default function NeuralLink({ start, end, color = '#ff003c', pulse = fals
   const glowRef = useRef()
   const progress = useRef(0)
 
-  const { points, mid } = useMemo(() => {
+  const { points } = useMemo(() => {
     const m = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5)
     const dist = start.distanceTo(end)
     const heightOffset = dist * 0.35

@@ -12,7 +12,9 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
+    "lint": "eslint .",
     "vault:import": "node src/data/cli-import.js",
+    "brain:index": "node brain-index.js",
     "postinstall": "node src/data/cli-import.js",
     "electron:dev": "npm run build && electron .",
     "electron:build": "npm run build && electron-builder"
@@ -27,6 +29,9 @@
     "files": [
       "electron/**",
       "server.js",
+      "server-ai.js",
+      "agent-bridge.js",
+      "brain-index.js",
       "desmond-launcher.js",
       "package.json"
     ],
@@ -71,9 +76,11 @@
     }
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.106.0",
     "@react-three/drei": "^9.114.3",
     "@react-three/fiber": "^8.17.10",
     "@react-three/postprocessing": "^2.16.5",
+    "better-sqlite3": "^12.11.1",
     "chokidar": "^5.0.0",
     "d3-force-3d": "^3.0.6",
     "dexie": "^4.4.2",
@@ -88,6 +95,12 @@
     "@vitejs/plugin-react": "^4.3.4",
     "electron": "^42.5.0",
     "electron-builder": "^26.15.3",
+    "eslint": "^9.39.4",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.3",
+    "fake-indexeddb": "^6.2.5",
+    "globals": "^17.7.0",
     "jsdom": "^25.0.1",
     "vite": "^6.0.3",
     "vitest": "^2.1.8"

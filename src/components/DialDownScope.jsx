@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import db from '../data/db'
 
 export default function DialDownScope({ project, onClose }) {

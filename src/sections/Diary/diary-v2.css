@@ -1,0 +1,138 @@
+/* Pull in the Relations styles so the detection review modal + undo toast are
+   styled even when the Diary section is the only one mounted. */
+@import '../Relations/relations-v2.css';
+
+.diary-v2 {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  color: var(--text);
+  padding: var(--sp-6) var(--sp-7);
+  gap: var(--sp-5);
+  min-height: 0;
+}
+
+.diary-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--sp-4); }
+.diary-title { margin: 0; font-size: var(--fs-2xl); font-weight: var(--fw-semibold); letter-spacing: var(--tracking-tight); }
+.diary-sub { margin: var(--sp-1) 0 0; color: var(--text-muted); font-size: var(--fs-sm); }
+.diary-head-actions { display: flex; align-items: center; gap: var(--sp-3); }
+.diary-new-btn { display: inline-flex; align-items: center; gap: var(--sp-2); }
+
+.diary-body { flex: 1; display: grid; grid-template-columns: 240px 1fr; gap: var(--sp-5); min-height: 0; }
+
+/* Entry list */
+.diary-list {
+  display: flex; flex-direction: column; gap: 2px;
+  overflow-y: auto; padding-right: var(--sp-1);
+  border-right: 1px solid var(--border);
+  scrollbar-width: thin;
+}
+.diary-empty { color: var(--text-faint); font-size: var(--fs-sm); padding: var(--sp-3); }
+.diary-list-item {
+  display: flex; flex-direction: column; gap: 2px;
+  text-align: left; cursor: pointer;
+  background: none; border: 1px solid transparent; border-radius: var(--r-md);
+  padding: var(--sp-2) var(--sp-3); color: var(--text-dim);
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+.diary-list-item:hover { background: var(--surface); color: var(--text); }
+.diary-list-item.active { background: var(--surface-2); border-color: var(--border-hover); color: var(--text); }
+.diary-li-date {
+  display: flex; align-items: center; gap: 6px;
+  font-size: var(--fs-xs); color: var(--text-muted); letter-spacing: var(--tracking-wide);
+}
+.diary-li-badge { width: 6px; height: 6px; border-radius: 50%; background: var(--color-green); box-shadow: 0 0 6px var(--color-green); }
+.diary-li-title { font-size: var(--fs-sm); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Editor */
+.diary-main { min-width: 0; display: flex; }
+.diary-placeholder {
+  margin: auto; text-align: center; color: var(--text-muted); max-width: 360px;
+}
+.diary-hint { font-size: var(--fs-sm); color: var(--text-faint); }
+.diary-hint code, .diary-placeholder code { color: var(--red-light); background: var(--surface); padding: 1px 5px; border-radius: var(--r-sm); }
+
+.diary-editor { flex: 1; display: flex; flex-direction: column; gap: var(--sp-3); min-height: 0; }
+.diary-editor-head { display: flex; gap: var(--sp-3); align-items: center; }
+.diary-title-input {
+  flex: 1; background: none; border: none; outline: none; color: var(--text);
+  font-size: var(--fs-lg); font-weight: var(--fw-semibold); padding: var(--sp-1) 0;
+  border-bottom: 1px solid var(--border);
+}
+.diary-title-input::placeholder { color: var(--text-faint); }
+.diary-title-input:focus { border-color: color-mix(in srgb, var(--accent) 50%, var(--border)); }
+.diary-date-input {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md);
+  color: var(--text-dim); padding: var(--sp-2) var(--sp-3); font-size: var(--fs-sm);
+  color-scheme: dark;
+}
+
+/* The highlight overlay: a backdrop renders the text with *flag* spans, the
+   textarea sits exactly on top with transparent text + a visible caret so the
+   user reads the colored backdrop while typing. The two MUST share identical
+   typography and box metrics, or the caret will drift. */
+.diary-input-wrap {
+  position: relative; flex: 1; min-height: 200px;
+  border: 1px solid var(--border); border-radius: var(--r-lg);
+  background: var(--surface); overflow: hidden;
+  transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+}
+.diary-input-wrap:focus-within { border-color: color-mix(in srgb, var(--accent) 50%, var(--border)); box-shadow: var(--glow-sm); }
+
+.diary-backdrop, .diary-textarea {
+  margin: 0;
+  padding: var(--sp-4);
+  font-family: var(--font-body, inherit);
+  font-size: var(--fs-base);
+  line-height: 1.7;
+  letter-spacing: normal;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  border: none;
+  box-sizing: border-box;
+}
+.diary-backdrop {
+  position: absolute; inset: 0;
+  overflow: auto;
+  color: var(--text);
+  pointer-events: none;
+  scrollbar-width: none;
+}
+.diary-backdrop::-webkit-scrollbar { display: none; }
+.diary-textarea {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  resize: none; outline: none;
+  background: transparent;
+  color: transparent;
+  caret-color: var(--text);
+  scrollbar-width: thin;
+}
+.diary-textarea::placeholder { color: var(--text-faint); }
+.diary-flag {
+  background: color-mix(in srgb, var(--aurora-teal) 14%, transparent);
+  color: var(--aurora-teal);
+  border-radius: var(--r-sm);
+  box-shadow: inset 0 -2px 0 0 color-mix(in srgb, var(--aurora-teal) 55%, transparent);
+}
+
+.diary-toolbar { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-4); }
+.diary-toolbar-info { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; min-width: 0; }
+.diary-toolbar-actions { display: flex; align-items: center; gap: var(--sp-2); }
+.diary-flag-count, .diary-scanned-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: var(--fs-xs); letter-spacing: var(--tracking-wide);
+}
+.diary-flag-count { color: var(--color-green); }
+.diary-scanned-badge { color: var(--text-muted); }
+.diary-toolbar-note { font-size: var(--fs-xs); color: var(--text-faint); }
+
+@media (max-width: 720px) {
+  .diary-body { grid-template-columns: 1fr; }
+  .diary-list { flex-direction: row; border-right: none; border-bottom: 1px solid var(--border); padding-bottom: var(--sp-2); }
+}
+@media (max-width: 430px) {
+  .diary-toolbar { flex-wrap: wrap; gap: var(--sp-2); }
+  .diary-list { flex-wrap: wrap; }
+}

@@ -1,0 +1,138 @@
+/* Floating focus / Pomodoro timer. */
+
+.task-timer {
+  position: fixed;
+  right: var(--sp-5, 20px);
+  bottom: var(--sp-5, 20px);
+  z-index: 900;
+}
+
+.tt-fab {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--r-pill, 999px);
+  border: 1px solid color-mix(in srgb, var(--accent, #e60000) 35%, var(--border, #2a1212));
+  background: var(--panel, #120505);
+  color: var(--text, #ffe0e0);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-sm, 0.85rem);
+  font-weight: var(--fw-semibold, 600);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.tt-fab:hover { transform: translateY(-2px); box-shadow: 0 10px 36px rgba(221, 183, 255, 0.28); }
+.tt-fab.active { border-color: color-mix(in srgb, var(--accent, #ddb7ff) 60%, transparent); box-shadow: 0 0 0 1px rgba(221, 183, 255,0.2), 0 8px 30px rgba(221, 183, 255,0.24); }
+.tt-fab.done { animation: ttDonePulse 1s ease-in-out infinite; }
+@keyframes ttDonePulse {
+  0%,100% { box-shadow: 0 0 0 1px rgba(82,227,164,0.3), 0 8px 30px rgba(82,227,164,0.3); }
+  50%     { box-shadow: 0 0 0 2px rgba(82,227,164,0.6), 0 8px 44px rgba(82,227,164,0.5); }
+}
+
+.tt-panel {
+  position: absolute;
+  right: 0;
+  bottom: 68px;
+  width: 248px;
+  background: var(--panel, #120505);
+  border: 1px solid var(--border, #2a1212);
+  border-radius: var(--r-lg, 16px);
+  padding: var(--sp-4, 16px);
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.6);
+  animation: ttRise 0.18s var(--ease-out, ease-out) both;
+}
+@keyframes ttRise {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.tt-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--fs-sm, 0.85rem);
+  font-weight: var(--fw-semibold, 600);
+  color: var(--text, #ffe0e0);
+  margin-bottom: var(--sp-3, 12px);
+}
+.tt-x {
+  background: none; border: none; color: var(--text-faint, #6e3a3a);
+  cursor: pointer; font-size: var(--fs-sm, 0.85rem);
+}
+.tt-x:hover { color: var(--text, #ffe0e0); }
+
+.tt-dial {
+  position: relative;
+  display: grid;
+  place-items: center;
+  margin: var(--sp-2, 8px) 0 var(--sp-4, 16px);
+}
+.tt-dial-time {
+  position: absolute;
+  font-size: var(--fs-md, 1rem);
+  font-weight: var(--fw-semibold, 600);
+  font-variant-numeric: tabular-nums;
+  color: var(--text, #ffe0e0);
+}
+
+.tt-actions { display: flex; gap: var(--sp-2, 8px); }
+
+.tt-btn {
+  flex: 1;
+  padding: var(--sp-2, 8px);
+  background: var(--surface, #1a0808);
+  border: 1px solid var(--border, #2a1212);
+  border-radius: var(--r-md, 10px);
+  color: var(--text-dim, #cc7777);
+  font-size: var(--fs-sm, 0.85rem);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.tt-btn:hover { background: var(--surface-hover, #240c0c); color: var(--text, #ffe0e0); }
+.tt-btn.primary {
+  background: var(--gradient-red, linear-gradient(135deg, #e60000, #990000));
+  border-color: transparent; color: #fff; font-weight: var(--fw-semibold, 600);
+}
+
+.tt-presets {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-2, 8px);
+  margin-bottom: var(--sp-3, 12px);
+}
+.tt-preset {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: var(--sp-3, 12px) var(--sp-1, 4px);
+  background: var(--surface, #1a0808);
+  border: 1px solid var(--border, #2a1212);
+  border-radius: var(--r-md, 10px);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.tt-preset:hover { background: var(--surface-hover, #240c0c); border-color: color-mix(in srgb, var(--accent,#e60000) 40%, var(--border,#2a1212)); }
+.tt-preset strong { color: var(--text, #ffe0e0); font-size: var(--fs-md, 1rem); }
+.tt-preset span { color: var(--text-muted, #6e3a3a); font-size: 0.6rem; text-align: center; }
+
+.tt-custom {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2, 8px);
+}
+.tt-custom input {
+  width: 56px;
+  background: var(--surface, #1a0808);
+  border: 1px solid var(--border, #2a1212);
+  border-radius: var(--r-sm, 6px);
+  color: var(--text, #ffe0e0);
+  padding: var(--sp-2, 8px);
+  font-size: var(--fs-sm, 0.85rem);
+  text-align: center;
+  outline: none;
+}
+.tt-custom span { color: var(--text-muted, #6e3a3a); font-size: var(--fs-sm, 0.85rem); }
+.tt-custom .tt-btn { flex: 1; }

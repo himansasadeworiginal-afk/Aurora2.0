@@ -1,0 +1,1423 @@
+{
+  "generatedAt": "2026-07-08T15:56:35.292886+00:00",
+  "root": "/home/wolf/Projects/Project Aurora/aurora 5.0",
+  "nodeCount": 109,
+  "edgeCount": 217,
+  "nodes": [
+    {
+      "id": "agent-bridge.js",
+      "type": "root-module",
+      "lines": 151
+    },
+    {
+      "id": "brain-index.js",
+      "type": "root-module",
+      "lines": 106
+    },
+    {
+      "id": "desmond-launcher.js",
+      "type": "root-module",
+      "lines": 103
+    },
+    {
+      "id": "electron/main.cjs",
+      "type": "root-module",
+      "lines": 125
+    },
+    {
+      "id": "eslint.config.js",
+      "type": "root-module",
+      "lines": 46
+    },
+    {
+      "id": "public/sw.js",
+      "type": "root-module",
+      "lines": 49
+    },
+    {
+      "id": "server-ai.js",
+      "type": "root-module",
+      "lines": 285
+    },
+    {
+      "id": "server.js",
+      "type": "entrypoint",
+      "lines": 199
+    },
+    {
+      "id": "src/App.jsx",
+      "type": "src-other",
+      "lines": 170
+    },
+    {
+      "id": "src/components/AlarmOverlay.jsx",
+      "type": "component",
+      "lines": 84
+    },
+    {
+      "id": "src/components/AmbientBackground.jsx",
+      "type": "component",
+      "lines": 17
+    },
+    {
+      "id": "src/components/ArchipelagoEditor.jsx",
+      "type": "component",
+      "lines": 121
+    },
+    {
+      "id": "src/components/AuroraPulse.jsx",
+      "type": "component",
+      "lines": 35
+    },
+    {
+      "id": "src/components/AuroraTitle.jsx",
+      "type": "component",
+      "lines": 83
+    },
+    {
+      "id": "src/components/BatchDistill.jsx",
+      "type": "component",
+      "lines": 220
+    },
+    {
+      "id": "src/components/CalendarView.jsx",
+      "type": "component",
+      "lines": 802
+    },
+    {
+      "id": "src/components/ContextRetrieval.jsx",
+      "type": "component",
+      "lines": 114
+    },
+    {
+      "id": "src/components/DailyAgenda.jsx",
+      "type": "component",
+      "lines": 352
+    },
+    {
+      "id": "src/components/DailyBrief.jsx",
+      "type": "component",
+      "lines": 79
+    },
+    {
+      "id": "src/components/DesmondView.jsx",
+      "type": "component",
+      "lines": 136
+    },
+    {
+      "id": "src/components/DialDownScope.jsx",
+      "type": "component",
+      "lines": 104
+    },
+    {
+      "id": "src/components/DistillDashboard.jsx",
+      "type": "component",
+      "lines": 112
+    },
+    {
+      "id": "src/components/ErrorBoundary.jsx",
+      "type": "component",
+      "lines": 36
+    },
+    {
+      "id": "src/components/ExportDialog.jsx",
+      "type": "component",
+      "lines": 175
+    },
+    {
+      "id": "src/components/FavoriteProblems.jsx",
+      "type": "component",
+      "lines": 118
+    },
+    {
+      "id": "src/components/HabitNudges.jsx",
+      "type": "component",
+      "lines": 132
+    },
+    {
+      "id": "src/components/HemingwayBridge.jsx",
+      "type": "component",
+      "lines": 153
+    },
+    {
+      "id": "src/components/Inbox.jsx",
+      "type": "component",
+      "lines": 99
+    },
+    {
+      "id": "src/components/IntegrationSettings.jsx",
+      "type": "component",
+      "lines": 154
+    },
+    {
+      "id": "src/components/KnowledgeSuggest.jsx",
+      "type": "component",
+      "lines": 91
+    },
+    {
+      "id": "src/components/LinkPanel.jsx",
+      "type": "component",
+      "lines": 86
+    },
+    {
+      "id": "src/components/MainDashboard.jsx",
+      "type": "component",
+      "lines": 286
+    },
+    {
+      "id": "src/components/MonthlyReview.jsx",
+      "type": "component",
+      "lines": 97
+    },
+    {
+      "id": "src/components/NExoView.jsx",
+      "type": "component",
+      "lines": 28
+    },
+    {
+      "id": "src/components/NavSidebar.jsx",
+      "type": "component",
+      "lines": 145
+    },
+    {
+      "id": "src/components/NeuralLink.jsx",
+      "type": "component",
+      "lines": 60
+    },
+    {
+      "id": "src/components/Notifier.jsx",
+      "type": "component",
+      "lines": 190
+    },
+    {
+      "id": "src/components/PARASidebar.jsx",
+      "type": "component",
+      "lines": 158
+    },
+    {
+      "id": "src/components/PacketsWorkspace.jsx",
+      "type": "component",
+      "lines": 238
+    },
+    {
+      "id": "src/components/ParticleField.jsx",
+      "type": "component",
+      "lines": 76
+    },
+    {
+      "id": "src/components/PersonMention/NoteContent.jsx",
+      "type": "component",
+      "lines": 50
+    },
+    {
+      "id": "src/components/PersonMention/PersonHoverPanel.jsx",
+      "type": "component",
+      "lines": 46
+    },
+    {
+      "id": "src/components/PersonMention/PersonMentionDropdown.jsx",
+      "type": "component",
+      "lines": 62
+    },
+    {
+      "id": "src/components/PersonMention/PersonMentionToken.jsx",
+      "type": "component",
+      "lines": 52
+    },
+    {
+      "id": "src/components/PersonMention/personMentionData.js",
+      "type": "component",
+      "lines": 82
+    },
+    {
+      "id": "src/components/PersonMention/usePersonMentions.js",
+      "type": "component",
+      "lines": 80
+    },
+    {
+      "id": "src/components/PlacementChecklist.jsx",
+      "type": "component",
+      "lines": 118
+    },
+    {
+      "id": "src/components/ProjectKickoff.jsx",
+      "type": "component",
+      "lines": 102
+    },
+    {
+      "id": "src/components/QuickCapture.jsx",
+      "type": "component",
+      "lines": 189
+    },
+    {
+      "id": "src/components/QuickCapturePage.jsx",
+      "type": "component",
+      "lines": 243
+    },
+    {
+      "id": "src/components/Scene3D.jsx",
+      "type": "component",
+      "lines": 126
+    },
+    {
+      "id": "src/components/ScoredProblems.jsx",
+      "type": "component",
+      "lines": 169
+    },
+    {
+      "id": "src/components/SemanticSearch.jsx",
+      "type": "component",
+      "lines": 125
+    },
+    {
+      "id": "src/components/SerendipityEngine.jsx",
+      "type": "component",
+      "lines": 115
+    },
+    {
+      "id": "src/components/TaskTimer.jsx",
+      "type": "component",
+      "lines": 192
+    },
+    {
+      "id": "src/components/TimeWheelPicker.jsx",
+      "type": "component",
+      "lines": 159
+    },
+    {
+      "id": "src/components/Toast.jsx",
+      "type": "component",
+      "lines": 64
+    },
+    {
+      "id": "src/components/TodoView.jsx",
+      "type": "component",
+      "lines": 147
+    },
+    {
+      "id": "src/components/TrackerView.jsx",
+      "type": "component",
+      "lines": 411
+    },
+    {
+      "id": "src/components/WebClipper.jsx",
+      "type": "component",
+      "lines": 122
+    },
+    {
+      "id": "src/components/WeeklyReview.jsx",
+      "type": "component",
+      "lines": 108
+    },
+    {
+      "id": "src/components/ZoomEditor.jsx",
+      "type": "component",
+      "lines": 193
+    },
+    {
+      "id": "src/components/brain/BrainPanels.jsx",
+      "type": "component",
+      "lines": 53
+    },
+    {
+      "id": "src/components/brain/BrainPeopleLayer.jsx",
+      "type": "component",
+      "lines": 193
+    },
+    {
+      "id": "src/components/brain/BrainToolbar.jsx",
+      "type": "component",
+      "lines": 111
+    },
+    {
+      "id": "src/components/brain/BrainView.jsx",
+      "type": "component",
+      "lines": 227
+    },
+    {
+      "id": "src/components/globe/GlobeCore.jsx",
+      "type": "component",
+      "lines": 102
+    },
+    {
+      "id": "src/components/globe/GlobeField.jsx",
+      "type": "component",
+      "lines": 76
+    },
+    {
+      "id": "src/components/globe/GlobeLinks.jsx",
+      "type": "component",
+      "lines": 152
+    },
+    {
+      "id": "src/components/globe/GlobeNodes.jsx",
+      "type": "component",
+      "lines": 170
+    },
+    {
+      "id": "src/components/globe/GlobeSpokes.jsx",
+      "type": "component",
+      "lines": 69
+    },
+    {
+      "id": "src/components/globe/orbMaterial.js",
+      "type": "component",
+      "lines": 82
+    },
+    {
+      "id": "src/components/globe/useGlobeLayout.js",
+      "type": "component",
+      "lines": 250
+    },
+    {
+      "id": "src/data/agentSync.js",
+      "type": "data",
+      "lines": 208
+    },
+    {
+      "id": "src/data/ai-client.js",
+      "type": "data",
+      "lines": 54
+    },
+    {
+      "id": "src/data/books.js",
+      "type": "data",
+      "lines": 193
+    },
+    {
+      "id": "src/data/cli-import.js",
+      "type": "data",
+      "lines": 98
+    },
+    {
+      "id": "src/data/db.js",
+      "type": "data",
+      "lines": 362
+    },
+    {
+      "id": "src/data/embeddings.js",
+      "type": "data",
+      "lines": 198
+    },
+    {
+      "id": "src/data/ideas.js",
+      "type": "data",
+      "lines": 561
+    },
+    {
+      "id": "src/data/importer.js",
+      "type": "data",
+      "lines": 110
+    },
+    {
+      "id": "src/data/movies.js",
+      "type": "data",
+      "lines": 823
+    },
+    {
+      "id": "src/data/resonance.js",
+      "type": "data",
+      "lines": 62
+    },
+    {
+      "id": "src/data/seed.js",
+      "type": "data",
+      "lines": 73
+    },
+    {
+      "id": "src/data/tv.js",
+      "type": "data",
+      "lines": 643
+    },
+    {
+      "id": "src/data/watcher.js",
+      "type": "data",
+      "lines": 115
+    },
+    {
+      "id": "src/main.jsx",
+      "type": "src-other",
+      "lines": 51
+    },
+    {
+      "id": "src/sections/Diary/DiaryEntryEditor.jsx",
+      "type": "section",
+      "lines": 154
+    },
+    {
+      "id": "src/sections/Diary/DiaryView.jsx",
+      "type": "section",
+      "lines": 147
+    },
+    {
+      "id": "src/sections/Diary/diary-data.js",
+      "type": "section",
+      "lines": 95
+    },
+    {
+      "id": "src/sections/Relations/DiaryDetectionModal.jsx",
+      "type": "section",
+      "lines": 169
+    },
+    {
+      "id": "src/sections/Relations/DiaryDetectionQueue.jsx",
+      "type": "section",
+      "lines": 80
+    },
+    {
+      "id": "src/sections/Relations/PersonCard.jsx",
+      "type": "section",
+      "lines": 69
+    },
+    {
+      "id": "src/sections/Relations/PersonForm.jsx",
+      "type": "section",
+      "lines": 166
+    },
+    {
+      "id": "src/sections/Relations/PersonModal.jsx",
+      "type": "section",
+      "lines": 298
+    },
+    {
+      "id": "src/sections/Relations/Relations.jsx",
+      "type": "section",
+      "lines": 114
+    },
+    {
+      "id": "src/sections/Relations/RelationsAISearch.jsx",
+      "type": "section",
+      "lines": 116
+    },
+    {
+      "id": "src/sections/Relations/RelationsGraph.jsx",
+      "type": "section",
+      "lines": 398
+    },
+    {
+      "id": "src/sections/Relations/RelationsList.jsx",
+      "type": "section",
+      "lines": 147
+    },
+    {
+      "id": "src/sections/Relations/UndoToast.jsx",
+      "type": "section",
+      "lines": 45
+    },
+    {
+      "id": "src/sections/Relations/relations-data.js",
+      "type": "section",
+      "lines": 341
+    },
+    {
+      "id": "src/sections/Relations/seed-data.js",
+      "type": "section",
+      "lines": 860
+    },
+    {
+      "id": "src/tests/db.test.js",
+      "type": "test",
+      "lines": 95
+    },
+    {
+      "id": "src/tests/globe-layout.test.js",
+      "type": "test",
+      "lines": 68
+    },
+    {
+      "id": "src/tests/ideas-data.test.js",
+      "type": "test",
+      "lines": 117
+    },
+    {
+      "id": "src/tests/relations-data.test.js",
+      "type": "test",
+      "lines": 206
+    },
+    {
+      "id": "sync-store.js",
+      "type": "root-module",
+      "lines": 110
+    },
+    {
+      "id": "test-desmond.mjs",
+      "type": "root-module",
+      "lines": 24
+    },
+    {
+      "id": "vite.config.js",
+      "type": "entrypoint",
+      "lines": 155
+    }
+  ],
+  "edges": [
+    {
+      "source": "server.js",
+      "target": "desmond-launcher.js"
+    },
+    {
+      "source": "server.js",
+      "target": "server-ai.js"
+    },
+    {
+      "source": "server.js",
+      "target": "agent-bridge.js"
+    },
+    {
+      "source": "server.js",
+      "target": "brain-index.js"
+    },
+    {
+      "source": "server.js",
+      "target": "sync-store.js"
+    },
+    {
+      "source": "src/App.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/App.jsx",
+      "target": "src/data/agentSync.js"
+    },
+    {
+      "source": "src/App.jsx",
+      "target": "src/components/NavSidebar.jsx"
+    },
+    {
+      "source": "src/App.jsx",
+      "target": "src/components/Notifier.jsx"
+    },
+    {
+      "source": "src/App.jsx",
+      "target": "src/components/AlarmOverlay.jsx"
+    },
+    {
+      "source": "src/App.jsx",
+      "target": "src/components/TaskTimer.jsx"
+    },
+    {
+      "source": "src/App.jsx",
+      "target": "src/components/Toast.jsx"
+    },
+    {
+      "source": "src/App.jsx",
+      "target": "src/components/AmbientBackground.jsx"
+    },
+    {
+      "source": "src/App.jsx",
+      "target": "src/components/MainDashboard.jsx"
+    },
+    {
+      "source": "src/App.jsx",
+      "target": "src/components/brain/BrainView.jsx"
+    },
+    {
+      "source": "src/App.jsx",
+      "target": "src/components/DailyAgenda.jsx"
+    },
+    {
+      "source": "src/App.jsx",
+      "target": "src/components/CalendarView.jsx"
+    },
+    {
+      "source": "src/App.jsx",
+      "target": "src/components/TrackerView.jsx"
+    },
+    {
+      "source": "src/App.jsx",
+      "target": "src/components/TodoView.jsx"
+    },
+    {
+      "source": "src/App.jsx",
+      "target": "src/components/QuickCapturePage.jsx"
+    },
+    {
+      "source": "src/App.jsx",
+      "target": "src/components/NExoView.jsx"
+    },
+    {
+      "source": "src/App.jsx",
+      "target": "src/components/DesmondView.jsx"
+    },
+    {
+      "source": "src/App.jsx",
+      "target": "src/sections/Relations/Relations.jsx"
+    },
+    {
+      "source": "src/App.jsx",
+      "target": "src/sections/Diary/DiaryView.jsx"
+    },
+    {
+      "source": "src/components/AlarmOverlay.jsx",
+      "target": "src/components/AlarmOverlay.css"
+    },
+    {
+      "source": "src/components/ArchipelagoEditor.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/AuroraPulse.jsx",
+      "target": "src/components/AuroraPulse.css"
+    },
+    {
+      "source": "src/components/BatchDistill.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/BatchDistill.jsx",
+      "target": "src/data/ai-client.js"
+    },
+    {
+      "source": "src/components/CalendarView.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/CalendarView.jsx",
+      "target": "src/components/CalendarView.css"
+    },
+    {
+      "source": "src/components/ContextRetrieval.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/DailyAgenda.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/DailyAgenda.jsx",
+      "target": "src/components/DailyAgenda.css"
+    },
+    {
+      "source": "src/components/DailyBrief.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/DailyBrief.jsx",
+      "target": "src/data/ai-client.js"
+    },
+    {
+      "source": "src/components/DailyBrief.jsx",
+      "target": "src/components/AuroraPulse.jsx"
+    },
+    {
+      "source": "src/components/DesmondView.jsx",
+      "target": "src/components/AuroraPulse.jsx"
+    },
+    {
+      "source": "src/components/DesmondView.jsx",
+      "target": "src/components/DesmondView.css"
+    },
+    {
+      "source": "src/components/DialDownScope.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/DistillDashboard.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/ExportDialog.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/FavoriteProblems.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/HabitNudges.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/HemingwayBridge.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/Inbox.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/IntegrationSettings.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/KnowledgeSuggest.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/KnowledgeSuggest.jsx",
+      "target": "src/data/embeddings.js"
+    },
+    {
+      "source": "src/components/LinkPanel.jsx",
+      "target": "src/data/ideas.js"
+    },
+    {
+      "source": "src/components/MainDashboard.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/MainDashboard.jsx",
+      "target": "src/components/MainDashboard.css"
+    },
+    {
+      "source": "src/components/MonthlyReview.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/NExoView.jsx",
+      "target": "src/components/NExoView.css"
+    },
+    {
+      "source": "src/components/Notifier.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/PARASidebar.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/PARASidebar.jsx",
+      "target": "src/data/ideas.js"
+    },
+    {
+      "source": "src/components/PacketsWorkspace.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/PersonMention/NoteContent.jsx",
+      "target": "src/components/PersonMention/PersonMentionToken.jsx"
+    },
+    {
+      "source": "src/components/PersonMention/NoteContent.jsx",
+      "target": "src/sections/Relations/relations-data.js"
+    },
+    {
+      "source": "src/components/PersonMention/PersonHoverPanel.jsx",
+      "target": "src/sections/Relations/PersonCard.jsx"
+    },
+    {
+      "source": "src/components/PersonMention/PersonHoverPanel.jsx",
+      "target": "src/sections/Relations/relations-data.js"
+    },
+    {
+      "source": "src/components/PersonMention/PersonMentionDropdown.jsx",
+      "target": "src/components/PersonMention/personMentionData.js"
+    },
+    {
+      "source": "src/components/PersonMention/PersonMentionDropdown.jsx",
+      "target": "src/sections/Relations/relations-data.js"
+    },
+    {
+      "source": "src/components/PersonMention/PersonMentionDropdown.jsx",
+      "target": "src/components/PersonMention/person-mention.css"
+    },
+    {
+      "source": "src/components/PersonMention/PersonMentionToken.jsx",
+      "target": "src/components/PersonMention/PersonHoverPanel.jsx"
+    },
+    {
+      "source": "src/components/PersonMention/PersonMentionToken.jsx",
+      "target": "src/components/PersonMention/personMentionData.js"
+    },
+    {
+      "source": "src/components/PersonMention/PersonMentionToken.jsx",
+      "target": "src/components/PersonMention/person-mention.css"
+    },
+    {
+      "source": "src/components/PersonMention/personMentionData.js",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/PersonMention/usePersonMentions.js",
+      "target": "src/sections/Relations/relations-data.js"
+    },
+    {
+      "source": "src/components/PersonMention/usePersonMentions.js",
+      "target": "src/components/PersonMention/personMentionData.js"
+    },
+    {
+      "source": "src/components/PlacementChecklist.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/ProjectKickoff.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/QuickCapture.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/QuickCapture.jsx",
+      "target": "src/data/embeddings.js"
+    },
+    {
+      "source": "src/components/QuickCapture.jsx",
+      "target": "src/components/PersonMention/usePersonMentions.js"
+    },
+    {
+      "source": "src/components/QuickCapture.jsx",
+      "target": "src/components/PersonMention/personMentionData.js"
+    },
+    {
+      "source": "src/components/QuickCapture.jsx",
+      "target": "src/components/PersonMention/PersonMentionDropdown.jsx"
+    },
+    {
+      "source": "src/components/QuickCapturePage.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/QuickCapturePage.jsx",
+      "target": "src/components/QuickCapturePage.css"
+    },
+    {
+      "source": "src/components/Scene3D.jsx",
+      "target": "src/components/globe/GlobeNodes.jsx"
+    },
+    {
+      "source": "src/components/Scene3D.jsx",
+      "target": "src/components/globe/GlobeLinks.jsx"
+    },
+    {
+      "source": "src/components/Scene3D.jsx",
+      "target": "src/components/globe/GlobeField.jsx"
+    },
+    {
+      "source": "src/components/Scene3D.jsx",
+      "target": "src/components/globe/GlobeCore.jsx"
+    },
+    {
+      "source": "src/components/Scene3D.jsx",
+      "target": "src/components/globe/GlobeSpokes.jsx"
+    },
+    {
+      "source": "src/components/Scene3D.jsx",
+      "target": "src/components/brain/BrainPeopleLayer.jsx"
+    },
+    {
+      "source": "src/components/Scene3D.jsx",
+      "target": "src/components/globe/useGlobeLayout.js"
+    },
+    {
+      "source": "src/components/Scene3D.jsx",
+      "target": "src/data/ideas.js"
+    },
+    {
+      "source": "src/components/ScoredProblems.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/ScoredProblems.jsx",
+      "target": "src/data/resonance.js"
+    },
+    {
+      "source": "src/components/SemanticSearch.jsx",
+      "target": "src/data/embeddings.js"
+    },
+    {
+      "source": "src/components/SemanticSearch.jsx",
+      "target": "src/data/resonance.js"
+    },
+    {
+      "source": "src/components/SerendipityEngine.jsx",
+      "target": "src/data/embeddings.js"
+    },
+    {
+      "source": "src/components/SerendipityEngine.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/TaskTimer.jsx",
+      "target": "src/components/TaskTimer.css"
+    },
+    {
+      "source": "src/components/TodoView.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/TodoView.jsx",
+      "target": "src/components/TodoView.css"
+    },
+    {
+      "source": "src/components/TrackerView.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/TrackerView.jsx",
+      "target": "src/components/TrackerView.css"
+    },
+    {
+      "source": "src/components/WebClipper.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/WebClipper.jsx",
+      "target": "src/data/embeddings.js"
+    },
+    {
+      "source": "src/components/WeeklyReview.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/ZoomEditor.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/components/ZoomEditor.jsx",
+      "target": "src/data/ai-client.js"
+    },
+    {
+      "source": "src/components/ZoomEditor.jsx",
+      "target": "src/components/PersonMention/usePersonMentions.js"
+    },
+    {
+      "source": "src/components/ZoomEditor.jsx",
+      "target": "src/components/PersonMention/personMentionData.js"
+    },
+    {
+      "source": "src/components/ZoomEditor.jsx",
+      "target": "src/components/PersonMention/PersonMentionDropdown.jsx"
+    },
+    {
+      "source": "src/components/ZoomEditor.jsx",
+      "target": "src/components/PersonMention/NoteContent.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainPanels.jsx",
+      "target": "src/components/QuickCapture.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainPanels.jsx",
+      "target": "src/components/WebClipper.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainPanels.jsx",
+      "target": "src/components/FavoriteProblems.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainPanels.jsx",
+      "target": "src/components/ZoomEditor.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainPanels.jsx",
+      "target": "src/components/DistillDashboard.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainPanels.jsx",
+      "target": "src/components/BatchDistill.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainPanels.jsx",
+      "target": "src/components/PacketsWorkspace.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainPanels.jsx",
+      "target": "src/components/ArchipelagoEditor.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainPanels.jsx",
+      "target": "src/components/HemingwayBridge.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainPanels.jsx",
+      "target": "src/components/SemanticSearch.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainPanels.jsx",
+      "target": "src/components/ScoredProblems.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainPanels.jsx",
+      "target": "src/components/SerendipityEngine.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainPanels.jsx",
+      "target": "src/components/ContextRetrieval.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainPanels.jsx",
+      "target": "src/components/KnowledgeSuggest.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainPanels.jsx",
+      "target": "src/components/WeeklyReview.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainPanels.jsx",
+      "target": "src/components/MonthlyReview.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainPanels.jsx",
+      "target": "src/components/HabitNudges.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainPanels.jsx",
+      "target": "src/components/IntegrationSettings.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainPeopleLayer.jsx",
+      "target": "src/components/globe/orbMaterial.js"
+    },
+    {
+      "source": "src/components/brain/BrainPeopleLayer.jsx",
+      "target": "src/sections/Relations/relations-data.js"
+    },
+    {
+      "source": "src/components/brain/BrainView.jsx",
+      "target": "src/components/Scene3D.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainView.jsx",
+      "target": "src/components/LinkPanel.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainView.jsx",
+      "target": "src/components/AuroraTitle.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainView.jsx",
+      "target": "src/components/ErrorBoundary.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainView.jsx",
+      "target": "src/components/PARASidebar.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainView.jsx",
+      "target": "src/components/PlacementChecklist.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainView.jsx",
+      "target": "src/components/ProjectKickoff.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainView.jsx",
+      "target": "src/components/Inbox.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainView.jsx",
+      "target": "src/components/DialDownScope.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainView.jsx",
+      "target": "src/components/ExportDialog.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainView.jsx",
+      "target": "src/components/brain/BrainToolbar.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainView.jsx",
+      "target": "src/components/brain/BrainPanels.jsx"
+    },
+    {
+      "source": "src/components/brain/BrainView.jsx",
+      "target": "src/data/ideas.js"
+    },
+    {
+      "source": "src/components/brain/BrainView.jsx",
+      "target": "src/components/brain/BrainView.css"
+    },
+    {
+      "source": "src/components/globe/GlobeCore.jsx",
+      "target": "src/components/globe/orbMaterial.js"
+    },
+    {
+      "source": "src/components/globe/GlobeLinks.jsx",
+      "target": "src/data/ideas.js"
+    },
+    {
+      "source": "src/components/globe/GlobeLinks.jsx",
+      "target": "src/components/globe/useGlobeLayout.js"
+    },
+    {
+      "source": "src/components/globe/GlobeNodes.jsx",
+      "target": "src/components/globe/orbMaterial.js"
+    },
+    {
+      "source": "src/components/globe/useGlobeLayout.js",
+      "target": "src/data/ideas.js"
+    },
+    {
+      "source": "src/data/agentSync.js",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/data/agentSync.js",
+      "target": "src/data/embeddings.js"
+    },
+    {
+      "source": "src/data/embeddings.js",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/data/embeddings.js",
+      "target": "src/data/ai-client.js"
+    },
+    {
+      "source": "src/data/ideas.js",
+      "target": "src/data/books.js"
+    },
+    {
+      "source": "src/data/ideas.js",
+      "target": "src/data/movies.js"
+    },
+    {
+      "source": "src/data/ideas.js",
+      "target": "src/data/tv.js"
+    },
+    {
+      "source": "src/data/importer.js",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/data/resonance.js",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/data/seed.js",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/data/seed.js",
+      "target": "src/data/ideas.js"
+    },
+    {
+      "source": "src/data/seed.js",
+      "target": "src/data/embeddings.js"
+    },
+    {
+      "source": "src/data/watcher.js",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/main.jsx",
+      "target": "src/App.jsx"
+    },
+    {
+      "source": "src/main.jsx",
+      "target": "src/data/seed.js"
+    },
+    {
+      "source": "src/main.jsx",
+      "target": "src/data/vault-seed.json"
+    },
+    {
+      "source": "src/main.jsx",
+      "target": "src/App.css"
+    },
+    {
+      "source": "src/main.jsx",
+      "target": "src/styles/tokens.css"
+    },
+    {
+      "source": "src/main.jsx",
+      "target": "src/styles/base.css"
+    },
+    {
+      "source": "src/main.jsx",
+      "target": "src/styles/glass.css"
+    },
+    {
+      "source": "src/main.jsx",
+      "target": "src/styles/shell.css"
+    },
+    {
+      "source": "src/sections/Diary/DiaryEntryEditor.jsx",
+      "target": "src/sections/Diary/diary-data.js"
+    },
+    {
+      "source": "src/sections/Diary/DiaryEntryEditor.jsx",
+      "target": "src/data/ai-client.js"
+    },
+    {
+      "source": "src/sections/Diary/DiaryEntryEditor.jsx",
+      "target": "src/sections/Relations/relations-data.js"
+    },
+    {
+      "source": "src/sections/Diary/DiaryView.jsx",
+      "target": "src/sections/Diary/DiaryEntryEditor.jsx"
+    },
+    {
+      "source": "src/sections/Diary/DiaryView.jsx",
+      "target": "src/sections/Relations/DiaryDetectionQueue.jsx"
+    },
+    {
+      "source": "src/sections/Diary/DiaryView.jsx",
+      "target": "src/sections/Relations/UndoToast.jsx"
+    },
+    {
+      "source": "src/sections/Diary/DiaryView.jsx",
+      "target": "src/sections/Diary/diary-data.js"
+    },
+    {
+      "source": "src/sections/Diary/DiaryView.jsx",
+      "target": "src/sections/Relations/relations-data.js"
+    },
+    {
+      "source": "src/sections/Diary/DiaryView.jsx",
+      "target": "src/data/ai-client.js"
+    },
+    {
+      "source": "src/sections/Diary/DiaryView.jsx",
+      "target": "src/sections/Diary/diary-v2.css"
+    },
+    {
+      "source": "src/sections/Diary/diary-data.js",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/sections/Relations/DiaryDetectionModal.jsx",
+      "target": "src/sections/Relations/PersonCard.jsx"
+    },
+    {
+      "source": "src/sections/Relations/DiaryDetectionModal.jsx",
+      "target": "src/sections/Relations/relations-data.js"
+    },
+    {
+      "source": "src/sections/Relations/DiaryDetectionQueue.jsx",
+      "target": "src/sections/Relations/DiaryDetectionModal.jsx"
+    },
+    {
+      "source": "src/sections/Relations/DiaryDetectionQueue.jsx",
+      "target": "src/sections/Relations/relations-data.js"
+    },
+    {
+      "source": "src/sections/Relations/PersonCard.jsx",
+      "target": "src/sections/Relations/relations-data.js"
+    },
+    {
+      "source": "src/sections/Relations/PersonForm.jsx",
+      "target": "src/sections/Relations/relations-data.js"
+    },
+    {
+      "source": "src/sections/Relations/PersonForm.jsx",
+      "target": "src/sections/Relations/PersonCard.jsx"
+    },
+    {
+      "source": "src/sections/Relations/PersonModal.jsx",
+      "target": "src/sections/Relations/PersonCard.jsx"
+    },
+    {
+      "source": "src/sections/Relations/PersonModal.jsx",
+      "target": "src/sections/Relations/PersonForm.jsx"
+    },
+    {
+      "source": "src/sections/Relations/PersonModal.jsx",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/sections/Relations/PersonModal.jsx",
+      "target": "src/sections/Relations/relations-data.js"
+    },
+    {
+      "source": "src/sections/Relations/Relations.jsx",
+      "target": "src/sections/Relations/RelationsList.jsx"
+    },
+    {
+      "source": "src/sections/Relations/Relations.jsx",
+      "target": "src/sections/Relations/RelationsGraph.jsx"
+    },
+    {
+      "source": "src/sections/Relations/Relations.jsx",
+      "target": "src/sections/Relations/RelationsAISearch.jsx"
+    },
+    {
+      "source": "src/sections/Relations/Relations.jsx",
+      "target": "src/sections/Relations/PersonModal.jsx"
+    },
+    {
+      "source": "src/sections/Relations/Relations.jsx",
+      "target": "src/sections/Relations/PersonForm.jsx"
+    },
+    {
+      "source": "src/sections/Relations/Relations.jsx",
+      "target": "src/sections/Relations/relations-data.js"
+    },
+    {
+      "source": "src/sections/Relations/Relations.jsx",
+      "target": "src/sections/Relations/relations-v2.css"
+    },
+    {
+      "source": "src/sections/Relations/RelationsAISearch.jsx",
+      "target": "src/sections/Relations/PersonCard.jsx"
+    },
+    {
+      "source": "src/sections/Relations/RelationsAISearch.jsx",
+      "target": "src/components/AuroraPulse.jsx"
+    },
+    {
+      "source": "src/sections/Relations/RelationsAISearch.jsx",
+      "target": "src/sections/Relations/relations-data.js"
+    },
+    {
+      "source": "src/sections/Relations/RelationsAISearch.jsx",
+      "target": "src/data/ai-client.js"
+    },
+    {
+      "source": "src/sections/Relations/RelationsGraph.jsx",
+      "target": "src/components/globe/GlobeField.jsx"
+    },
+    {
+      "source": "src/sections/Relations/RelationsGraph.jsx",
+      "target": "src/components/globe/GlobeCore.jsx"
+    },
+    {
+      "source": "src/sections/Relations/RelationsGraph.jsx",
+      "target": "src/components/globe/orbMaterial.js"
+    },
+    {
+      "source": "src/sections/Relations/RelationsGraph.jsx",
+      "target": "src/sections/Relations/relations-data.js"
+    },
+    {
+      "source": "src/sections/Relations/RelationsList.jsx",
+      "target": "src/sections/Relations/PersonCard.jsx"
+    },
+    {
+      "source": "src/sections/Relations/relations-data.js",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/tests/db.test.js",
+      "target": "src/data/db.js"
+    },
+    {
+      "source": "src/tests/globe-layout.test.js",
+      "target": "src/components/globe/useGlobeLayout.js"
+    },
+    {
+      "source": "src/tests/ideas-data.test.js",
+      "target": "src/data/ideas.js"
+    },
+    {
+      "source": "src/tests/relations-data.test.js",
+      "target": "src/sections/Relations/relations-data.js"
+    },
+    {
+      "source": "test-desmond.mjs",
+      "target": "desmond-launcher.js"
+    },
+    {
+      "source": "vite.config.js",
+      "target": "desmond-launcher.js"
+    },
+    {
+      "source": "vite.config.js",
+      "target": "server-ai.js"
+    },
+    {
+      "source": "vite.config.js",
+      "target": "agent-bridge.js"
+    },
+    {
+      "source": "vite.config.js",
+      "target": "brain-index.js"
+    },
+    {
+      "source": "vite.config.js",
+      "target": "sync-store.js"
+    }
+  ]
+}

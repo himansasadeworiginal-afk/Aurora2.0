@@ -40,10 +40,6 @@ export default function DistillDashboard({ onSelectNote, onClose }) {
     return { depth, label: labels[depth] || 'Untouched', color: colors[depth] || '#553333' }
   }, [])
 
-  const getLinkCount = useCallback((note) => {
-    return note.ideaId ? 1 : 0
-  }, [])
-
   if (loading) {
     return (
       <div className="distill-dashboard">

@@ -1,8 +1,9 @@
 /* ============================================================================
-   Aurora — Base layer
-   Reset refinements, global element defaults, accessibility. Loaded after
-   tokens.css. Intentionally additive: it sharpens focus, scrollbars, selection
-   and reduced-motion without overriding existing component classes in App.css.
+   Aurora — Base layer  ·  Glassmorphism overhaul
+   Global element defaults, ambient void background, glass scrollbars, focus,
+   keyframes, accessibility. Loaded after tokens.css. Additive: it sets global
+   element treatments and animation keyframes without overriding component
+   classes in App.css.
    ============================================================================ */
 
 *,
@@ -22,35 +23,70 @@ body {
   font-family: var(--font);
   font-size: var(--fs-base);
   line-height: var(--lh-base);
-  color: var(--text);
+  color: var(--text-primary);
+  /* Deep void with a distant red light bleeding in from the top-left and a
+     faint violet pool bottom-right — the holographic command-center ambience. */
   background: var(--bg-gradient);
   background-attachment: fixed;
 }
 
-::selection {
-  background: rgba(230, 0, 0, 0.32);
-  color: var(--text-on-accent);
+/* Sora for display headings (Obsidian Neon) */
+h1, h2, h3, h4,
+.font-display, .neon-heading {
+  font-family: var(--font-heading);
+  letter-spacing: -0.01em;
 }
 
-/* Refined scrollbars (kept thin to match the existing aesthetic) */
+::selection {
+  background: rgba(221, 183, 255, 0.22);
+  color: var(--text-primary);
+}
+
+/* Glass scrollbars — thin, neon-tinted */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: var(--red-dim);
-  border-radius: var(--r-pill);
+  background: rgba(221, 183, 255, 0.2);
+  border-radius: var(--r-full);
 }
-::-webkit-scrollbar-thumb:hover { background: var(--accent); }
-* { scrollbar-width: thin; scrollbar-color: var(--red-dim) transparent; }
+::-webkit-scrollbar-thumb:hover { background: rgba(221, 183, 255, 0.4); }
+* { scrollbar-width: thin; scrollbar-color: rgba(221, 183, 255, 0.2) transparent; }
 
 /* Keyboard focus only — never on mouse click */
 :focus { outline: none; }
 :focus-visible {
-  outline: 2px solid var(--accent2);
+  outline: 2px solid var(--red-core);
   outline-offset: 2px;
   border-radius: var(--r-sm);
 }
 
 button { font-family: inherit; }
+
+/* ---- Keyframes (shared by the glass component layer) -------------------- */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-12px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 8px var(--red-glow); }
+  50%      { box-shadow: 0 0 24px var(--red-glow-intense); }
+}
+@keyframes shimmer {
+  from { background-position: -200% center; }
+  to   { background-position: 200% center; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
 
 /* Respect users who prefer less motion */
 @media (prefers-reduced-motion: reduce) {

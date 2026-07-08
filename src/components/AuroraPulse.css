@@ -1,0 +1,66 @@
+/* ============================================================================
+   AuroraPulse — the AI "superbrain" gradient orb/ribbon.
+   Aurora-borealis redesign (Phase 0). Built but unused until later phases.
+   ============================================================================ */
+
+.aurora-pulse {
+  --ap-size: 48px;
+  display: inline-block;
+  position: relative;
+  flex: none;
+  background: linear-gradient(
+    120deg,
+    var(--aurora-teal) 0%,
+    var(--aurora-violet) 50%,
+    var(--aurora-green) 100%
+  );
+  background-size: 200% 200%;
+  background-position: 0% 50%;
+  will-change: background-position, transform;
+}
+
+/* Orb — a soft glowing circle */
+.aurora-pulse--orb {
+  width: var(--ap-size);
+  height: var(--ap-size);
+  border-radius: var(--r-full, 9999px);
+  /* Feather the edge into a glow rather than a hard disc */
+  -webkit-mask: radial-gradient(circle at center, #000 42%, rgba(0, 0, 0, 0.35) 66%, transparent 78%);
+  mask: radial-gradient(circle at center, #000 42%, rgba(0, 0, 0, 0.35) 66%, transparent 78%);
+}
+
+/* Ribbon — a rounded horizontal bar (loading/thinking strip) */
+.aurora-pulse--ribbon {
+  width: var(--ap-size);
+  height: calc(var(--ap-size) / 4);
+  border-radius: var(--r-full, 9999px);
+}
+
+/* Active: the aurora slowly drifts across the gradient and gently breathes. */
+.aurora-pulse.is-active {
+  animation:
+    aurora-pulse-drift var(--dur-aurora-drift, 2400ms) var(--ease-out-next, cubic-bezier(0.16, 1, 0.3, 1)) infinite alternate,
+    aurora-pulse-breathe 3600ms ease-in-out infinite;
+}
+
+.aurora-pulse.is-idle {
+  opacity: 0.85;
+}
+
+@keyframes aurora-pulse-drift {
+  from { background-position: 0% 50%; }
+  to   { background-position: 100% 50%; }
+}
+
+@keyframes aurora-pulse-breathe {
+  0%, 100% { transform: scale(1);    filter: saturate(1);   }
+  50%      { transform: scale(1.05); filter: saturate(1.18); }
+}
+
+/* Reduced motion: hold a calm, still aurora — no drift, no breathing. */
+@media (prefers-reduced-motion: reduce) {
+  .aurora-pulse.is-active {
+    animation: none;
+    background-position: 50% 50%;
+  }
+}

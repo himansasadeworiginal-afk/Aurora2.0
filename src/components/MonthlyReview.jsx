@@ -14,7 +14,7 @@ const MONTHLY_ITEMS = [
 export default function MonthlyReview({ onClose }) {
   const [items, setItems] = useState(MONTHLY_ITEMS.map(i => ({ ...i, done: false })))
   const [activeReview, setActiveReview] = useState(null)
-  const [history, setHistory] = useState([])
+  const [, setHistory] = useState([])
 
   useEffect(() => {
     db.reviews.where('type').equals('monthly').reverse().limit(3).toArray().then(setHistory)
